@@ -1,0 +1,6 @@
+= render partial: "merchant/shared/product_header", locals: {text: "Edit Product ", product_name: @product.try(:name)}
+.container
+  .row
+    .col-md-12
+	  	.form-section
+	      = render partial: "form"

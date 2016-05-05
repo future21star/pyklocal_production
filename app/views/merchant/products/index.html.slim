@@ -1,0 +1,6 @@
+= render partial: "merchant/shared/product_header", locals: {text: "Products Listing", product_name: @product.try(:name), store_id: @collection.first.try(:store_id)}
+.container
+  .row
+    .col-md-12
+	  	.form-section
+	      = render template: "merchant/products/bs_index"

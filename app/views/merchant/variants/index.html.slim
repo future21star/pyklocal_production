@@ -1,0 +1,30 @@
+= render partial: "merchant/shared/product_header", locals: {text: "Edit Product", product_name: @prodeuct.try(:name)}
+.container
+  .row
+    .form-section
+      .col-md-9
+        .top-margin-row
+          table.table.table-striped.table-bordered
+            thead
+              tr
+                th OPTION
+                th PRICE
+                th SKU
+                th OPTIONS
+            tbody
+              - unless @variants.blank?
+                - @variants.each do |variant|
+                  tr
+                    td= Spree::OptionValue.where(id: variant.option_value_ids).first.try(:name)
+                    td= @product.try(:price)
+                    td= @product.sku
+                    td.btn-part
+                      = link_to "<i class='fa' style='vertical-align: text-top;'>&#xf014;</i> Delete".html_safe, merchant_variant_path(variant.id), class: "btn btn-danger", method: "delete"
+              - else
+                tr
+                  td colspan="4"
+                    span No Variants found.   
+                    span= link_to "Create One", merchant_stores_products_variants_new_path(product_id: @product.slug)
+          = link_to "New Variants", merchant_stores_products_variants_new_path(product_id: @product.slug), class: "btn btn-primary"
+      .col-md-3
+        = render partial: "merchant/shared/edit_product_sidebar", locals: {product_id: @product.slug}
