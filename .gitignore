@@ -21,4 +21,5 @@
 /solr/pids/*
 /solr/test/data/*
 /public/system/*
+/public/spree/*
 dump.rdb
