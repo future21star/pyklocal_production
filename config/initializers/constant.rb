@@ -1,0 +1,1 @@
+STORE_PAYMENT_MODE = {btc: 'Bitcoin', paypal: 'Paypal', bank_wire: 'Bank Wire', other: "Other"}

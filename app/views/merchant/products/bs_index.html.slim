@@ -1,0 +1,25 @@
+- content_for :page_title do
+  = Spree.t(:listing_products)
+
+.product-content
+  table.table.table-striped
+    thead
+      tr
+        th SKU
+        th Name
+        th Price
+        th Available From
+        th End Date 
+        th Action
+    tbody
+      - unless @collection.blank?
+        - @collection.each do |product|
+          tr
+            td= product.sku
+            td= product.name
+            td= product.price
+            td= product.available_on.try(:to_date)
+            td= product.end_date.try(:to_date)
+            td.btn-fix
+              = link_to "<span class='fa'>&#xf044;</span>".html_safe, edit_merchant_product_path(product.slug), class: "btn btn-default btn-sm"
+              = link_to "<span class='fa'>&#xf014;</span>".html_safe, merchant_product_path(product.slug), class: "btn btn-danger btn-sm", method: "delete"

@@ -1,0 +1,13 @@
+.product-header
+  .container
+  	.row
+	  .col-md-4
+	    h2.head-text= "Order# #{order.try(:number)}" if order.present?
+	  .col-md-8.option-buttons
+	    - if !(params[:controller] == "merchant/orders" && params[:action] == "index")
+	      = link_to "Approve Order", merchant_order_approve_path(order.number), class: "btn btn-default", "data-confirm" => "Are you sure you want to approve this order", method: "put" if order.approver_id.nil? || order.considered_risky
+	      = link_to "Cancel", merchant_order_cancel_path(order.number), class: "btn btn-default", "data-confirm" => "Are you sure you want to cancel this order", method: "put"
+	      = link_to "Resend", "", class: "btn btn-default"
+	      = link_to "Back To Order List", merchant_orders_path, class: "btn btn-default"
+	    - else
+	      = link_to "New Order", "", class: "btn btn-default"

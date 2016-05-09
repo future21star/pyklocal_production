@@ -1,0 +1,13 @@
+= render partial: "merchant/shared/order_header", locals: {order: @order}
+.container
+  .row
+    .col-md-12
+      .form-section
+        .col-md-9
+          .row.top-margin-row
+            .side-space
+              span.key-span 
+				i.fa style="color:#EA8743;" &#xf071; &nbsp;
+              	|CANNOT CREATE RETURNS AS THIS ORDER HAS NO SHIPPED UNITS.
+        .col-md-3
+          = render partial: "merchant/shared/edit_order_sidebar", locals: {order: @order} 
