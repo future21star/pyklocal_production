@@ -60,10 +60,14 @@ gem 'spree_auth_devise', github: 'spree/spree_auth_devise'
 gem 'spree_gateway', github: 'spree/spree_gateway'
 
 gem 'rvm-capistrano'
-gem 'puma'
+
 
 group :development do
   gem 'capistrano', '2.15.5'
   gem 'capistrano-unicorn', :require => false
+  gem 'thin'
 end
 
+group :production do
+	gem 'puma'
+end
