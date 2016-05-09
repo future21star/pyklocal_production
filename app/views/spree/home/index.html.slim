@@ -1,0 +1,44 @@
+= render partial: "spree/shared/slider1"
+.container style=("margin-top: 20px;")
+	h3 Bestsellers
+	.owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;") 
+	  .owl-wrapper-outer
+	    .owl-wrapper style=("width: 3648px; left: 0px; display: block;") 
+	    	- @products.each do |product|
+					= render :partial => 'spree/shared/product', locals: {product: product}
+		.owl-controls.clickable
+	    .owl-pagination
+	      .owl-page.active
+	        span
+	      .owl-page
+	        span
+	    .owl-buttons
+	      .owl-prev
+	        i.fa.fa-angle-left
+	      .owl-next
+	        i.fa.fa-angle-right
+	#marketshop-banner1.marketshop-banner
+	  .row
+	    .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
+	      a href="#" 
+	      	= image_tag "sample-banner-3-360x360.jpg", class: "img-responsive" 
+	    .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
+	      a href="#" 
+	        = image_tag "sample-banner-1-360x360.jpg", class: "img-responsive" 
+	    .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
+	      a href="#" 
+	        = image_tag "sample-banner-2-360x360.jpg", class: "img-responsive" 
+	#latest_category0.category-module
+
+
+
+javascript:
+	$(document).ready(function() {
+	  $("#content .owl-carousel.bestseller_carousel").owlCarousel({
+			itemsCustom : [[320, 1],[600, 2],[768, 3],[992, 5],[1199, 5]],
+			lazyLoad : true,
+			navigation : true,
+			navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+			scrollPerPage : true
+	  });
+	});
