@@ -1,8 +1,7 @@
-Pyklocal::Application.routes.draw do
-
-  get 'merchant', to: 'merchant#index'
+Pyklocal::Application.routes.draw do 
 
   namespace :merchant do
+    get "/", to: "home#index", as: "merchants"
     get "stores/products/:product_id/variants", to: "variants#index", as: "stores_products_variants"
     get "stores/products/:product_id/variants/new", to: "variants#new", as: "stores_products_variants_new"
     resources :stores do

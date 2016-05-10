@@ -24,5 +24,15 @@ production: &production
       :default_url: '/assets/missing.png'
       :convert_options:
         :all: '-strip -auto-orient -colorspace sRGB'
+  :stores:
+    :logo:
+      :storage: !ruby/symbol s3
+      :s3_protocol: <%= Rails.env == 'production' ? :https : :http %>
+      :s3_credentials:
+        <<: *default_settings
+      :styles:
+        :mini: '48x48>'
+        :small: '100x100>'
+        :large: '240x240>'
 development:
   <<: *production

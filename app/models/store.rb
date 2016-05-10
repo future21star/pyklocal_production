@@ -17,7 +17,10 @@ class Store < ActiveRecord::Base
   validates :name, :manager_first_name, :manager_last_name, :phone_number, presence: true
   validates :terms_and_condition, acceptance: { accept: true }
 
-  # has_attached_file :logo,  Coinclub::Configuration.paperclip_options[:stores][:logo]
+  has_attached_file :logo,  
+    Pyklocal::Configuration.paperclip_options[:stores][:logo]
+  validates_attachment :logo, content_type: { content_type: /\Aimage\/.*\Z/ }
+
 
   def average_raiting
     return 0 unless raitings.present?

@@ -2,10 +2,9 @@ class Merchant::StoresController < Merchant::ApplicationController
 
 	before_filter :authenticate_spree_user!, except: [:show]
   before_action :set_store, only: [:show, :edit, :update, :destroy]
-  before_filter :validate_token, only: [:edit, :update]
-  layout 'merchant'
+  before_filter :validate_token, only: [:edit, :update] 
 	def index
-		@stores = @current_spree_user.try(:stores)
+		@stores = current_spree_user.try(:stores)
     if @stores.present?
       redirect_to merchant_stores_path(id: @stores.first.id)
     else
@@ -32,7 +31,7 @@ class Merchant::StoresController < Merchant::ApplicationController
 
   # GET /stores/1/edit
   def edit
-    if @store.id != @current_spree_user.stores.first.try(:id) && !@current_spree_user.has_spree_role?('admin')
+    if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
       raise CanCan::AccessDenied.new
     end
     @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Category").first.id)
@@ -41,7 +40,7 @@ class Merchant::StoresController < Merchant::ApplicationController
   # POST /stores
   # POST /stores.json
   def create
-    @store = Store.new(store_params.merge(store_spree_users_attributes: [{spree_user_id: @current_spree_user.id}], active: false))
+    @store = Store.new(store_params.merge(store_spree_users_attributes: [{spree_user_id: current_spree_user.id}], active: false))
 
     respond_to do |format|
       if @store.save
@@ -58,7 +57,7 @@ class Merchant::StoresController < Merchant::ApplicationController
   # PATCH/PUT /stores/1
   # PATCH/PUT /stores/1.json
   def update
-    if @store.id != @current_spree_user.stores.first.try(:id) && !@current_spree_user.has_spree_role?('admin')
+    if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
       raise CanCan::AccessDenied.new
     end
     respond_to do |format|
@@ -73,12 +72,12 @@ class Merchant::StoresController < Merchant::ApplicationController
   # DELETE /stores/1
   # DELETE /stores/1.json
   def destroy
-    if @store.id != @current_spree_user.stores.first.try(:id) && !@current_spree_user.has_spree_role?('admin')
+    if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
       raise CanCan::AccessDenied.new
     end
     @store.destroy
     respond_to do |format|
-      if @current_spree_user.has_spree_role?('admin')
+      if current_spree_user.has_spree_role?('admin')
         format.html { redirect_to merchant_stores_url, notice: 'Store was deleted successfully.' }
         format.json { head :no_content }
       else
@@ -96,7 +95,7 @@ class Merchant::StoresController < Merchant::ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
-      params.require(:store).permit(:name, :payment_mode, :description, :manager_first_name, :manager_last_name, :phone_number, :store_type, :street_number, :city, :state, :zipcode, :country, :site_url, :terms_and_condition, :payment_information, :logo, spree_taxon_ids: [])
+      params.require(:store).permit(:name, :active, :payment_mode, :description, :manager_first_name, :manager_last_name, :phone_number, :store_type, :street_number, :city, :state, :zipcode, :country, :site_url, :terms_and_condition, :payment_information, :logo, spree_taxon_ids: [], store_spree_users_attributes: [:spree_user_id, :store_id, :id])
     end
 
     def validate_token

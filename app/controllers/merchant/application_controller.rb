@@ -1,4 +1,4 @@
-class Merchant::ApplicationController < ApplicationController
+class Merchant::ApplicationController < ActionController::Base
   
 	# before_filter :authenticate_spree_user!
 
@@ -12,6 +12,8 @@ class Merchant::ApplicationController < ApplicationController
   helper Spree::TaxonsHelper
 
   before_filter :load_initials
+
+  layout 'merchant'
 
   def load_initials
     @categories = Spree::Taxon.includes(children: {children: :children}).where(name: "Category").first.try(:children)
