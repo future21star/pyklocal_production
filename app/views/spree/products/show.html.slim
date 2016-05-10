@@ -1,0 +1,173 @@
+#container
+  .container
+    ul.breadcrumb
+      li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"  
+          i.fa.fa-home
+      li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" 
+        a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=48" itemprop="url" 
+          span itemprop="title" 
+            = @product.name 
+    .row
+      #content.col-sm-9
+        div itemscope="" itemtype="http://schema.org/Product" 
+          h1 itemprop="name"  
+            = @product.name
+          .row.product-info
+            .col-sm-6
+              script src="catalog/view/theme/marketshop/js/jquery.elevateZoom-3.0.8.min.js" 
+              script src="catalog/view/javascript/jquery/swipebox/lib/ios-orientationchange-fix.js" 
+              script src="catalog/view/javascript/jquery/swipebox/source/jquery.swipebox.min.js" 
+              link href="catalog/view/javascript/jquery/swipebox/source/swipebox.css" rel="stylesheet" /
+              .image
+                a href=product_path(@product) 
+                  = image_tag @product.images.first.attachment.url, class: "img-responsive"
+              .center-block.text-center
+                span.zoom-gallery
+                  i.fa.fa-search
+                  | Click image for Gallery
+              #gallery_01.image-additional
+                a.thumbnail data-image="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_1-350x350.jpg" data-zoom-image="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_1-500x500.jpg" href="#" title=("Portable Mp3 Player") 
+                  img alt=("Portable Mp3 Player") src="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_1-350x350.jpg" title=("Portable Mp3 Player") /
+                a.thumbnail data-image="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_2-350x350.jpg" data-zoom-image="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_2-500x500.jpg" href="#" title=("Portable Mp3 Player") 
+                  img alt=("Portable Mp3 Player") src="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_2-350x350.jpg" title=("Portable Mp3 Player") /
+                a.thumbnail data-image="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_3-350x350.jpg" data-zoom-image="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_3-500x500.jpg" href="#" title=("Portable Mp3 Player") 
+                  img alt=("Portable Mp3 Player") src="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_3-350x350.jpg" title=("Portable Mp3 Player") /
+                a.thumbnail data-image="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_4-350x350.jpg" data-zoom-image="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_4-500x500.jpg" href="#" title=("Portable Mp3 Player") 
+                  img alt=("Portable Mp3 Player") src="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_4-350x350.jpg" title=("Portable Mp3 Player") /
+              javascript:
+                | $("#zoom_01").elevateZoom({zoomType: "inner"});
+              javascript:
+                | $("#zoom_01").elevateZoom({
+                	| gallery:'gallery_01',
+                	| cursor: 'pointer',
+                	| galleryActiveClass: 'active',
+                	| imageCrossfade: true,
+                	| zoomWindowFadeIn: 500,
+                	| zoomWindowFadeOut: 500,
+                	| lensFadeIn: 500,
+                	| lensFadeOut: 500,
+                	| loadingIcon: 'catalog/view/theme/marketshop/image/progress.gif'});
+                /!/////pass the images to swipebox
+                | $("#zoom_01").bind("click", function(e) {
+                  | var ez =   $('#zoom_01').data('elevateZoom');
+                	| $.swipebox(ez.getGalleryList());
+                  | return false;
+                | });
+            .col-sm-6
+              ul.list-unstyled.description
+                li
+                  b Brand:
+                    span itemprop="brand"  Apple
+                li
+                  b Product Code:
+                  span itemprop="mpn"  
+                    = @product.sku
+                li
+                  b Availability:
+                  span style=("color:#53af2e; font-weight:bold;")  In Stock
+              ul.price-box
+                li.price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" 
+                  span itemprop="price"  
+                    = number_to_currency(@product.price.to_s)
+                  span content=("In Stock") itemprop="availability" 
+                li
+                li Ex Tax: $100.00
+              #product
+                .cart
+                  div
+                    .qty
+                      label.control-label for="input-quantity"  Qty
+                      input#input-quantity.form-control name="quantity" size="2" type="text" value="1" /
+                      a.qtyBtn.plus href="javascript:void(0);"  +
+                      br/
+                      a.qtyBtn.mines href="javascript:void(0);"  -
+                      input name="product_id" type="hidden" value="48" /
+                      .clear
+                    button#button-cart.btn.btn-primary.btn-lg data-loading-text="Loading..." type="button"  Add to Cart
+                  div
+                    button.wishlist onclick="wishlist.add('48');" type="button" 
+                      i.fa.fa-heart
+                      | Add to Wish List
+                    br/
+                    button.wishlist onclick="compare.add('48');" type="button" 
+                      i.fa.fa-exchange
+                      | Compare this Product
+              .rating itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating" 
+                meta content="0" itemprop="ratingValue" /
+                p
+                  span.fa.fa-stack
+                    i.fa.fa-star-o.fa-stack-1x
+                  span.fa.fa-stack
+                    i.fa.fa-star-o.fa-stack-1x
+                  span.fa.fa-stack
+                    i.fa.fa-star-o.fa-stack-1x
+                  span.fa.fa-stack
+                    i.fa.fa-star-o.fa-stack-1x
+                  span.fa.fa-stack
+                    i.fa.fa-star-o.fa-stack-1x
+                  a href="" onclick=("$('a[href=\\'#tab-review\\']').trigger('click'); return false;") 
+                    span itemprop="reviewCount"  0 reviews
+                  | \/
+                  a href="" onclick=("$('a[href=\\'#tab-review\\']').trigger('click'); return false;")  Write a review
+              hr/
+              /! AddThis Button BEGIN
+              .addthis_toolbox.addthis_default_style.addthis_16x16_style
+                a.addthis_button_facebook
+                a.addthis_button_twitter
+                a.addthis_button_google_plusone_share
+                a.addthis_button_pinterest_share
+                a.addthis_button_compact
+                a.addthis_counter.addthis_bubble_style
+              script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-514863386b357649" type="text/javascript" 
+              /! AddThis Button END
+          ul.nav.nav-tabs
+            li.active
+              a data-toggle="tab" href="#tab-description"  Description
+            li
+              a data-toggle="tab" href="#tab-review"  Reviews (0)
+          .tab-content
+            #tab-description.tab-pane.active itemprop="description" 
+              .cpt_product_description
+                = product_description(@product) rescue Spree.t(:product_has_no_description)
+            #tab-review.tab-pane
+              form.form-horizontal
+                #review
+                h2 Write a review
+                .form-group.required
+                  .col-sm-12
+                    label.control-label for="input-name"  Your Name
+                    input#input-name.form-control name="name" type="text" value="" /
+                .form-group.required
+                  .col-sm-12
+                    label.control-label for="input-review"  Your Review
+                    textarea#input-review.form-control name="text" rows="5" 
+                    .help-block
+                      span.text-danger Note:
+                      | HTML is not translated!
+                .form-group.required
+                  .col-sm-12
+                    label.control-label Rating
+                    | \&nbsp;&nbsp;&nbsp; Bad&nbsp;
+                    input name="rating" type="radio" value="1" /
+                    | \&nbsp;
+                    input name="rating" type="radio" value="2" /
+                    | \&nbsp;
+                    input name="rating" type="radio" value="3" /
+                    | \&nbsp;
+                    input name="rating" type="radio" value="4" /
+                    | \&nbsp;
+                    input name="rating" type="radio" value="5" /
+                    | \&nbsp;Good
+                .buttons
+                  .pull-right
+                    button#button-review.btn.btn-primary data-loading-text="Loading..." type="button"  Continue
+      
+    h3 Related Products
+    .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;") 
+      .owl-wrapper-outer
+        .owl-wrapper style=("width: 3648px; left: 0px; display: block;") 
+          - @products.each do |product|
+            = render :partial => 'spree/shared/product', locals: {product: product}
+      
+
+
