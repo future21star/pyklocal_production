@@ -1,6 +1,6 @@
 = render partial: "spree/shared/slider1"
 .container style=("margin-top: 20px;")
-	h3 Bestsellers
+	h3 style=("border-bottom: 2px solid #ddd;") Bestsellers
 	.owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;") 
 	  .owl-wrapper-outer
 	    .owl-wrapper style=("width: 3648px; left: 0px; display: block;") 
@@ -12,11 +12,6 @@
 	        span
 	      .owl-page
 	        span
-	    .owl-buttons
-	      .owl-prev
-	        i.fa.fa-angle-left
-	      .owl-next
-	        i.fa.fa-angle-right
 	#marketshop-banner1.marketshop-banner
 	  .row
 	    .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
@@ -30,15 +25,21 @@
 	        = image_tag "sample-banner-2-360x360.jpg", class: "img-responsive" 
 	#latest_category0.category-module
 
+	#marketshop-banner2.marketshop-banner
+	  .row
+	    .col-lg-12.col-md-12.col-sm-12.col-xs-12.moderns
+	      a href="#" 
+	      	= image_tag "1blockbanner-1140x75.jpg", class: "img-responsive"
 
 
-javascript:
-	$(document).ready(function() {
-	  $("#content .owl-carousel.bestseller_carousel").owlCarousel({
-			itemsCustom : [[320, 1],[600, 2],[768, 3],[992, 5],[1199, 5]],
-			lazyLoad : true,
-			navigation : true,
-			navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-			scrollPerPage : true
-	  });
-	});
+
+- content_for :js do
+  javascript:
+    $('#slideshow0').owlCarousel({
+      items: 1,
+      autoPlay: 3000,
+      singleItem: true,
+      navigation: true,
+      navigationText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+      pagination: true  
+    });

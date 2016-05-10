@@ -7,7 +7,7 @@ head[data-hook="inside_head"]
   link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
   = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => false 
 
-  .container-fluid
+  .container-fluid style = ("padding-left: 0;padding-right: 0;")
     = render :partial => 'spree/shared/header'
     div class=(params["controller"] == "spree/checkout" || params["controller"] == "spree/orders" ? "container" : "")
       #wrapper.row.main-body[data-hook]
@@ -18,3 +18,4 @@ head[data-hook="inside_head"]
 
   = render :partial => 'spree/shared/footer'
   = javascript_include_tag 'application' 
+  = yield :js

@@ -48,7 +48,7 @@
                 span
                   | Language:
                   = "English"
-                  i.fa.fa-caret-down
+                  i.fa.fa-caret-down style = (style="padding: 3px;")
               ul.dropdown-menu
                 li
                   a href="http://demo.harnishdesign.net/opencart/marketshop/v3/en" 
@@ -66,7 +66,7 @@
                 span
                   | Currency:
                   | $ USD
-                  i.fa.fa-caret-down
+                  i.fa.fa-caret-down style = (style="padding: 3px;")
               ul.dropdown-menu
                 li
                   button.currency-select.btn.btn-link.btn-block name="EUR" type="button"  € Euro
@@ -78,10 +78,16 @@
             input name="redirect" type="hidden" value="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=common/home" /
         #top-links.nav.pull-right.flip
           ul
-            li
-              a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=account/login"  Login
-            li
-              a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=account/register"  Register
+            -if spree_user_signed_in?
+              -user = current_spree_user.name.present? ? current_spree_user.name : current_spree_user.email
+              li
+                = "Hey,#{user}"
+            -else 
+              li 
+               = link_to "Login", spree.login_path
+              li
+               a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=account/register"  Register     
+            
   header.header-row
     .container
       .table-container
