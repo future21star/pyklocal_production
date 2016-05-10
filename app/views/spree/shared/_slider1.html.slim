@@ -2,30 +2,14 @@
   .row
     .col-sm-8
       #slideshow0.owl-carousel.slideshowhome.owl-theme style=("opacity: 1; display: block;") 
-        .owl-wrapper-outer
-          .owl-wrapper style=("width: 4500px; left: 0px; display: block; transition: all 1000ms ease 0s; transform: translate3d(0px), 0px, 0px;") 
-            .owl-item style=("width: 750px;") 
-              .item
-                = image_tag "banner2-750x400.jpg", class: "img-responsive"
-            .owl-item style=("width: 750px;") 
-              .item
-                = image_tag "banner1-750x400.jpg", class: "img-responsive" 
-            .owl-item style=("width: 750px;") 
-              .item
-                = image_tag "banner2-750x400.jpg", class: "img-responsive" 
-            .owl-item style=("width: 750px;") 
-              .item
-                = image_tag "banner2-750x400.jpg", class: "img-responsive" 
-        .owl-controls.clickable
-          .owl-pagination
-            .owl-page.active
-              span
-            .owl-page
-              span
-            .owl-page 
-              span
-            .owl-page 
-              span
+        .item
+          = image_tag "banner2-750x400.jpg", class: "img-responsive"
+        .item
+          = image_tag "banner1-750x400.jpg", class: "img-responsive"
+        .item
+          = image_tag "banner2-750x400.jpg", class: "img-responsive" 
+        .item
+          = image_tag "banner2-750x400.jpg", class: "img-responsive"
     .col-sm-4.pull-right.flip
       #marketshop-banner0.marketshop-banner
         .row
