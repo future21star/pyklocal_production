@@ -1,9 +1,12 @@
-.container style=("margin-top: 30px;") 
+.container style=("margin-top: 20px;") 
   .row
     .col-sm-8
       #slideshow0.owl-carousel.slideshowhome.owl-theme style=("opacity: 1; display: block;") 
         .owl-wrapper-outer
           .owl-wrapper style=("width: 4500px; left: 0px; display: block; transition: all 1000ms ease 0s; transform: translate3d(0px), 0px, 0px;") 
+            .owl-item style=("width: 750px;") 
+              .item
+                = image_tag "banner2-750x400.jpg", class: "img-responsive"
             .owl-item style=("width: 750px;") 
               .item
                 = image_tag "banner1-750x400.jpg", class: "img-responsive" 
@@ -12,30 +15,17 @@
                 = image_tag "banner2-750x400.jpg", class: "img-responsive" 
             .owl-item style=("width: 750px;") 
               .item
-                = image_tag "banner4-750x400.jpg", class: "img-responsive" 
+                = image_tag "banner2-750x400.jpg", class: "img-responsive" 
         .owl-controls.clickable
           .owl-pagination
             .owl-page.active
               span
             .owl-page
               span
-            .owl-page
+            .owl-page 
               span
-          .owl-buttons
-            .owl-prev
-              i.fa.fa-chevron-left
-            .owl-next
-              i.fa.fa-chevron-right
-      javascript:
-        $('#slideshow0').owlCarousel({
-        items: 6,
-        autoPlay: 3000,
-        singleItem: true,
-        navigation: true,
-        navigationText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
-        pagination: true  
-        });
-
+            .owl-page 
+              span
     .col-sm-4.pull-right.flip
       #marketshop-banner0.marketshop-banner
         .row
@@ -45,3 +35,4 @@
           .col-lg-12.col-md-12.col-sm-12.col-xs-12.moderns
             a href="#" 
               = image_tag "sp-small-banner1-360x185.jpg", class: "img-responsive"
+
