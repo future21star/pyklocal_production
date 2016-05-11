@@ -8,7 +8,7 @@
         a href=product_path(product) data-no-turbolink="true" 
         	= product.name
       p.price
-        = product.price
+        = number_to_currency(product.price)
     .button-group
       button.btn-primary onclick="cart.add('48');" type="button" 
         span Add to Cart

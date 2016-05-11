@@ -35,29 +35,30 @@
                 a.thumbnail data-image="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_4-350x350.jpg" data-zoom-image="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_4-500x500.jpg" href="#" title=("Portable Mp3 Player") 
                   img alt=("Portable Mp3 Player") src="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_4-350x350.jpg" title=("Portable Mp3 Player") /
               javascript:
-                | $("#zoom_01").elevateZoom({zoomType: "inner"});
+                 $("#zoom_01").elevateZoom({zoomType: "inner"});
               javascript:
-                | $("#zoom_01").elevateZoom({
-                	| gallery:'gallery_01',
-                	| cursor: 'pointer',
-                	| galleryActiveClass: 'active',
-                	| imageCrossfade: true,
-                	| zoomWindowFadeIn: 500,
-                	| zoomWindowFadeOut: 500,
-                	| lensFadeIn: 500,
-                	| lensFadeOut: 500,
-                	| loadingIcon: 'catalog/view/theme/marketshop/image/progress.gif'});
+                $("#zoom_01").elevateZoom({
+                	gallery:'gallery_01',
+                	cursor: 'pointer',
+                	galleryActiveClass: 'active',
+                	imageCrossfade: true,
+                	zoomWindowFadeIn: 500,
+                	zoomWindowFadeOut: 500,
+                	lensFadeIn: 500,
+                	lensFadeOut: 500,
+                	loadingIcon: 'catalog/view/theme/marketshop/image/progress.gif'});
                 /!/////pass the images to swipebox
-                | $("#zoom_01").bind("click", function(e) {
-                  | var ez =   $('#zoom_01').data('elevateZoom');
-                	| $.swipebox(ez.getGalleryList());
-                  | return false;
-                | });
+                $("#zoom_01").bind("click", function(e) {
+                  var ez =   $('#zoom_01').data('elevateZoom');
+                	$.swipebox(ez.getGalleryList());
+                  return false;
+                });
             .col-sm-6
               ul.list-unstyled.description
                 li
                   b Brand:
-                    span itemprop="brand"  Apple
+                  span itemprop="brand"
+                    = @product.slug
                 li
                   b Product Code:
                   span itemprop="mpn"  
