@@ -39,10 +39,10 @@
                               strong
                                 a href="#"  Read More
               li
-                a#wishlist-total href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=account/wishlist"  Wish List (0)
+                a#wishlist-total href="/opencart/marketshop/v3/index.php?route=account/wishlist"  Wish List (0)
               li
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=checkout/checkout"  Checkout
-          form#language action="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=common/language/language" enctype="multipart/form-data" method="post" 
+                a href="/opencart/marketshop/v3/index.php?route=checkout/checkout"  Checkout
+          form#language action="/opencart/marketshop/v3/index.php?route=common/language/language" enctype="multipart/form-data" method="post" 
             .btn-group
               button.btn-link.dropdown-toggle data-toggle="dropdown" 
                 span
@@ -51,16 +51,16 @@
                   i.fa.fa-caret-down style = (style="padding: 3px;")
               ul.dropdown-menu
                 li
-                  a href="http://demo.harnishdesign.net/opencart/marketshop/v3/en" 
+                  a href="/opencart/marketshop/v3/en" 
                     = image_tag "gb.png", class: "img-responsive"  
                     | English
                 li
-                  a href="http://demo.harnishdesign.net/opencart/marketshop/v3/ar" 
+                  a href="/opencart/marketshop/v3/ar" 
                     = image_tag "ar.png", class: "img-responsive"
                     | Arabic
             input name="code" type="hidden" value="" /
-            input name="redirect" type="hidden" value="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=common/home" /
-          form#currency action="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=common/currency/currency" enctype="multipart/form-data" method="post" 
+            input name="redirect" type="hidden" value="/opencart/marketshop/v3/index.php?route=common/home" /
+          form#currency action="/opencart/marketshop/v3/index.php?route=common/currency/currency" enctype="multipart/form-data" method="post" 
             .btn-group
               button.btn-link.dropdown-toggle data-toggle="dropdown" 
                 span
@@ -75,7 +75,7 @@
                 li
                   button.currency-select.btn.btn-link.btn-block name="USD" type="button"  $ US Dollar
             input name="code" type="hidden" value="" /
-            input name="redirect" type="hidden" value="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=common/home" /
+            input name="redirect" type="hidden" value="/opencart/marketshop/v3/index.php?route=common/home" /
         #top-links.nav.pull-right.flip
           ul
             -if spree_user_signed_in?
@@ -86,14 +86,15 @@
               li 
                = link_to "Login", spree.login_path
               li
-               a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=account/register"  Register     
+                = link_to "Register", spree.signup_path     
             
   header.header-row
     .container
       .table-container
         .col-table-cell.col-lg-4.col-md-4.col-sm-12.col-xs-12.inner
           #logo
-            = image_tag "/images/pyc-logo.png", class: "img-responsive"
+            = link_to root_path , "data-no-turbolink" => true do
+              = image_tag "/images/pyc-logo.png", class: "img-responsive"
         .col-table-cell.col-lg-5.col-md-5.col-md-push-0.col-sm-6.col-sm-push-6.col-xs-12
           #search.input-group
             input#filter_name.form-control.input-lg.ac_input autocomplete="off" name="search" placeholder="Search" type="text" /
@@ -116,387 +117,387 @@
       .collapse.navbar-collapse.navbar-ex1-collapse
         ul.nav.navbar-nav
           li
-            a.home_link href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=common/home" title="Home" 
+            a.home_link href=spree.root_path title="Home" data-no-turbolink="true" 
               span Home
           li.categories.dropdown.sub
             a All Categories
             span.submore
             .dropdown-menu style=("display: none;") 
               .column
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59" 
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59" 
                   | Clothing
                   span ›
                 span.submore
                 div
                   ul
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61" 
                         | Men
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61_93"  Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61_93"  Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61_94"  Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61_94"  Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61_95"  Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61_95"  Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61_96"  Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61_96"  Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61_91"  Sub Categories New
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61_91"  Sub Categories New
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_60"  Women
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_60"  Women
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_62" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_62" 
                         | Girls
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_62_98"  Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_62_98"  Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_62_97"  Sub Categories New
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_62_97"  Sub Categories New
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_62_99"  Sub Categories New
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_62_99"  Sub Categories New
                   ul
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_63"  Boys
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_63"  Boys
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_64"  Baby
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_64"  Baby
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_65" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_65" 
                         | Accessories
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_65_120"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_65_120"  New Sub Categories
               .column
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66" 
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66" 
                   | Electronics
                   span ›
                 span.submore
                 div
                   ul
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_67" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_67" 
                         | Laptops
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_67_100"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_67_100"  New Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_67_102"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_67_102"  New Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_67_101"  Sub Categories New
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_67_101"  Sub Categories New
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_68" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_68" 
                         | Desktops
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_68_103"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_68_103"  New Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_68_104"  Sub Categories New
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_68_104"  Sub Categories New
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_68_105"  Sub Categories New
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_68_105"  Sub Categories New
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_33" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_33" 
                         | Cameras
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_33_110"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_33_110"  New Sub Categories
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_69" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_69" 
                         | Mobile Phones
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_69_106"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_69_106"  New Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_69_107"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_69_107"  New Sub Categories
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_70" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_70" 
                         | TV &amp; Home Audio
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_70_108"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_70_108"  New Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_70_109"  Sub Categories New
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_70_109"  Sub Categories New
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_71"  MP3 Players
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=66_71"  MP3 Players
               .column
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=20" 
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=20" 
                   | Shoes
                   span ›
                 span.submore
                 div
                   ul
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_27"  Men
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_27"  Men
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_26" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_26" 
                         | Women
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_26_115"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_26_115"  New Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_26_116"  Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_26_116"  Sub Categories
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_42"  Girls
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_42"  Girls
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_41"  Boys
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_41"  Boys
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_40"  Baby
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_40"  Baby
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_72" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_72" 
                         | Accessories
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_72_117"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_72_117"  New Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_72_118"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_72_118"  New Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_72_119"  Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=20_72_119"  Sub Categories
               .column
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=18" 
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=18" 
                   | Watches
                   span ›
                 span.submore
                 div
                   ul
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=18_46"  Men's Watches
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=18_46"  Men's Watches
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=18_45"  Women's Watches
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=18_45"  Women's Watches
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=18_47"  Kids' Watches
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=18_47"  Kids' Watches
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=18_37"  Accessories
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=18_37"  Accessories
               .column
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25" 
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25" 
                   | Jewellery
                   span ›
                 span.submore
                 div
                   ul
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_29" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_29" 
                         | Silver
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_29_111"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_29_111"  New Sub Categories
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_29_112"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_29_112"  New Sub Categories
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_28" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_28" 
                         | Gold
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_28_35"  test 1
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_28_35"  test 1
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_28_36"  test 2
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_28_36"  test 2
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_30"  Diamond
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_30"  Diamond
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_31" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_31" 
                         | Pearl
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_31_113"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_31_113"  New Sub Categories
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_32"  Men's Jewellery
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_32"  Men's Jewellery
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_43" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_43" 
                         | Children's Jewellery
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_43_114"  New Sub Categories
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=25_43_114"  New Sub Categories
               .column
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=17" 
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=17" 
                   | Health &amp; Beauty
                   span ›
                 span.submore
                 div
                   ul
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=17_57"  Perfumes
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=17_57"  Perfumes
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=17_24"  Makeup
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=17_24"  Makeup
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=17_44"  Sun Care
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=17_44"  Sun Care
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=17_48"  Skin Care
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=17_48"  Skin Care
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=17_49"  Eye Care
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=17_49"  Eye Care
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=17_50"  Hair Care
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=17_50"  Hair Care
               .column
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=34" 
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=34" 
                   | Kids &amp; Babies
                   span ›
                 span.submore
                 div
                   ul
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_51"  Toys
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_51"  Toys
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_52" 
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_52" 
                         | Games
                         span ›
                       span.submore
                       .submenu
                         ul
                           li
-                            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_52_58"  test 25
+                            a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_52_58"  test 25
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_53"  Puzzles
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_53"  Puzzles
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_54"  Hobbies
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_54"  Hobbies
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_55"  Strollers
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_55"  Strollers
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_56"  Health &amp; Safety
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=34_56"  Health &amp; Safety
               .column
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=38" 
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=38" 
                   | Sports
                   span ›
                 span.submore
                 div
                   ul
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=38_39"  Cycling
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=38_39"  Cycling
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=38_73"  Running
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=38_73"  Running
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=38_74"  Swimming
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=38_74"  Swimming
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=38_75"  Football
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=38_75"  Football
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=38_76"  Golf
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=38_76"  Golf
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=38_77"  Windsurfing
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=38_77"  Windsurfing
               .column
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=78" 
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=78" 
                   | Home &amp; Garden
                   span ›
                 span.submore
                 div
                   ul
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=78_79"  Bedding
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=78_79"  Bedding
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=78_80"  Food
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=78_80"  Food
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=78_81"  Furniture
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=78_81"  Furniture
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=78_82"  Kitchen
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=78_82"  Kitchen
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=78_83"  Lighting
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=78_83"  Lighting
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=78_84"  Tools
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=78_84"  Tools
               .column
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=85" 
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=85" 
                   | Wines &amp; Spirits
                   span ›
                 span.submore
                 div
                   ul
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=85_86"  Wine
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=85_86"  Wine
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=85_87"  Whiskey
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=85_87"  Whiskey
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=85_88"  Vodka
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=85_88"  Vodka
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=85_89"  Liqueurs
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=85_89"  Liqueurs
                     li
-                      a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/category&amp;path=85_90"  Beer
+                      a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=85_90"  Beer
           li.menu_brands.dropdown.sub
-            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer"  Shop by Brands
+            a href="/opencart/marketshop/v3/index.php?route=product/manufacturer"  Shop by Brands
             span.submore
             .dropdown-menu style=("display: none;") 
               .col-lg-1.col-md-2.col-sm-3.col-xs-6
                 = image_tag "canon_logo-60x60.jpg", class: "img-responsive"
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=8"  Apple
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=8"  Apple
               .col-lg-1.col-md-2.col-sm-3.col-xs-6
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=9" 
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=9" 
                   = image_tag "apple_logo-60x60.jpg", class: "img-responsive"
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=9"  Canon
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=9"  Canon
               .col-lg-1.col-md-2.col-sm-3.col-xs-6
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=7" 
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=7" 
                   = image_tag "apple_logo-60x60.jpg", class: "img-responsive"
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=7"  Hewlett-Packard
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=7"  Hewlett-Packard
               .col-lg-1.col-md-2.col-sm-3.col-xs-6
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=5" 
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=5" 
                   = image_tag "apple_logo-60x60.jpg", class: "img-responsive"
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=5"  HTC
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=5"  HTC
               .col-lg-1.col-md-2.col-sm-3.col-xs-6
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=6" 
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=6" 
                   = image_tag "apple_logo-60x60.jpg", class: "img-responsive"
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=6"  Palm
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=6"  Palm
               .col-lg-1.col-md-2.col-sm-3.col-xs-6
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=10" 
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=10" 
                   = image_tag "apple_logo-60x60.jpg", class: "img-responsive"
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=10"  Sony
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=10"  Sony
               .col-lg-1.col-md-2.col-sm-3.col-xs-6
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=10" 
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=10" 
                   = image_tag "apple_logo-60x60.jpg", class: "img-responsive"
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=10"  Sony
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=10"  Sony
               .col-lg-1.col-md-2.col-sm-3.col-xs-6
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=11" 
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=11" 
                   = image_tag "apple_logo-60x60.jpg", class: "img-responsive"
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=11"  test
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=11"  test
               .col-lg-1.col-md-2.col-sm-3.col-xs-6
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=14" 
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=14" 
                   = image_tag "apple_logo-60x60.jpg", class: "img-responsive"
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=14"  test 3
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=14"  test 3
               .col-lg-1.col-md-2.col-sm-3.col-xs-6
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=15" 
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=15" 
                   = image_tag "apple_logo-60x60.jpg", class: "img-responsive"
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=15"  test 5
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=15"  test 5
               .col-lg-1.col-md-2.col-sm-3.col-xs-6
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=16" 
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=16" 
                   = image_tag "apple_logo-60x60.jpg", class: "img-responsive"
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=16"  test 6
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=16"  test 6
               .col-lg-1.col-md-2.col-sm-3.col-xs-6
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=17" 
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=17" 
                   = image_tag "apple_logo-60x60.jpg", class: "img-responsive"
-                a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=17"  test 7
+                a href="/opencart/marketshop/v3/index.php?route=product/manufacturer/info&amp;manufacturer_id=17"  test 7
           li.custom-link
             a href="#" target="_self"  Custom Link
           li.dropdown.wrap_custom_block.hidden-sm.hidden-xs.sub
@@ -533,14 +534,14 @@
             .dropdown-menu style="" 
               ul
                 li
-                  a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=information/information&amp;information_id=4"  About Us
+                  a href="/opencart/marketshop/v3/index.php?route=information/information&amp;information_id=4"  About Us
                 li
-                  a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=information/information&amp;information_id=6"  Delivery Information
+                  a href="/opencart/marketshop/v3/index.php?route=information/information&amp;information_id=6"  Delivery Information
                 li
-                  a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=information/information&amp;information_id=3"  Privacy Policy
+                  a href="/opencart/marketshop/v3/index.php?route=information/information&amp;information_id=3"  Privacy Policy
                 li
-                  a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=information/information&amp;information_id=5"  Terms &amp; Conditions
+                  a href="/opencart/marketshop/v3/index.php?route=information/information&amp;information_id=5"  Terms &amp; Conditions
           li.contact-link
-            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=information/contact"  Contact Us
+            a href="/opencart/marketshop/v3/index.php?route=information/contact"  Contact Us
           li.custom-link-right
-            a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/special" target="_self"  Special Offers
+            a href="/opencart/marketshop/v3/index.php?route=product/special" target="_self"  Special Offers
