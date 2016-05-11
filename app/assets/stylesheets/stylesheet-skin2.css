@@ -2035,11 +2035,12 @@ div.required .control-label:before {
   margin-bottom: 15px;
   color: #4D4D4D;
   overflow: auto;
+  margin-top: -20px;
 }
 
 .product-info .cart div {
   vertical-align: middle;
-  float: left;
+  margin-left: 0px;
 }
 
 .product-info .cart div.text-or {
@@ -2059,6 +2060,7 @@ div.required .control-label:before {
   border: none;
   background: 0 0;
   margin-left: 15px;
+
 }
 
 .product-info .cart div .wishlist .fa {
@@ -2069,9 +2071,11 @@ div.required .control-label:before {
   text-decoration: underline;
 }
 
-.product-info .cart #button-cart {
+.product-info .cart #add-to-cart-button {
   padding: 11px 15px;
   text-transform: uppercase;
+  margin-top: -8px;
+  margin-left: 22px;
 }
 
 .product-info .cart .minimum {

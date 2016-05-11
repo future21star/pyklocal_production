@@ -1,0 +1,28 @@
+- variant = line_item.variant
+= order_form.fields_for :line_items, line_item do |item_form|
+  tr.line-item
+    td.cart-item-image data-hook="cart_item_image" 
+      - if variant.images.length == 0
+        = link_to small_image(variant.product), variant.product
+      - else
+        = link_to image_tag(variant.images.first.attachment.url(:small)), variant.product
+    td.cart-item-description data-hook="cart_item_description" 
+      h4= link_to line_item.name, product_path(variant.product)
+      = variant.options_text
+      - if line_item.insufficient_stock?
+        span.out-of-stock
+          = Spree.t(:out_of_stock)
+          |   
+          br/
+      span.line-item-description data-hook="line_item_description" 
+       
+    td.lead.text-primary.cart-item-total data-hook="cart_item_total"
+      = line_item.name
+    td.cart-item-quantity data-hook="cart_item_quantity" valign="center" 
+      = item_form.number_field :quantity, min: 0, class: "form-control line_item_quantity", size: 5
+    td.lead.text-primary.cart-item-price data-hook="cart_item_price" 
+      = line_item.single_money.to_html
+    td.lead.text-primary.cart-item-total data-hook="cart_item_total" 
+      = line_item.display_amount.to_html unless line_item.quantity.nil?
+
+    

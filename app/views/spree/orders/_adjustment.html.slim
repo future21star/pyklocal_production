@@ -1,0 +1,19 @@
+thead
+  tr data-hook="cart_adjustments_headers" 
+    th.cart-adjustment-header colspan="6" = Spree.t(:order_adjustments)
+tbody#cart_adjustments data-hook="" 
+  - if @order.line_item_adjustments.exists?
+    - @order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments|
+      = render "spree/orders/adjustment_row", :label => label, :adjustments => adjustments, :type => Spree.t(:promotion)
+  - @order.all_adjustments.tax.eligible.group_by(&:label).each do |label, adjustments|
+    = render "spree/orders/adjustment_row", :label => label, :adjustments => adjustments, :type => Spree.t(:tax)
+  - @order.shipments.each do |shipment|
+    tr
+      td align="right" colspan="4" 
+        h5
+          = Spree.t(:shipping)
+          | \: #{shipment.shipping_method.name}
+      td colspan="2" 
+        h5= shipment.display_discounted_cost
+  - @order.adjustments.eligible.group_by(&:label).each do |label, adjustments|
+    = render "spree/orders/adjustment_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment)

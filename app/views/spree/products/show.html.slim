@@ -3,8 +3,7 @@
     ul.breadcrumb
       li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"  
           i.fa.fa-home
-      li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" 
-        a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=48" itemprop="url" 
+      li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"  
           span itemprop="title" 
             = @product.name 
     .row
@@ -34,25 +33,6 @@
                   img alt=("Portable Mp3 Player") src="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_3-350x350.jpg" title=("Portable Mp3 Player") /
                 a.thumbnail data-image="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_4-350x350.jpg" data-zoom-image="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_4-500x500.jpg" href="#" title=("Portable Mp3 Player") 
                   img alt=("Portable Mp3 Player") src="http://demo.harnishdesign.net/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_4-350x350.jpg" title=("Portable Mp3 Player") /
-              javascript:
-                 $("#zoom_01").elevateZoom({zoomType: "inner"});
-              javascript:
-                $("#zoom_01").elevateZoom({
-                	gallery:'gallery_01',
-                	cursor: 'pointer',
-                	galleryActiveClass: 'active',
-                	imageCrossfade: true,
-                	zoomWindowFadeIn: 500,
-                	zoomWindowFadeOut: 500,
-                	lensFadeIn: 500,
-                	lensFadeOut: 500,
-                	loadingIcon: 'catalog/view/theme/marketshop/image/progress.gif'});
-                /!/////pass the images to swipebox
-                $("#zoom_01").bind("click", function(e) {
-                  var ez =   $('#zoom_01').data('elevateZoom');
-                	$.swipebox(ez.getGalleryList());
-                  return false;
-                });
             .col-sm-6
               ul.list-unstyled.description
                 li
@@ -73,18 +53,21 @@
                   span content=("In Stock") itemprop="availability" 
                 li
                 li Ex Tax: $100.00
+
               #product
                 .cart
+                  
                   div
-                    .qty
-                      label.control-label for="input-quantity"  Qty
-                      input#input-quantity.form-control name="quantity" size="2" type="text" value="1" /
-                      a.qtyBtn.plus href="javascript:void(0);"  +
-                      br/
-                      a.qtyBtn.mines href="javascript:void(0);"  -
-                      input name="product_id" type="hidden" value="48" /
-                      .clear
-                    button#button-cart.btn.btn-primary.btn-lg data-loading-text="Loading..." type="button"  Add to Cart
+                    / /   label.control-label for="input-quantity"  Qty
+                    / /   input#input-quantity.form-control name="quantity" size="2" type="text" value="1" /
+                    / /   a.qtyBtn.plus href="javascript:void(0);"  +
+                    / /   br/
+                    / /   a.qtyBtn.mines href="javascript:void(0);"  -
+                    / /   input name="product_id" type="hidden" value="48" /
+                    / .clear
+                    = render :partial => 'cart_form'
+              /       = button_tag :class => 'btn btn-primary', :id => 'add-to-cart-button', :type => :submit do
+              /         = Spree.t(:add_to_cart)
                   div
                     button.wishlist onclick="wishlist.add('48');" type="button" 
                       i.fa.fa-heart
@@ -93,24 +76,24 @@
                     button.wishlist onclick="compare.add('48');" type="button" 
                       i.fa.fa-exchange
                       | Compare this Product
-              .rating itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating" 
-                meta content="0" itemprop="ratingValue" /
-                p
-                  span.fa.fa-stack
-                    i.fa.fa-star-o.fa-stack-1x
-                  span.fa.fa-stack
-                    i.fa.fa-star-o.fa-stack-1x
-                  span.fa.fa-stack
-                    i.fa.fa-star-o.fa-stack-1x
-                  span.fa.fa-stack
-                    i.fa.fa-star-o.fa-stack-1x
-                  span.fa.fa-stack
-                    i.fa.fa-star-o.fa-stack-1x
-                  a href="" onclick=("$('a[href=\\'#tab-review\\']').trigger('click'); return false;") 
-                    span itemprop="reviewCount"  0 reviews
-                  | /
-                  a href="" onclick=("$('a[href=\\'#tab-review\\']').trigger('click'); return false;")  Write a review
-              hr/
+              / .rating itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating" 
+              /   meta content="0" itemprop="ratingValue" /
+              /   p
+              /     span.fa.fa-stack
+              /       i.fa.fa-star-o.fa-stack-1x
+              /     span.fa.fa-stack
+              /       i.fa.fa-star-o.fa-stack-1x
+              /     span.fa.fa-stack
+              /       i.fa.fa-star-o.fa-stack-1x
+              /     span.fa.fa-stack
+              /       i.fa.fa-star-o.fa-stack-1x
+              /     span.fa.fa-stack
+              /       i.fa.fa-star-o.fa-stack-1x
+              /     a href="" onclick=("$('a[href=\\'#tab-review\\']').trigger('click'); return false;") 
+              /       span itemprop="reviewCount"  0 reviews
+              /     | /
+              /     a href="" onclick=("$('a[href=\\'#tab-review\\']').trigger('click'); return false;")  Write a review
+              / hr/
               /! AddThis Button BEGIN
               .addthis_toolbox.addthis_default_style.addthis_16x16_style
                 a.addthis_button_facebook
