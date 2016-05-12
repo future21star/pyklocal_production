@@ -102,11 +102,11 @@
               i.fa.fa-search
         .col-table-cell.col-lg-3.col-md-3.col-md-pull-0.col-sm-6.col-sm-pull-6.col-xs-12.inner
           #cart
-            button.heading.dropdown-toggle  data-toggle="dropdown" type="button" 
+            button.heading.dropdown-toggle data-loading-text="Loading..." data-toggle="dropdown" type="button" 
               .pull-left.flip
                 h4
               span#cart-total 
-                a href = cart_path 
+                = link_to cart_path    
                   = simple_current_order.item_count
                   |&nbsp;
                   = "Item".pluralize(simple_current_order.item_count)
