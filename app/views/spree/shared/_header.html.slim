@@ -105,10 +105,11 @@
             button.heading.dropdown-toggle data-loading-text="Loading..." data-toggle="dropdown" type="button" 
               .pull-left.flip
                 h4
-              span#cart-total 0 item(s) - $0.00
-            ul.dropdown-menu
-              li
-                p.text-center Your shopping cart is empty!
+              span#cart-total 
+                = link_to cart_path    
+                  = simple_current_order.item_count
+                  |&nbsp;
+                  = "Item".pluralize(simple_current_order.item_count)
   nav#menu.navbar
     .navbar-header
       span.visible-xs.visible-sm

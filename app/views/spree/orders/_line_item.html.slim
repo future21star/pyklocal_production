@@ -24,5 +24,8 @@
       = line_item.single_money.to_html
     td.lead.text-primary.cart-item-total data-hook="cart_item_total" 
       = line_item.display_amount.to_html unless line_item.quantity.nil?
+    td.cart-item-delete data-hook="cart_item_delete" 
+      = link_to content_tag(:span, '', class: 'glyphicon glyphicon-minus-sign'), '#', class: 'delete', id: "delete_#{dom_id(line_item)}"
+
 
     

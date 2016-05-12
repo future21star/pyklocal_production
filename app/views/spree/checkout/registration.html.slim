@@ -1,0 +1,66 @@
+#container
+  .container
+    ul.breadcrumb
+      li
+          i.fa.fa-home
+      li
+        a href="/"  Shopping Cart
+      li
+        a href="/"  Checkout
+    .row
+      #content.col-sm-12
+        #accordion.panel-group
+          .panel.panel-default
+            .panel-heading
+              h4.panel-title  Step 1: Checkout Options
+            #collapse-checkout-option.panel-collapse.collapse
+              .panel-body
+            .row style = ("margin-top: 10px; margin-bottom: 10px;")
+              section#login-section.container
+                .col-md-6
+                  h2.login-title
+                    |Registration as New Customer
+                  = form_for Spree::User.new, html: {class: "custom-form"}, :as => :spree_user, :url => spree.registration_path do |f|
+                    .form-group
+                      label.form-label for="name" 
+                        |Name
+                        span.required * 
+                      = f.text_field :name, class: "form-control #{@user.try(:errors).present? ? 'error' : ''}", id: "fname"
+                    .form-group
+                      label.form-label for="email" 
+                        |E-mail
+                        span.required 
+                      = f.email_field :email, class: "form-control #{@user.errors ? 'hello' : ''}", id: "email"
+                    .form-group
+                      label.form-label for="pwd" 
+                        |Password
+                        span.required 
+                      = f.password_field :password, class: "form-control", id: "pwd"
+                    .form-group
+                      p
+                      By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.
+                    .form-footer
+                      button.form-btn.btn.btn-primary type="submit"
+                        |Create
+                      
+                      .divider
+                        |or
+                      a.login-btn href= login_path
+                        |Log In
+                .col-md-6#registration
+                  h2.login-title
+                    |Checkout as guest
+                  - if Spree::Config[:allow_guest_checkout] 
+                    #guest_checkout data-hook=""
+                      = render partial: 'spree/shared/error_messages', locals: {target: @order}
+                      = form_for @order, url: update_checkout_registration_path, method: :put, html: { id: 'checkout_form_registration', class: 'custom-form signup-form' } do |f|
+                        .form-group
+                          = f.label :email, Spree.t(:email), class: 'form-label'
+                          span.required 
+                          = f.email_field :email, class: 'title form-control', id: 'email'
+                        .form-footer
+                          = f.submit Spree.t(:continue), class: 'form-btn btn btn-primary'
+  = render :partial => 'spree/shared/custome_feature'
+
+
+

@@ -24,6 +24,7 @@
   overflow: hidden;
   position: relative;
   width: 100%;
+  max-height: 400;
 }
 
 .owl-carousel .owl-wrapper-outer.autoHeight {
