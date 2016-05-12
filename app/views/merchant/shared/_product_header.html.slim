@@ -6,6 +6,6 @@
 	  .col-md-5.option-buttons
 	      = link_to "NEW PRODUCT", new_merchant_product_path, class: "btn btn-primary"
 	      - if ((params[:controller] == "merchant/products") && (params[:action] == "index")) && !store_id.blank?
-	        = link_to "HOME", merchant_store_path(store_id), class: "btn btn-primary home-btn"
+	        = link_to "HOME", merchant_pyklocal_store_path(store_id), class: "btn btn-primary home-btn"
 	      - else
 	        = link_to "BACK TO PRODUCT LIST", merchant_products_path, class: "btn btn-primary"

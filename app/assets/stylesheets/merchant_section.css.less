@@ -1,6 +1,88 @@
 /*
 *= require select2
 */
+
+/* store show page
+   ========================================================================== */
+
+.brand-header{
+  height: 210px;
+  width: 100%;
+  position: relative;
+  background: image-url('store-header-1.png') center center no-repeat;
+  background-size: cover;
+  border-bottom: 1px solid #333;
+  margin-bottom: 85px;
+
+  .b-transparency-bar{
+    background: #fff;
+    height: 69px;
+    width: 100%;
+    position: absolute;
+    top: 141px;
+    opacity: 0.8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+  }
+
+  .store-details-wrap{
+    position: relative;
+    height: 210px;
+  }
+
+  .store-logo-wrapper{
+    position: absolute;
+    top: 50%;
+    left: 1.3%;
+    width: 167px;
+    height: 137px;
+    background: #fff;
+    z-index: 99999;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.2);
+
+    img{
+      display: block;
+      max-width: 80px;
+      margin: 22px auto;
+    }
+  }
+
+  .b-store-name{
+    position: absolute;
+    top: 66%;
+    left: 18%;
+    z-index: 99999;
+  }
+
+}
+
+.container.store-btns{
+  position: relative;
+  height: 32px;
+  z-index: 999;
+  top: 0;
+  padding-left: 210px;
+
+  .s-link-wrap{
+    display: block;
+    margin-top: 7px;
+
+    .store-link{
+      display: inline-block;
+      margin-right: 15px;
+      color: #787878;
+
+      &:hover{
+        color: #333;
+        text-decoration: none;
+      }
+
+      .fa{
+        margin-right: 3px;
+      }
+    }
+  }
+}
+
 /*-------------------------Header-------------------------*/
 #main-body {
 	padding: 0;

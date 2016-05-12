@@ -4,7 +4,7 @@ Pyklocal::Application.routes.draw do
     get "/", to: "home#index", as: "merchants"
     get "stores/products/:product_id/variants", to: "variants#index", as: "stores_products_variants"
     get "stores/products/:product_id/variants/new", to: "variants#new", as: "stores_products_variants_new"
-    resources :stores do
+    resources :pyklocal_stores do
       collection do
         resources :products do
           get :images
@@ -27,6 +27,12 @@ Pyklocal::Application.routes.draw do
     resources :stock_items
     resources :images
     resources :orders
+  end
+
+  resources :email_tokens do
+    collection do
+      get :edit_store
+    end
   end
 
   # This line mounts Spree's routes at the root of your application.

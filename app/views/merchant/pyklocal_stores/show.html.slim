@@ -1,0 +1,29 @@
+.brand-header
+  .b-transparency-bar
+  .container.store-details-wrap
+    .store-logo-wrapper
+      = image_tag @store.logo.url
+    h2.b-store-name
+      = @store.try(:name) 
+  .container.store-btns
+    - if current_spree_user.try(:pyklocal_stores).try(:first).try(:id) == @store.id
+      .s-link-wrap
+        = link_to edit_store_email_tokens_path(id: @store.id, type: "PyklocalStore"), class: "store-link" do
+          .fa &#xf044;
+          | Edit Store Information
+        = link_to new_merchant_product_path, class: "store-link" do
+          .fa &#xf055;
+          | Add Products
+        = link_to merchant_products_path, class: "store-link" do
+          .fa &#xf15c;
+          | View and edit all Products
+        = link_to merchant_orders_path, class: "store-link" do
+          .fa &#xf07a;
+          | View Orders
+    - else
+      .col-md-4.col-md-offset-4
+        / = link_to "Contact Seller", new_message_path(to_user_id: @store.store_spree_users.first.spree_user_id), class: "store-link"
+
+.container
+  = render partial: "merchant/shared/products", locals: {products: @products}
+  hr

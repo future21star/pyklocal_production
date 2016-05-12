@@ -29,8 +29,8 @@ class Merchant::ApplicationController < ActionController::Base
   end
 
   def is_active_store
-    if current_spree_user && (current_spree_user.stores && !current_spree_user.stores.first.active)
-      redirect_to merchant_store_path(id: current_spree_user.stores.first.id), notice: "Your store approval is pending"
+    if current_spree_user && (current_spree_user.pyklocal_stores && !current_spree_user.pyklocal_stores.first.active)
+      redirect_to merchant_pyklocal_store_path(id: current_spree_user.pyklocal_stores.first.id), notice: "Your store approval is pending"
     end
   end
 
