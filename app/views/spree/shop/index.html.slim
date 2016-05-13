@@ -1,0 +1,292 @@
+#container
+  .container
+    ul.breadcrumb
+      li
+        = link_to root_path , "data-no-turbolink" => true do 
+          i.fa.fa-home
+      li
+        a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59"  Shop
+    .row
+      column#column-left.col-sm-3.hidden-xs
+        script src="catalog/view/theme/marketshop/js/jquery.dcjqaccordion.min.js" type="text/javascript" 
+        h3 Categories
+        .box-category
+          - @taxons.each do |category|
+              ul#cat_accordion
+                li.custom_id
+                  a.active href=shop_path(category.name)
+                    = category.name
+      
+        h3 Bestsellers
+        .owl-carousel.bestseller_carousel
+          .product-thumb.clearfix
+            .image
+              a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=48" 
+                img.img-responsive alt=("Portable Mp3 Player") src="/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_1-50x50.jpg" title=("Portable Mp3 Player") /
+            .caption
+              h4
+                a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=48"  Portable Mp3 Player
+              p.price
+                | $122.00
+            .button-group
+              button.btn-primary onclick="cart.add('48');" type="button" 
+                span Add to Cart
+              .add-to-links
+                button data-toggle="tooltip" onclick="wishlist.add('48');" title=("Add to Wish List") type="button" 
+                  i.fa.fa-heart
+                button data-toggle="tooltip" onclick="compare.add('48');" title=("Compare this Product") type="button" 
+                  i.fa.fa-exchange
+          .product-thumb.clearfix
+            .image
+              a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=40" 
+                img.img-responsive alt="iPhone5" src="/opencart/marketshop/v3/image/cache/catalog/demo/iphone_1-50x50.jpg" title="iPhone5" /
+            .caption
+              h4
+                a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=40"  iPhone5
+              
+              p.price
+                | $123.20
+              .rating
+                span.fa.fa-stack
+                  i.fa.fa-star.fa-stack-2x
+                  i.fa.fa-star-o.fa-stack-2x
+                span.fa.fa-stack
+                  i.fa.fa-star.fa-stack-2x
+                  i.fa.fa-star-o.fa-stack-2x
+                span.fa.fa-stack
+                  i.fa.fa-star.fa-stack-2x
+                  i.fa.fa-star-o.fa-stack-2x
+                span.fa.fa-stack
+                  i.fa.fa-star.fa-stack-2x
+                  i.fa.fa-star-o.fa-stack-2x
+                span.fa.fa-stack
+                  i.fa.fa-star-o.fa-stack-2x
+            .button-group
+              button.btn-primary onclick="cart.add('40');" type="button" 
+                span Add to Cart
+              .add-to-links
+                button data-toggle="tooltip" onclick="wishlist.add('40');" title=("Add to Wish List") type="button" 
+                  i.fa.fa-heart
+                button data-toggle="tooltip" onclick="compare.add('40');" title=("Compare this Product") type="button" 
+                  i.fa.fa-exchange
+          .product-thumb.clearfix
+            .image
+              a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=30" 
+                img.img-responsive alt=("Long Sleeve Shirt Fashion Men") src="/opencart/marketshop/v3/image/cache/catalog/demo/canon_eos_5d_1-50x50.jpg" title=("Long Sleeve Shirt Fashion Men") /
+            .caption
+              h4
+                a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=30"  Long Sleeve Shirt Fashion Men
+             
+              p.price
+                span.price-new $98.00
+                span.price-old $122.00
+                span.saving -20%
+            .button-group
+              button.btn-primary onclick="cart.add('30');" type="button" 
+                span Add to Cart
+              .add-to-links
+                button data-toggle="tooltip" onclick="wishlist.add('30');" title=("Add to Wish List") type="button" 
+                  i.fa.fa-heart
+                button data-toggle="tooltip" onclick="compare.add('30');" title=("Compare this Product") type="button" 
+                  i.fa.fa-exchange
+          .product-thumb.clearfix
+            .image
+              a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=31" 
+                img.img-responsive alt=("Digital Camera for Elderly") src="/opencart/marketshop/v3/image/cache/catalog/demo/nikon_d300_1-50x50.jpg" title=("Digital Camera for Elderly") /
+            .caption
+              h4
+                a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=31"  Digital Camera for Elderly
+             
+              p.price
+                span.price-new $92.00
+                span.price-old $98.00
+                span.saving -6%
+            .button-group
+              button.btn-primary onclick="cart.add('31');" type="button" 
+                span Add to Cart
+              .add-to-links
+                button data-toggle="tooltip" onclick="wishlist.add('31');" title=("Add to Wish List") type="button" 
+                  i.fa.fa-heart
+                button data-toggle="tooltip" onclick="compare.add('31');" title=("Compare this Product") type="button" 
+                  i.fa.fa-exchange
+          .product-thumb.clearfix
+            .image
+              a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=63" 
+                img.img-responsive alt=("Hair Care Products") src="/opencart/marketshop/v3/image/cache/catalog/demo/nikon_d300_5-50x50.jpg" title=("Hair Care Products") /
+            .caption
+              h4
+                a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=63"  Hair Care Products
+          
+              p.price
+                span.price-new $66.80
+                span.price-old $90.80
+                span.saving -27%
+              .rating
+                span.fa.fa-stack
+                  i.fa.fa-star.fa-stack-2x
+                  i.fa.fa-star-o.fa-stack-2x
+                span.fa.fa-stack
+                  i.fa.fa-star-o.fa-stack-2x
+                span.fa.fa-stack
+                  i.fa.fa-star-o.fa-stack-2x
+                span.fa.fa-stack
+                  i.fa.fa-star-o.fa-stack-2x
+                span.fa.fa-stack
+                  i.fa.fa-star-o.fa-stack-2x
+            .button-group
+              button.btn-primary onclick="cart.add('63');" type="button" 
+                span Add to Cart
+              .add-to-links
+                button data-toggle="tooltip" onclick="wishlist.add('63');" title=("Add to Wish List") type="button" 
+                  i.fa.fa-heart
+                button data-toggle="tooltip" onclick="compare.add('63');" title=("Compare this Product") type="button" 
+                  i.fa.fa-exchange
+        javascript:
+          | $(document).ready(function() {
+          		| $("#content .owl-carousel.bestseller_carousel").owlCarousel({
+          		| itemsCustom : [[320, 1],[600, 2],[768, 3],[992, 5],[1199, 5]],
+          		| lazyLoad : true,
+          		| navigation : true,
+          		| navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+          		| scrollPerPage : true
+              | });
+          		| });
+      #content.col-sm-9
+        h2 All Product
+        .row
+          /!
+        h3 Refine Search
+        .category-list.row
+          .col-sm-3
+            ul.list-item
+              li
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61"  Men (3)
+              li
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_60"  Women (2)
+          .col-sm-3
+            ul.list-item
+              li
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_62"  Girls (2)
+              li
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_63"  Boys (3)
+          .col-sm-3
+            ul.list-item
+              li
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_64"  Baby (0)
+              li
+                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_65"  Accessories (0)
+        javascript:
+          | $(document).ready(function(){
+          | $screensize = $(window).width();
+              | if ($screensize > 1199) {
+                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block"></div>');
+              | }
+              | if ($screensize < 1199) {
+                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block visible-md-block"></div>');
+              | }
+          	| if ($screensize < 991) {
+                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block visible-sm-block"></div>');
+              | }
+          	| if ($screensize < 767) {
+                  | $('.category-list > div:nth-child(3n)').after('<div class="clearfix visible-lg-block visible-xs-block"></div>');
+              | }
+          | $( window ).resize(function() {
+              | $screensize = $(window).width();
+              | if ($screensize > 1199) {
+                  | $(".category-list > .clearfix.visible-lg-block").remove();
+                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block"></div>');
+              | }
+              | if ($screensize < 1199) {
+                  | $(".category-list > .clearfix.visible-lg-block").remove();
+                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block visible-md-block"></div>');
+              | }
+          	| if ($screensize < 991) {
+                  | $(".category-list > .clearfix.visible-lg-block").remove();
+                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block visible-sm-block"></div>');
+              | }
+          	| if ($screensize < 767) {
+                  | $(".category-list > .clearfix.visible-lg-block").remove();
+                  | $('.category-list > div:nth-child(3n)').after('<div class="clearfix visible-lg-block visible-xs-block"></div>');
+              | }
+          | });});
+        .product-filter
+          .row
+            .col-md-4.col-sm-5
+              .btn-group
+                button#list-view.btn.btn-default data-toggle="tooltip" title="List" type="button" 
+                  i.fa.fa-th-list
+                button#grid-view.btn.btn-default data-toggle="tooltip" title="Grid" type="button" 
+                  i.fa.fa-th
+              a#compare-total href="/opencart/marketshop/v3/index.php?route=product/compare"  Product Compare (0)
+            .col-sm-3
+            .col-sm-2.text-right
+              label.control-label for="input-sort"  Sort By:
+            .col-md-3.col-sm-2.text-right
+              select#input-sort.form-control.col-sm-3 onchange=("location = this.value;") 
+                option selected="selected" value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=p.sort_order&amp;order=ASC"  Default
+                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=pd.name&amp;order=ASC"  Name (A - Z)
+                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=pd.name&amp;order=DESC"  Name (Z - A)
+                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=p.price&amp;order=ASC"  Price (Low &gt; High)
+                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=p.price&amp;order=DESC"  Price (High &gt; Low)
+                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=rating&amp;order=DESC"  Rating (Highest)
+                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=rating&amp;order=ASC"  Rating (Lowest)
+                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=p.model&amp;order=ASC"  Model (A - Z)
+                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=p.model&amp;order=DESC"  Model (Z - A)
+            .
+            
+            
+         
+        .row.products-category
+          .product-layout.product-list.col-xs-12
+            .product-thumb
+              - @products.each do |product|
+                = render :partial => 'spree/shared/product', locals: {product: product}
+        .row
+          .col-sm-6.text-left
+          .col-sm-6.text-right Showing 1 to 5 of 5 (1 Pages)
+  javascript:
+    $(document).ready(function(){
+    $(document).on('click', '#grid-view', function(e){
+    			$('#content .product-layout .owl-item').attr('class', 'owl-item product-layout product-grid col-lg-3 col-md-3 col-sm-3 col-xs-12');
+    		
+    $screensize = $(window).width();
+        if ($screensize > 1199) {
+    		$(".products-category > .clearfix").remove();
+            $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block"></span>');
+        }
+        if ($screensize < 1199) {
+    		$(".products-category > .clearfix").remove();
+            $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-md-block"></span>');
+        }
+    	if ($screensize < 991) {
+    		$(".products-category > .clearfix").remove();
+            $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-sm-block"></span>');
+        }
+    $( window ).resize(function() {
+        $screensize = $(window).width();
+        if ($screensize > 1199) {
+            $(".products-category > .clearfix").remove();
+            $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block"></span>');
+        }
+        if ($screensize < 1199) {
+            $(".products-category > .clearfix").remove();
+            $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-md-block"></span>');
+        }
+    	if ($screensize < 991) {
+            $(".products-category > .clearfix").remove();
+            $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-sm-block"></span>');
+        }
+    	if ($screensize < 767) {
+            $(".products-category > .clearfix").remove();
+        }
+    });
+    localStorage.setItem('display', 'grid');
+    $('.btn-group').find('#grid-view').addClass('selected');
+    $('.btn-group').find('#list-view').removeClass('selected');
+    	});
+    if (localStorage.getItem('display') == 'list') {
+    		$('#list-view').trigger('click');
+    	} else {
+    		$('#grid-view').trigger('click');
+    	}
+    });

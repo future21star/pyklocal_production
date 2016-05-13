@@ -1679,6 +1679,7 @@ div.required .control-label:before {
 
 .owl-carousel {
   margin-bottom: 20px;
+  max-height: 400px;
 }
 
 .owl-carousel .product-thumb .image {

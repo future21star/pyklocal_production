@@ -1,22 +1,24 @@
-.owl-item style=("width: 228px;") 
+.owl-item  
   .product-thumb.clearfix
     .image
       a href=product_path(product) data-no-turbolink="true"  
       	= image_tag product.images.first.attachment.url, class: "img-responsive" 
-    .caption
-      h4
-        a href=product_path(product) data-no-turbolink="true" 
-        	= product.name
-      p.price
-        = number_to_currency(product.price)
-    .button-group
-      button.btn-primary onclick="cart.add('48');" type="button" 
-        span Add to Cart
-      .add-to-links
-        button data-original-title=("Add to Wish List") data-toggle="tooltip" onclick="wishlist.add('48');" title="" type="button" 
-          i.fa.fa-heart
-        button data-original-title=("Compare this Product") data-toggle="tooltip" onclick="compare.add('48');" title="" type="button" 
-          i.fa.fa-exchange
+    div
+      .caption
+        h4
+          a href=product_path(product) data-no-turbolink="true" 
+          	= product.name
+        p.price
+          = number_to_currency(product.price)
+      .button-group
+        button.btn-primary onclick="cart.add('48');" type="button" 
+          span Add to Cart
+        .add-to-links
+          div
+            button data-original-title=("Add to Wish List") data-toggle="tooltip" onclick="wishlist.add('48');" title="" type="button" 
+              i.fa.fa-heart
+            button data-original-title=("Compare this Product") data-toggle="tooltip" onclick="compare.add('48');" title="" type="button" 
+              i.fa.fa-exchange
 
 	
 
