@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160505104459) do
+ActiveRecord::Schema.define(version: 20160512110148) do
+
+  create_table "email_tokens", force: :cascade do |t|
+    t.string   "token",         limit: 255
+    t.integer  "user_id",       limit: 4
+    t.integer  "resource_id",   limit: 4
+    t.string   "resource_type", limit: 255
+    t.boolean  "is_valid"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",           limit: 255, null: false
@@ -27,6 +37,47 @@ ActiveRecord::Schema.define(version: 20160505104459) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
+
+  create_table "pyklocal_stores", force: :cascade do |t|
+    t.string   "name",                limit: 255
+    t.text     "description",         limit: 65535
+    t.string   "manager_first_name",  limit: 255
+    t.string   "manager_last_name",   limit: 255
+    t.string   "phone_number",        limit: 255
+    t.string   "store_type",          limit: 255
+    t.string   "street_number",       limit: 255
+    t.string   "city",                limit: 255
+    t.string   "state",               limit: 255
+    t.string   "zipcode",             limit: 255
+    t.string   "country",             limit: 255
+    t.string   "site_url",            limit: 255
+    t.boolean  "terms_and_condition"
+    t.text     "payment_information", limit: 65535
+    t.boolean  "active"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "logo_file_name",      limit: 255
+    t.string   "logo_content_type",   limit: 255
+    t.integer  "logo_file_size",      limit: 4
+    t.datetime "logo_updated_at"
+    t.string   "payment_mode",        limit: 255
+  end
+
+  create_table "pyklocal_stores_taxons", force: :cascade do |t|
+    t.integer  "store_id",   limit: 4
+    t.integer  "taxon_id",   limit: 4
+    t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pyklocal_stores_users", force: :cascade do |t|
+    t.integer  "spree_user_id", limit: 4
+    t.integer  "store_id",      limit: 4
+    t.string   "role",          limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "spree_addresses", force: :cascade do |t|
     t.string   "firstname",         limit: 255
@@ -1076,46 +1127,5 @@ ActiveRecord::Schema.define(version: 20160505104459) do
 
   add_index "spree_zones", ["default_tax"], name: "index_spree_zones_on_default_tax", using: :btree
   add_index "spree_zones", ["kind"], name: "index_spree_zones_on_kind", using: :btree
-
-  create_table "store_spree_users", force: :cascade do |t|
-    t.integer  "spree_user_id", limit: 4
-    t.integer  "store_id",      limit: 4
-    t.string   "role",          limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "store_taxons", force: :cascade do |t|
-    t.integer  "store_id",   limit: 4
-    t.integer  "taxon_id",   limit: 4
-    t.datetime "deleted_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "stores", force: :cascade do |t|
-    t.string   "name",                limit: 255
-    t.text     "description",         limit: 65535
-    t.string   "manager_first_name",  limit: 255
-    t.string   "manager_last_name",   limit: 255
-    t.string   "phone_number",        limit: 255
-    t.string   "store_type",          limit: 255
-    t.string   "street_number",       limit: 255
-    t.string   "city",                limit: 255
-    t.string   "state",               limit: 255
-    t.string   "zipcode",             limit: 255
-    t.string   "country",             limit: 255
-    t.string   "site_url",            limit: 255
-    t.boolean  "terms_and_condition"
-    t.text     "payment_information", limit: 65535
-    t.boolean  "active"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "logo_file_name",      limit: 255
-    t.string   "logo_content_type",   limit: 255
-    t.integer  "logo_file_size",      limit: 4
-    t.datetime "logo_updated_at"
-    t.string   "payment_mode",        limit: 255
-  end
 
 end

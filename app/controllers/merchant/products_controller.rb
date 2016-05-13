@@ -8,7 +8,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   layout 'merchant'
 
 	def index
-    @collection =  Spree::Product.where(store_id: current_spree_user.stores.first.id)
+    @collection =  Spree::Product.where(store_id: current_spree_user.pyklocal_stores.first.id)
   end
 
   def new
@@ -24,7 +24,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
 
   def create
     @product = Spree::Product.new(product_params)
-    @product.attributes = product_params.merge({store_id: current_spree_user.stores.first.id})
+    @product.attributes = product_params.merge({store_id: current_spree_user.pyklocal_stores.first.id})
     if @product.save
       redirect_to merchant_products_path, notice: "Product added successfully"
     else

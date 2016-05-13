@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  token: MyString
+  user_id: 1
+  resource_id: 1
+  resource_type: MyString
+  is_valid: false
+
+two:
+  token: MyString
+  user_id: 1
+  resource_id: 1
+  resource_type: MyString
+  is_valid: false

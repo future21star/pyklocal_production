@@ -1,0 +1,6 @@
+.col-md-12
+  .form-buttons.filter-actions.actions data-hook="buttons" 
+    = button Spree.t('actions.create'), 'btn btn-success'
+    span class: "or" 
+      = Spree.t(:or)
+    = link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), 'collection_url', :class => 'btn btn-danger'
