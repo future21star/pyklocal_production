@@ -59,7 +59,7 @@
         |  <label class="checkbox-inline" title="
         = taxon.name
         | "> 
-        = check_box_tag "store[spree_taxon_ids][]", taxon.id, store_taxon_ids.include?(taxon.id)
+        = check_box_tag "pyklocal_store[spree_taxon_ids][]", taxon.id, store_taxon_ids.include?(taxon.id)
         = truncate(taxon.name, length: 22)
   .form-group
     = f.label :description, class: "col-sm-2 control-label"

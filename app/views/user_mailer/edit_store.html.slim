@@ -1,4 +1,4 @@
-= "Dear #{@store.manager_full_name}", 
+= "Dear #{@store.manager_full_name}, " 
 
 p You have requested to edit your store information.
 
@@ -7,7 +7,7 @@ p Store:
 
 p 
 	|Please follow this link to edit your store: 
-	= link_to edit_merchant_store_url(id: @store.id), edit_merchant_store_url(id: @store.id, token: @token) 
+	= link_to edit_merchant_pyklocal_store_url(id: @store.id), edit_merchant_pyklocal_store_url(id: @store.id, token: @token) 
 
 p If you did not send this request, please notify Pyklocal support immediately.
 br

@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => false %>
     <%= stylesheet_link_tag "merchant_section", media: "all", "data-turbolinks-track" => false %> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
     <%= yield :css %>
     
   </head>
@@ -43,40 +44,7 @@
     </div>
     
     <%= render partial: "spree/shared/footer" %>
-    <%= render :partial => 'spree/shared/google_analytics' if (Rails.env != "development") %>
-
-    <div class="modal fade" id="signup-form" tabindex="-1" role="dialog" aria-labelledby="signupLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="signupLabel">Signup for Coinclub!</h4>
-          </div>
-          <div class="modal-body">
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="login-form" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="loginLabel">Login To Coinclub</h4>
-          </div>
-          <div class="modal-body">
-            <%= render :partial => 'spree/shared/login' %>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%= render :partial => 'spree/shared/google_analytics' if (Rails.env != "development") %> 
     
 
     <%= javascript_include_tag "application", media: "all", "data-turbolinks-track" => false %>
@@ -88,17 +56,6 @@
     </script>
     <%= yield :js %>
     <%= render "spree/admin/shared/translations" %> 
-    <%= javascript_tag do -%>
-      jQuery.alerts.dialogClass = 'spree';
-      <%== "var AUTH_TOKEN = #{form_authenticity_token.inspect};" %>
-    <% end -%>
-
-    
-    <script type="text/javascript">
-      $(function() {
-        myCoinClub = new CoinClub();
-      });
-    </script>
 
     <% if Rails.env == "production" %>
       <script>
