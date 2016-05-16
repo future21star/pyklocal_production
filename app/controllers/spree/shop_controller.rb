@@ -2,7 +2,8 @@ class Spree::ShopController < Spree::StoreController
 
 	def index		
 		@products = Spree::Product.all
-		@taxons = Spree::Taxon.where.not(name:"categories")
+		@taxons = Spree::Taxon.where.not(name:"categories") 
+		@taxonomies = Spree::Taxonomy.includes(root: :children) 
 	end
 
 	def show 

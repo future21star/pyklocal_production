@@ -1,0 +1,20 @@
+#container
+  .container
+    ul.breadcrumb
+      li
+        = link_to root_path , "data-no-turbolink" => true do 
+          i.fa.fa-home
+      li
+        a href=""  Shop
+    .row
+      column#column-left.col-sm-3.hidden-xs
+        script src="catalog/view/theme/marketshop/js/jquery.dcjqaccordion.min.js" type="text/javascript" 
+        h3 Categories
+        .box-category
+          div data-hook="homepage_sidebar_navigation" 
+            - if "spree/products" == params[:controller] && @taxon
+              = render :partial => 'spree/shared/filters'
+            - else
+              = render :partial => 'spree/shared/taxonomies'
+      
+      

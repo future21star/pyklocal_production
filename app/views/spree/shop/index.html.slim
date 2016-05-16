@@ -5,27 +5,27 @@
         = link_to root_path , "data-no-turbolink" => true do 
           i.fa.fa-home
       li
-        a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59"  Shop
+        a href=""  Shop
     .row
       column#column-left.col-sm-3.hidden-xs
         script src="catalog/view/theme/marketshop/js/jquery.dcjqaccordion.min.js" type="text/javascript" 
         h3 Categories
         .box-category
-          - @taxons.each do |category|
+            - @taxons.each do |category|
               ul#cat_accordion
                 li.custom_id
-                  a href=shop_path(category.name)
+                  = link_to shop_path(category.name) , "data-no-turbolink" => true do
                     = category.name
       
         h3 Bestsellers
         .owl-carousel.bestseller_carousel
           .product-thumb.clearfix
             .image
-              a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=48" 
-                img.img-responsive alt=("Portable Mp3 Player") src="/opencart/marketshop/v3/image/cache/catalog/demo/ipod_classic_1-50x50.jpg" title=("Portable Mp3 Player") /
+              a href="" 
+                img.img-responsive alt=("Portable Mp3 Player") src="" title=("Portable Mp3 Player") /
             .caption
               h4
-                a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=48"  Portable Mp3 Player
+                a href=""  Portable Mp3 Player
               p.price
                 | $122.00
             .button-group
@@ -38,11 +38,11 @@
                   i.fa.fa-exchange
           .product-thumb.clearfix
             .image
-              a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=40" 
-                img.img-responsive alt="iPhone5" src="/opencart/marketshop/v3/image/cache/catalog/demo/iphone_1-50x50.jpg" title="iPhone5" /
+              a href="" 
+                img.img-responsive alt="iPhone5" src="" title="iPhone5" /
             .caption
               h4
-                a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=40"  iPhone5
+                a href=""  iPhone5
               
               p.price
                 | $123.20
@@ -71,11 +71,11 @@
                   i.fa.fa-exchange
           .product-thumb.clearfix
             .image
-              a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=30" 
+              a href="" 
                 img.img-responsive alt=("Long Sleeve Shirt Fashion Men") src="/opencart/marketshop/v3/image/cache/catalog/demo/canon_eos_5d_1-50x50.jpg" title=("Long Sleeve Shirt Fashion Men") /
             .caption
               h4
-                a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=30"  Long Sleeve Shirt Fashion Men
+                a href=""  Long Sleeve Shirt Fashion Men
              
               p.price
                 span.price-new $98.00
@@ -91,11 +91,11 @@
                   i.fa.fa-exchange
           .product-thumb.clearfix
             .image
-              a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=31" 
+              a href="" 
                 img.img-responsive alt=("Digital Camera for Elderly") src="/opencart/marketshop/v3/image/cache/catalog/demo/nikon_d300_1-50x50.jpg" title=("Digital Camera for Elderly") /
             .caption
               h4
-                a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=31"  Digital Camera for Elderly
+                a href=""  Digital Camera for Elderly
              
               p.price
                 span.price-new $92.00
@@ -111,11 +111,11 @@
                   i.fa.fa-exchange
           .product-thumb.clearfix
             .image
-              a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=63" 
+              a href="" 
                 img.img-responsive alt=("Hair Care Products") src="/opencart/marketshop/v3/image/cache/catalog/demo/nikon_d300_5-50x50.jpg" title=("Hair Care Products") /
             .caption
               h4
-                a href="/opencart/marketshop/v3/index.php?route=product/product&amp;product_id=63"  Hair Care Products
+                a href=""  Hair Care Products
           
               p.price
                 span.price-new $66.80
@@ -160,21 +160,21 @@
           .col-sm-3
             ul.list-item
               li
-                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_61"  Men (3)
+                a href=""  Men (3)
               li
-                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_60"  Women (2)
+                a href=""  Women (2)
           .col-sm-3
             ul.list-item
               li
-                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_62"  Girls (2)
+                a href=""  Girls (2)
               li
-                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_63"  Boys (3)
+                a href=""  Boys (3)
           .col-sm-3
             ul.list-item
               li
-                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_64"  Baby (0)
+                a href=""  Baby (0)
               li
-                a href="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59_65"  Accessories (0)
+                a href=""  Accessories (0)
         javascript:
           | $(document).ready(function(){
           | $screensize = $(window).width();
@@ -223,15 +223,15 @@
               label.control-label for="input-sort"  Sort By:
             .col-md-3.col-sm-2.text-right
               select#input-sort.form-control.col-sm-3 onchange=("location = this.value;") 
-                option selected="selected" value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=p.sort_order&amp;order=ASC"  Default
-                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=pd.name&amp;order=ASC"  Name (A - Z)
-                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=pd.name&amp;order=DESC"  Name (Z - A)
-                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=p.price&amp;order=ASC"  Price (Low &gt; High)
-                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=p.price&amp;order=DESC"  Price (High &gt; Low)
-                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=rating&amp;order=DESC"  Rating (Highest)
-                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=rating&amp;order=ASC"  Rating (Lowest)
-                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=p.model&amp;order=ASC"  Model (A - Z)
-                option value="/opencart/marketshop/v3/index.php?route=product/category&amp;path=59&amp;sort=p.model&amp;order=DESC"  Model (Z - A)
+                option selected="selected" value=""  Default
+                option value=""  Name (A - Z)
+                option value=""  Name (Z - A)
+                option value=""  Price (Low &gt; High)
+                option value=""  Price (High &gt; Low)
+                option value=""  Rating (Highest)
+                option value=""  Rating (Lowest)
+                option value=""  Model (A - Z)
+                option value=""  Model (Z - A)
             .
             
             
