@@ -51,43 +51,16 @@
                 .cart
                   
                   div
-                    / /   label.control-label for="input-quantity"  Qty
-                    / /   input#input-quantity.form-control name="quantity" size="2" type="text" value="1" /
-                    / /   a.qtyBtn.plus href="javascript:void(0);"  +
-                    / /   br/
-                    / /   a.qtyBtn.mines href="javascript:void(0);"  -
-                    / /   input name="product_id" type="hidden" value="48" /
-                    / .clear
                     = render :partial => 'cart_form'
-              /       = button_tag :class => 'btn btn-primary', :id => 'add-to-cart-button', :type => :submit do
-              /         = Spree.t(:add_to_cart)
-                  div
-                    button.wishlist onclick="wishlist.add('48');" type="button" 
-                      i.fa.fa-heart
-                      | Add to Wish List
-                    br/
-                    button.wishlist onclick="compare.add('48');" type="button" 
-                      i.fa.fa-exchange
-                      | Compare this Product
-              / .rating itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating" 
-              /   meta content="0" itemprop="ratingValue" /
-              /   p
-              /     span.fa.fa-stack
-              /       i.fa.fa-star-o.fa-stack-1x
-              /     span.fa.fa-stack
-              /       i.fa.fa-star-o.fa-stack-1x
-              /     span.fa.fa-stack
-              /       i.fa.fa-star-o.fa-stack-1x
-              /     span.fa.fa-stack
-              /       i.fa.fa-star-o.fa-stack-1x
-              /     span.fa.fa-stack
-              /       i.fa.fa-star-o.fa-stack-1x
-              /     a href="" onclick=("$('a[href=\\'#tab-review\\']').trigger('click'); return false;") 
-              /       span itemprop="reviewCount"  0 reviews
-              /     | /
-              /     a href="" onclick=("$('a[href=\\'#tab-review\\']').trigger('click'); return false;")  Write a review
-              / hr/
-              /! AddThis Button BEGIN
+                    .clear
+                      div
+                        button.wishlist onclick="wishlist.add('48');" type="button" 
+                          i.fa.fa-heart
+                          | Add to Wish List
+                        br/
+                        button.wishlist onclick="compare.add('48');" type="button" 
+                          i.fa.fa-exchange
+                          | Compare this Product
               .addthis_toolbox.addthis_default_style.addthis_16x16_style
                 a.addthis_button_facebook
                 a.addthis_button_twitter
@@ -143,8 +116,5 @@
     .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;") 
       .owl-wrapper-outer
         .owl-wrapper style=("width: 3648px; left: 0px; display: block;") 
-          - @products.each do |product|
-            = render :partial => 'spree/shared/product', locals: {product: product}
-      
-
+          
 

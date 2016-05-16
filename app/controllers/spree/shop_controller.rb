@@ -4,6 +4,7 @@ class Spree::ShopController < Spree::StoreController
 		
 		@products = Spree::Product.all
 		@taxons = Spree::Taxon.where.not(name:"categories")
+		@taxonomies = Spree::Taxonomy.includes(root: :children)
 
 
 	end
