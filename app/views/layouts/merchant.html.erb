@@ -32,9 +32,7 @@
         </div>
     </div>
     
-    <%= render partial: "spree/shared/footer" %>
-    <%= render :partial => 'spree/shared/google_analytics' if (Rails.env != "development") %> 
-    
+    <%= render partial: "spree/shared/footer" %>    
 
     <%= javascript_include_tag "application", media: "all", "data-turbolinks-track" => false %>
     <%= javascript_include_tag 'spree/backend/all' %>
