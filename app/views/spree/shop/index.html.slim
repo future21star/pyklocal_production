@@ -175,40 +175,6 @@
                 a href=""  Baby (0)
               li
                 a href=""  Accessories (0)
-        javascript:
-          | $(document).ready(function(){
-          | $screensize = $(window).width();
-              | if ($screensize > 1199) {
-                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block"></div>');
-              | }
-              | if ($screensize < 1199) {
-                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block visible-md-block"></div>');
-              | }
-          	| if ($screensize < 991) {
-                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block visible-sm-block"></div>');
-              | }
-          	| if ($screensize < 767) {
-                  | $('.category-list > div:nth-child(3n)').after('<div class="clearfix visible-lg-block visible-xs-block"></div>');
-              | }
-          | $( window ).resize(function() {
-              | $screensize = $(window).width();
-              | if ($screensize > 1199) {
-                  | $(".category-list > .clearfix.visible-lg-block").remove();
-                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block"></div>');
-              | }
-              | if ($screensize < 1199) {
-                  | $(".category-list > .clearfix.visible-lg-block").remove();
-                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block visible-md-block"></div>');
-              | }
-          	| if ($screensize < 991) {
-                  | $(".category-list > .clearfix.visible-lg-block").remove();
-                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block visible-sm-block"></div>');
-              | }
-          	| if ($screensize < 767) {
-                  | $(".category-list > .clearfix.visible-lg-block").remove();
-                  | $('.category-list > div:nth-child(3n)').after('<div class="clearfix visible-lg-block visible-xs-block"></div>');
-              | }
-          | });});
         .product-filter
           .row
             .col-md-4.col-sm-5
@@ -232,10 +198,6 @@
                 option value=""  Rating (Lowest)
                 option value=""  Model (A - Z)
                 option value=""  Model (Z - A)
-            .
-            
-            
-         
         .row.products-category
           .product-layout.product-list.col-xs-12
             .product-thumb
@@ -247,7 +209,7 @@
   javascript:
     $(document).ready(function(){
     $(document).on('click', '#grid-view', function(e){
-    			$('#content .product-layout .owl-item').attr('class', 'owl-item product-layout product-grid col-lg-3 col-md-3 col-sm-3 col-xs-12');
+    			$('#content .product-layout .item').attr('class', 'owl-item product-layout product-grid col-lg-3 col-md-3 col-sm-3 col-xs-12');
     		
     $screensize = $(window).width();
         if ($screensize > 1199) {

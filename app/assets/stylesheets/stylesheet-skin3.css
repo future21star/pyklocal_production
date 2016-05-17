@@ -36,6 +36,13 @@
 #currency ul li .currency-select:hover, #top .dropdown-menu li a:hover {
   color: #C30505;
 }
+.account {
+    display: block;
+    color: #333;
+    padding: 7px 10px;
+    text-align: left;
+    font-size: 12px;
+}
 
 #header #search input {
   background: #f6f6f6;

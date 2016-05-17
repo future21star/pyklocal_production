@@ -1679,7 +1679,7 @@ div.required .control-label:before {
 
 .owl-carousel {
   margin-bottom: 20px;
-  max-height: 400px;
+  
 }
 
 .owl-carousel .product-thumb .image {
@@ -2869,3 +2869,4 @@ form#adv_ajaxfilter {
 #adv_ajaxfilter .ui-slider-horizontal {
   border-radius: 0;
 }
+
