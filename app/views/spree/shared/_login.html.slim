@@ -1,0 +1,67 @@
+#container
+  .container 
+    ul.breadcrumb
+      li
+        = link_to spree.root_path , "data-no-turbolink" => true do 
+          i.fa.fa-home
+      li
+        a href="#"  Account
+      li
+        a href="#"  Login
+    .row
+      #content.col-sm-9
+        h1 Account Login
+        .row
+          .col-sm-6
+            h2 New Customer
+            p
+              strong Register Account
+            p By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.
+            a.btn.btn-primary href=spree.signup_path  Continue
+          .col-sm-6
+            h2 Returning Customer
+            p
+              strong I am a returning customer
+              = form_for Spree::User.new, :as => :spree_user, :url => spree.create_new_session_path do |f|
+                fieldset#password-credentials
+                  .form-group
+                    = f.email_field :email, :class => 'form-control', :tabindex => 1, :placeholder => Spree.t(:email)
+                  .form-group
+                    = f.password_field :password, :class => 'form-control', :tabindex => 2, :placeholder => Spree.t(:password)
+                  .checkbox
+                    label
+                      = f.check_box :remember_me
+                      = f.label :remember_me, Spree.t(:remember_me)
+                  .form-group
+                    = f.submit Spree.t(:login), :class => 'btn btn-lg btn-primary btn-block', :tabindex => 3
+
+      column#column-right.col-sm-3.hidden-xs
+        h3 Account
+        .list-group
+          ul.list-item
+            li
+              a href=spree.login_path  Login
+            li
+              a href=spree.signup_path  Register
+            li
+              a href=spree.recover_password_path  Forgotten Password
+            li
+              a href="#"  My Account
+            li
+              a href="#"  Address Book
+            li
+              a href="#"  Wish List
+            li
+              a href="#"  Order History
+            li
+              a href="#"  Downloads
+            li
+              a href="#"  Recurring payments
+            li
+              a href="#"  Reward Points
+            li
+              a href="#"  Returns
+            li
+              a href="#"  Transactions
+            li
+              a href="#"  Newsletter

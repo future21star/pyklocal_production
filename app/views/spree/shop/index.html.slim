@@ -8,7 +8,6 @@
         a href=""  Shop
     .row
       column#column-left.col-sm-3.hidden-xs
-        script src="catalog/view/theme/marketshop/js/jquery.dcjqaccordion.min.js" type="text/javascript" 
         h3 Categories
         .box-category
             - @taxons.each do |category|
@@ -140,17 +139,7 @@
                 button data-toggle="tooltip" onclick="wishlist.add('63');" title=("Add to Wish List") type="button" 
                   i.fa.fa-heart
                 button data-toggle="tooltip" onclick="compare.add('63');" title=("Compare this Product") type="button" 
-                  i.fa.fa-exchange
-        javascript:
-          | $(document).ready(function() {
-          		| $("#content .owl-carousel.bestseller_carousel").owlCarousel({
-          		| itemsCustom : [[320, 1],[600, 2],[768, 3],[992, 5],[1199, 5]],
-          		| lazyLoad : true,
-          		| navigation : true,
-          		| navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-          		| scrollPerPage : true
-              | });
-          		| });
+                  i.fa.fa-exchang
       #content.col-sm-9
         h2 All Product
         .row
@@ -175,40 +164,6 @@
                 a href=""  Baby (0)
               li
                 a href=""  Accessories (0)
-        javascript:
-          | $(document).ready(function(){
-          | $screensize = $(window).width();
-              | if ($screensize > 1199) {
-                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block"></div>');
-              | }
-              | if ($screensize < 1199) {
-                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block visible-md-block"></div>');
-              | }
-          	| if ($screensize < 991) {
-                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block visible-sm-block"></div>');
-              | }
-          	| if ($screensize < 767) {
-                  | $('.category-list > div:nth-child(3n)').after('<div class="clearfix visible-lg-block visible-xs-block"></div>');
-              | }
-          | $( window ).resize(function() {
-              | $screensize = $(window).width();
-              | if ($screensize > 1199) {
-                  | $(".category-list > .clearfix.visible-lg-block").remove();
-                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block"></div>');
-              | }
-              | if ($screensize < 1199) {
-                  | $(".category-list > .clearfix.visible-lg-block").remove();
-                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block visible-md-block"></div>');
-              | }
-          	| if ($screensize < 991) {
-                  | $(".category-list > .clearfix.visible-lg-block").remove();
-                  | $('.category-list > div:nth-child(6n)').after('<div class="clearfix visible-lg-block visible-sm-block"></div>');
-              | }
-          	| if ($screensize < 767) {
-                  | $(".category-list > .clearfix.visible-lg-block").remove();
-                  | $('.category-list > div:nth-child(3n)').after('<div class="clearfix visible-lg-block visible-xs-block"></div>');
-              | }
-          | });});
         .product-filter
           .row
             .col-md-4.col-sm-5
@@ -232,12 +187,8 @@
                 option value=""  Rating (Lowest)
                 option value=""  Model (A - Z)
                 option value=""  Model (Z - A)
-            .
-            
-            
-         
         .row.products-category
-          .product-layout.product-list.col-xs-12
+          .product-layout.product-grid.col-xs-12
             .product-thumb
               - @products.each do |product|
                 = render :partial => 'spree/shared/product', locals: {product: product}
@@ -247,7 +198,7 @@
   javascript:
     $(document).ready(function(){
     $(document).on('click', '#grid-view', function(e){
-    			$('#content .product-layout .owl-item').attr('class', 'owl-item product-layout product-grid col-lg-3 col-md-3 col-sm-3 col-xs-12');
+    			$('#content .product-layout .item').attr('class', 'product-layout product-grid col-lg-3 col-md-3 col-sm-3 col-xs-12');
     		
     $screensize = $(window).width();
         if ($screensize > 1199) {

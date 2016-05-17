@@ -1,0 +1,57 @@
+#container
+  .container
+    ul.breadcrumb
+      li
+        = link_to spree.root_path , "data-no-turbolink" => true do 
+          i.fa.fa-home
+      li
+        a href="#"  Account
+      li
+        a href="#"  Forgotten Password
+    .row
+      #content.col-sm-9
+        h1 Forgot Your Password?
+        p Enter the e-mail address associated with your account. Click submit to have your password e-mailed to you.
+        = form_for Spree::User.new, :as => :spree_user, :html => { class: "custom-form"}, :url => spree.reset_password_path do |f|
+          fieldset
+            legend Your E-Mail Address
+            .form-group.required.clearfix
+              label.col-sm-2.control-label for="input-email"  E-Mail Address
+              .col-sm-10
+                = f.email_field :email, class: "form-control", id: "#exampleInputEmail1", placeholder: "Enter Email"
+          .buttons.clearfix
+            .pull-left
+              a.btn.btn-default href="#"  Back
+            .pull-right
+              input.btn.btn-primary type="submit" value="Continue" /
+      column#column-right.col-sm-3.hidden-xs
+        h3 Account
+        .list-group
+          ul.list-item
+            li
+              a href=spree.login_path  Login
+            li
+              a href=spree.signup_path  Register
+            li
+              a href=spree.recover_password_path  Forgotten Password
+            li
+              a href="#"  My Account
+            li
+              a href="#"  Address Book
+            li
+              a href="#"  Wish List
+            li
+              a href="#"  Order History
+            li
+              a href="#"  Downloads
+            li
+              a href="#"  Recurring payments
+            li
+              a href="#"  Reward Points
+            li
+              a href="#"  Returns
+            li
+              a href="#"  Transactions
+            li
+              a href="#"  Newsletter
+
