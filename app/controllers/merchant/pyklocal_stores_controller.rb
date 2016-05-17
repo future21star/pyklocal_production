@@ -15,7 +15,7 @@ class Merchant::PyklocalStoresController < Merchant::ApplicationController
 
 	def show
     if @store.present?
-      if !current_spree_user.nil? || current_spree_user.stores.collect(&:id).include?(@store.id) || current_spree_user.has_spree_role?('merchant') || current_spree_user.has_spree_role?('admin')
+      if !current_spree_user.nil? || current_spree_user.pyklocal_stores.collect(&:id).include?(@store.id) || current_spree_user.has_spree_role?('merchant') || current_spree_user.has_spree_role?('admin')
         @products = @store.spree_products
       end
     else
@@ -31,7 +31,7 @@ class Merchant::PyklocalStoresController < Merchant::ApplicationController
 
   # GET /stores/1/edit
   def edit
-    if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
+    if @store.id != current_spree_user.pyklocal_stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
       raise CanCan::AccessDenied.new
     end
     @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
@@ -59,7 +59,7 @@ class Merchant::PyklocalStoresController < Merchant::ApplicationController
   # PATCH/PUT /stores/1
   # PATCH/PUT /stores/1.json
   def update
-    if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
+    if @store.id != current_spree_user.pyklocal_stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
       raise CanCan::AccessDenied.new
     end
     respond_to do |format|
@@ -74,16 +74,16 @@ class Merchant::PyklocalStoresController < Merchant::ApplicationController
   # DELETE /stores/1
   # DELETE /stores/1.json
   def destroy
-    if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
+    if @store.id != current_spree_user.pyklocal_stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
       raise CanCan::AccessDenied.new
     end
     @store.destroy
     respond_to do |format|
       if current_spree_user.has_spree_role?('admin')
-        format.html { redirect_to merchant_stores_url, notice: 'Store was deleted successfully.' }
+        format.html { redirect_to merchant_pyklocal_stores_url, notice: 'Store was deleted successfully.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to merchant_stores_url, notice: 'Store was deleted successfully.' }
+        format.html { redirect_to merchant_pyklocal_stores_url, notice: 'Store was deleted successfully.' }
         format.json { head :no_content }
       end
     end

@@ -3,14 +3,14 @@ class Merchant::StoresController < Merchant::ApplicationController
 	before_filter :authenticate_spree_user!, except: [:show]
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   before_filter :validate_token, only: [:edit, :update] 
+
 	def index
 		@stores = current_spree_user.try(:stores)
     if @stores.present?
-      redirect_to merchant_stores_path(id: @stores.first.id)
+      redirect_to merchant_stores_path(id: @stores.first)
     else
       redirect_to new_merchant_store_path
-    end
-        
+    end     
 	end
 
 	def show
@@ -25,7 +25,7 @@ class Merchant::StoresController < Merchant::ApplicationController
 
   # GET /stores/new
   def new
-    @store = Store.new()
+    @store = Merchant::Store.new()
     @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
   end
 
@@ -34,20 +34,20 @@ class Merchant::StoresController < Merchant::ApplicationController
     if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
       raise CanCan::AccessDenied.new
     end
-    @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Category").first.id)
+    @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
   end
 
   # POST /stores
   # POST /stores.json
   def create
-    @store = Store.new(store_params.merge(store_spree_users_attributes: [{spree_user_id: current_spree_user.id}], active: false))
-
+    @store = PyklocalStore.new(store_params)
+    @store.attributes = {store_users_attributes: [spree_user_id: current_spree_user.id]}
     respond_to do |format|
       if @store.save
         format.html { redirect_to [:merchant, @store], notice: 'Store pending approval' }
         format.json { render action: 'show', status: :created, location: @store }
       else
-        @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Category").first.id)
+        @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
         format.html { render action: 'new' }
         format.json { render json: @store.errors, status: :unprocessable_entity }
       end
@@ -90,12 +90,12 @@ class Merchant::StoresController < Merchant::ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_store
-      @store = Store.where(id: params[:id]).first
+      @store = Merchant::Store.where(slug: params[:id]).first
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
-      params.require(:store).permit(:name, :active, :payment_mode, :description, :manager_first_name, :manager_last_name, :phone_number, :store_type, :street_number, :city, :state, :zipcode, :country, :site_url, :terms_and_condition, :payment_information, :logo, spree_taxon_ids: [], store_spree_users_attributes: [:spree_user_id, :store_id, :id])
+      params.require(:store).permit(:name, :active, :payment_mode, :description, :manager_first_name, :manager_last_name, :phone_number, :store_type, :street_number, :city, :state, :zipcode, :country, :site_url, :terms_and_condition, :payment_information, :logo, spree_taxon_ids: [], store_users_attributes: [:spree_user_id, :store_id, :id])
     end
 
     def validate_token

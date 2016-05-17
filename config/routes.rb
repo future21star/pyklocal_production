@@ -1,10 +1,10 @@
 Pyklocal::Application.routes.draw do 
 
   namespace :merchant do
-    get "/", to: "home#index", as: "merchants"
+    get "/", to: "home#index"
     get "stores/products/:product_id/variants", to: "variants#index", as: "stores_products_variants"
     get "stores/products/:product_id/variants/new", to: "variants#new", as: "stores_products_variants_new"
-    resources :pyklocal_stores do
+    resources :stores do
       collection do
         resources :products do
           get :images

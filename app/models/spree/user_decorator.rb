@@ -1,9 +1,8 @@
 Spree::User.class_eval do
 
   #------------------------ Associations
-  has_many :pyklocal_store_users, foreign_key: :spree_user_id
-  has_many :pyklocal_stores, through: :pyklocal_store_users
-  has_many :exchange_bitcoins
+  has_many :store_users, foreign_key: :spree_user_id, class_name: 'Merchant::StoreUser'
+  has_many :stores, through: :store_users, class_name: 'Merchant::Store' 
 
   has_many :ordered_line_items, through: :orders, :source => :line_items, class_name: 'Spree::LineItem'
   has_many :raitings, foreign_key: :spree_user_id
@@ -19,12 +18,12 @@ Spree::User.class_eval do
   end
 
   def has_store
-    pyklocal_stores.present?
+    stores.present?
   end
 
   def active_store
-    if pyklocal_stores.present?
-      pyklocal_stores.first.active
+    if stores.present?
+      stores.first.active
     end
   end
 

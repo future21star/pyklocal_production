@@ -4,15 +4,15 @@
     .thumb-image-container
       a.aligner href=spree.product_path(product)
         = product_image(product, :itemprop => "image")
-    = link_to truncate(product.name, :length => 50), spree.product_path(product), :class => 'title', :itemprop => "name", :title => product.name
-    .prices.text-center
-      .price-in-dollars= display_price(product)
-      .price-in-btc= "#{sprintf('%.5f', product.price.to_f/@price_index_bitcoin)} BTC"
-    .buy-now
-      - if current_spree_user && current_spree_user.stores.collect(&:id).include?(product.store_id)
-        = link_to "Edit", edit_merchant_product_path(product.slug), class: "btn btn-default btn-info btn-xs"
-      - else
-        = form_for :order, url: spree.populate_orders_path do |f|
-          input type= 'hidden' name= 'quantity' value= 1
-          input type= 'hidden' name= 'variant_id' value= product.order_variants.first.try(:id)
-          = submit_tag "Add To Cart", class: "btn btn-default btn-info btn-xs", :type => :submit
+    .product-details
+      = link_to truncate(product.name, :length => 50), spree.product_path(product), :class => 'product-title', :itemprop => "name", :title => product.name, "data-no-turbolink" => true
+      .price
+        = number_to_currency(product.price)
+      .buy-now
+        - if current_spree_user && current_spree_user.stores.collect(&:id).include?(product.store_id)
+          = link_to "Edit", edit_merchant_product_path(product.slug), class: "btn btn-default btn-info", "data-no-turbolink" => true
+        - else
+          = form_for :order, url: spree.populate_orders_path do |f|
+            input type= 'hidden' name= 'quantity' value= 1
+            input type= 'hidden' name= 'variant_id' value= product.order_variants.first.try(:id)
+            = submit_tag "Add To Cart", class: "btn btn-default btn-info", :type => :submit

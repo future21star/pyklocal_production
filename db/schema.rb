@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160512110148) do
+ActiveRecord::Schema.define(version: 20160517061419) do
 
   create_table "email_tokens", force: :cascade do |t|
     t.string   "token",         limit: 255
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20160512110148) do
     t.string   "site_url",            limit: 255
     t.boolean  "terms_and_condition"
     t.text     "payment_information", limit: 65535
-    t.boolean  "active"
+    t.boolean  "active",                            default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "logo_file_name",      limit: 255
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20160512110148) do
     t.integer  "logo_file_size",      limit: 4
     t.datetime "logo_updated_at"
     t.string   "payment_mode",        limit: 255
+    t.string   "slug",                limit: 255
   end
 
   create_table "pyklocal_stores_taxons", force: :cascade do |t|

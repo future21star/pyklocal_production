@@ -1,10 +1,16 @@
 class Merchant::ApplicationController < ActionController::Base
   
-	# before_filter :authenticate_spree_user!
+	before_filter :authenticate_user!
 
   protect_from_forgery with: :exception
 	
-	# include Spree::Core::ControllerHelpers
+	include Spree::Core::ControllerHelpers::Order
+  include Spree::Core::ControllerHelpers::Auth
+  include Spree::Core::ControllerHelpers::Store
+  include Spree::Core::ControllerHelpers::Common
+  include Spree::Core::ControllerHelpers::RespondWith
+  include Spree::Core::ControllerHelpers::Search
+  include Spree::Core::ControllerHelpers::StrongParameters
   helper Spree::BaseHelper
   helper Spree::OrdersHelper
   helper Spree::ProductsHelper
@@ -29,8 +35,22 @@ class Merchant::ApplicationController < ActionController::Base
   end
 
   def is_active_store
-    if current_spree_user && (current_spree_user.pyklocal_stores && !current_spree_user.pyklocal_stores.first.active)
-      redirect_to merchant_pyklocal_store_path(id: current_spree_user.pyklocal_stores.first.id), notice: "Your store approval is pending"
+    if current_spree_user && (current_spree_user.stores && !current_spree_user.stores.first.active)
+      redirect_to merchant_pyklocal_store_path(id: current_spree_user.stores.first.id), notice: "Your store approval is pending"
+    end
+  end
+
+  def try_spree_current_user
+    current_spree_user
+  end
+
+  def current_currency
+    
+  end
+
+  def authenticate_user!
+    unless current_spree_user
+      redirect_to spree.login_path, notice: "You need to login before continue"
     end
   end
 
