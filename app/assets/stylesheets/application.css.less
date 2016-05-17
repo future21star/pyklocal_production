@@ -12,6 +12,8 @@
  *
  *= require_tree .
  *= require_self
+ *= stub merchant.css.less
+ *= stub merchant_section.css.less
  */
 
 
@@ -82,3 +84,59 @@
     }
   }
 }
+
+.input-bg {
+  background: #fbfbfb !important;
+}
+span.icon-right {
+  display: inline-block;
+}
+span.icon-right select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.input-icon {
+  position: relative;
+  width: 100%;
+}
+.input-icon input,
+.input-icon textarea {
+  width: 100%;
+}
+.input-icon.icon-right > input,
+.input-icon.icon-right > textarea,
+.input-icon.icon-right > select {
+  padding: 6px;
+  padding-right: 36px;
+  color: #333 !important;
+  background: #fff;
+  width: 100%;
+}
+.input-icon > [class*="fa"],
+.input-icon > [class*="glyphicon"] {
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 34px;
+  height: 100%;
+  line-height: 28px;
+  display: inline-block;
+  color: #555;
+  font-size: 14px;
+  text-align: center;
+  padding-top: 3px;
+  zoom: 1;
+  filter: alpha(opacity=70);
+  -webkit-opacity: .7;
+  -moz-opacity: .7;
+  opacity: .7;
+}
+.input-icon.icon-right > [class*="fa"],
+.input-icon.icon-right > [class*="glyphicon"] {
+  left: auto;
+  right: 0;
+}
+

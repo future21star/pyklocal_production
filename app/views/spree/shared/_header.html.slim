@@ -121,15 +121,14 @@
               i.fa.fa-search
         .col-table-cell.col-lg-3.col-md-3.col-md-pull-0.col-sm-6.col-sm-pull-6.col-xs-12.inner
           #cart
-            = link_to cart_path , "data-no-turbolink" => true do
+            = link_to spree.cart_path , "data-no-turbolink" => true do
               button.heading.dropdown-toggle data-loading-text="Loading..." data-toggle="dropdown" type="button" 
                 .pull-left.flip
                   h4
                 span#cart-total 
-                     
                     = simple_current_order.item_count
                     |&nbsp;
-                    = "Item".pluralize(simple_current_order.item_count)
+                    = "Item".pluralize(simple_current_order.item_count) 
   nav#menu.navbar
     .navbar-header
       span.visible-xs.visible-sm
@@ -141,7 +140,7 @@
             a.home_link href=spree.root_path title="Home" data-no-turbolink="true" 
               span Home
           li.categories.dropdown.sub
-            = link_to shop_index_path
+            = link_to spree.shop_index_path
               | All Categories
               span.submore
               .dropdown-menu style=("display: none;") 
@@ -566,4 +565,5 @@
           li.contact-link
             a href=""  Contact Us
           li.custom-link-right
-            a href="" target="_self"  Special Offers
+            = goto_merchant_path
+

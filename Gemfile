@@ -20,7 +20,7 @@ gem 'slim'
 gem 'slim-rails'
 gem "less-rails"
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
-gem "font-awesome-rails"
+gem "font-awesome-rails" 
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

@@ -8,7 +8,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   layout 'merchant'
 
 	def index
-    @collection =  Spree::Product.where(store_id: current_spree_user.pyklocal_stores.first.id)
+    @collection =  Spree::Product.where(store_id: current_spree_user.stores.first.id)
   end
 
   def new
@@ -24,18 +24,22 @@ class Merchant::ProductsController < Merchant::ApplicationController
 
   def create
     @product = Spree::Product.new(product_params)
-    @product.attributes = product_params.merge({store_id: current_spree_user.pyklocal_stores.first.id})
+    @product.attributes = product_params.merge({store_id: current_spree_user.stores.first.id})
     if @product.save
       redirect_to merchant_products_path, notice: "Product added successfully"
     else
+      @product.sku = SecureRandom.hex(10).upcase
+      @shipping_categories = Spree::ShippingCategory.all
       render action: 'new'
     end
   end
 
   def update
     if @product.update_attributes(product_params)
-      redirect_to merchant_products_path, notice: "Product updated successfully"
+      redirect_to edit_merchant_product_path(@product), notice: "Product updated successfully"
     else
+      @shipping_categories = Spree::ShippingCategory.all
+      @tax_categories = Spree::TaxCategory.all
       render action: 'edit'
     end
   end
@@ -73,7 +77,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   private
 
   def product_params
-    params.require(:product).permit(:name, :slug, :description, :taxon_ids, :option_type_ids, :tax_category_id, :buyer_protection, :include_paypal, :price, :condition, :sku, :store_id, :shipping_category_id, :shipping_duration, :international_shipping_cost, :buyer_protection_desc, :available_on, :end_date, :payment_method, :prototype_id)
+    params.require(:product).permit(:name, :slug, :description, :taxon_ids, :option_type_ids, :tax_category_id, :price, :sku, :store_id, :shipping_category_id, :available_on, :discontinue_on, :promotionable, :payment_method, :prototype_id)
   end
 
   def verify_access_for_merchants

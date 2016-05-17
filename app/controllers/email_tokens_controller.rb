@@ -1,8 +1,7 @@
 class EmailTokensController < ApplicationController
 
 	include Spree::Core::ControllerHelpers
-	helper Spree::BaseHelper
-	helper Spree::CheckoutHelper
+	helper Spree::BaseHelper 
 	helper Spree::OrdersHelper
 	helper Spree::ProductsHelper
 	helper Spree::StoreHelper

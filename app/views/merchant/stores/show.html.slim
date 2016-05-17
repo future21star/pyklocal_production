@@ -6,18 +6,18 @@
     h2.b-store-name
       = @store.try(:name) 
   .container.store-btns
-    - if current_spree_user.try(:pyklocal_stores).try(:first).try(:id) == @store.id
+    - if current_spree_user.try(:stores).try(:collect, &:id).try(:include?, @store.id)
       .s-link-wrap
-        = link_to edit_store_email_tokens_path(id: @store.id, type: "PyklocalStore"), class: "store-link" do
+        = link_to edit_store_email_tokens_path(id: @store.id, type: "Merchant::Store"), class: "store-link", "data-no-turbolink" => true do
           .fa &#xf044;
           | Edit Store Information
-        = link_to new_merchant_product_path, class: "store-link" do
+        = link_to new_merchant_product_path, class: "store-link", "data-no-turbolink" => true do
           .fa &#xf055;
           | Add Products
-        = link_to merchant_products_path, class: "store-link" do
+        = link_to merchant_products_path, class: "store-link", "data-no-turbolink" => true do
           .fa &#xf15c;
           | View and edit all Products
-        = link_to merchant_orders_path, class: "store-link" do
+        = link_to merchant_orders_path, class: "store-link", "data-no-turbolink" => true do
           .fa &#xf07a;
           | View Orders
     - else
