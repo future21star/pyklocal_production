@@ -10,11 +10,9 @@ module Spree
       else
         if current_spree_user.has_spree_role?('merchant')
           if params[:ids]
-            @taxons = current_spree_user.pyklocal_stores.first.spree_taxons.where(id: params[:ids].split(', '))
-            # Spree::Taxon.where(id: params[:ids].split(','))
+            @taxons = current_spree_user.stores.first.spree_taxons.where(id: params[:ids].split(', ')) 
           else
-            @taxons = current_spree_user.pyklocal_stores.first.spree_taxons.order(:taxonomy_id, :lft).ransack(params[:q]).result
-            # Spree::Taxon.order(:taxonomy_id, :lft).ransack(params[:q]).result
+            @taxons = current_spree_user.stores.first.spree_taxons.order(:taxonomy_id, :lft).ransack(params[:q]).result 
           end
         else
           if params[:ids]

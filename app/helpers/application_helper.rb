@@ -60,4 +60,20 @@ module ApplicationHelper
     end
   end
 
+  def goto_merchant_path
+    if current_spree_user 
+      if (current_spree_user.has_spree_role?("merchant") && current_spree_user.has_store)
+        if current_spree_user.active_store
+          link_to "Go to store", main_app.merchant_store_path(current_spree_user.stores.first), "data-no-turbolink" => true
+        else
+          link_to "Go to store", main_app.merchant_stores_path, "data-no-turbolink" => true
+        end
+      else
+        link_to "Sell with us", main_app.merchant_path, "data-no-turbolink" => true
+      end
+    else
+      link_to "Sell with us", main_app.merchant_path, "data-no-turbolink" => true
+    end
+  end
+
 end
