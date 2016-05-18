@@ -8,40 +8,7 @@
           .links
             ul
               li
-                a href="#" target="_self"  Custom Links
-              li.wrap_custom_block.hidden-sm.hidden-xs
-                a
-                  | Custom Block
-                  b
-                .custom_block style=("display: none;") 
-                  ul
-                    li
-                      table align="left" border="0" cellpadding="10" cellspacing="10" style=("width: 500px;") 
-                        tbody
-                          tr
-                            td
-                              img alt="" src="cms-block.jpg" style=("width: 250px; height: 130px; border-width: 0px; border-style: solid; margin: 0px; float: left;") 
-                            td
-                              img alt="" src="responsive.jpg" style=("width: 250px; height: 130px; border-width: 0px; border-style: solid; margin: 0px; float: left;")
-                          tr
-                            td
-                              h2 CMS Blocks
-                            td
-                              h2 Responsive Theme
-                          tr
-                            td You can add any HTML content to this block or turn it off in Theme Admin panel!
-                            td You can add any HTML content to this block or turn it off in Theme Admin panel!
-                          tr
-                            td
-                              strong
-                                a href="#"  Read More
-                            td
-                              strong
-                                a href="#"  Read More
-              li
                 a#wishlist-total href=""  Wish List (0)
-              li
-                a href=""  Checkout
           form#language action="" enctype="multipart/form-data" method="post" 
             .btn-group
               button.btn-link.dropdown-toggle data-toggle="dropdown" 
@@ -60,47 +27,23 @@
                     | Arabic
             input name="code" type="hidden" value="" /
             input name="redirect" type="hidden" value="" /
-          form#currency action="" enctype="multipart/form-data" method="post" 
-            .btn-group
-              button.btn-link.dropdown-toggle data-toggle="dropdown" 
-                span
-                  | Currency:
-                  | $ USD
-                  i.fa.fa-caret-down style = (style="padding: 3px;")
-              ul.dropdown-menu
-                li
-                  button.currency-select.btn.btn-link.btn-block name="EUR" type="button"  € Euro
-                li
-                  button.currency-select.btn.btn-link.btn-block name="GBP" type="button"  £ Pound Sterling
-                li
-                  button.currency-select.btn.btn-link.btn-block name="USD" type="button"  $ US Dollar
-            input name="code" type="hidden" value="" /
-            input name="redirect" type="hidden" value="" /
         #top-links.nav.pull-right.flip
           ul
             -if spree_user_signed_in?
               -user = current_spree_user.name.present? ? current_spree_user.name : current_spree_user.email
-              li
-                #currency.btn-group
-                  button.btn-link.dropdown-toggle data-toggle="dropdown" 
-                    span
-                      | My Account
-                      i.fa.fa-caret-down style = (style="padding: 3px;")
-                  ul.dropdown-menu
-                    li
-                      button.currency-select.btn.btn-link.btn-block
-                      = "#{user}"
-                    li
-                      button.currency-select.btn.btn-link.btn-block Order History
-                    li
-                      button.currency-select.btn.btn-link.btn-block Transaction
-                    li
-                      button.currency-select.btn.btn-link.btn-block  Download
+              li#my_account.dropdown
+                a href="" 
+                  | My Account
+                  i.fa.fa-caret-down
+                ul.dropdown-menu.dropdown-menu-right
+                  li
+                    = "Hey,#{user}"
+                  li
+                    a href=""  Order History
+                  li
+                    = link_to "Logout", spree.logout_path ,"data-no-turbolink" => true
+              
 
-                input name="code" type="hidden" value="" /
-                input name="redirect" type="hidden" value="" /
-              li 
-                = link_to "Logout", spree.logout_path ,"data-no-turbolink" => true 
             -else 
               li 
                = link_to "Login", spree.login_path 
@@ -519,49 +462,7 @@
                 a href="" 
                   = image_tag "apple_logo-60x60.jpg", class: "img-responsive"
                 a href=""  test 7
-          li.custom-link
-            a href="#" target="_self"  Custom Link
-          li.dropdown.wrap_custom_block.hidden-sm.hidden-xs.sub
-            a Custom Block
-            span.submore
-            .dropdown-menu.custom_block style=("display: none;") 
-              ul
-                li
-                  table align="left" border="0" cellpadding="10" cellspacing="10" style=("width: 500px;") 
-                    tbody
-                      tr
-                        td
-                          img alt="" src="cms-block.jpg" style=("width: 250px; height: 130px; border-width: 0px; border-style: solid; margin: 0px; float: left;") /
-                        td
-                          img alt="" src="responsive.jpg" style=("width: 250px; height: 130px; border-width: 0px; border-style: solid; margin: 0px; float: left;") /
-                      tr
-                        td
-                          h2 CMS Blocks
-                        td
-                          h2 Responsive Theme
-                      tr
-                        td You can add any HTML content to this block or turn it off in Theme Admin panel!
-                        td You can add any HTML content to this block or turn it off in Theme Admin panel!
-                      tr
-                        td
-                          strong
-                            a href="#"  Read More
-                        td
-                          strong
-                            a href="#"  Read More
-          li.dropdown.information-link.sub
-            a Information
-            span.submore
-            .dropdown-menu style="" 
-              ul
-                li
-                  a href=""  About Us
-                li
-                  a href=""  Delivery Information
-                li
-                  a href=""  Privacy Policy
-                li
-                  a href=""  Terms &amp; Conditions
+          
           li.contact-link
             a href=""  Contact Us
           li.custom-link-right

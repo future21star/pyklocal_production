@@ -9,17 +9,14 @@
     .row
       #content.col-sm-9
         div itemscope="" itemtype="http://schema.org/Product" 
-          h1 itemprop="name"  
-            = @product.name
+          h1
+            = @product.name  
           .row.product-info
             .col-sm-6
-              script src="catalog/view/theme/marketshop/js/jquery.elevateZoom-3.0.8.min.js" 
-              script src="catalog/view/javascript/jquery/swipebox/lib/ios-orientationchange-fix.js" 
-              script src="catalog/view/javascript/jquery/swipebox/source/jquery.swipebox.min.js" 
-              link href="catalog/view/javascript/jquery/swipebox/source/swipebox.css" rel="stylesheet" /
-              .image
-                a href=product_path(@product) 
-                  = image_tag @product.images.first.attachment.url, class: "img-responsive"
+              div.style
+                .image
+                  a href=product_path(@product) 
+                    = image_tag @product.images.first.try(:attachment).try(:url), class: "img-responsive img_center"
               .center-block.text-center
                 span.zoom-gallery
                   i.fa.fa-search
@@ -28,6 +25,10 @@
                 = render :partial => 'image'
             .col-sm-6
               ul.list-unstyled.description
+                li.active
+                  b Name:
+                  span itemprop="brand"
+                    = @product.name
                 li
                   b Brand:
                   span itemprop="brand"
@@ -68,7 +69,7 @@
                 a.addthis_button_pinterest_share
                 a.addthis_button_compact
                 a.addthis_counter.addthis_bubble_style
-              script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-514863386b357649" type="text/javascript" 
+              
               /! AddThis Button END
           ul.nav.nav-tabs
             li.active
@@ -97,20 +98,23 @@
                 .form-group.required
                   .col-sm-12
                     label.control-label Rating
-                    | \&nbsp;&nbsp;&nbsp; Bad&nbsp;
+                    | &nbsp;&nbsp;&nbsp; Bad&nbsp;
                     input name="rating" type="radio" value="1" /
-                    | \&nbsp;
+                    | &nbsp;
                     input name="rating" type="radio" value="2" /
-                    | \&nbsp;
+                    | &nbsp;
                     input name="rating" type="radio" value="3" /
-                    | \&nbsp;
+                    | &nbsp;
                     input name="rating" type="radio" value="4" /
-                    | \&nbsp;
+                    | &nbsp;
                     input name="rating" type="radio" value="5" /
-                    | \&nbsp;Good
+                    | &nbsp;Good
                 .buttons
                   .pull-right
                     button#button-review.btn.btn-primary data-loading-text="Loading..." type="button"  Continue
+      column#column-right.col-sm-3.hidden-xs
+        h4 Sold by :
+        = render :partial => 'spree/shared/seller'
       
     h3 Related Products
     .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;") 
