@@ -13,10 +13,6 @@
             = @product.name
           .row.product-info
             .col-sm-6
-              script src="catalog/view/theme/marketshop/js/jquery.elevateZoom-3.0.8.min.js" 
-              script src="catalog/view/javascript/jquery/swipebox/lib/ios-orientationchange-fix.js" 
-              script src="catalog/view/javascript/jquery/swipebox/source/jquery.swipebox.min.js" 
-              link href="catalog/view/javascript/jquery/swipebox/source/swipebox.css" rel="stylesheet" /
               .image
                 a href=product_path(@product) 
                   = image_tag @product.images.first.attachment.url, class: "img-responsive"
@@ -68,7 +64,7 @@
                 a.addthis_button_pinterest_share
                 a.addthis_button_compact
                 a.addthis_counter.addthis_bubble_style
-              script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-514863386b357649" type="text/javascript" 
+              
               /! AddThis Button END
           ul.nav.nav-tabs
             li.active

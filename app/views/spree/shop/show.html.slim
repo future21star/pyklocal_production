@@ -168,11 +168,9 @@
               .btn-group
                 button#grid-view.btn.btn-default data-toggle="tooltip" title="Grid" type="button" 
                   i.fa.fa-th
-                button#list-view.btn.btn-default data-toggle="tooltip" title="List" type="button" 
                 
-                
-              a#compare-total href=""  Product Compare (0)
-            .col-sm-3.text-right
+              a#compare-total href="/opencart/marketshop/v3/index.php?route=product/compare"  Product Compare (0)
+            .col-sm-3
             .col-sm-2.text-right
               label.control-label for="input-sort"  Sort By:
             .col-md-3.col-sm-2.text-right
@@ -186,59 +184,9 @@
                 option value=""  Rating (Lowest)
                 option value=""  Model (A - Z)
                 option value=""  Model (Z - A)
-            
-        br/
-        .row.products-category
-          .product-layout.product-grid.col-xs-12
-            - @products.each do |product|
-              = render :partial => 'spree/shared/product', locals: {product: product}
-         
-        .row
-          .col-sm-6.text-left
-          .col-sm-6.text-right Showing 1 to 5 of 5 (1 Pages)
-  javascript:
-      $(document).ready(function(){
-      $(document).on('click', '#grid-view', function(e){
-            $('#content .product-layout .item').attr('class', 'product-layout product-grid col-lg-3 col-md-3 col-sm-3 col-xs-12');
-          
-      $screensize = $(window).width();
-          if ($screensize > 1199) {
-          $(".products-category > .clearfix").remove();
-              $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block"></span>');
-          }
-          if ($screensize < 1199) {
-          $(".products-category > .clearfix").remove();
-              $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-md-block"></span>');
-          }
-        if ($screensize < 991) {
-          $(".products-category > .clearfix").remove();
-              $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-sm-block"></span>');
-          }
-      $( window ).resize(function() {
-          $screensize = $(window).width();
-          if ($screensize > 1199) {
-              $(".products-category > .clearfix").remove();
-              $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block"></span>');
-          }
-          if ($screensize < 1199) {
-              $(".products-category > .clearfix").remove();
-              $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-md-block"></span>');
-          }
-        if ($screensize < 991) {
-              $(".products-category > .clearfix").remove();
-              $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-sm-block"></span>');
-          }
-        if ($screensize < 767) {
-              $(".products-category > .clearfix").remove();
-          }
-      });
-      localStorage.setItem('display', 'grid');
-      $('.btn-group').find('#grid-view').addClass('selected');
-      $('.btn-group').find('#list-view').removeClass('selected');
-        });
-      if (localStorage.getItem('display') == 'list') {
-          $('#list-view').trigger('click');
-        } else {
-          $('#grid-view').trigger('click');
-        }
-      });
+        .row.products-category.product style=("margin-top:10px;")
+          .product-layout.col-xs-12
+            .product-thumb
+              - @products.each do |product|
+                .col-sm-3.product-grid
+                  = render :partial => 'spree/shared/product', locals: {product: product}

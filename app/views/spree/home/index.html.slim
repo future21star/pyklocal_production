@@ -1,8 +1,9 @@
 = render partial: "spree/shared/slider1"
 .container style=("margin-top: 20px;")
-	h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Bestsellers
-	.owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
-    	- @products.each do |product|
+	.row style=("max-height:450px; overflow:hidden;")
+		h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Bestsellers
+		.owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
+	    	- @products.each do |product|
 				= render :partial => 'spree/shared/product', locals: {product: product}
 	#marketshop-banner1.marketshop-banner
 	  .row
