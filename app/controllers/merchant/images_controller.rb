@@ -1,24 +1,42 @@
 class Merchant::ImagesController < Merchant::ApplicationController
 
 	layout 'merchant'
-	before_filter :find_image, only: [:destroy]
+	before_filter :find_image, only: [:destroy, :edit]
+	before_filter :load_product
 
 	def index
-		@product = Spree::Product.where(slug: params[:product_id]).first
-		@images = @product.images
+		@images = @product.variant_images
 	end
 
 	def new
 		@image = Spree::Image.new
-		@product = Spree::Product.where(slug: params[:product_id]).first
+		@variants = @product.variants.map do |variant|
+      [variant.sku_and_options_text, variant.id]
+    end
+    @variants.insert(0, [Spree.t(:all), @product.master.id])
+	end
+
+	def edit
+		@variants = @product.variants.map do |variant|
+      [variant.sku_and_options_text, variant.id]
+    end
+    @variants.insert(0, [Spree.t(:all), @product.master.id])
 	end
 
 	def create
 		@image = Spree::Image.new(image_params)
 		if @image.save
-			redirect_to :back, notice: "Image uploaded successfully"
+			redirect_to merchant_product_images_path(@product), notice: "Image uploaded successfully"
 		else
-			redirect_to :back, notice: @image.errors.full_messages.join(", ")
+			render action: 'new'
+		end
+	end
+
+	def update
+		if @image.update_attributes(image_params)
+			redirect_to merchant_product_images_path(@product), notice: "Images updated successfully"
+		else
+			render action: 'edit'
 		end
 	end
 
@@ -38,6 +56,10 @@ class Merchant::ImagesController < Merchant::ApplicationController
 
 	  def find_image
 	  	@image = Spree::Image.where(id: params[:id]).first
+	  end
+
+	  def load_product
+	  	@product = Spree::Product.where(slug: params[:product_id]).first
 	  end
 
 end

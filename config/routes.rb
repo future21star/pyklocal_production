@@ -7,8 +7,9 @@ Pyklocal::Application.routes.draw do
     resources :stores do
       collection do
         resources :products do
-          get :images
-          get :product_properties
+          resources :images
+          resources :variants
+          resources :product_properties
           get :stock
         end
         resources :orders do
@@ -22,12 +23,6 @@ Pyklocal::Application.routes.draw do
       end
     end
     resources :products
-    resources :variants
-    resources :product_properties
-    resources :stock_items
-    resources :images
-    resources :orders
-
   end
 
   resources :email_tokens do

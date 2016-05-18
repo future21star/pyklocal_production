@@ -28,7 +28,7 @@ module ApplicationHelper
   def return_active_nav(controller, action)
     if (controller == "merchant/products") && (action == "edit")
       "product_details"
-    elsif (controller == "merchant/products") && (action == "images")
+    elsif (controller == "merchant/images") && (action == "index" || action == "new" || action == "edit")
       "images"
     elsif (controller == "merchant/variants") && (action == "index" || action == "new" || action == "edit")
       "variants"

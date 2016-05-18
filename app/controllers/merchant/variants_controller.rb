@@ -3,15 +3,14 @@ class Merchant::VariantsController < Merchant::ApplicationController
 	layout 'merchant'
 
 	before_filter :find_variant, only: [:edit, :update, :destroy]
+	before_filter :load_product
 
 	def index
-		@product = Spree::Product.where(slug: params[:product_id]).first
 		@variants = @product.try(:variants)
 	end
 
 	def new
 		@variant = Spree::Variant.new
-		@product = Spree::Product.where(slug: params[:product_id]).first
 	end
 
 	def edit
@@ -29,7 +28,7 @@ class Merchant::VariantsController < Merchant::ApplicationController
 	end
 
 	def update
-		if @variant.update_attributes
+		if @variant.update_attributes(variant_params)
 			redirect_to :back, notice: "Variant updated successfully"
 		else
 			render action: 'edit'
@@ -51,7 +50,11 @@ class Merchant::VariantsController < Merchant::ApplicationController
 		end
 
 		def find_variant
-			@variant = Spree::Variant.find(params[:id])
+			@variant = Spree::Variant.where(id: params[:id]).first
+		end
+
+		def load_product
+			@product = Spree::Product.where(slug: params[:product_id]).first
 		end
 
 end

@@ -26,7 +26,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
     @product = Spree::Product.new(product_params)
     @product.attributes = product_params.merge({store_id: current_spree_user.stores.first.id})
     if @product.save
-      redirect_to merchant_products_path, notice: "Product added successfully"
+      redirect_to edit_merchant_product_path(@product), notice: "Product added successfully"
     else
       @product.sku = SecureRandom.hex(10).upcase
       @shipping_categories = Spree::ShippingCategory.all
@@ -57,11 +57,6 @@ class Merchant::ProductsController < Merchant::ApplicationController
     @images = Spree::Image.where(viewable_id: @product.id)
   end
 
-  def product_properties
-    @product_property = Spree::ProductProperty.new
-    @product_properties = @product.product_properties
-  end
-
   def stock
     @stock = Spree::StockItem.new
     @stock_locations = Spree::StockLocation.all
@@ -77,7 +72,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   private
 
   def product_params
-    params.require(:product).permit(:name, :slug, :description, :taxon_ids, :option_type_ids, :tax_category_id, :price, :sku, :store_id, :shipping_category_id, :available_on, :discontinue_on, :promotionable, :payment_method, :prototype_id)
+    params.require(:product).permit(:name, :slug, :description, :taxon_ids, :option_type_ids, :tax_category_id, :price, :sku, :store_id, :shipping_category_id, :available_on, :discontinue_on, :promotionable, :payment_method, :prototype_id, product_properties_attributes: [:property_name, :value, :id])
   end
 
   def verify_access_for_merchants

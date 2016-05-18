@@ -21,7 +21,7 @@ production: &production
       :url: '/spree/products/:id/:style/:basename.:extension'
       :path: '/spree/products/:id/:style/:basename.:extension'
       :default_style: :product
-      :default_url: '/assets/missing.png'
+      :default_url: '/images/pyk-logo.png'
       :convert_options:
         :all: '-strip -auto-orient -colorspace sRGB'
   :stores:
@@ -34,5 +34,12 @@ production: &production
         :mini: '48x48>'
         :small: '100x100>'
         :large: '240x240>'
+      :url: '/stores/:id/:style/:basename.:extension'
+      :path: '/stores/:id/:style/:basename.:extension'
+      :default_style: :large
+      :default_url: '/images/pyk-logo.png'
+      :convert_options:
+        :all: '-strip -auto-orient -colorspace sRGB'
+        
 development:
   <<: *production

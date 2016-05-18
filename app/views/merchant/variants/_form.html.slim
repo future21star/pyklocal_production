@@ -1,59 +1,60 @@
-.col-md-9
-  = form_for [:merchant, @variant], html: {} do |f|
-    = render :partial => 'spree/shared/error_messages', :locals => { :target => @variant }
-    = f.hidden_field :product_id, value: @product.id
-  	.row.top-margin-row
-  	  .col-md-6
-  	    .form-content-left
-  	      .col-md-12
-  	        = f.label :size, class: "control-label"
-  	        = f.select :option_value_ids, Spree::OptionValue.where(option_type_id: @product.option_types.collect(&:id)).collect {|s| [s.name, s.id]}, {}, class: "select2 fullwidth form-control input-bg auto-select"
-  	      .col-md-12.top-margin-row
-  	        = f.label :sku, class: "control-label"
-            span.input-icon.icon-right
-  	          = f.text_field :sku, class: "form-control input-bg", value: @product.sku, readonly: true
-              i.fa &#xf02a;
-  	      .col-md-12.top-margin-row
-  	        = f.label :price, class: "control-label"
-            span.input-icon.icon-right
-              = f.text_field :price, class: "form-control input-bg", value: @product.price
-              i.fa &#xf0d6;
-  	      .col-md-12.top-margin-row
-  	        = f.label :cost_price, class: "control-label"
-            span.input-icon.icon-right
-  	         = f.text_field :cost_price, class: "form-control input-bg"
-             i.fa &#xf0d6;
-  	      .col-md-12.top-margin-row
-  	        = f.label :tax_category_id, class: "control-label"
-            span.input-icon.icon-right
-              = f.text_field :tax_category_id, class: "select2 fullwidth form-control input-bg"
-              i.fa &#xf0e3;
-  	  .col-md-6
-  	    .form-content-right
-  	      .col-md-12
-  	        = f.label :weight, class: "control-label"
-            span.input-icon.icon-right
-  	         = f.text_field :weight, class: "form-control input-bg"
-             i.fa &#xf24e;
-  	      .col-md-12.top-margin-row
-  	        = f.label :height, class: "control-label"
-            span.input-icon.icon-right
-              = f.text_field :height, class: "form-control input-bg"
-              i.fa &#xf07d;
-  	      .col-md-12.top-margin-row
-  	        = f.label :width, class: "control-label"
-            span.input-icon.icon-right
-              = f.text_field :width, class: "form-control input-bg"
-              i.fa &#xf07e;
-  	      .col-md-12.top-margin-row
-  	        = f.label :depth, class: "control-label"
-            span.input-icon.icon-right
-              = f.text_field :depth, class: "form-control input-bg"
-              i.fa &#xf01c;
-  	  .col-md-12.top-margin-row
-		    .col-md-6.update-btn
-		      = f.submit nil, class: "btn btn-primary"
-		    .col-md-6
-		      = link_to "Cancel", merchant_stores_products_variants_path(product_id: @product.slug), class: "btn btn-default"
-.col-md-3
-  = render partial: "merchant/shared/edit_product_sidebar", locals: {product_id: @product.slug}
+= form_for [:merchant, @product, @variant], html: {} do |f|
+  = render :partial => 'spree/shared/error_messages', :locals => { :target => @variant }
+  = f.hidden_field :product_id, value: @product.id
+  .row.top-margin-row
+    .col-md-6
+      .form-content-left
+        .form-group
+          = f.label :size, class: "control-label"
+          = f.select :option_value_ids, Spree::OptionValue.where(option_type_id: @product.option_types.collect(&:id)).collect {|s| [s.name, s.id]}, {}, class: "select2 fullwidth form-control input-bg auto-select"
+        .form-group
+          = f.label :sku, class: "control-label"
+          span.input-icon.icon-right
+            = f.text_field :sku, class: "form-control input-bg"
+            i.fa &#xf02a;
+        .form-group
+          = f.label :price, class: "control-label"
+          span.input-icon.icon-right
+            = f.text_field :price, class: "form-control input-bg", value: @product.price
+            i.fa &#xf0d6;
+        .form-group
+          = f.label :cost_price, class: "control-label"
+          span.input-icon.icon-right
+           = f.text_field :cost_price, class: "form-control input-bg"
+           i.fa &#xf0d6;
+        .form-group
+          = f.label :tax_category_id, class: "control-label"
+          span.input-icon.icon-right
+            = f.text_field :tax_category_id, class: "select2 fullwidth form-control input-bg"
+            i.fa &#xf0e3;
+    .col-md-6
+      .form-content-right
+        .form-group
+          = f.label :weight, class: "control-label"
+          span.input-icon.icon-right
+           = f.text_field :weight, class: "form-control input-bg"
+           i.fa &#xf24e;
+        .form-group
+          = f.label :height, class: "control-label"
+          span.input-icon.icon-right
+            = f.text_field :height, class: "form-control input-bg"
+            i.fa &#xf07d;
+        .form-group
+          = f.label :width, class: "control-label"
+          span.input-icon.icon-right
+            = f.text_field :width, class: "form-control input-bg"
+            i.fa &#xf07e;
+        .form-group
+          = f.label :depth, class: "control-label"
+          span.input-icon.icon-right
+            = f.text_field :depth, class: "form-control input-bg"
+            i.fa &#xf01c;
+    .col-md-12.top-margin-row
+      .col-md-6.update-btn
+        button.btn.btn-primary type="submit"
+          i.fa.fa-check
+          |  Create 
+      .col-md-6
+        = link_to merchant_stores_products_variants_path(product_id: @product.slug), class: "btn btn-default" do 
+          i.fa.fa-remove
+          |  Cancel

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <%= stylesheet_link_tag "merchant_section", media: "all", "data-turbolinks-track" => false %> 
     <%= yield :css %>
-    
+    <%= javascript_include_tag 'spree/backend/all', media: "all", "data-turbolinks-track" => false %> 
   </head>
   <body class="with-footer <%= body_class %>" id="<%= @body_id || 'default' %>" data-hook="body">
 
@@ -26,6 +26,7 @@
           </div>
         <% end %>
         <div class="page-content">
+          <%= yield :page_actions %>
           <%= render partial: 'merchant/shared/table_filter' %>
           <%= yield %>  
           <%= yield :templates %>
@@ -33,14 +34,7 @@
     </div>
     
     <%= render partial: "spree/shared/footer" %>    
-
-    <%= javascript_include_tag "application", media: "all", "data-turbolinks-track" => false %>
-    <%= javascript_include_tag 'spree/backend/all' %>
-    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.7/slick.min.js"></script>
-
     
-    <script type="text/javascript">
-    </script>
     <%= yield :js %>
     <%= render "spree/admin/shared/translations" %> 
 
