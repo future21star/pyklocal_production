@@ -2870,3 +2870,22 @@ form#adv_ajaxfilter {
   border-radius: 0;
 }
 
+.seller_logo{
+  width: 10%;
+}
+.inf-content{
+   
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+    
+} 
+
+.style{
+  width: 100%;
+  padding: 15%;
+border: 1px solid rgba(0, 0, 0, 0.17);
+} 
+.img_center{
+  margin: 0px auto;
+}                                                         

@@ -36,3 +36,6 @@ production: &production
         :large: '240x240>'
 development:
   <<: *production
+
+test:
+  <<: *production

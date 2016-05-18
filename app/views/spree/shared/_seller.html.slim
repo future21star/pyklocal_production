@@ -1,0 +1,71 @@
+  -product = @product.name
+  - store = Spree::Product.where(name:product).first.store  
+  - if store == nil
+    | Store is not available
+  -else 
+    .row
+      .container.bootstrap.snippet style=("width:100%;")
+        .panel-body.inf-content
+          .row
+            .col-md-12
+              = image_tag store.logo_file_name, class: "img-responsive  isTooltip"
+              ul.list-inline.ratings.text-center title="Ratings" 
+                li
+                  a href="#" 
+                    span.glyphicon.glyphicon-star
+                li
+                  a href="#" 
+                    span.glyphicon.glyphicon-star
+                li
+                  a href="#" 
+                    span.glyphicon.glyphicon-star
+                li
+                  a href="#" 
+                    span.glyphicon.glyphicon-star
+                li
+                  a href="#" 
+                    span.glyphicon.glyphicon-star
+          .row
+            br/
+          .row
+            .col-md-12
+              strong Information
+              br/
+              .table-responsive
+                table.table.table-condensed.table-responsive.table-user-information
+                  tbody
+                    tr
+                      td
+                        strong
+                          span.glyphicon.glyphicon-user.text-primary
+                          | &nbsp; Store Name
+                      td.text-primary
+                        = store.name
+                    tr
+                      td
+                        strong
+                          span.glyphicon.glyphicon-envelope.text-primary
+                          | &nbsp;Website
+                      td.text-primary
+                        = store.site_url
+                    tr
+                      td
+                        strong
+                          span.glyphicon.glyphicon-calendar.text-primary
+                          | &nbsp;delivery Est.
+                      td.text-primary
+                        | 5-6 days
+                    tr
+                      td
+                        strong
+                          span.glyphicon.glyphicon-phone-alt.text-primary
+                          |&nbsp; Contact no:
+                      td.text-primary
+                        = store.phone_number
+                    tr
+                      td
+                        strong
+                          span.glyphicon.glyphicon-home.text-primary
+                          |&nbsp; Address
+                      td.text-primary
+                        = store.city
