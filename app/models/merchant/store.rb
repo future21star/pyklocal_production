@@ -40,6 +40,10 @@ module Merchant
       [street_number, city, state, country].compact.join(", ")
     end
 
+    def is_located?
+      latitude?
+    end
+
     private
 
       # def set_taxons

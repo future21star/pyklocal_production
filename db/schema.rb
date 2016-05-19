@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517061419) do
+ActiveRecord::Schema.define(version: 20160519123947) do
 
   create_table "email_tokens", force: :cascade do |t|
     t.string   "token",         limit: 255
@@ -62,6 +62,8 @@ ActiveRecord::Schema.define(version: 20160517061419) do
     t.datetime "logo_updated_at"
     t.string   "payment_mode",        limit: 255
     t.string   "slug",                limit: 255
+    t.string   "latitude",            limit: 255
+    t.string   "longitude",           limit: 255
   end
 
   create_table "pyklocal_stores_taxons", force: :cascade do |t|

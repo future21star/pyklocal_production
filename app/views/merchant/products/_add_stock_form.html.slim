@@ -23,4 +23,7 @@
               = select_tag 'variant_id', options_from_collection_for_select(@variants, :id, :sku_and_options_text), 
                 class: 'select2 select2-offscreen merchant-select' 
       .form-actions.text-center data-hook="buttons" 
-        = button Spree.t(:add_stock), 'plus'
+        / = button Spree.t(:add_stock), 'plus'
+        button.btn.btn-primary type="submit"
+          span.fa.fa-plus
+          |  Add Stock
