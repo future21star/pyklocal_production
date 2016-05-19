@@ -1,9 +1,6 @@
-- content_for(:title) { "Add Stock Management for #{@product.name}"}
-- content_for :page_actions do
-  li= button_link_to Spree.t(:back_to_products_list), session[:return_to] || merchant_products_url, :icon => 'arrow-left'
 = render :partial => 'spree/shared/error_messages', :locals => { :target => @product }
 .col-md-9
-  = render 'bs_add_stock_form'
+  = render 'add_stock_form'
   table#listing_product_stock.index.table.table-bordered.table-striped
     colgroup
       col style= "width: 25%"
