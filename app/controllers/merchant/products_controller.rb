@@ -35,8 +35,9 @@ class Merchant::ProductsController < Merchant::ApplicationController
   end
 
   def update
+    redirect_path = params[:redirect_path].present? ? params[:redirect_path] : edit_merchant_product_path(@product)
     if @product.update_attributes(product_params)
-      redirect_to edit_merchant_product_path(@product), notice: "Product updated successfully"
+      redirect_to redirect_path, notice: "Product updated successfully"
     else
       @shipping_categories = Spree::ShippingCategory.all
       @tax_categories = Spree::TaxCategory.all
@@ -72,7 +73,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   private
 
   def product_params
-    params.require(:product).permit(:name, :slug, :description, :taxon_ids, :option_type_ids, :tax_category_id, :price, :sku, :store_id, :shipping_category_id, :available_on, :discontinue_on, :promotionable, :payment_method, :prototype_id, product_properties_attributes: [:property_name, :value, :id])
+    params.require(:product).permit(:name, :slug, :description, :taxon_ids, :option_type_ids, :tax_category_id, :price, :sku, :store_id, :shipping_category_id, :available_on, :discontinue_on, :promotionable, :payment_method, product_properties_attributes: [:property_id, :value, :id, :property_name])
   end
 
   def verify_access_for_merchants

@@ -32,7 +32,7 @@ module ApplicationHelper
       "images"
     elsif (controller == "merchant/variants") && (action == "index" || action == "new" || action == "edit")
       "variants"
-    elsif (controller == "merchant/products") && (action == "product_properties")
+    elsif (controller == "merchant/product_properties") && (action == "index")
       "product_properties"
     elsif (controller == "merchant/products") && (action == "stock_management")
       "stock_management"

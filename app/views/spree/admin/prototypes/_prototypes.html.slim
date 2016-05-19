@@ -1,0 +1,16 @@
+table.table.table-condensed.table-bordered
+  thead
+    tr data-hook="available_header" 
+      th= Spree.t(:name)
+      th.actions
+  tbody
+    - @prototypes.each do |prototype|
+      tr data-hook="available_row" id="row_#{prototype.id}" 
+        td= prototype.name
+        td.actions.actions-1
+          = link_to_with_icon 'save', Spree.t(:select), select_admin_prototype_url(prototype), :class => ' btn btn-default btn-sm ajax select_properties_from_prototype fa', :no_text => true
+    - if @prototypes.empty?
+      tr data-hook="available_none" 
+        td colspan="2" 
+          - Spree.t(:none)
+          | .
