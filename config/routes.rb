@@ -45,6 +45,7 @@ Pyklocal::Application.routes.draw do
         resources :merchant_stores do 
           put :update_location
         end
+        resources :registrations 
       end
     end
   end
