@@ -4,13 +4,14 @@ Feature: Seller
   I want to test that all activity is working
 
   Scenario: I want to create a store for selling a product
-    When I am a user
-    When I go to the home page  
-    When I follow "Login"
-    And I fill in "spree_user_email" with "test@w3villa.com"  
-    And I fill in "spree_user_password" with "temp1234"
-    And I press "Login"
-    And I follow "Sell with us"
-    And I follow "Apply For New Store"
+    Given I am a user with email "test@w3villa.com" with password "temp1234"
+    And I want to sign in as "test@w3villa.com" with password "temp1234"
+    And I want to Apply for new store name "shopper&stop"
+    And I fill the all the details for new store registration
+    And I should add a new product "I-Phone" with price "1000"
+    And I should check product is added in product shop page 
+    And I want to update product "I-Phone" details with Image
+    And I want to also update stock managment with quantity "10"
+    
     Then I should break
    

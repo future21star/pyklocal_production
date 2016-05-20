@@ -84,10 +84,70 @@ end
 
 Before do
 
-  role = Spree::Role.where(name: "Merchant").first_or_create
-  user = Spree::User.create(email: "test@w3villa.com", password: "temp1234", password_confirmation: "temp1234",spree_role_ids:[role.id])
-  
+  taxonomies = [
+    { :name=>"Categories"},
+    { :name=>"Brand"}  
+  ]
+  taxons = [
+    {:id=>1, :name=>"Categories"},
+    { name: "Bag",parent_id: 1},
+    { name: "Mug", parent_id: 1},
+    { name: "Clothing", parent_id: 1}
+  ]
+
+  taxonomies.each do |data|
+    taxonomy = Spree::Taxonomy.where(name: data[:name]).first_or_create 
+    if taxonomy.name == "Categories" 
+      taxons.each do |product_taxon|
+        taxon = Spree::Taxon.where(name: product_taxon[:name], taxonomy_id: taxonomy.id).first_or_create
+        taxon.update_attributes(product_taxon.except(:name))
+      end
+    end
+   end 
+
+  color_option_values = [
+    { name: "Red", presentation: "Red"} , 
+  ]
+
+  size_option_values = [
+    { name: "Small", presentation: "S"},
+   ]
+
+  [
+    {id: 1, name: "color", presentation: "Color"},
+    {id: 2, name: "size", presentation: "Size"}
+  ].each do |data|
+    option_type = Spree::OptionType.where(name: data[:name]).first_or_create
+    option_type.update_attributes(data.except(:name))
+  p option_type
+    if option_type.name == "color"
+      color_option_values.each do |color_data|
+        option_value = option_type.option_values.where(name: color_data[:name]).first_or_create
+        option_value.update_attributes(color_data.except(:name))
+      p option_value
+      end
+    elsif option_type.name == "size"
+      size_option_values.each do |model_data|
+        option_value = option_type.option_values.where(name: model_data[:name]).first_or_create
+        option_value.update_attributes(model_data.except(:name))
+        p option_value
+      end
+    end        
+  end  
+    
+  [
+    {:id=>1, :name=>"user"}, 
+    {:id=>2, :name=>"merchant"}, 
+
+  ].each do |data|
+    role = Spree::Role.where(name: data[:name]).first_or_create
+    role.update_attributes(data.except(:name))
+  end
+
+  shipping_category = Spree::ShippingCategory.create(name: "Default") 
+
 end
+
 
 
 # In your test_helper.rb
