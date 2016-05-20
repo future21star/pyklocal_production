@@ -40,6 +40,13 @@ Pyklocal::Application.routes.draw do
 
   Spree::Core::Engine.routes.draw do 
     resources :shop , :only => [:index,:show]
+    namespace :api do 
+      namespace :v1 do 
+        resources :merchant_stores do 
+          put :update_location
+        end
+      end
+    end
   end
           # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
