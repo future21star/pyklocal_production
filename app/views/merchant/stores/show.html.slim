@@ -43,11 +43,11 @@
       .modal-body
         #map-canvas
       .modal-footer
-        button#save-location.btn.btn-primary data-company_id="#{@store.slug}"  Save
+        button#save-location.btn.btn-primary data-store_id="#{@store.slug}"  Save
         button#cancel-location.btn.btn-default data-dismiss="modal" type="button"  Close
 
 - content_for :head do
-  script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhk4jo7dlcNIFGag4iUNjnd1NMVO9tJgE&libraries=places" type="text/javascript" 
+  script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwa_aSOU4vA1Z_E6Vlt5-AG-nncymVpqg&libraries=places" type="text/javascript" 
 - content_for :js do
   javascript:
     $(function() {

@@ -36,6 +36,10 @@ module Merchant
       "#{manager_first_name} #{manager_last_name}"
     end
 
+    def find_by_slug(slug)
+      Merchant::Store.where(slug: slug).first
+    end
+
     def address
       [street_number, city, state, country].compact.join(", ")
     end
