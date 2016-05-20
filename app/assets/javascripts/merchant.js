@@ -36,7 +36,7 @@ var merchant = {
         zoom: 8,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
-      var map = new google.maps.Map($("#map-preview")[0], mapOptions);
+      map = new google.maps.Map($("#map-preview")[0], mapOptions);
       this.markOnMap(map, latLng);  
     }
   },
