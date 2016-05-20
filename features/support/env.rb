@@ -85,7 +85,7 @@ end
 Before do
 
   role = Spree::Role.where(name: "Merchant").first_or_create
-
+  user = Spree::User.create(email: "test@w3villa.com", password: "temp1234", password_confirmation: "temp1234",spree_role_ids:[role.id])
   
 end
 
