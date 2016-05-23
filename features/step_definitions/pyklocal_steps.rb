@@ -48,8 +48,8 @@ Given(/^I should add a new product "([^"]*)" with price "([^"]*)"$/) do |name, p
 	page.execute_script(%{$("#product_available_on").val('2016/12/20')});
 	select("Default", :from =>"product_shipping_category_id" )
 	click_on"Save"
-
 	page.execute_script(%{$("#products div:contains('fila shoes') .buy-now a:contains('Edit')")});
+	debugger
   
 end
 
@@ -74,6 +74,7 @@ Given(/^I want to update product "([^"]*)" details with Image$/) do |image|
 
 end
 Given(/^I want to also update stock managment with quantity "([^"]*)"$/) do |stock|
+debugger
 	# click_on"Go to store"
  #  click_on"Edit"
  #  debugger
