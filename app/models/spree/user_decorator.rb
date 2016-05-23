@@ -13,6 +13,8 @@ Spree::User.class_eval do
   belongs_to :spree_buy_privilege
   belongs_to :spree_sell_privilege 
 
+  after_create :assign_api_key
+
   def mailboxer_email(object)
     return email
   end
@@ -62,5 +64,11 @@ Spree::User.class_eval do
   def review_store?(store)
     ordered_from_stores.include?(store)
   end
+
+  private
+
+    def assign_api_key
+      self.generate_spree_api_key!
+    end
 
 end
