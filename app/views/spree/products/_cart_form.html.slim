@@ -1,16 +1,23 @@
 = form_for :order, :url => populate_orders_path do |f|
   #inside-product-cart-form data-hook="inside_product_cart_form" itemprop="offers" itemscope="" itemtype="https://schema.org/Offer" 
     .add-to-cart
-        br/
+        br 
         .input-group
-        	.qty
-	          = number_field_tag :quantity, 1, :class => 'title form-control', :min => 1, :id =>'input-quantity'
-	          span.input-group-btn
-
-	            = button_tag :class => 'btn btn-primary', :id => 'add-to-cart-button', :type => :submit do
-	              = Spree.t(:add_to_cart)
+          .qty
+            = number_field_tag :quantity, 1, :class => 'title form-control', :min => 1, :id =>'input-quantity'
+        .input-group
+          ul.delivery-ul
+            li.delivery-li.active data-value="home_delivery"
+              span Home Delivery
+            li.delivery-li data-value="take_away"
+              span Take Away
+          = hidden_field_tag :delivery_type, "", id: "delivery"
+        .input-group.margin-top-20
+          .input-group-btn
+            = button_tag :class => 'btn btn-primary', :id => 'add-to-cart-button', :type => :submit do
+              = Spree.t(:add_to_cart)
               
-			          
+                
 
     - if @product.variants_and_option_values(current_currency).any?
         ul.list-group
@@ -33,12 +40,12 @@
         - if @product.master.can_supply?
           link href="https://schema.org/InStock" itemprop="availability" /
         - elsif @product.variants.empty?
-          br/
+          br 
           span.out-of-stock= Spree.t(:out_of_stock)
       
   - else
     #product-price
-      br/
+      br 
       div
         span.price.selling itemprop="price" = Spree.t('product_not_available_in_this_currency')
 

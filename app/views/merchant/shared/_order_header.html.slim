@@ -10,4 +10,9 @@
 	      = link_to "Resend", "", class: "btn btn-default"
 	      = link_to "Back To Order List", merchant_orders_path, class: "btn btn-default", "data-no-turbolink" => true
 	    - else
-	      = link_to "New Order", "", class: "btn btn-default", "data-no-turbolink" => true
+	      = link_to "", class: "btn btn-primary", "data-no-turbolink" => true do 
+	      	span.fa.fa-plus
+	      	|  New Order
+	    = link_to merchant_stores_path, class: "btn btn-default", "data-no-turbolink" => true do 
+	    	span.fa.fa-arrow-left
+	    	|  Back To Home

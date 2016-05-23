@@ -29,10 +29,6 @@ Spree::User.class_eval do
     end
   end
 
-  def name
-    full_name
-  end
-
   def full_name
     if bill_address
       [bill_address.firstname, bill_address.lastname].compact.join(" ")
