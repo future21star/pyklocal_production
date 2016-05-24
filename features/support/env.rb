@@ -81,6 +81,15 @@ Around do |scenario, block|
   DatabaseCleaner.cleaning(&block)
 end
 
+Capybara.configure do |config|
+  config.run_server = true
+  config.server_port = 3004
+  config.javascript_driver = :webkit
+  config.default_wait_time = 30
+  config.always_include_port = true
+  config.default_host = 'http://127.0.0.1:3004'
+  config.app_host = 'http://127.0.0.1:3004'
+end
 
 Before do
 
@@ -145,7 +154,7 @@ Before do
   end
 
   shipping_category = Spree::ShippingCategory.create(name: "Default") 
-
+  stock_location = Spree::StockLocation.create(name:"Default")
 end
 
 

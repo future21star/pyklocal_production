@@ -49,13 +49,28 @@ Given(/^I should add a new product "([^"]*)" with price "([^"]*)"$/) do |name, p
 	select("Default", :from =>"product_shipping_category_id" )
 	click_on"Save"
 	page.execute_script(%{$("#products div:contains('fila shoes') .buy-now a:contains('Edit')")});
-	debugger
   
+end
+
+Given(/^I should Update option type value in product$/) do
+	find("#s2id_product_option_type_ids").click
+	find('.select2-results',:text=>"Size (size)").click
+	click_on"Update Product"
+
+  
+end
+
+Given(/^I should update variant with cost price "([^"]*)"$/) do |cost_price|
+  click_on"VARIANTS"
+  click_on"Create One"
+  fill_in("variant_cost_price",:with=>cost_price)
+  click_on"Create"
+
 end
 
 Given(/^I should check product is added in product shop page$/) do
 	click_on"Go to store"
-	page.evaluate_script(%{$("#products .product-item ").length}).should == 1
+	page.evaluate_script(%{$("#products .product-item ").length}).should == 1;
 	# click_on"All Categories"
 	# page.evaluate_script(%{$(".product-layout .product-grid ").length}).should == 1
 
@@ -74,12 +89,11 @@ Given(/^I want to update product "([^"]*)" details with Image$/) do |image|
 
 end
 Given(/^I want to also update stock managment with quantity "([^"]*)"$/) do |stock|
-debugger
-	# click_on"Go to store"
- #  click_on"Edit"
- #  debugger
- #  click_on"STOCK MANAGMENT"
- #  fill_in('stock_movement_quantity',:with => stock)
+	click_on"Go to store"
+  click_on"Edit"
+  click_on"STOCK MANAGEMENT"
+  fill_in('stock_movement_quantity',:with => stock)
+  page.find(".odd").should have_content stock == true
 end
 
 Then(/^I should break$/) do
