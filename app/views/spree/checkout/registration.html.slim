@@ -22,10 +22,15 @@
                     |Registration as New Customer
                   = form_for Spree::User.new, html: {class: "custom-form"}, :as => :spree_user, :url => spree.registration_path do |f|
                     .form-group
-                      label.form-label for="name" 
-                        |Name
+                      label.form-label for="first_name" 
+                        |First Name
                         span.required * 
-                      = f.text_field :name, class: "form-control #{@user.try(:errors).present? ? 'error' : ''}", id: "fname"
+                      = f.text_field :first_name, class: "form-control #{@user.try(:errors).present? ? 'error' : ''}", id: "fname"
+                    .form-group
+                      label.form-label for="last_name" 
+                        |Last Name
+                        span.required * 
+                      = f.text_field :last_name, class: "form-control #{@user.try(:errors).present? ? 'error' : ''}", id: "lname"
                     .form-group
                       label.form-label for="email" 
                         |E-mail
