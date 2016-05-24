@@ -25,19 +25,18 @@
                   a href="/opencart/marketshop/v3/ar" 
                     = image_tag "ar.png", class: "img-responsive"
                     | Arabic
-            input name="code" type="hidden" value="" /
-            input name="redirect" type="hidden" value="" /
+            input name="code" type="hidden" value="" 
+            input name="redirect" type="hidden" value="" 
         #top-links.nav.pull-right.flip
           ul
-            -if spree_user_signed_in?
-              -user = current_spree_user.name.present? ? current_spree_user.name : current_spree_user.email
+            -if spree_user_signed_in? 
               li#my_account.dropdown
                 a href="" 
                   | My Account
                   i.fa.fa-caret-down
                 ul.dropdown-menu.dropdown-menu-right
                   li
-                    a href="" My Account
+                    = "Hey, #{current_spree_user.full_name}"
                   li
                     a href=""  Order History
                   li

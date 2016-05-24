@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519123947) do
+ActiveRecord::Schema.define(version: 20160523094431) do
 
   create_table "email_tokens", force: :cascade do |t|
     t.string   "token",         limit: 255
@@ -231,20 +231,21 @@ ActiveRecord::Schema.define(version: 20160519123947) do
   create_table "spree_line_items", force: :cascade do |t|
     t.integer  "variant_id",                   limit: 4
     t.integer  "order_id",                     limit: 4
-    t.integer  "quantity",                     limit: 4,                                          null: false
-    t.decimal  "price",                                    precision: 10, scale: 2,               null: false
-    t.datetime "created_at",                                                                      null: false
-    t.datetime "updated_at",                                                                      null: false
+    t.integer  "quantity",                     limit: 4,                                                      null: false
+    t.decimal  "price",                                    precision: 10, scale: 2,                           null: false
+    t.datetime "created_at",                                                                                  null: false
+    t.datetime "updated_at",                                                                                  null: false
     t.string   "currency",                     limit: 255
     t.decimal  "cost_price",                               precision: 10, scale: 2
     t.integer  "tax_category_id",              limit: 4
     t.decimal  "adjustment_total",                         precision: 10, scale: 2, default: 0.0
     t.decimal  "additional_tax_total",                     precision: 10, scale: 2, default: 0.0
     t.decimal  "promo_total",                              precision: 10, scale: 2, default: 0.0
-    t.decimal  "included_tax_total",                       precision: 10, scale: 2, default: 0.0, null: false
-    t.decimal  "pre_tax_amount",                           precision: 12, scale: 4, default: 0.0, null: false
-    t.decimal  "taxable_adjustment_total",                 precision: 10, scale: 2, default: 0.0, null: false
-    t.decimal  "non_taxable_adjustment_total",             precision: 10, scale: 2, default: 0.0, null: false
+    t.decimal  "included_tax_total",                       precision: 10, scale: 2, default: 0.0,             null: false
+    t.decimal  "pre_tax_amount",                           precision: 12, scale: 4, default: 0.0,             null: false
+    t.decimal  "taxable_adjustment_total",                 precision: 10, scale: 2, default: 0.0,             null: false
+    t.decimal  "non_taxable_adjustment_total",             precision: 10, scale: 2, default: 0.0,             null: false
+    t.string   "delivery_type",                limit: 255,                          default: "home_delivery"
   end
 
   add_index "spree_line_items", ["order_id"], name: "index_spree_line_items_on_order_id", using: :btree

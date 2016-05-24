@@ -7,7 +7,7 @@ class Merchant::StoresController < Merchant::ApplicationController
 	def index
 		@stores = current_spree_user.try(:stores)
     if @stores.present?
-      redirect_to merchant_stores_path(id: @stores.first)
+      redirect_to @stores.first
     else
       redirect_to new_merchant_store_path
     end     

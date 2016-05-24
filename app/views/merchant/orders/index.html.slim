@@ -75,15 +75,15 @@
       .order-details
         table.table.index.responsive.table-bordered#listing_orders
           colgroup
-            col :style=>"width: 13%;"
-            col :style=>"width: 10%;"
-            col :style=>"width: 10%;"
-            col :style=>"width: 12%;"
+            col :style="width: 13%;"
+            col :style="width: 10%;"
+            col :style="width: 10%;"
+            col :style="width: 12%;"
             -if Spree::Order.checkout_step_names.include?(:delivery)
-              col :style=>"width: 12%;"
-            col :style=>"width: 25%;"
-            col :style=>"width: 10%;"
-            col :style=>"width: 8%;"
+              col :style="width: 12%;"
+            col :style="width: 25%;"
+            col :style="width: 10%;"
+            col :style="width: 8%;"
           thead
             tr data-hook= "admin_orders_index_headers"
               - if @show_only_completed
@@ -121,7 +121,7 @@
                     = link_to Spree.t("payment_states.#{order.payment_state}"), admin_order_payments_path(order) if order.payment_state
                 - if Spree::Order.checkout_step_names.include?(:delivery)
                   td.align-center
-                    span.state :class=> order.shipment_state
+                    span.state class=(order.shipment_state)
                       = Spree.t("shipment_states.#{order.shipment_state}") if order.shipment_state 
                 td
                   = mail_to order.email

@@ -17,3 +17,24 @@
 //= require turbolinks
 //= require_tree .
 //= stub merchant.js
+
+
+var pyklocal = {
+
+	init: function() {
+		this.setDeliveryType();
+	},
+
+	setDeliveryType: function() {
+		$('.delivery-li').click(function() {
+			var deliveryType = $(this).data('value');
+			$('#delivery').val(deliveryType);
+			$('.delivery-li').removeClass('active');
+			$(this).addClass('active');
+		});
+	}
+};
+
+$(document).ready(function(){
+	pyklocal.init();
+});
