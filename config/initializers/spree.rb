@@ -17,3 +17,4 @@ end
 
 Spree.user_class = "Spree::LegacyUser"
 Spree::PermittedAttributes.line_item_attributes.push :delivery_type
+Spree::PermittedAttributes.user_attributes.push :first_name, :last_name

@@ -10,7 +10,8 @@ Feature: Seller
     And I should select a product name "Iphone" 
     Then I should goto the checkout process for product "I-Phone" with quantity "4"
     And I should fill the billing address 
-    And I should make payment by check and proceed 
+    And I should make payment by check and proceed
+    Then I should see "Thank you for your business. Please print out a copy of this confirmation page for your records"
 
 
 

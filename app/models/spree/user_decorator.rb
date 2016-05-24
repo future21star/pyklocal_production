@@ -3,17 +3,16 @@ Spree::User.class_eval do
   #------------------------ Associations
   has_many :store_users, foreign_key: :spree_user_id, class_name: 'Merchant::StoreUser'
   has_many :stores, through: :store_users, class_name: 'Merchant::Store' 
-
   has_many :ordered_line_items, through: :orders, :source => :line_items, class_name: 'Spree::LineItem'
   has_many :raitings, foreign_key: :spree_user_id
-
   has_many :parse_links, foreign_key: :user_id, class_name: 'Spree::ParseLink'
-  accepts_nested_attributes_for :parse_links, :reject_if => lambda { |a| a[:url].blank? }
-
+  has_many :api_tokens
   belongs_to :spree_buy_privilege
   belongs_to :spree_sell_privilege 
 
   after_create :assign_api_key
+
+  accepts_nested_attributes_for :parse_links, :reject_if => lambda { |a| a[:url].blank? }
 
   def mailboxer_email(object)
     return email
@@ -30,11 +29,7 @@ Spree::User.class_eval do
   end
 
   def full_name
-    if bill_address
-      [bill_address.firstname, bill_address.lastname].compact.join(" ")
-    else
-      email
-    end
+    (first_name || last_name) || (email)
   end
 
   def full_address
@@ -59,6 +54,18 @@ Spree::User.class_eval do
 
   def review_store?(store)
     ordered_from_stores.include?(store)
+  end
+
+  def store_product_line_items
+    store_line_items = []
+    stores.first.spree_products.each do |product|
+      store_line_items << product.line_items
+    end
+    return store_line_items.flatten
+  end
+
+  def store_orders
+    store_product_line_items.collect(&:order).uniq.flatten
   end
 
   private

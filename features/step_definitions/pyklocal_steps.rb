@@ -108,7 +108,6 @@ end
 
 Given(/^I should select a product name "([^"]*)"$/) do |product|
 	sleep 5
-	debugger
 	click_on product
 
 end
@@ -117,7 +116,6 @@ Then(/^I should goto the checkout process for product "([^"]*)" with quantity "(
 
 	fill_in("input-quantity", :with=> quantity)
 	click_on"Add To Cart"
-	debugger
   click_on"Checkout"
 end
 
@@ -133,14 +131,11 @@ Then(/^I should fill the billing address$/) do
 		And I fill in "order_bill_address_attributes_phone" with "9685741425" 
 		And I press "Save and Continue"
 	}
-  
 end
 
 Then(/^I should make payment by check and proceed$/) do
 	click_on "Save and Continue"
-	choose "Check"
 	click_on "Save and Continue"
-
 end
 
 Then(/^I should goto store account "([^"]*)"$/) do |store|

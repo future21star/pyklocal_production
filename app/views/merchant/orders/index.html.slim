@@ -1,137 +1,42 @@
-- content_for :page_title do 
-  = Spree.t(:listing_orders)
-
-- content_for :table_filter_title do
-  = Spree.t(:search)
-
-- content_for :table_filter do
-  = render partial: "merchant/shared/order_header", locals: {order: nil}
-  .container
-    .form-section  
-      .margin-top-row.well-sm data-hook= "merchant_orders_index_search"
-        = search_form_for [:merchant, @search], class:'form-inline' do |f|
-          .row
-            .form-group.col-md-3
-              .date-range-filter
-                = label_tag nil, Spree.t(:date_range), class: "control-label"
-                .date-range-fields
-                  span.input-icon.icon-right.order-form
-                    = f.text_field :created_at_gt, :class => 'datepicker datepicker-from form-control date-picker input-bg', :value => params[:q][:created_at_gt], :placeholder => Spree.t(:start)
-                    i.fa &#xf274;
-                  span.range-divider
-                    i.fa.fa-arrow-right
-                  span.input-icon.icon-right.order-form
-                    = f.text_field :created_at_lt, :class => 'datepicker datepicker-to form-control date-picker input-bg', :value => params[:q][:created_at_lt], :placeholder => Spree.t(:stop)
-                    i.fa &#xf273;
-            .form-group.col-md-3
-              = label_tag nil, Spree.t(:status), class: "control-label"
-              br
-              = f.select :state_eq, Spree::Order.state_machines[:state].states.collect {|s| [Spree.t("order_state.#{s.name}"), s.value]}, {:include_blank => "Select Status"}, :class => 'select2 select-box-tag input-bg'
-            .form-group.col-md-3
-              = label_tag nil, Spree.t(:promotion), class: "control-label"
-              br
-              = f.select :promotions_id_in, Spree::Promotion.all.collect {|p| [p.name, p.id]}, {:include_blank => 'Select Promotion'}, :class => 'select2 select-box-tag input-bg'
-            .form-group.col-md-3
-              = label_tag nil, Spree.t(:order_number, :number => ''), class: "control-label block-lebel"
-              span.input-icon.icon-right
-                = f.text_field :number_cont, class: 'form-control input-bg'
-                .fa &#xf02a;
-            
-          br
-          .row
-            .form-group.col-md-3
-              = label_tag nil, Spree.t(:email), class: "control-label block-lebel"
-              span.input-icon.icon-right
-                = f.email_field :email_cont, class: 'form-control input-bg'
-                .fa &#xf0e0;
-            .form-group.col-md-3
-              = label_tag nil, Spree.t(:first_name_begins_with), class: "control-label"
-              span.input-icon.icon-right
-                = f.text_field :bill_address_firstname_start, class: 'form-control input-bg'
-                .fa &#xf007;
-            .form-group.col-md-3
-              = label_tag nil, Spree.t(:last_name_begins_with)
-              span.input-icon.icon-right
-                = f.text_field :bill_address_lastname_start, class: 'form-control input-bg'
-                .fa &#xf007;
-            .form-group.col-md-3
-              label.margin-top-checkbox
-                = f.check_box :completed_at_not_null, {:checked => @show_only_completed}, '1', '0'
-                = Spree.t(:show_only_complete_orders)
-            
-          .clearfix
-          .row.btn-part
-            .col-md-5
-              .line-bar
-                hr.show-line
-            .actions.filter-actions.col-md-2
-              div data-hook= "admin_orders_index_search_buttons" class= "order-search-btn"
-                = button Spree.t(:filter_results), 'btn btn-primary', 'search'
-            .col-md-5
-              .line-bar
-                hr.show-line
-      = paginate @orders
-
-      .order-details
-        table.table.index.responsive.table-bordered#listing_orders
-          colgroup
-            col :style="width: 13%;"
-            col :style="width: 10%;"
-            col :style="width: 10%;"
-            col :style="width: 12%;"
-            -if Spree::Order.checkout_step_names.include?(:delivery)
-              col :style="width: 12%;"
-            col :style="width: 25%;"
-            col :style="width: 10%;"
-            col :style="width: 8%;"
-          thead
-            tr data-hook= "admin_orders_index_headers"
-              - if @show_only_completed
-                th
-                  = sort_link @search, :completed_at, I18n.t(:completed_at, :scope => 'activerecord.attributes.spree/order')
-              -else
-                th
-                  = sort_link @search, :created_at,   I18n.t(:created_at, :scope => 'activerecord.attributes.spree/order')
-              th
-                = sort_link @search, :number,         I18n.t(:number, :scope => 'activerecord.attributes.spree/order')
-              th
-                = sort_link @search, :state,          I18n.t(:state, :scope => 'activerecord.attributes.spree/order')
-              th
-                = sort_link @search, :payment_state,  I18n.t(:payment_state, :scope => 'activerecord.attributes.spree/order')
-              - if Spree::Order.checkout_step_names.include?(:delivery)
-                th>
-                  = sort_link @search, :shipment_state, I18n.t(:shipment_state, :scope => 'activerecord.attributes.spree/order')
-              th
-                = sort_link @search, :email,          I18n.t(:email, :scope => 'activerecord.attributes.spree/order')
-              th
-                = sort_link @search, :total,          I18n.t(:total, :scope => 'activerecord.attributes.spree/order')
-              th data-hook= "admin_orders_index_header_actions" :class= "actions"
-          - if @orders.any?
-            - @orders.each do |order|
-              tr data-hook= "admin_orders_index_rows" class= "state-#{order.state.downcase}#{ cycle('odd', 'even')}"
-                td.align-center
-                  = (@show_only_completed ? order.completed_at : order.created_at).try(:to_date) 
-                td.align-center
-                  = link_to order.number, edit_merchant_order_path(order) 
-                td.align-center
-                  span.state class= "#{order.state.downcase}"
-                    = Spree.t("order_state.#{order.state.downcase}")
-                td.align-center
-                  span class= "state#{order.payment_state}"
-                    = link_to Spree.t("payment_states.#{order.payment_state}"), admin_order_payments_path(order) if order.payment_state
-                - if Spree::Order.checkout_step_names.include?(:delivery)
-                  td.align-center
-                    span.state class=(order.shipment_state)
-                      = Spree.t("shipment_states.#{order.shipment_state}") if order.shipment_state 
-                td
-                  = mail_to order.email
-                td.align-center
-                  = order.display_total.to_html
-                td.actions.align-center data-hook= "admin_orders_index_row_actions"
-                  = link_to "Edit", edit_merchant_order_path(order), class: "btn btn-default btn-xs"
-          - else
+= render partial: "merchant/shared/order_header", locals: {order: ""}
+.container
+  .form-section
+    table.table.table-striped
+      thead
+        tr
+          th Order Number
+          th Item Name
+          th Variants
+          th Quantity
+          th Amount
+          th Delivery Type
+          th Actions
+      tbody
+        - unless @orders.blank?
+          - @orders.each do |order|
             tr
-              td colspan="8"
-                = Spree.t(:no_resource_found, resource: I18n.t(:other, scope: 'activerecord.models.spree/order'))
-
-          = paginate @orders
+              td.align-middle rowspan=(order.line_items.count)
+                = link_to order.try(:number), edit_merchant_order_path(order)
+              - order.line_items.each_with_index do |line_item, index|
+                - if current_spree_user.stores.first.spree_products.include?(line_item.product)
+                  - if index == 0
+                    td= line_item.product.try(:name)
+                    td= line_item.variant.options_text
+                    td= line_item.quantity
+                    td= line_item.price.to_f
+                    td= line_item.delivery_type.try(:humanize)
+                    td
+                      = link_to "Ready to pickup", "#", class: "btn btn-success" if line_item.delivery_type == "home_delivery"
+                  - else
+                    tr
+                      td= line_item.product.try(:name)
+                      td= line_item.variant.options_text
+                      td= line_item.quantity
+                      td= line_item.price.to_f
+                      td= line_item.delivery_type.try(:humanize)
+                      td
+                        = link_to "Ready to pickup", "#", class: "btn btn-success" if line_item.delivery_type == "home_delivery"
+        - else
+          tr
+            td colspan="7"
+              span No orders found.

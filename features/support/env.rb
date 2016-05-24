@@ -153,8 +153,7 @@ Before do
   Spree::Store.create(id: 1, name: "Felix Gray", url: "demo.spreecommerce.com", mail_from_address: "spree@example.com", default_currency: "USD", code: "spree", default: true, )
   country = Spree::Country.where(id: 232,iso_name: "UNITED STATES", name: "United States", states_required: true).first_or_create
 
-  state = Spree::State.where(name: "Washington", country_id:country.id, abbr: "WA").first_or_create
-  state = Spree::State.where(name: "New York", country_id:country.id, abbr: "NY").first_or_create
+  state = Spree::State.where(name: "Gaum", country_id:country.id, abbr: "GA").first_or_create
   shipping_category = Spree::ShippingCategory.create(name: "Default")
   tax_category = Spree::TaxCategory.where(name: "Clothing").first_or_create
   conuntry_zone = Spree::Zone.new( name: "America", description: "United States", default_tax: false,country_ids: [country.id],kind:'country')
@@ -171,12 +170,15 @@ Before do
     {id: 1, name: "Iphone", slug: "i-phone-cover", price: 200, available_on: Time.zone.now, taxon_ids: Spree::Taxon.where(name: "Clothing").collect(&:id), option_type_ids: Spree::OptionType.all.collect(&:id), shipping_category_id: Spree::ShippingCategory.first.id}
   ]
   products.each do |data|
+    stock = Spree::StockLocation.where(name:"Default").first
     product = Spree::Product.where(slug: data[:slug]).first_or_create
     product.update_attributes(data.except(:slug))
-    p product
+    
     variant = Spree::Variant.new(product_id: product.id, option_value_ids: Spree::OptionValue.all.collect(&:id)) 
     variant.save
-    p variant.errors
+
+    item =  Spree::StockItem.where(stock_location_id: stock.id, variant_id: variant.id).first_or_create
+    s_m = Spree::StockMovement.create(stock_item_id: item.id, quantity: 10)
 
   end
   
