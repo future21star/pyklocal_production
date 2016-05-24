@@ -61,6 +61,18 @@ Spree::User.class_eval do
     ordered_from_stores.include?(store)
   end
 
+  def store_product_line_items
+    store_line_items = []
+    stores.first.spree_products.each do |product|
+      store_line_items << product.line_items
+    end
+    return store_line_items.flatten
+  end
+
+  def store_orders
+    store_product_line_items.collect(&:order).uniq.flatten
+  end
+
   private
 
     def assign_api_key

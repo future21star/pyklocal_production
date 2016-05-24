@@ -9,9 +9,9 @@
           ul.delivery-ul
             li.delivery-li.active data-value="home_delivery"
               span Home Delivery
-            li.delivery-li data-value="take_away"
-              span Take Away
-          = hidden_field_tag :delivery_type, "", id: "delivery"
+            li.delivery-li data-value="pickup"
+              span Pickup
+          = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
         .input-group.margin-top-20
           .input-group-btn
             = button_tag :class => 'btn btn-primary', :id => 'add-to-cart-button', :type => :submit do

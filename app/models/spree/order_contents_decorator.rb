@@ -1,5 +1,10 @@
 module Spree
 	OrderContents.class_eval do 
+
+    def initialize(order)
+      @order = order
+    end
+
 		def add(variant, quantity = 1, options = {}, delivery_type)
       timestamp = Time.current
       line_item = add_to_line_item(variant, quantity, options, delivery_type)
