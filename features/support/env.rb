@@ -128,18 +128,16 @@ Before do
   ].each do |data|
     option_type = Spree::OptionType.where(name: data[:name]).first_or_create
     option_type.update_attributes(data.except(:name))
-  p option_type
+
     if option_type.name == "color"
       color_option_values.each do |color_data|
         option_value = option_type.option_values.where(name: color_data[:name]).first_or_create
         option_value.update_attributes(color_data.except(:name))
-      p option_value
       end
     elsif option_type.name == "size"
       size_option_values.each do |model_data|
         option_value = option_type.option_values.where(name: model_data[:name]).first_or_create
         option_value.update_attributes(model_data.except(:name))
-        p option_value
       end
     end        
   end  
@@ -152,9 +150,36 @@ Before do
     role = Spree::Role.where(name: data[:name]).first_or_create
     role.update_attributes(data.except(:name))
   end
+  Spree::Store.create(id: 1, name: "Felix Gray", url: "demo.spreecommerce.com", mail_from_address: "spree@example.com", default_currency: "USD", code: "spree", default: true, )
+  country = Spree::Country.where(id: 232,iso_name: "UNITED STATES", name: "United States", states_required: true).first_or_create
 
-  shipping_category = Spree::ShippingCategory.create(name: "Default") 
-  stock_location = Spree::StockLocation.create(name:"Default")
+  state = Spree::State.where(name: "Washington", country_id:country.id, abbr: "WA").first_or_create
+  state = Spree::State.where(name: "New York", country_id:country.id, abbr: "NY").first_or_create
+  shipping_category = Spree::ShippingCategory.create(name: "Default")
+  tax_category = Spree::TaxCategory.where(name: "Clothing").first_or_create
+  conuntry_zone = Spree::Zone.new( name: "America", description: "United States", default_tax: false,country_ids: [country.id],kind:'country')
+  conuntry_zone.save
+  tax_rate = Spree::TaxRate.create(:name => "America",:zone_id =>conuntry_zone.id,:amount => 0.05,show_rate_in_label:true,:tax_category_id => tax_category.id, calculator_type: "Spree::Calculator::DefaultTax") 
+  shipping_method = Spree::ShippingMethod.new(name: "UPS Ground (USD)", display_on: "both", tax_category_id:tax_category.id, zone_ids: [conuntry_zone.id], shipping_category_ids: [shipping_category.id], calculator_attributes: {type: "Spree::Calculator::Shipping::FlatRate", preferred_amount: 0.0, preferred_currency: "USD"}) 
+  shipping_method.save
+  payment_method = Spree::PaymentMethod.new(type:"Spree::PaymentMethod::Check", name: "Store Credit", description: "Store Credit", active: true)
+  payment_method.save
+
+  Spree::StockLocation.where(name:"Default").first_or_create 
+
+   products = [
+    {id: 1, name: "Iphone", slug: "i-phone-cover", price: 200, available_on: Time.zone.now, taxon_ids: Spree::Taxon.where(name: "Clothing").collect(&:id), option_type_ids: Spree::OptionType.all.collect(&:id), shipping_category_id: Spree::ShippingCategory.first.id}
+  ]
+  products.each do |data|
+    product = Spree::Product.where(slug: data[:slug]).first_or_create
+    product.update_attributes(data.except(:slug))
+    p product
+    variant = Spree::Variant.new(product_id: product.id, option_value_ids: Spree::OptionValue.all.collect(&:id)) 
+    variant.save
+    p variant.errors
+
+  end
+  
 end
 
 

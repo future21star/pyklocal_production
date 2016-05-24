@@ -82,6 +82,7 @@ end
 Given(/^I want to update product "([^"]*)" details with Image$/) do |image|
   click_on"Edit"  
   click_on"IMAGES"
+  sleep 1
   click_on"Add new image"
   attach_file('image_attachment', File.join(Rails.root, '/features/support/iphone.jpg'))
   click_on"Create"
@@ -94,10 +95,69 @@ Given(/^I want to also update stock managment with quantity "([^"]*)"$/) do |sto
 	click_on"Go to store"
   click_on"Edit"
   click_on"STOCK MANAGEMENT"
+  sleep 1
   fill_in('stock_movement_quantity',:with => stock)
+  sleep 1
   click_on"Add Stock"
-  page.find(".odd").should have_content stock == true
+  # page.find(".odd").should have_content stock == true
 end
+
+Given(/^I should goto the shop page$/) do
+		click_on"All Categories" 
+end
+
+Given(/^I should select a product name "([^"]*)"$/) do |product|
+	sleep 5
+	debugger
+	click_on product
+
+end
+
+Then(/^I should goto the checkout process for product "([^"]*)" with quantity "([^"]*)"$/) do |product, quantity|
+
+	fill_in("input-quantity", :with=> quantity)
+	click_on"Add To Cart"
+	debugger
+  click_on"Checkout"
+end
+
+Then(/^I should fill the billing address$/) do
+	steps %Q{
+		And I fill in "order_bill_address_attributes_firstname" with "Gopal" 
+		And I fill in "order_bill_address_attributes_lastname" with "sharma" 
+		And I fill in "order_bill_address_attributes_address1" with "13004" 
+		And I fill in "order_bill_address_attributes_address2" with "captown"
+		And I fill in "order_bill_address_attributes_city" with "New York" 
+		When I select "Gaum" from "order_bill_address_attributes_state_id"
+		And I fill in "order_bill_address_attributes_zipcode" with "49101" 
+		And I fill in "order_bill_address_attributes_phone" with "9685741425" 
+		And I press "Save and Continue"
+	}
+  
+end
+
+Then(/^I should make payment by check and proceed$/) do
+	click_on "Save and Continue"
+	choose "Check"
+	click_on "Save and Continue"
+
+end
+
+Then(/^I should goto store account "([^"]*)"$/) do |store|
+  click_on"Go to store"
+end
+
+Then(/^I should check the product "([^"]*)" stock$/) do |product|
+click_on product
+  
+end
+
+Then(/^I should get stock of product "([^"]*)" with quantity "([^"]*)"$/) do |product, quantity|
+  click_on"Edit"
+  click_on"STOCK MANAGEMENT"
+  page.find(".odd").should have_content quantity == true
+end
+
 
 Then(/^I should break$/) do
   debugger
