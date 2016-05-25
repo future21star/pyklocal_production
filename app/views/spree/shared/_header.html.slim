@@ -63,14 +63,14 @@
               i.fa.fa-search
         .col-table-cell.col-lg-3.col-md-3.col-md-pull-0.col-sm-6.col-sm-pull-6.col-xs-12.inner
           #cart
-            = link_to spree.cart_path , "data-no-turbolink" => true do
-              button.heading.dropdown-toggle data-loading-text="Loading..." data-toggle="dropdown" type="button" 
-                .pull-left.flip
-                  h4
-                span#cart-total 
-                    = simple_current_order.item_count
-                    |&nbsp;
-                    = "Item".pluralize(simple_current_order.item_count) 
+            = link_to spree.cart_path, "data-no-turbolink" => true do 
+              span#cart-total 
+                i.fa.fa-shopping-cart
+                |  (
+                = simple_current_order.item_count
+                |&nbsp;
+                = "Item".pluralize(simple_current_order.item_count) 
+                |)
   nav#menu.navbar
     .navbar-header
       span.visible-xs.visible-sm
