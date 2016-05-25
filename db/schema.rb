@@ -11,16 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160524113620) do
+ActiveRecord::Schema.define(version: 20160525105153) do
 
   create_table "api_tokens", force: :cascade do |t|
-    t.string   "token",      limit: 255
-    t.integer  "user_id",    limit: 4
-    t.string   "latitude",   limit: 255
-    t.string   "longitude",  limit: 255
+    t.string   "token",          limit: 255
+    t.integer  "user_id",        limit: 4
+    t.string   "latitude",       limit: 255
+    t.string   "longitude",      limit: 255
     t.datetime "expire"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_device_id", limit: 4
   end
 
   create_table "email_tokens", force: :cascade do |t|
@@ -256,6 +257,7 @@ ActiveRecord::Schema.define(version: 20160524113620) do
     t.decimal  "taxable_adjustment_total",                 precision: 10, scale: 2, default: 0.0,             null: false
     t.decimal  "non_taxable_adjustment_total",             precision: 10, scale: 2, default: 0.0,             null: false
     t.string   "delivery_type",                limit: 255,                          default: "home_delivery"
+    t.boolean  "ready_to_pick",                                                     default: false
   end
 
   add_index "spree_line_items", ["order_id"], name: "index_spree_line_items_on_order_id", using: :btree
@@ -1143,5 +1145,14 @@ ActiveRecord::Schema.define(version: 20160524113620) do
 
   add_index "spree_zones", ["default_tax"], name: "index_spree_zones_on_default_tax", using: :btree
   add_index "spree_zones", ["kind"], name: "index_spree_zones_on_kind", using: :btree
+
+  create_table "user_devices", force: :cascade do |t|
+    t.integer  "user_id",      limit: 4
+    t.integer  "device_token", limit: 4
+    t.string   "device_type",  limit: 255
+    t.boolean  "notification",             default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

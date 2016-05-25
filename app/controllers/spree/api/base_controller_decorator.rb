@@ -10,5 +10,27 @@ module Spree
 		  })
 		end
 
+		def required_params_present?(params, * parameters)
+	    parameters.each do |param|
+	      if params[param].blank?
+	        @response[:code] = 0
+	        @errors << "#{param.to_s} cannot be left blank"
+	      end
+	    end
+	    @errors.blank? ? true : false
+	  end
+
+	  def set_api_exception_handler_vars
+	    @errors = []
+	    @response = {:code => 0}
+	  end
+
+	  # Method to handle the API exceptions
+	  def api_exception_handler(exception)
+	    @errors = []
+	    @errors << exception.message
+	    @response[:code] = 0
+	  end
+
 	end
 end

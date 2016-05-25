@@ -46,6 +46,10 @@ Pyklocal::Application.routes.draw do
           put :update_location
         end
         resources :registrations 
+        resources :sessions
+        resources :users do
+          post :user_devices
+        end
       end
     end
   end

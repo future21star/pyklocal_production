@@ -7,6 +7,7 @@ Spree::User.class_eval do
   has_many :raitings, foreign_key: :spree_user_id
   has_many :parse_links, foreign_key: :user_id, class_name: 'Spree::ParseLink'
   has_many :api_tokens
+  has_many :user_devices
   belongs_to :spree_buy_privilege
   belongs_to :spree_sell_privilege 
 
