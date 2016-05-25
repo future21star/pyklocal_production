@@ -2037,12 +2037,11 @@ div.required .control-label:before {
   margin-bottom: 15px;
   color: #4D4D4D;
   overflow: auto;
-  margin-top: -20px;
 }
 
 .product-info .cart div {
   vertical-align: middle;
-  margin-left: 0px;
+  float: left;
 }
 
 .product-info .cart div.text-or {
@@ -2076,8 +2075,7 @@ div.required .control-label:before {
 .product-info .cart #add-to-cart-button {
   padding: 11px 15px;
   text-transform: uppercase;
-  margin-top: -8px;
-  margin-left: 22px;
+  margin-top: -3px;
 }
 
 .product-info .cart .minimum {
@@ -2884,8 +2882,12 @@ form#adv_ajaxfilter {
 .style{
   width: 100%;
   padding: 15%;
-border: 1px solid rgba(0, 0, 0, 0.17);
+  border: 1px solid rgba(0, 0, 0, 0.17);
 } 
 .img_center{
   margin: 0px auto;
 }                                                         
+
+.delivery_item{
+  margin-bottom: 24px;
+}

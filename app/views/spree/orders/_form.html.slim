@@ -1,24 +1,35 @@
+
 = render partial: 'spree/shared/error_messages', locals: { target: @order }
-table.table.table-bordered data-hook="" 
-  thead
-    tr.active data-hook="cart_items_headers"
-      td.text-center Image
-      td.text-left Product Name
-      td.text-left Model
-      td.text-left Quantity
-      td.text-left Delivery Type
-      td.text-right Unit Price
-      td.text-right Total
-      td.text-center Remove
-  tbody#line_items data-hook="" 
-    = render partial: 'spree/orders/line_item', collection: order_form.object.line_items, locals: { order_form: order_form }
-  - if @order.adjustments.nonzero.exists? || @order.line_item_adjustments.nonzero.exists? || @order.shipment_adjustments.nonzero.exists? || @order.shipments.any?
-    tr.cart-subtotal
-      td align="right" colspan="4" 
-        h4= Spree.t(:cart_subtotal, count: @order.line_items.sum(:quantity))
-      td.text-center colspan="3" 
-        h4= order_form.object.display_item_total
-      
+.table-responsive
+  table.table.table-bordered
+    thead
+      tr
+        td.text-center Image
+        td.text-center Product Name
+        td.text-center Model
+        td.text-center Quantity
+        td.text-center Delivery Type
+        td.text-center Unit Price
+        td.text-center Total
+        td.text-center Remove
+    tbody#line_items data-hook="" 
+      = render partial: 'spree/orders/line_item', collection: order_form.object.line_items, locals: { order_form: order_form }
+    - if @order.adjustments.nonzero.exists? || @order.line_item_adjustments.nonzero.exists? || @order.shipment_adjustments.nonzero.exists? || @order.shipments.any?
+      tr.cart-subtotal
+        td align="right" colspan="4" 
+          h4= Spree.t(:cart_subtotal, count: @order.line_items.sum(:quantity))
+        td colspan="" 
+        h5= order_form.object.display_item_total
+        td
+      = render "spree/orders/adjustments"
+      tr.warning.cart-total
+        td align="right" colspan="4" 
+          h5= Spree.t(:total)
+        td.lead colspan="" = order_form.object.display_total
+        td
+
+
+
 
 
 
