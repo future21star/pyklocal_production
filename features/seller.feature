@@ -26,6 +26,7 @@ Feature: Seller
     And I should check product is added in product shop page 
     And I want to update product "I-Phone" details with Image
     And I want to also update stock managment with quantity "10"
+    
  
 
 
