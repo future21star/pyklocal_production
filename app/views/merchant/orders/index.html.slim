@@ -26,7 +26,10 @@
                     td= line_item.price.to_f
                     td= line_item.delivery_type.try(:humanize)
                     td
-                      = link_to "Ready to pickup", "#", class: "btn btn-success" if line_item.delivery_type == "home_delivery"
+                      - if !line_item.ready_to_pick
+                        = link_to "Ready to pickup", spree.order_ready_to_pick_path(order, item_id: line_item), class: "btn btn-success", method: :put if line_item.delivery_type == "home_delivery"
+                      - else
+                        = link_to "Cancel", "", class: "btn btn-default" if line_item.delivery_type == "home_delivery"
                   - else
                     tr
                       td= line_item.product.try(:name)
@@ -35,7 +38,10 @@
                       td= line_item.price.to_f
                       td= line_item.delivery_type.try(:humanize)
                       td
-                        = link_to "Ready to pickup", "#", class: "btn btn-success" if line_item.delivery_type == "home_delivery"
+                        - if !line_item.ready_to_pick
+                          = link_to "Ready to pickup", spree.order_ready_to_pick_path(order, item_id: line_item), class: "btn btn-success", method: :put if line_item.delivery_type == "home_delivery"
+                        - else
+                          = link_to "Cancel", "", class: "btn btn-default" if line_item.delivery_type == "home_delivery"
         - else
           tr
             td colspan="7"

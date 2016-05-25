@@ -40,6 +40,9 @@ Pyklocal::Application.routes.draw do
 
   Spree::Core::Engine.routes.draw do 
     resources :shop , :only => [:index,:show]
+    resources :orders do 
+      put :ready_to_pick
+    end
     namespace :api do 
       namespace :v1 do 
         resources :merchant_stores do 
@@ -50,6 +53,7 @@ Pyklocal::Application.routes.draw do
         resources :users do
           post :user_devices
         end
+        resources :orders
       end
     end
   end

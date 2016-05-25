@@ -48,6 +48,18 @@ module Merchant
       latitude?
     end
 
+    def product_line_items
+      store_line_items = []
+      spree_products.each do |product|
+        store_line_items << product.line_items
+      end
+      return store_line_items.flatten
+    end
+
+    def store_orders
+      product_line_items.collect(&:order).uniq.flatten
+    end
+
     private
 
       # def set_taxons
