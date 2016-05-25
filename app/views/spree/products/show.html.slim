@@ -13,29 +13,39 @@
             = @product.name  
           .row.product-info
             .col-sm-6
-              div.style
-                .image
-                  a href=product_path(@product) 
-                    = image_tag @product.images.first.try(:attachment).try(:url), class: "img-responsive img_center"
-              .center-block.text-center
-                span.zoom-gallery
-                  i.fa.fa-search
-                  | Click image for Gallery
-              #gallery_01.image-additional
-                = render :partial => 'image'
+              #product-images data-hook="product_images"
+                #main-image.style
+                  .image data-hook="product_images"
+                    a href=product_path(@product) 
+                      = image_tag @product.images.first.try(:attachment).try(:url),id:"zoom_01", class: "img-responsive img_center",data: { 'zoom-image' => @product.images.first.attachment.url(:large)}
+                .center-block.text-center
+                  span.zoom-gallery
+                    i.fa.fa-search
+                    | Click image for Zoom
+                #thumbnails data-hook="" 
+                  = render :partial => 'thumbnails'
+                / #gallery_01.image-additional
+                /   a.thumbnail 
+                /     - if defined?(image) && image
+                /       = image_tag image.attachment.url(:product), :itemprop => "image"
+                /     - else
+              /       = product_image(@product, :itemprop => "image")
             .col-sm-6
               ul.list-unstyled.description
                 li.active
                   b Name:
                   span itemprop="brand"
+                    |&nbsp;
                     = @product.name
                 li
                   b Brand:
                   span itemprop="brand"
+                    |&nbsp;
                     = @product.slug
                 li
                   b Product Code:
                   span itemprop="mpn"  
+                    |&nbsp;
                     = @product.sku
                 li
                   b Availability:
@@ -46,22 +56,12 @@
                     = number_to_currency(@product.price.to_s)
                   span content=("In Stock") itemprop="availability" 
                 li
-                li Ex Tax: $100.00
+                li Ex Tax: $00.00
 
               #product
-                .cart
-                  
                   div
                     = render :partial => 'cart_form'
-                    .clear
-                      div
-                        button.wishlist onclick="wishlist.add('48');" type="button" 
-                          i.fa.fa-heart
-                          | Add to Wish List
-                        br 
-                        button.wishlist onclick="compare.add('48');" type="button" 
-                          i.fa.fa-exchange
-                          | Compare this Product
+                    
               .addthis_toolbox.addthis_default_style.addthis_16x16_style
                 a.addthis_button_facebook
                 a.addthis_button_twitter
@@ -69,7 +69,7 @@
                 a.addthis_button_pinterest_share
                 a.addthis_button_compact
                 a.addthis_counter.addthis_bubble_style
-              
+                
               /! AddThis Button END
           ul.nav.nav-tabs
             li.active
@@ -87,7 +87,7 @@
                 .form-group.required
                   .col-sm-12
                     label.control-label for="input-name"  Your Name
-                    input#input-name.form-control name="name" type="text" value="" /
+                    input#input-name.form-control name="name" type="text" value="" 
                 .form-group.required
                   .col-sm-12
                     label.control-label for="input-review"  Your Review
@@ -99,15 +99,15 @@
                   .col-sm-12
                     label.control-label Rating
                     | &nbsp;&nbsp;&nbsp; Bad&nbsp;
-                    input name="rating" type="radio" value="1" /
+                    input name="rating" type="radio" value="1" 
                     | &nbsp;
-                    input name="rating" type="radio" value="2" /
+                    input name="rating" type="radio" value="2" 
                     | &nbsp;
-                    input name="rating" type="radio" value="3" /
+                    input name="rating" type="radio" value="3" 
                     | &nbsp;
-                    input name="rating" type="radio" value="4" /
+                    input name="rating" type="radio" value="4" 
                     | &nbsp;
-                    input name="rating" type="radio" value="5" /
+                    input name="rating" type="radio" value="5" 
                     | &nbsp;Good
                 .buttons
                   .pull-right
@@ -121,4 +121,11 @@
       .owl-wrapper-outer
         .owl-wrapper style=("width: 3648px; left: 0px; display: block;") 
           
-
+          
+  javascript:
+    $('#zoom_01').elevateZoom({
+      zoomType: "inner",
+      cursor: "crosshair",
+      zoomWindowFadeIn: 500,
+      zoomWindowFadeOut: 750
+     });
