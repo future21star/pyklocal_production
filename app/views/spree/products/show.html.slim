@@ -9,8 +9,7 @@
     .row
       #content.col-sm-9
         div itemscope="" itemtype="http://schema.org/Product" 
-          h1
-            = @product.name  
+          h1  
           .row.product-info
             .col-sm-6
               #product-images data-hook="product_images"
@@ -22,42 +21,15 @@
                   span.zoom-gallery
                     i.fa.fa-search
                     | Click image for Zoom
-                #thumbnails data-hook="" 
-                  = render :partial => 'thumbnails'
-                / #gallery_01.image-additional
-                /   a.thumbnail 
-                /     - if defined?(image) && image
-                /       = image_tag image.attachment.url(:product), :itemprop => "image"
-                /     - else
-              /       = product_image(@product, :itemprop => "image")
+                / #thumbnails data-hook="" 
+                  = render :partial => 'image'
+                #gallery_01.image-additional
+                  a.thumbnail 
+                    - if defined?(image) && image
+                      = image_tag image.attachment.url(:product), :itemprop => "image"
+                    - else
+                    = product_image(@product, :itemprop => "image")
             .col-sm-6
-              ul.list-unstyled.description
-                li.active
-                  b Name:
-                  span itemprop="brand"
-                    |&nbsp;
-                    = @product.name
-                li
-                  b Brand:
-                  span itemprop="brand"
-                    |&nbsp;
-                    = @product.slug
-                li
-                  b Product Code:
-                  span itemprop="mpn"  
-                    |&nbsp;
-                    = @product.sku
-                li
-                  b Availability:
-                  span style=("color:#53af2e; font-weight:bold;")  In Stock
-              ul.price-box
-                li.price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" 
-                  span itemprop="price"  
-                    = number_to_currency(@product.price.to_s)
-                  span content=("In Stock") itemprop="availability" 
-                li
-                li Ex Tax: $00.00
-
               #product
                   div
                     = render :partial => 'cart_form'
@@ -75,7 +47,7 @@
             li.active
               a data-toggle="tab" href="#tab-description"  Description
             li
-              a data-toggle="tab" href="#tab-review"  Reviews (0)
+              a data-toggle="tab" href="#tab-review"  Reviews 
           .tab-content
             #tab-description.tab-pane.active itemprop="description" 
               .cpt_product_description
@@ -127,5 +99,5 @@
       zoomType: "inner",
       cursor: "crosshair",
       zoomWindowFadeIn: 500,
-      zoomWindowFadeOut: 750
+      zoomWindowFadeOut: 750,
      });

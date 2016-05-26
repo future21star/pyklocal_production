@@ -3,9 +3,9 @@
   tr.line-item
     td.text-center data-hook="cart_item_image" 
       - if variant.images.length == 0
-        = link_to small_image(variant.product), variant.product,class:"img-responsive"
+        = link_to small_image(variant.product), variant.product,class:"img-thumbnail"
       - else
-        = link_to image_tag(variant.images.first.attachment.url(:small)), variant.product,class:"img-responsive"
+        = link_to image_tag(variant.images.first.attachment.url(:mini)), variant.product,class:"img-thumbnail"
     td.text-left data-hook="cart_item_description" 
       h4= link_to line_item.name, product_path(variant.product)
       = variant.options_text
