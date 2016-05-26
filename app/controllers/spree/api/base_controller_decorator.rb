@@ -1,6 +1,8 @@
 module Spree
 	Api::BaseController.class_eval do 
 
+		include Spree::Api::SessionsHelper
+
 		def generate_api_key(params, user_id)
 			Spree::ApiToken.create({
 		    token: (Digest::SHA1.hexdigest "#{Time.now.to_i}#{1}"),
@@ -27,9 +29,11 @@ module Spree
 
 	  # Method to handle the API exceptions
 	  def api_exception_handler(exception)
-	    @errors = []
-	    @errors << exception.message
-	    @response[:code] = 0
+	    # @errors = []
+	    # @errors << exception.message
+	    # @response[:code] = 0
+	    @response = error_response
+	    @response[:message] = exception.message
 	  end
 
 	end

@@ -60,6 +60,18 @@ module Merchant
       product_line_items.collect(&:order).uniq.flatten
     end
 
+    def pickable_line_items
+      store_line_items = []
+      spree_products.each do |product|
+        store_line_items << product.line_items.where(ready_to_pick: true)
+      end
+      return store_line_items.flatten
+    end
+
+    def pickable_store_orders
+      pickable_line_items.collect(&:order).uniq.flatten
+    end
+
     private
 
       # def set_taxons
