@@ -7,8 +7,8 @@ module Spree
 			unless @stores.blank?
 				@stores.each do |store|
 					unless store.pickable_store_orders.blank?
-						@orders_list << store.pickable_store_orders.map do |s_o|
-							{number: s_o.number, store_name: store.name}
+						store.pickable_store_orders.map do |s_o|
+							@orders_list.push({number: s_o.number, store_name: store.name})
 						end
 					end
 				end
@@ -16,7 +16,7 @@ module Spree
 		rescue Exception => e
 			api_exception_handler(e)
 		ensure
-			render json: @orders_list
+			render json: @orders_list.as_json()
 		end
 
 	end
