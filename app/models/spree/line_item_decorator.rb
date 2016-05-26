@@ -9,8 +9,20 @@ module Spree
 			product.store.try(:name)
 		end
 
-		def store_address
+		def pickup_address
 			product.store.try(:address)
+		end
+
+		def delivery_address
+			[order.ship_address.address1, order.ship_address.address2, order.ship_address.city, order.ship_address.state, order.ship_address.country].compact.join(" ")
+		end
+
+		def buyer_name
+			[order.ship_address.first_name, order.ship_address.last_name].compact.join(" ")
+		end
+
+		def buyer_zipcode
+			order.ship_address.zipcode
 		end
 
 		def store_zipcode
