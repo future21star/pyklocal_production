@@ -5,6 +5,10 @@ module Spree
 			product.try(:name)
 		end
 
+		def store_location
+			{lat: product.try(:store).try(:latitude), long: product.try(:store).try(:longitude)}
+		end
+
 		def seller_name
 			product.store.try(:name)
 		end

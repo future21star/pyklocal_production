@@ -28,7 +28,7 @@ module Spree
 			@order.line_items.each do |line_item|
 				if @store.spree_products.include?(line_item.product)
 					@store_line_items.push(line_item)
-					@pick_up_and_delivery = {store_address: line_item.pickup_address, store_zipcode: line_item.store_zipcode, buyer_name: line_item.buyer_name, buyer_address: line_item.delivery_address, buyer_zipcode: line_item.buyer_zipcode}
+					@pick_up_and_delivery = {store_address: line_item.pickup_address, store_zipcode: line_item.store_zipcode, buyer_name: line_item.buyer_name, buyer_address: line_item.delivery_address, buyer_zipcode: line_item.buyer_zipcode, lat_long: line_item.store_location}
 				end
 			end
 		rescue Exception => e
