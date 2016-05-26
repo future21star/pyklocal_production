@@ -5,6 +5,10 @@ module Spree
 			product.try(:name)
 		end
 
+		def product_image_url
+			product.images.first.try(:attachment).try(:url)
+		end
+
 		def store_location
 			{lat: product.try(:store).try(:latitude), long: product.try(:store).try(:longitude)}
 		end
@@ -18,7 +22,7 @@ module Spree
 		end
 
 		def delivery_address
-			[order.ship_address.address1, order.ship_address.address2, order.ship_address.city, order.ship_address.state, order.ship_address.country].compact.join(" ")
+			[order.ship_address.try(:address1), order.ship_address.try(:address2), order.ship_address.try(:city), order.ship_address.try(:state), order.ship_address.try(:country)].compact.join(", ")
 		end
 
 		def buyer_name
