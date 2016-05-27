@@ -2,65 +2,100 @@
   .container
     ul.breadcrumb
       li
+        a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=common/home" 
           i.fa.fa-home
       li
-        a href="/"  Shopping Cart
+        a href="http://demo.harnishdesign.net/opencart/marketshop/v3/index.php?route=checkout/cart"  Shopping Cart
       li
-        a href="/"  Checkout
+        a href="./Checkout_files/Checkout.html"  Checkout
     .row
       #content.col-sm-12
+        h1 Checkout
         #accordion.panel-group
           .panel.panel-default
             .panel-heading
-              h4.panel-title  Step 1: Checkout Options
-            #collapse-checkout-option.panel-collapse.collapse
+              h4.panel-title
+                a.accordion-toggle data-parent="#accordion" data-toggle="collapse" href="http://demo.harnishdesign.net/opencart/marketshop/v3/#collapse-checkout-option" 
+                  |  Checkout Options
+                  i.fa.fa-caret-down
+            #collapse-checkout-option.panel-collapse.collapse.in
               .panel-body
-            .row style = ("margin-top: 10px; margin-bottom: 10px;")
-              section#login-section.container
-                .col-md-6
-                  h2.login-title
-                    |Registration as New Customer
-                  = form_for Spree::User.new, html: {class: "custom-form"}, :as => :spree_user, :url => spree.registration_path do |f|
-                    .form-group
-                      label.form-label for="email" 
-                        |E-mail
-                        span.required 
-                      = f.email_field :email, class: "form-control #{@user.errors ? 'hello' : ''}", id: "email"
-                    .form-group
-                      label.form-label for="pwd" 
-                        |Password
-                        span.required 
-                      = f.password_field :password, class: "form-control", id: "pwd"
-                    .form-group.required
-                      label.form-label for="pwd" 
-                        |Password Confirmation
-                        span.required
-                      = f.password_field :password, :class => 'form-control', :tabindex => 2
-                    .form-group
-                      p
-                      By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.
-                    .form-footer
-                      = f.submit Spree.t(:continue), :class => 'btn btn-lg btn-primary', :tabindex => 3
-                        |Create
-                      
-                      .divider
-                        |or
-                      a.login-btn href= login_path
-                        |Log In
-                .col-md-6#registration
-                  h2.login-title
-                    |Checkout as guest
-                  - if Spree::Config[:allow_guest_checkout] 
-                    #guest_checkout data-hook=""
-                      = render partial: 'spree/shared/error_messages', locals: {target: @order}
-                      = form_for @order, url: update_checkout_registration_path, method: :put, html: { id: 'checkout_form_registration', class: 'custom-form signup-form' } do |f|
-                        .form-group
-                          = f.label :email, Spree.t(:email), class: 'form-label'
-                          span.required 
-                          = f.email_field :email, class: 'title form-control', id: 'email'
-                        .form-footer
-                          = f.submit Spree.t(:continue), class: 'form-btn btn btn-primary'
-  
+                .row
+                  .col-sm-6
+                    h2 New Customer
+                    p Checkout Options:
+                    .radio
+                        label
+                          input checked="checked" name="account" type="radio" value="login" /
+                          | LogIn
+                    .radio
+                      label
+                        input  name="account" type="radio" value="register" /
+                        | Register Account
+                    .radio
+                      label
+                        input name="account" type="radio" value="guest" /
+                        | Guest Checkout
+                    p By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.
+                    
+                  .col-sm-6
+                    #login 
+                      h2 Returning Customer
+                      p I am a returning customer
+                      = form_for Spree::User.new, :as => :spree_user, :url => spree.create_new_session_path do |f|
+                        fieldset#password-credentials
+                          .form-group
+                            = f.email_field :email, :class => 'form-control', :tabindex => 1, :placeholder => Spree.t(:email)
+                          .form-group
+                            = f.password_field :password, :class => 'form-control', :tabindex => 2, :placeholder => Spree.t(:password)
+                          .checkbox
+                            label
+                              = f.check_box :remember_me
+                              = f.label :remember_me, Spree.t(:remember_me)
+                          .form-group
+                            = f.submit Spree.t(:login), :class => 'btn btn-lg btn-primary btn-block', :tabindex => 3
+                    #registration style=("display:none") 
+                      =render :partial => 'spree/checkout/registration'
+                    #guest style=("display:none") 
+                      =render :partial => 'spree/checkout/guest'
+          .panel.panel-default
+            .panel-heading
+              h4.panel-title Address
+            #collapse-payment-address.panel-collapse.collapse
+              .panel-body
+          .panel.panel-default
+            .panel-heading
+              h4.panel-title  Delivery
+            #collapse-shipping-method.panel-collapse.collapse
+              .panel-body
+          .panel.panel-default
+            .panel-heading
+              h4.panel-title  Payment 
+            #collapse-payment-method.panel-collapse.collapse
+              .panel-body
+          .panel.panel-default
+            .panel-heading
+              h4.panel-title  Confirm 
+            #collapse-checkout-confirm.panel-collapse.collapse
+              .panel-body
 
 
+- content_for :js do
+  javascript:
+    $('input[name=\'account\']').on('change', function() {
+      if (this.value == 'register') {
+        $('#login').hide();
+        $('#guest').hide();
+        $('#registration').show();
+      } else if (this.value == 'guest') {
+        $('#login').hide();
+        $('#registration').hide();
+        $('#guest').show();
+
+      } else if (this.value == 'login'){
+        $('#registration').hide();
+        $('#guest').hide();
+        $('#login').show();
+      }
+    });
 
