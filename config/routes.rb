@@ -45,6 +45,7 @@ Pyklocal::Application.routes.draw do
     resources :orders do 
       put :ready_to_pick
     end
+    resources :payment_preferences
 
     #Api routes
     namespace :api do 

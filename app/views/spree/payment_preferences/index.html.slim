@@ -1,0 +1,33 @@
+.container
+	.row
+		.col-xs-6
+			.panel.panel-default.margin-top-20
+				.panel-heading
+					.panel-title Account Infromation
+				.panel-body
+					- if @payment_preference.persisted?
+						table.table.table-striped
+							tr
+								td Payee Name
+								td= @payment_preference.payee_name
+							tr
+								td Account Number
+								td= @payment_preference.a_c_no
+							tr
+								td Bank Name
+								td= @payment_preference.bank_name
+							tr
+								td Swift Code
+								td= @payment_preference.swift_code
+							tr
+								td Routing Number
+								td= @payment_preference.routing_number
+							tr
+								td
+									= link_to edit_payment_preference_path(@payment_preference), class: "btn btn-default", "data-no-turbolink" => true do 
+										span.fa.fa-edit
+									= link_to payment_preference_path(@payment_preference), class: "btn btn-danger margin-left" do 
+										span.fa.fa-trash
+					- else
+						.col-xs-10
+							= render partial: "form"
