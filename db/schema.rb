@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160525105153) do
+ActiveRecord::Schema.define(version: 20160527075724) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -48,6 +48,26 @@ ActiveRecord::Schema.define(version: 20160525105153) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
+
+  create_table "payment_histories", force: :cascade do |t|
+    t.integer  "user_id",            limit: 4
+    t.string   "transaction_number", limit: 255
+    t.decimal  "amount",                         precision: 10
+    t.decimal  "amount_due",                     precision: 10
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "payment_preferences", force: :cascade do |t|
+    t.integer  "user_id",        limit: 4
+    t.string   "a_c_no",         limit: 255
+    t.string   "payee_name",     limit: 255
+    t.string   "bank_name",      limit: 255
+    t.string   "swift_code",     limit: 255
+    t.string   "routing_number", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "pyklocal_stores", force: :cascade do |t|
     t.string   "name",                limit: 255

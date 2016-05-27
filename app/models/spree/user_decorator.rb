@@ -1,6 +1,6 @@
 Spree::User.class_eval do
 
-  #------------------------ Associations
+  #------------------------ Associations------------------------------
   has_many :store_users, foreign_key: :spree_user_id, class_name: 'Merchant::StoreUser'
   has_many :stores, through: :store_users, class_name: 'Merchant::Store' 
   has_many :ordered_line_items, through: :orders, :source => :line_items, class_name: 'Spree::LineItem'
@@ -8,9 +8,11 @@ Spree::User.class_eval do
   has_many :parse_links, foreign_key: :user_id, class_name: 'Spree::ParseLink'
   has_many :api_tokens
   has_many :user_devices
+  has_many :payment_histories, foreign_key: :user_id, class_name: 'Spree::PaymentHistory'
   belongs_to :spree_buy_privilege
   belongs_to :spree_sell_privilege 
-
+  has_one :payment_preference, foreign_key: :user_id, class_name: 'Spree::PaymentPreference'
+  #---------------------Callbacks--------------------------
   after_create :assign_api_key
 
   accepts_nested_attributes_for :parse_links, :reject_if => lambda { |a| a[:url].blank? }
