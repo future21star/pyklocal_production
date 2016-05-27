@@ -21,12 +21,11 @@
                   span.zoom-gallery
                     i.fa.fa-search
                     | Click image for Zoom
-                / #thumbnails data-hook="" 
-                  = render :partial => 'image'
                 #gallery_01.image-additional
                   a.thumbnail 
                     - if defined?(image) && image
-                      = image_tag image.attachment.url(:product), :itemprop => "image"
+                      = link_to(image_tag(image.attachment.url(:mini), class: "thumbnail"), image.attachment.url(:product))
+                      / = image_tag image.attachment.url(:mini), :itemprop => "image",image.attachment.url(:product)
                     - else
                     = product_image(@product, :itemprop => "image")
             .col-sm-6
@@ -95,9 +94,21 @@
           
           
   javascript:
-    $('#zoom_01').elevateZoom({
-      zoomType: "inner",
-      cursor: "crosshair",
+ 
+
+    $("#zoom_01").elevateZoom({
+      gallery:'gallery_01',
+      cursor: 'pointer',
+      galleryActiveClass: 'active',
+      imageCrossfade: true,
       zoomWindowFadeIn: 500,
-      zoomWindowFadeOut: 750,
-     });
+      zoomWindowFadeOut: 500,
+      lensFadeIn: 500,
+      lensFadeOut: 500,
+      loadingIcon: 'catalog/view/theme/marketshop/image/progress.gif'
+    }); 
+    $("#zoom_01").bind("click", function(e) {
+      var ez =   $('#zoom_01').data('elevateZoom');
+      $.swipebox(ez.getGalleryList());
+      return false;
+    });

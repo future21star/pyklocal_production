@@ -11,14 +11,10 @@
         p.price
           = number_to_currency(product.price)
       .button-group
-        button.btn-primary onclick="cart.add('48');" type="button" 
-          span Add to Cart
-        .add-to-links
-          div
-            button data-original-title=("Add to Wish List") data-toggle="tooltip" onclick="wishlist.add('48');" title="" type="button" 
-              i.fa.fa-heart
-            button data-original-title=("Compare this Product") data-toggle="tooltip" onclick="compare.add('48');" title="" type="button" 
-              i.fa.fa-exchange
+        a href=href=product_path(product)
+          button.btn-default  type="button" 
+            span Add to Cart
+       
 
 	
 

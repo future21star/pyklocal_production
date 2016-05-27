@@ -1,0 +1,24 @@
+- content_for :google_analytics do
+  - if order_just_completed?(@order)
+    = render partial: 'spree/shared/google_purchase.js', locals: { order: @order }
+#container
+  #accordion.panel-group
+    .panel.panel-default style=("border-radius:0px;")
+      .panel-heading
+          h3.panel-title data-hook="checkout_title"
+            | Order Complete
+            .accordion-toggle.collapsed.in data-parent="#accordion" data-toggle="collapse"
+      .panel-body
+        h1= accurate_title
+        - if order_just_completed?(@order)
+          strong= Spree.t(:thank_you_for_your_order)
+        #order data-hook="" 
+          = render partial: 'spree/shared/order_details', locals: { order: @order }
+          br.clear
+          p data-hook="links" 
+            = link_to Spree.t(:back_to_store), spree.root_path, class: "button"
+            - unless order_just_completed?(@order)
+              - if try_spree_current_user && respond_to?(:spree_account_path)
+                = link_to Spree.t(:my_account), spree_account_path, class: "button"
+
+    

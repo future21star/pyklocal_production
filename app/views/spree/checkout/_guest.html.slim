@@ -1,0 +1,13 @@
+      .col-md-12#registration
+                  h2.login-title
+                    |Checkout as guest
+                  - if Spree::Config[:allow_guest_checkout] 
+                    #guest_checkout data-hook=""
+                      = render partial: 'spree/shared/error_messages', locals: {target: @order}
+                      = form_for @order, url: update_checkout_registration_path, method: :put, html: { id: 'checkout_form_registration', class: 'custom-form signup-form' } do |f|
+                        .form-group
+                          = f.label :email, Spree.t(:email), class: 'form-label'
+                          span.required 
+                          = f.email_field :email, class: 'title form-control', id: 'email',:placeholder => Spree.t(:email)
+                        .form-footer
+                          = f.submit Spree.t(:continue), class: 'btn btn-lg btn-primary btn-block'

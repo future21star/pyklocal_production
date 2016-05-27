@@ -17,9 +17,14 @@
       span.line-item-description data-hook="line_item_description" 
        
     td.text-center data-hook="cart_item_total"
-      = line_item.name
-    td.text-center data-hook="cart_item_quantity" valign="center" 
-      = item_form.number_field :quantity, min: 0, class: "form-control line_item_quantity", size: 5
+      = line_item.name 
+    td.text-center data-hook="cart_item_quantity"
+      = line_item.quantity
+      .input-group.btn-block style=("max-width: 200px;"" display:none;") 
+        = item_form.number_field :quantity, min: 0, class: "form-control line_item_quantity", size: 5
+        span.input-group-btn style=("overflow:hidden")
+          button.btn.btn-primary data-toggle="tooltip" title="Update" type="submit" id="update-button"
+            i.fa.fa-refresh
     td.text-center
       = line_item.delivery_type.humanize
     td.text-center data-hook="cart_item_price" 
