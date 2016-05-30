@@ -13,9 +13,9 @@
               #accordion.panel-group
                 .panel.panel-default style=("border-radius:0px;margin-bottom: -18px;")
                   .panel-heading
-                    a href=checkout_state_path(state)
+                    a href=checkout_state_path(state) 
                       h4.panel-title data-hook="checkout_title"
-                        .accordion-toggle.collapsed.in data-parent="#accordion" data-toggle="collapse"
+                        
                           = state.titleize
                           | &nbsp;
                           i.fa.fa-caret-down
