@@ -1,7 +1,7 @@
 module Spree
 	class Admin::SellersController < Admin::ResourceController
 
-    before_filter :find_seller, only: [:edit, :update, :delete, :stores]
+    before_filter :find_seller, only: [:edit, :update, :delete, :stores, :store_orders]
 
 		def index
 			respond_with(@collection) do |format|
@@ -30,6 +30,10 @@ module Spree
     def stores
       @store = @seller.stores.first
       @products = @store.spree_products
+    end
+
+    def store_orders
+      @store_order = @seller.stores.first.store_orders
     end
 
 		protected
