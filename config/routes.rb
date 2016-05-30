@@ -68,6 +68,7 @@ Pyklocal::Application.routes.draw do
         resources :payment_preferences
         get :stores
         resources :payment_histories
+        get :store_orders
       end
     end
 

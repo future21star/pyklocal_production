@@ -11,4 +11,6 @@
       = link_to_with_icon 'money', Spree.t(:"admin.user.payment_histories"), spree.admin_seller_payment_histories_path(@seller) 
     li class=(current == :stores ? 'active' : '')
       = link_to_with_icon 'shopping-cart', Spree.t(:"admin.user.stores"), admin_seller_stores_path(@seller) 
+    li class=(current == :store_orders ? 'active' : '')
+      = link_to_with_icon 'shopping-cart', Spree.t(:"admin.user.store_orders"), admin_seller_store_orders_path(@seller)
     
