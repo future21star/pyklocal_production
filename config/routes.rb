@@ -64,7 +64,11 @@ Pyklocal::Application.routes.draw do
 
     #Admin routes
     namespace :admin do 
-      resources :sellers
+      resources :sellers do 
+        resources :payment_preferences
+        get :stores
+        resources :payment_histories
+      end
     end
 
   end

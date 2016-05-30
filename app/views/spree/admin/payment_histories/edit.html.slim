@@ -1,0 +1,13 @@
+= render partial: 'spree/admin/sellers/sidebar', locals: { current: :payment_histories }
+- content_for :page_title do
+  |  
+  = @seller.full_name
+.panel.panel-default
+	.panel-heading
+		h1.panel-title
+			= Spree.t(:edit_transection_history)
+	.panel-body
+		.errors
+			= render partial: 'spree/admin/shared/error_messages', locals: { target: @payment_history }
+		.form-content
+			= render partial: "form"

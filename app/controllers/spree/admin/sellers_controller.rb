@@ -1,12 +1,36 @@
 module Spree
 	class Admin::SellersController < Admin::ResourceController
 
+    before_filter :find_seller, only: [:edit, :update, :delete, :stores]
+
 		def index
 			respond_with(@collection) do |format|
         format.html
         format.json { render :json => json_data }
       end
 		end
+
+    def edit
+      @role = Spree::Role.where(name: "merchant").first
+    end
+
+    def update
+      if params[:seller][:password].blank? && params[:seller][:password_confirmation].blank?
+        params[:seller].delete(:password)
+        params[:seller].delete(:password_confirmation)
+      end
+
+      if @seller.update_attributes(seller_params)
+        flash.now[:success] = Spree.t(:account_updated)
+      end
+
+      render :edit
+    end
+
+    def stores
+      @store = @seller.stores.first
+      @products = @store.spree_products
+    end
 
 		protected
 
@@ -24,6 +48,15 @@ module Spree
           @search = @collection.ransack(params[:q])
           @collection = @search.result.page(params[:page]).per(Spree::Config[:admin_products_per_page])
         end
+      end
+
+      def find_seller
+        id = params[:id] || params[:seller_id]
+        @seller = Spree::User.find_by_id(id)
+      end
+
+      def seller_params
+        params.require(:seller).permit(:email, :first_name, :last_name, :password, :password_confirmation)
       end
 
 	end

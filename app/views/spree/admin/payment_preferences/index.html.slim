@@ -1,0 +1,27 @@
+= render partial: 'spree/admin/sellers/sidebar', locals: { current: :payment_preference }
+- content_for :page_title do
+  |  
+  = @seller.full_name
+.panel.panel-default.margin-top-20
+  .panel-heading
+    .panel-title Account Infromation
+  .panel-body
+    - if @payment_preference.present?
+      table.table.table-striped
+        tr
+          td Payee Name
+          td= @payment_preference.payee_name
+        tr
+          td Account Number
+          td= @payment_preference.a_c_no
+        tr
+          td Bank Name
+          td= @payment_preference.bank_name
+        tr
+          td Swift Code
+          td= @payment_preference.swift_code
+        tr
+          td Routing Number
+          td= @payment_preference.routing_number 
+    - else
+      span No payment preferences added by the seller.
