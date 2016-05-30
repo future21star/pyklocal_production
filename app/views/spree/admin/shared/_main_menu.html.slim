@@ -16,9 +16,6 @@
 - if Spree.user_class && can?(:admin, Spree.user_class)
   ul.nav.nav-sidebar
     = tab *Spree::BackendConfiguration::USER_TABS, url: spree.admin_users_path, icon: 'user'
-- if Spree.user_class && can?(:admin, Spree.user_class)
-  ul.nav.nav-sidebar
-    = tab *Spree::BackendConfiguration::SELLER_TAB, url: spree.admin_sellers_path, icon: 'user'
 - if can? :admin, current_store
   ul.nav.nav-sidebar
     = main_menu_tree Spree.t(:configurations), icon: "wrench", sub_menu: "configuration", url: "#sidebar-configuration"
