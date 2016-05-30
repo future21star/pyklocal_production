@@ -19,8 +19,7 @@
     td.text-center data-hook="cart_item_total"
       = line_item.name 
     td.text-center data-hook="cart_item_quantity"
-      = line_item.quantity
-      .input-group.btn-block style=("max-width: 200px;"" display:none;") 
+      .input-group.btn-block style=("max-width: 200px;") 
         = item_form.number_field :quantity, min: 0, class: "form-control line_item_quantity", size: 5
         span.input-group-btn style=("overflow:hidden")
           button.btn.btn-primary data-toggle="tooltip" title="Update" type="submit" id="update-button"
