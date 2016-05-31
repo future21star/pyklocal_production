@@ -1,5 +1,6 @@
 Pyklocal::Application.routes.draw do 
 
+
   namespace :merchant do
     get "/", to: "home#index"
     get "stores/products/:product_id/variants", to: "variants#index", as: "stores_products_variants"
@@ -39,7 +40,9 @@ Pyklocal::Application.routes.draw do
   mount Spree::Core::Engine, at: '/'
 
   Spree::Core::Engine.routes.draw do 
+    get "orders" => "home#orders"
 
+    resources :payment_histories
     #Applications routes
     resources :shop , :only => [:index,:show]
     resources :orders do 

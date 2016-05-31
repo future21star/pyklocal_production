@@ -37,9 +37,7 @@
                   i.fa.fa-caret-down
                 ul.dropdown-menu.dropdown-menu-right
                   li
-                    = "Hey, #{current_spree_user.full_name}"
-                  li
-                    a href="#"  Order History
+                    = link_to "My Account",spree.account_path
                   li
                     = link_to "Logout", spree.logout_path ,"data-no-turbolink" => true
               
