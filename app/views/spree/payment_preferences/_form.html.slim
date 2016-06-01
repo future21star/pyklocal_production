@@ -1,19 +1,19 @@
 = form_for @payment_preference, html: {class: "form-horizontal"} do |f|
 	.form-group
-		= f.label :payee_name, class: "control-label"
-		= f.text_field :payee_name, class: "form-control"
+		
+		= f.text_field :payee_name, class: "form-control",placeholder:"User name"
 	.form-group
-		= f.label :account_number, class: "control-label"
-		= f.text_field :a_c_no, class: "form-control"
+		
+		= f.text_field :a_c_no, class: "form-control",placeholder:"Account number"
 	.form-group
-		= f.label :bank_name, class: "control-label"
-		= f.text_field :bank_name, class: "form-control"
+		
+		= f.text_field :bank_name, class: "form-control",placeholder:"Bank name"
 	.form-group
-		= f.label :swift_code, class: "control-label"
-		= f.text_field :swift_code, class: "form-control"
+		
+		= f.text_field :swift_code, class: "form-control",placeholder:"Swift code"
 	.form-group
-		= f.label :routing_number, class: "control-label"
-		= f.text_field :routing_number, class: "form-control"
+		
+		= f.text_field :routing_number, class: "form-control",placeholder:"Routing number"
 	.form-group
 		= f.submit nil, class: "btn btn-primary"
 		= link_to "Cancel", spree.payment_preferences_path, class: "btn btn-default margin-left"
