@@ -31,13 +31,13 @@
           ul
             -if spree_user_signed_in? 
               li#my_account.dropdown
-                a href="" 
+                a href=spree.edit_account_path 
                   | My Account
                   |&nbsp;
                   i.fa.fa-caret-down
                 ul.dropdown-menu.dropdown-menu-right
                   li
-                    = link_to "My Account",spree.account_path
+                    = link_to "My Account",spree.edit_account_path
                   li
                     = link_to "Logout", spree.logout_path ,"data-no-turbolink" => true
               

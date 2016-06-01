@@ -28,7 +28,7 @@
                           h5
                             label.col-sm-2  User Name :
                             label.col-sm-10 
-                               =@user.try(:full_name)
+                               =@user.try(:full_name).titleize
                             label.col-sm-2  E-mail :
                             label.col-sm-10
                                =@user.try(:email)

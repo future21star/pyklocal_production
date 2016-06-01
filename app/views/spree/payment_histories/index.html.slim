@@ -10,7 +10,7 @@
         a href=""  Payment History
     .row
       #content.col-sm-3
-        =render :partial => "spree/shared/user_menu"
+        =render :partial => "spree/shared/user_menu" ,locals: {current: "payment_histories"}
       #content.col-sm-9
         
           h3 Payment History
@@ -21,14 +21,19 @@
                   td.text-center.strong Transaction Id
                   td.text-center Total Payment
                   td.text-center Due Payment
+                  td.text-center Transaction date
                  
               tbody
                 - unless @payment_histories.blank?
                   -@payment_histories.each do |payment|
                     tr
                       td.text-center= payment.transaction_number
-                      td.text-center= payment.amount
-                      td.text-center= payment.amount_due
+                      td.text-center= number_to_currency(payment.amount)
+                      -if payment.amount_due==nil
+                        td.text-center No Amount Due
+                      -else
+                        td.text-center =number_to_currency(payment.amount_due)
+                      td.text-center =payment.created_at.strftime("%d-%m-%Y")
                   end
                 - else
                     tr

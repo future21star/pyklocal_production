@@ -11,7 +11,7 @@
         a href=""  Order History
     .row
     	#content.col-sm-3
-		    =render :partial => "spree/shared/user_menu"
+		    =render :partial => "spree/shared/user_menu", locals: {current: "orders"}
       	#content.col-sm-9
 	        h3 Order History
 	        .table-responsive

@@ -8,7 +8,7 @@
         a href="#"  Profile
     .row 
       #content.col-sm-3
-        =render :partial => "spree/shared/user_menu"
+        =render :partial => "spree/shared/user_menu", locals: {current: "account"}
 
       column#column-right.col-sm-9.hidden-xs
         h3 User Information
@@ -28,8 +28,16 @@
                           = render partial: "spree/shared/error_messages", locals: {target: @user}
                           .col-sm-12
                             .form-group
+                              = f.label :first_name
+                              = f.text_field :first_name, class: "form-control", id: "InputFirstName", placeholder: "First name"
+                          .col-sm-12
+                            .form-group
+                              = f.label :last_name
+                              = f.text_field :last_name, class: "form-control", id: "InputLastName", placeholder: "Last name"
+                          .col-sm-12
+                            .form-group
                               = f.label :email
-                              = f.email_field :email, class: "form-control", id: "InputEmail", placeholder: "example@mashkar.com"
+                              = f.email_field :email, class: "form-control", id: "InputEmail", placeholder: "example@pyklocal.com"
                           .col-sm-12
                             .form-group
                               = f.label :password

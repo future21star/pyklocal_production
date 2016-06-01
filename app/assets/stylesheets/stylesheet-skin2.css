@@ -51,6 +51,10 @@ a b:hover,a:hover{
 	text-decoration:none;
 	color:#000;
 }
+.active-link{
+  color: #C30505 !important;
+}
+
 a:focus{
 	outline:0;
 }
@@ -1095,7 +1099,7 @@ div.required .control-label:before {
 
 .btn-info {
   color: #fff;
-  background-color: #4C9048;
+  background-color: #166912;
 }
 
 .btn-info.active,
