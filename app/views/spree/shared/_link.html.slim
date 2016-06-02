@@ -1,0 +1,3 @@
+- taxon.products.where(meta_title: nil).each do |product|
+  li 
+    = link_to product.name, shop_path(product.slug)

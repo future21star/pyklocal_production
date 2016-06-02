@@ -1,6 +1,16 @@
 - max_level = Spree::Config[:max_level_in_taxons_menu] || 1
-nav#taxonomies.sidebar-item data-hook="" 
-  - @taxonomies.each do |taxonomy|
-    - cache [I18n.locale, taxonomy, max_level, @taxon] do
-      h4.taxonomy-root= Spree.t(:shop_by_taxonomy, :taxonomy => taxonomy.name)
-      = taxons_tree(taxonomy.root, @taxon, max_level)
+- unless Spree::Taxonomy.where(name: "Categories").blank?
+  - Spree::Taxonomy.where(name: "Categories").first.taxons.where(name: "Categories").first.children.each do |taxon| 
+    .column
+      a href= spree.shop_path(taxon.name)
+        = taxon.name
+        | &nbsp; ›
+      div
+        - unless taxon.children.blank?
+          - taxon.children.each do |sub_taxon| 
+            ul
+              li
+                a href=spree.shop_path(sub_taxon.name)
+                  |&nbsp;
+                  = sub_taxon.name
+            
