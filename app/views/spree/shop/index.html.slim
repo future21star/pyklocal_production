@@ -34,7 +34,7 @@
             .col-md-4.col-sm-5
               .btn-group
                 h4 
-                  |All Product
+                  |Shop By Category
                   |&nbsp;
                   i.fa.fa-caret-down
             .col-sm-3
@@ -57,6 +57,7 @@
               - @products.each do |product|
                 .col-sm-3.product-grid
                   = render :partial => 'spree/shared/product', locals: {product: product}
+    
         .row
           .col-sm-6.text-left
           .col-sm-6.text-right 

@@ -17,7 +17,7 @@
             -if spree_user_signed_in? 
               li#my_account.dropdown
                 a href=spree.edit_account_path 
-                  = spree_current_user.try(:full_name)
+                  = current_spree_user.try(:full_name)
                   |&nbsp;
                   i.fa.fa-caret-down
                 ul.dropdown-menu.dropdown-menu-right
@@ -68,7 +68,7 @@
           li.categories.dropdown.sub
             = link_to spree.shop_index_path
               | All Categories
-              |&nbsp;
+              |&nbsp;&nbsp;
               i.fa.fa-caret-down
             .dropdown-menu style=("display: none;") 
               = render :partial => "spree/shared/taxonomies"

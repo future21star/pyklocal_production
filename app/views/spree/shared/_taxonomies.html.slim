@@ -5,7 +5,6 @@
       a href= spree.shop_path(taxon.name)
         -if taxon.children.blank?
           = taxon.name
-        
         - else
           = taxon.name
           | &nbsp; ›

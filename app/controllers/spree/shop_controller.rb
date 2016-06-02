@@ -1,7 +1,7 @@
 class Spree::ShopController < Spree::StoreController
 
   def index   
-    @products = Spree::Product.all.page(params[:page]).per(16).order("created_at desc") 
+    @products = Spree::Product.all.page(params[:page]).per(20).order("created_at desc") 
     @taxons = Spree::Taxon.where.not(name:"categories") 
     @taxonomies = Spree::Taxonomy.includes(root: :children) 
   end
