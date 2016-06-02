@@ -1,9 +1,17 @@
- #accordion.panel-group
-          .panel.panel-default
-            .panel-heading
-              h4.panel-title
-                  |  Payment Preferences 
-                  i.fa.fa-caret-down
-            #collapse-checkout-option.panel-collapse.collapse.in
-              .panel-body
-						= render partial: "form"
+#container 
+ .container
+ 	.row
+ 		#content.col-sm-3
+ 			=render :partial => "spree/shared/user_menu", locals: {current: "payment_preferences"}
+	 	#content.col-sm-9
+	 		h3 Edit Payment Preferences
+			#accordion.panel-group
+	          	.panel.panel-default
+		            .panel-heading
+		              h4.panel-title
+		                  |  Payment Preferences 
+		                  i.fa.fa-caret-down
+		            #collapse-checkout-option.panel-collapse.collapse.in
+		              .panel-body
+		              	.col-xs-12
+											= render partial: "form"
