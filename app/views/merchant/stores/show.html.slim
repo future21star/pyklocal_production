@@ -2,22 +2,23 @@
   .b-transparency-bar
   .container.store-details-wrap
     .store-logo-wrapper
-      = image_tag @store.logo.url
+      = image_tag @store.logo.url(:logo)
     h2.b-store-name
       = @store.try(:name) 
   .container.store-btns
-    - if current_spree_user.try(:stores).try(:collect, &:id).try(:include?, @store.id)
+    - if current_spree_user && current_spree_user.try(:stores).try(:collect, &:id).try(:include?, @store.id)
+      - title_text = current_spree_user.has_spree_role?("merchant") ? "" : "Approval pending"
       .s-link-wrap
-        = link_to edit_store_email_tokens_path(id: @store.id, type: "Merchant::Store"), class: "store-link", "data-no-turbolink" => true do
+        = link_to edit_store_email_tokens_path(id: @store.id, type: "Merchant::Store"), class: "store-link", "data-no-turbolink" => true, title: title_text do
           .fa &#xf044;
           | Edit Store Information
-        = link_to new_merchant_product_path, class: "store-link", "data-no-turbolink" => true do
+        = link_to current_spree_user.has_spree_role?("merchant") ? new_merchant_product_path : "#", class: "store-link", "data-no-turbolink" => true, title: title_text do
           .fa &#xf055;
           | Add Products
-        = link_to merchant_products_path, class: "store-link", "data-no-turbolink" => true do
+        = link_to current_spree_user.has_spree_role?("merchant") ? merchant_products_path : "#", class: "store-link", "data-no-turbolink" => true, title: title_text do
           .fa &#xf15c;
           | View and edit all Products
-        = link_to merchant_orders_path, class: "store-link", "data-no-turbolink" => true do
+        = link_to current_spree_user.has_spree_role?("merchant") ? merchant_orders_path : "#", class: "store-link", "data-no-turbolink" => true, title: title_text do
           .fa &#xf07a;
           | View Orders
       .row

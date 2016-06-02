@@ -99,6 +99,7 @@ class Merchant::StoresController < Merchant::ApplicationController
     end
 
     def validate_token
+      @store = Merchant::Store.find_by_slug(params[:id])
       if (@store.email_tokens.where(is_valid: true, token: params[:token]).blank? && current_spree_user.has_spree_role?("merchant") && !current_spree_user.has_spree_role?("admin"))
         redirect_to merchant_store_url(@store), flash: {error: "Please use the link provided in mail to edit the store, token was invalid"}
       end

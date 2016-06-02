@@ -12,8 +12,10 @@ Spree::User.class_eval do
   belongs_to :spree_buy_privilege
   belongs_to :spree_sell_privilege 
   has_one :payment_preference, foreign_key: :user_id, class_name: 'Spree::PaymentPreference'
+  
   #---------------------Callbacks--------------------------
   after_create :assign_api_key
+  after_update :notify_user
 
   accepts_nested_attributes_for :parse_links, :reject_if => lambda { |a| a[:url].blank? }
 
@@ -75,6 +77,13 @@ Spree::User.class_eval do
 
     def assign_api_key
       self.generate_spree_api_key!
+    end
+
+    def notify_user
+      if self.spree_role_ids.include?(Spree::Role.where(name: "merchant").first.try(:id)) && !stores.first.active
+        stores.first.update_attributes(active: true)
+        UserMailer.notify_store_approval(self).deliver
+      end
     end
 
 end

@@ -16,7 +16,7 @@
                 #main-image.style
                   .image data-hook="product_images"
                     a href=product_path(@product) 
-                      = image_tag @product.images.first.try(:attachment).try(:url),id:"zoom_01", class: "img-responsive img_center",data: { 'zoom-image' => @product.images.first.attachment.url(:large)}
+                      = image_tag @product.images.first.try(:attachment).try(:url),id:"zoom_01", class: "img-responsive img_center",data: { 'zoom-image' => @product.images.first.try(:attachment).try(:url, :large)}
                 .center-block.text-center
                   span.zoom-gallery
                     i.fa.fa-search

@@ -11,7 +11,7 @@ class UserMailer < ActionMailer::Base
 
  	def notify_store_save(store)
  		@store = store
- 		mail(to: "support@coinclub.io", subject: "#{store.name} is created/updated")
+ 		mail(to: "prashant.mishra@w3villa.com", subject: "#{store.name} is created/updated")
  	end
 
  	def notify_store_approval(user)

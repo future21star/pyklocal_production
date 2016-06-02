@@ -3,7 +3,7 @@ module Merchant
 
     self.table_name = "pyklocal_stores" 
 
-    validates :name, :manager_first_name, :manager_last_name, :phone_number, presence: true
+    validates :name, :manager_first_name, :manager_last_name, :phone_number, :spree_taxons, presence: true
     # validates :terms_and_condition, acceptance: { accept: true }
     
   	has_many :store_users, dependent: :delete_all, foreign_key: :store_id, class_name: "Merchant::StoreUser"
@@ -86,7 +86,9 @@ module Merchant
       # end
 
       def notify_admin
-        UserMailer.notify_store_save(self).deliver
+        unless self.changes.include?(:active)
+          UserMailer.notify_store_save(self).deliver
+        end
       end
 
   end
