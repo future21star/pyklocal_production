@@ -8,7 +8,7 @@
         a href="#"  Account
     .row     
       #content.col-sm-3
-        =render :partial => "spree/shared/user_menu"
+        =render :partial => "spree/shared/user_menu", locals: {current: "account"}
           
       column#column-right.col-sm-9.hidden-xs
         #accordion.panel-group
@@ -26,12 +26,15 @@
                         legend Your Personal Details
                         .form-group.required
                           h5
-                            label.col-sm-2  User Name :
-                            label.col-sm-10 
-                               =@user.try(:full_name).titleize
-                            label.col-sm-2  E-mail :
-                            label.col-sm-10
-                               =@user.try(:email)
+                            .container
+                              .row
+                                label.col-sm-2  User Name :
+                                label.col-sm-10 
+                                   =@user.try(:full_name).titleize
+                              .row     
+                                label.col-sm-2  E-mail :
+                                label.col-sm-10
+                                   =@user.try(:email)
                         .buttons.clearfix
                           .pull-right
                               = link_to "edit",spree.edit_account_path,class:"btn btn-default"

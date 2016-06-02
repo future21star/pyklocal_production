@@ -15,7 +15,7 @@
               #product-images data-hook="product_images"
                 #main-image.style
                   .image data-hook="product_images"
-                    a href=product_path(@product) 
+                    a href="#" 
                       = image_tag @product.images.first.try(:attachment).try(:url),id:"zoom_01", class: "img-responsive img_center",data: { 'zoom-image' => @product.images.first.try(:attachment).try(:url, :large)}
                 .center-block.text-center
                   span.zoom-gallery
@@ -91,11 +91,9 @@
     .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;") 
       .owl-wrapper-outer
         .owl-wrapper style=("width: 3648px; left: 0px; display: block;") 
-          
-          
-  javascript:
- 
 
+- content_for :js do        
+  javascript:
     $("#zoom_01").elevateZoom({
       gallery:'gallery_01',
       cursor: 'pointer',

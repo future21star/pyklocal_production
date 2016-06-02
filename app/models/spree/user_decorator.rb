@@ -34,7 +34,11 @@ Spree::User.class_eval do
   end
 
   def full_name
-    (first_name || last_name) || (email)
+    if first_name 
+      [first_name, last_name].compact.join(" ")
+    else
+      email
+    end
   end
 
   def full_address

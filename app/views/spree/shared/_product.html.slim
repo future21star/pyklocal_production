@@ -1,4 +1,9 @@
-.item style=("overflow:hidden; max-height:379px")
+= form_for :order, :url => populate_orders_path do |f|
+  .item style=("overflow:hidden; max-height:379px")
+
+  = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
+  = hidden_field_tag "variant_id", product.master.id
+  = hidden_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
   .product-thumb.clearfix
     .image
       a href=product_path(product) data-no-turbolink="true"  
@@ -11,8 +16,7 @@
         p.price
           = number_to_currency(product.price)
       .button-group
-        a href=href=product_path(product)
-          button.btn-default  type="button" 
+          button.btn-default  type="submit" 
             span Add to Cart
        
 

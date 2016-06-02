@@ -13,15 +13,15 @@
         =render :partial => "spree/shared/user_menu" ,locals: {current: "payment_histories"}
       #content.col-sm-9
         
-          h3 Payment History
+          h1 Payment History
           .table-responsive
-            table.table.table-bordered.table-hover
+            table.table.table-hover
               thead
                 tr
-                  td.text-center.strong Transaction Id
-                  td.text-center Total Payment
-                  td.text-center Due Payment
-                  td.text-center Transaction date
+                  th.text-center.strong Transaction Id
+                  th.text-center Total Payment
+                  th.text-center Due Payment
+                  th.text-center Transaction date
                  
               tbody
                 - unless @payment_histories.blank?

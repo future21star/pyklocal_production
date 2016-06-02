@@ -3,8 +3,12 @@
   - Spree::Taxonomy.where(name: "Categories").first.taxons.where(name: "Categories").first.children.each do |taxon| 
     .column
       a href= spree.shop_path(taxon.name)
-        = taxon.name
-        | &nbsp; ›
+        -if taxon.children.blank?
+          = taxon.name
+        
+        - else
+          = taxon.name
+          | &nbsp; ›
       div
         - unless taxon.children.blank?
           - taxon.children.each do |sub_taxon| 

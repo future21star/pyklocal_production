@@ -57,5 +57,9 @@
               - @products.each do |product|
                 .col-sm-3.product-grid
                   = render :partial => 'spree/shared/product', locals: {product: product}
-   
+        .row
+          .col-sm-6.text-left
+          .col-sm-6.text-right 
+            - if @products.respond_to?(:num_pages)
+              = paginate @products
  

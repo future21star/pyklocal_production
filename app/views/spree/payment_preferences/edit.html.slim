@@ -1,10 +1,16 @@
 #container 
  .container
+ 	ul.breadcrumb
+      li
+        a href="#" 
+          i.fa.fa-home
+      li
+        a href="#"  My Payment Preferences
  	.row
  		#content.col-sm-3
  			=render :partial => "spree/shared/user_menu", locals: {current: "payment_preferences"}
 	 	#content.col-sm-9
-	 		h3 Edit Payment Preferences
+	 		h1 Edit Payment Preferences
 			#accordion.panel-group
 	          	.panel.panel-default
 		            .panel-heading
