@@ -1814,7 +1814,7 @@ div.required .control-label:before {
   padding: 7px;
   border: 3px solid transparent;
   margin-bottom: 15px;
-  min-height: 30em;
+  min-height: 350px;
 }
 
 .product-grid:hover {
@@ -2899,4 +2899,7 @@ form#adv_ajaxfilter {
 
 .delivery_item{
   margin-bottom: 24px;
+}
+.border_line{
+  border-bottom: 1px solid #ddd;
 }

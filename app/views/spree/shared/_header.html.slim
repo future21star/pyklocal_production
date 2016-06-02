@@ -16,7 +16,7 @@
           ul
             -if spree_user_signed_in? 
               li#my_account.dropdown
-                a href=spree.edit_account_path 
+                a href= spree.edit_account_path 
                   = current_spree_user.try(:full_name)
                   |&nbsp;
                   i.fa.fa-caret-down

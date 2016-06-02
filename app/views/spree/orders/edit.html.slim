@@ -23,13 +23,9 @@
                   .pull-left
                     = button_tag class: 'btn btn-default', id: 'update-button' do
                       = link_to Spree.t(:continue_shopping), shop_index_path, class: 'continue'
-                  .pull-right
-                    = button_tag class: 'btn btn-lg btn-primary', id: 'checkout-link', name: 'checkout' do
-                      = Spree.t(:Checkout)
-        
-          / #empty-cart.col-md-6.pull-left data-hook="" 
-          /   = form_tag empty_cart_path, method: :put do
-          /     p#clear_cart_link data-hook="" 
-          /       = submit_tag Spree.t(:empty_cart), class: 'btn btn-default'
-          /       = Spree.t(:or)
-          /       = link_to Spree.t(:continue_shopping), shop_index_path, class: 'continue'
+                  .pull-right.text-right data-hook="cart_buttons" 
+                    .form-group
+                      = button_tag class: 'btn btn-default', id: 'update-button' do
+                        = Spree.t(:update)
+                      = button_tag class: 'btn btn-lg btn-primary', id: 'checkout-link', name: 'checkout' do
+                        = Spree.t(:checkout)
