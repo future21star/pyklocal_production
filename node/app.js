@@ -5,20 +5,24 @@ var io = require('socket.io').listen(5000),
     redisClient = redis.createClient(6379, 'localhost'),
     subscriber = redis.createClient(6379, 'localhost');
 
+// Uncomment below line if only required
 // io.adapter(redisAdapter({pubClient: redisClient, subClient: subscriber}));
 
-// Ativated if redis client publish any message
+// Activated if redis client publish any message
 subscriber.on("message", function(channel, message) {
   message = JSON.parse(message)
-  console.log(JSON.stringify(message));
-  io.to(message.project_id).emit(channel, message);
+
+  // Emit an event that will be listened by angular controller
+  // 'message' will contain all the data sent from backend to angular
+  // use following code in angular in order to listen this event
+
+ 	// socket.on("eventName", function(data){
+	// 	perform anything with data
+	// })
+
+  io.emit("eventName",message);
 });
 
-io.on('connection', function(socket){
-  
-  socket.on('getAllUsers', function(cb) {
-  });  
-
-});
-
-subscriber.subscribe("listOrder");
+// Subascribe redis client for a channel
+// The same name will be used from backend while sending data
+subscriber.subscribe("channelName");
