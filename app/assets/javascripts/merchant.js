@@ -61,7 +61,7 @@ Store.prototype = {
         map: map
       });
       this.lastMarker = marker;
-      // this.getInfoWindow(map, marker);  
+      this.getInfoWindow(map, marker);  
     }
   },
 

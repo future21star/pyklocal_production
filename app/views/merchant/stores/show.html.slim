@@ -24,7 +24,7 @@
       .row
         .col-md-12
           .pull-right.map-wrapper
-            #map-preview data-is_located=@store.is_located? data-longitude="#{@store.longitude}" data-latitude="#{@store.latitude}"&gt;
+            #map-preview data-is_located="#{@store.is_located?}" data-longitude="#{@store.longitude}" data-latitude="#{@store.latitude}"&gt;
             = (link_to "#{@store.is_located? ? "Update" : "Add"} Location", "#", id: "add-location") if spree_user_signed_in? && current_spree_user.stores.include?(@store)
     - else
       .col-md-4.col-md-offset-4
