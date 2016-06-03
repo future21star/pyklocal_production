@@ -1,0 +1,16 @@
+{
+  "name": "pyklocalnodeapp",
+  "version": "1.0.0",
+  "description": "Node app to dynamically update order list for drivers using socket.io",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "author": "W3villa technologies pvt. ltd.",
+  "license": "MIT",
+  "dependencies": {
+  	"socket.io": "1.3.6",
+    "redis": "*",
+    "socket.io-redis": "*"
+  }
+}
