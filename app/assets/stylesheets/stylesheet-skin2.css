@@ -2903,3 +2903,6 @@ form#adv_ajaxfilter {
 .border_line{
   border-bottom: 1px solid #ddd;
 }
+.product-img{
+  min-height: 215px;
+}

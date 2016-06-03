@@ -7,7 +7,7 @@
   .product-thumb.clearfix
     .image
       a href=product_path(product) data-no-turbolink="true"  
-      	= image_tag product.images.first.try(:attachment).try(:url), class: "img-responsive" 
+      	= image_tag product.images.first.try(:attachment).try(:url), class: "img-responsive product-img" 
     div
       .caption
         h4

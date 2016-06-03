@@ -16,7 +16,7 @@ class Merchant::StoresController < Merchant::ApplicationController
 	def show
     if @store.present?
       if !current_spree_user.nil? || current_spree_user.stores.collect(&:id).include?(@store.id) || current_spree_user.has_spree_role?('merchant') || current_spree_user.has_spree_role?('admin')
-        @products = @store.spree_products
+        @products = @store.spree_products.page(params[:page]).per(8).order("created_at desc")
       end
     else
       redirect_to new_merchant_store_path
