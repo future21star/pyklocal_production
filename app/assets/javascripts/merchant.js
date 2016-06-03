@@ -140,8 +140,8 @@ Store.prototype = {
               $("#map-preview").data("latitude", myCompany.lastMarker.position.lat());
               $("#map-preview").data("longitude", myCompany.lastMarker.position.lng());
               $("#map-preview").data("is_located", true);
-              myCompany.previewMap();
-              alert(data.message);
+              myCompany.previewMap(); 
+              location = window.location.href.split("#")[0];
               $('.modal').modal('hide');
             } else {
               alert(data.message);

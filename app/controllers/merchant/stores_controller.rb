@@ -44,7 +44,7 @@ class Merchant::StoresController < Merchant::ApplicationController
     @store.attributes = {store_users_attributes: [spree_user_id: current_spree_user.id], active: true}
     respond_to do |format|
       if @store.save
-        format.html { redirect_to @store, notice: 'Store pending approval' }
+        format.html { redirect_to merchant_store_url(id: @store.slug, anchor: "map"), notice: 'Store pending approval' }
         format.json { render action: 'show', status: :created, location: @store }
       else
         @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
