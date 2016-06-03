@@ -3,8 +3,8 @@
     .col-sm-3
       br
       .store-logo-wrapper
-        a href="#"
-          = image_tag @store.try(:logo).try(:url,:logo)
+          .image style=("display: table-cell;vertical-align: middle;")
+            = image_tag @store.try(:logo).try(:url,:large),:class=>"img_center img-responsive"
       h4
         strong Store Information
       .table-responsive
@@ -16,7 +16,7 @@
                   span.glyphicon.glyphicon-user.text-primary
                   | &nbsp; Store Name:
               td.text-primary
-                = @store.try(:name)
+                = @store.try(:name).titleize   
             tr
               td
                 strong
@@ -30,14 +30,16 @@
                   span.glyphicon.glyphicon-home.text-primary
                   |&nbsp; Address:
               td.text-primary
-                = @store.try(:city)
-                     tr
-            td
-              strong
-                span.glyphicon.glyphicon-envelope.text-primary
-                | &nbsp;Website:
-            td.text-primary
-        = @store.try(:site_url)
+                = @store.try(:city).titleize
+                |,
+                = @store.try(:country).titleize
+            tr
+              td
+                strong
+                  span.glyphicon.glyphicon-envelope.text-primary
+                  | &nbsp;Website:
+              td.text-primary
+                = @store.try(:site_url)
       - if current_spree_user && current_spree_user.try(:stores).try(:collect, &:id).try(:include?, @store.id)
         - title_text = current_spree_user.has_spree_role?("merchant") ? "" : "Approval pending"
         .s-link-wrap
