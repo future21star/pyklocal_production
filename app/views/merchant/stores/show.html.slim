@@ -1,4 +1,3 @@
-  
 .container
   .row
     .col-sm-3
@@ -64,13 +63,11 @@
                 | View Orders
             br
         .pull-right.map-wrapper
-          #map-preview data-is_located=@store.is_located? data-longitude="#{@store.longitude}" data-latitude="#{@store.latitude}"&gt;
+          #map-preview data-is_located="#{@store.is_located?}" data-longitude="#{@store.longitude}" data-latitude="#{@store.latitude}"&gt;
           = (link_to "#{@store.is_located? ? "Update" : "Add"} Location", "#", id: "add-location") if spree_user_signed_in? && current_spree_user.stores.include?(@store)
       - else
         .col-md-4.col-md-offset-4
             / = link_to "Contact Seller", new_message_path(to_user_id: @store.store_spree_users.first.spree_user_id), class: "store-link"
-
-
     .col-sm-9
       br
       h2 Store Product
