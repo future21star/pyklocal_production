@@ -4,6 +4,7 @@
       = link_to new_merchant_product_image_url(@product), class: "btn btn-primary margin-20" do 
         i.fa.fa-plus
         |  Add new image
+      = link_to "BACK TO PRODUCT EDIT", edit_merchant_product_path(@product), class: "btn btn-primary", "data-no-turbolink" => true
   - has_variants = @product.has_variants?
   .row
     .form-section

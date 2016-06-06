@@ -6,6 +6,8 @@
           = button_link_to("<span class='fa fa-plus'></span> Add Product Properties".html_safe, "javascript:;", {:'data-target' => "tbody#product_properties", class: 'btn-success spree_add_fields' })
           span.js-new-ptype-link
             = button_link_to "<span class='fa fa-tag'></span> Select From Prototype".html_safe, spree.available_admin_prototypes_url, { remote: true, 'data-update' => 'prototypes', class: 'btn-default margin-left' }
+          span
+            = link_to "BACK TO PRODUCT EDIT", edit_merchant_product_path(@product), class: "btn btn-primary margin-left", "data-no-turbolink" => true
       .col-md-9.top-margin-row
         = form_for [:merchant, @product], html: {} do |f|
           #prototypes data-hook="" 

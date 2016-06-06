@@ -1,3 +1,5 @@
+
+= link_to "BACK TO PRODUCT EDIT", edit_merchant_product_path(@product), class: "btn btn-primary margin-left", "data-no-turbolink" => true
 = render :partial => 'spree/shared/error_messages', :locals => { :target => @product }
 .col-md-9
   = render 'add_stock_form'

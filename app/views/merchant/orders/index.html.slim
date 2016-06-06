@@ -1,48 +1,52 @@
-= render partial: "merchant/shared/order_header", locals: {order: ""}
 .container
-  .form-section
-    table.table.table-striped
-      thead
-        tr
-          th Order Number
-          th Item Name
-          th Variants
-          th Quantity
-          th Amount
-          th Delivery Type
-          th Actions
-      tbody
-        - unless @orders.blank?
-          - @orders.each do |order|
+  .row
+    .col-sm-3
+      =render :partial => "merchant/shared/seller"
+    .col-sm-9
+      = render partial: "merchant/shared/order_header", locals: {order: "Order"}
+      .form-section
+        table.table.table-striped
+          thead
             tr
-              td.align-middle rowspan=(order.line_items.count)
-                = link_to order.try(:number), edit_merchant_order_path(order)
-              - order.line_items.each_with_index do |line_item, index|
-                - if current_spree_user.stores.first.spree_products.include?(line_item.product)
-                  - if index == 0
-                    td= line_item.product.try(:name)
-                    td= line_item.variant.options_text
-                    td= line_item.quantity
-                    td= line_item.price.to_f
-                    td= line_item.delivery_type.try(:humanize)
-                    td
-                      - if !line_item.ready_to_pick
-                        = link_to "Ready to pickup", spree.order_ready_to_pick_path(order, item_id: line_item), class: "btn btn-success", method: :put if line_item.delivery_type == "home_delivery"
+              th Order Number
+              th Item Name
+              th Variants
+              th Quantity
+              th Amount
+              th Delivery Type
+              th Actions
+          tbody
+            - unless @orders.blank?
+              - @orders.each do |order|
+                tr
+                  td.align-middle rowspan=(order.line_items.count)
+                    = link_to order.try(:number), edit_merchant_order_path(order)
+                  - order.line_items.each_with_index do |line_item, index|
+                    - if current_spree_user.stores.first.spree_products.include?(line_item.product)
+                      - if index == 0
+                        td= line_item.product.try(:name)
+                        td= line_item.variant.options_text
+                        td= line_item.quantity
+                        td= line_item.price.to_f
+                        td= line_item.delivery_type.try(:humanize)
+                        td
+                          - if !line_item.ready_to_pick
+                            = link_to "Ready to pickup", spree.order_ready_to_pick_path(order, item_id: line_item), class: "btn btn-success", method: :put if line_item.delivery_type == "home_delivery"
+                          - else
+                            = link_to "Cancel", "", class: "btn btn-default" if line_item.delivery_type == "home_delivery"
                       - else
-                        = link_to "Cancel", "", class: "btn btn-default" if line_item.delivery_type == "home_delivery"
-                  - else
-                    tr
-                      td= line_item.product.try(:name)
-                      td= line_item.variant.options_text
-                      td= line_item.quantity
-                      td= line_item.price.to_f
-                      td= line_item.delivery_type.try(:humanize)
-                      td
-                        - if !line_item.ready_to_pick
-                          = link_to "Ready to pickup", spree.order_ready_to_pick_path(order, item_id: line_item), class: "btn btn-success", method: :put if line_item.delivery_type == "home_delivery"
-                        - else
-                          = link_to "Cancel", "", class: "btn btn-default" if line_item.delivery_type == "home_delivery"
-        - else
-          tr
-            td colspan="7"
-              span No orders found.
+                        tr
+                          td= line_item.product.try(:name)
+                          td= line_item.variant.options_text
+                          td= line_item.quantity
+                          td= line_item.price.to_f
+                          td= line_item.delivery_type.try(:humanize)
+                          td
+                            - if !line_item.ready_to_pick
+                              = link_to "Ready to pickup", spree.order_ready_to_pick_path(order, item_id: line_item), class: "btn btn-success", method: :put if line_item.delivery_type == "home_delivery"
+                            - else
+                              = link_to "Cancel", "", class: "btn btn-default" if line_item.delivery_type == "home_delivery"
+            - else
+              tr
+                td colspan="7"
+                  span No orders found.

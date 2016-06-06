@@ -5,6 +5,7 @@
         = link_to merchant_stores_products_variants_new_path(product_id: @product.slug), class: "btn btn-primary margin-20", "data-no-turbolink" => true do 
           i.fa.fa-plus
           |  Add new variant
+        = link_to "BACK TO PRODUCT EDIT", edit_merchant_product_path(@product), class: "btn btn-primary", "data-no-turbolink" => true
   .row
     .form-section
       .col-md-9
