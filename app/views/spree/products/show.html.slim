@@ -5,7 +5,7 @@
           i.fa.fa-home
       li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"  
           span itemprop="title" 
-            = @product.name 
+            = @product.try(:name) 
     .row
       #content.col-sm-9
         div itemscope="" itemtype="http://schema.org/Product" 
@@ -24,38 +24,11 @@
                 #gallery_01.image-additional
                   a.thumbnail 
                     - if defined?(image) && image
-                      = link_to(image_tag(image.attachment.url(:mini), class: "thumbnail"), image.attachment.url(:product))
+                      = link_to(image_tag(image.attachment.try(:url,:mini), class: "thumbnail"), image.attachment.try(:url,:product))
                       / = image_tag image.attachment.url(:mini), :itemprop => "image",image.attachment.url(:product)
                     - else
                     = product_image(@product, :itemprop => "image")
             .col-sm-6
-<<<<<<< HEAD
-              ul.list-unstyled.description
-                li.active
-                  b Name:
-                  span itemprop="brand"
-                    = @product.name
-                li
-                  b Brand:
-                  span itemprop="brand"
-                    = @product.slug
-                li
-                  b Product Code:
-                  span itemprop="mpn"  
-                    = @product.sku
-                li
-                  b Availability:
-                  
-              ul.price-box
-                li.price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" 
-                  span itemprop="price"  
-                    = number_to_currency(@product.price.to_s)
-                  span content=("In Stock") itemprop="availability" 
-                li
-                li Ex Tax: $100.00
-
-=======
->>>>>>> bab1eeb8aa802892fa9d29d02eda2e1c4f345847
               #product
                   div
                     = render :partial => 'cart_form'
