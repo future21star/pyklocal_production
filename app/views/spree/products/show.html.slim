@@ -9,21 +9,27 @@
     .row
       #content.col-sm-9
         div itemscope="" itemtype="http://schema.org/Product" 
-          h1
-            = @product.name  
+          h1  
           .row.product-info
             .col-sm-6
-              div.style
-                .image
-                  a href=product_path(@product) 
-                    = image_tag @product.images.first.try(:attachment).try(:url), class: "img-responsive img_center"
-              .center-block.text-center
-                span.zoom-gallery
-                  i.fa.fa-search
-                  | Click image for Gallery
-              #gallery_01.image-additional
-                = render :partial => 'image'
+              #product-images data-hook="product_images"
+                #main-image.style
+                  .image data-hook="product_images"
+                    a href="#" 
+                      = image_tag @product.images.first.try(:attachment).try(:url),id:"zoom_01", class: "img-responsive img_center",data: { 'zoom-image' => @product.images.first.try(:attachment).try(:url, :large)}
+                .center-block.text-center
+                  span.zoom-gallery
+                    i.fa.fa-search
+                    | Click image for Zoom
+                #gallery_01.image-additional
+                  a.thumbnail 
+                    - if defined?(image) && image
+                      = link_to(image_tag(image.attachment.url(:mini), class: "thumbnail"), image.attachment.url(:product))
+                      / = image_tag image.attachment.url(:mini), :itemprop => "image",image.attachment.url(:product)
+                    - else
+                    = product_image(@product, :itemprop => "image")
             .col-sm-6
+<<<<<<< HEAD
               ul.list-unstyled.description
                 li.active
                   b Name:
@@ -48,20 +54,12 @@
                 li
                 li Ex Tax: $100.00
 
+=======
+>>>>>>> bab1eeb8aa802892fa9d29d02eda2e1c4f345847
               #product
-                .cart
-                  
                   div
                     = render :partial => 'cart_form'
-                    .clear
-                      div
-                        button.wishlist onclick="wishlist.add('48');" type="button" 
-                          i.fa.fa-heart
-                          | Add to Wish List
-                        br 
-                        button.wishlist onclick="compare.add('48');" type="button" 
-                          i.fa.fa-exchange
-                          | Compare this Product
+                    
               .addthis_toolbox.addthis_default_style.addthis_16x16_style
                 a.addthis_button_facebook
                 a.addthis_button_twitter
@@ -69,13 +67,13 @@
                 a.addthis_button_pinterest_share
                 a.addthis_button_compact
                 a.addthis_counter.addthis_bubble_style
-              
+                
               /! AddThis Button END
           ul.nav.nav-tabs
             li.active
               a data-toggle="tab" href="#tab-description"  Description
             li
-              a data-toggle="tab" href="#tab-review"  Reviews (0)
+              a data-toggle="tab" href="#tab-review"  Reviews 
           .tab-content
             #tab-description.tab-pane.active itemprop="description" 
               .cpt_product_description
@@ -87,7 +85,7 @@
                 .form-group.required
                   .col-sm-12
                     label.control-label for="input-name"  Your Name
-                    input#input-name.form-control name="name" type="text" value="" /
+                    input#input-name.form-control name="name" type="text" value="" 
                 .form-group.required
                   .col-sm-12
                     label.control-label for="input-review"  Your Review
@@ -99,15 +97,15 @@
                   .col-sm-12
                     label.control-label Rating
                     | &nbsp;&nbsp;&nbsp; Bad&nbsp;
-                    input name="rating" type="radio" value="1" /
+                    input name="rating" type="radio" value="1" 
                     | &nbsp;
-                    input name="rating" type="radio" value="2" /
+                    input name="rating" type="radio" value="2" 
                     | &nbsp;
-                    input name="rating" type="radio" value="3" /
+                    input name="rating" type="radio" value="3" 
                     | &nbsp;
-                    input name="rating" type="radio" value="4" /
+                    input name="rating" type="radio" value="4" 
                     | &nbsp;
-                    input name="rating" type="radio" value="5" /
+                    input name="rating" type="radio" value="5" 
                     | &nbsp;Good
                 .buttons
                   .pull-right
@@ -120,5 +118,22 @@
     .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;") 
       .owl-wrapper-outer
         .owl-wrapper style=("width: 3648px; left: 0px; display: block;") 
-          
 
+- content_for :js do        
+  javascript:
+    $("#zoom_01").elevateZoom({
+      gallery:'gallery_01',
+      cursor: 'pointer',
+      galleryActiveClass: 'active',
+      imageCrossfade: true,
+      zoomWindowFadeIn: 500,
+      zoomWindowFadeOut: 500,
+      lensFadeIn: 500,
+      lensFadeOut: 500,
+      loadingIcon: 'catalog/view/theme/marketshop/image/progress.gif'
+    }); 
+    $("#zoom_01").bind("click", function(e) {
+      var ez =   $('#zoom_01').data('elevateZoom');
+      $.swipebox(ez.getGalleryList());
+      return false;
+    });

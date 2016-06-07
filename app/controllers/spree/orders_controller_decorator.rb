@@ -28,4 +28,10 @@ Spree::OrdersController.class_eval do
     end
   end
 
+  def ready_to_pick
+    @line_item = Spree::Order.find_by_number(params[:order_id]).line_items.where(id: params[:item_id]).first
+    @line_item.update_attributes(ready_to_pick: true)
+    redirect_to :back, notice: "Notified successfully."
+  end
+
 end

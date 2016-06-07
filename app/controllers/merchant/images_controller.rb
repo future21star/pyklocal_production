@@ -1,7 +1,7 @@
 class Merchant::ImagesController < Merchant::ApplicationController
 
 	layout 'merchant'
-	before_filter :find_image, only: [:destroy, :edit]
+	before_filter :find_image, only: [:destroy, :edit, :update]
 	before_filter :load_product
 
 	def index

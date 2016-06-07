@@ -1,0 +1,46 @@
+#container
+  .container
+    ul.breadcrumb
+      li
+        a href="#" 
+          i.fa.fa-home
+      li
+        a href="#"  Account
+    .row     
+      #content.col-sm-3
+        =render :partial => "spree/shared/user_menu", locals: {current: "account"}
+          
+      column#column-right.col-sm-9.hidden-xs
+        #accordion.panel-group
+          .panel.panel-default
+            .panel-heading
+              h4.panel-title
+                  |  My Account Information 
+                  i.fa.fa-caret-down
+            #collapse-checkout-option.panel-collapse.collapse.in
+              .panel-body
+                .row
+                  .col-sm-12
+                    form.form-horizontal 
+                      fieldset
+                        legend Your Personal Details
+                        .form-group.required
+                          h5
+                            .container
+                              .row
+                                label.col-sm-2  User Name :
+                                label.col-sm-10 
+                                   =@user.try(:full_name).titleize
+                              .row     
+                                label.col-sm-2  E-mail :
+                                label.col-sm-10
+                                   =@user.try(:email)
+                        .buttons.clearfix
+                          .pull-right
+                              = link_to "edit",spree.edit_account_path,class:"btn btn-default"
+      
+
+
+
+
+        

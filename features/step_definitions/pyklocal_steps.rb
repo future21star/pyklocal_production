@@ -2,14 +2,13 @@
 # # sellet.feature  
 Given(/^I am a user with email "([^"]*)" with password "([^"]*)"$/) do |email, password|
 	role = Spree::Role.where(name:"merchant").first
- 	Spree::User.create(email:"test@w3villa.com",password:"temp1234",password_confirmation:"temp1234",spree_role_ids:[role.id])
-	steps %Q{
-		When I go to the home page
-	}
+ 	Spree::User.create(email:"test@w3villa.com",password:"temp1234",password_confirmation:"temp1234",spree_role_ids:[role.id],)
+		
 end
 
 Given(/^I want to sign in as "([^"]*)" with password "([^"]*)"$/) do |email, password|
 	steps %Q{
+	When I go to the home page
   	When I follow "Login"
     And I fill in "spree_user_email" with "test@w3villa.com"  
     And I fill in "spree_user_password" with "temp1234"

@@ -1,0 +1,56 @@
+#container
+  .container
+    ul.breadcrumb
+      li
+        a href="#" 
+          i.fa.fa-home
+      li
+        a href="#"  Profile
+    .row 
+      #content.col-sm-3
+        =render :partial => "spree/shared/user_menu", locals: {current: "account"}
+
+      column#column-right.col-sm-9.hidden-xs
+        h1 User Information
+        #accordion.panel-group
+          .panel.panel-default
+            .panel-heading
+              h4.panel-title
+                  |  Please be sure to update your personal information if it has changed 
+                  i.fa.fa-caret-down
+            #collapse-checkout-option.panel-collapse.collapse.in
+              .panel-body
+                - if current_spree_user && @user == current_spree_user
+                  .row 
+                    .col-xs-12.col-sm-12
+                      = form_for Spree::User.new, :html => {}, :as => @user, :url => spree.user_path(@user), :method => :put do |f| 
+                        .row 
+                          = render partial: "spree/shared/error_messages", locals: {target: @user}
+                          .col-sm-12
+                            .form-group
+                             
+                              = f.text_field :first_name, class: "form-control", id: "InputFirstName", placeholder: "First name"
+                          .col-sm-12
+                            .form-group
+                             
+                              = f.text_field :last_name, class: "form-control", id: "InputLastName", placeholder: "Last name"
+                          .col-sm-12
+                            .form-group
+                             
+                              = f.email_field :email, class: "form-control", id: "InputEmail", placeholder: "example@pyklocal.com"
+                          .col-sm-12
+                            .form-group
+                             
+                              = f.password_field :password, class: "form-control", id: "InputPassword", placeholder: "new password"
+                          .col-sm-12
+                            .form-group
+                    
+                              = f.password_field :password_confirmation, class: "form-control", id: "InputPassword", placeholder: "new password confirmation"
+                          .col-xs-12
+                            .form-group
+                              button type="submit" class="btn btn-primary"
+                                i.fa.fa-save
+                                |   Update Information 
+                - else
+                  = render partial: "spree/shared/error_messages"
+     

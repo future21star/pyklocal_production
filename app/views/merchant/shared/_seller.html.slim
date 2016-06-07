@@ -1,0 +1,92 @@
+-@store = current_spree_user.stores.first
+br
+	.store-logo-wrapper
+			.image style=("display: table-cell;vertical-align: middle;")
+				= image_tag @store.try(:logo).try(:url,:large),:class=>"img_center img-responsive"
+	h4
+		strong Store Information
+	.table-responsive
+		table.table.table-condensed.table-responsive.table-user-information
+			tbody
+				tr
+					td
+						strong
+							span.glyphicon.glyphicon-user.text-primary
+							| &nbsp; Store Name:
+					td.text-primary
+						= @store.try(:name).titleize   
+				tr
+					td
+						strong
+							span.glyphicon.glyphicon-phone-alt.text-primary
+							|&nbsp; Contact no:
+					td.text-primary
+						= @store.try(:phone_number)
+				tr
+					td
+						strong
+							span.glyphicon.glyphicon-home.text-primary
+							|&nbsp; Address:
+					td.text-primary
+						= @store.try(:city).titleize
+						|,
+						= @store.try(:country).titleize
+				tr
+					td
+						strong
+							span.glyphicon.glyphicon-envelope.text-primary
+							| &nbsp;Website:
+					td.text-primary
+						= @store.try(:site_url)
+	- if current_spree_user && current_spree_user.try(:stores).try(:collect, &:id).try(:include?, @store.id)
+		- title_text = current_spree_user.has_spree_role?("merchant") ? "" : "Approval pending"
+		.s-link-wrap
+				.btn-default.btn-lg.btn-block.text-left.btn-border-radius
+					= link_to edit_store_email_tokens_path(id: @store.id, type: "Merchant::Store"), class: " store-link", "data-no-turbolink" => true, title: title_text do
+						.fa &#xf044;
+						| Edit Store Information
+			
+				.btn-default.btn-lg.btn-block.text-left.btn-border-radius
+					= link_to current_spree_user.has_spree_role?("merchant") ? new_merchant_product_path : "#", class: " store-link", "data-no-turbolink" => true, title: title_text do
+						.fa &#xf055;
+						| Add Products
+
+				.btn-default.btn-lg.btn-block.text-left.btn-border-radius
+					= link_to current_spree_user.has_spree_role?("merchant") ? merchant_products_path : "#", class: " store-link", "data-no-turbolink" => true, title: title_text do
+						.fa &#xf15c;
+						| View and edit all Products
+
+				.btn-default.btn-lg.btn-block.text-left.btn-border-radius
+					= link_to current_spree_user.has_spree_role?("merchant") ? merchant_orders_path : "#", class: "store-link ", "data-no-turbolink" => true, title: title_text do
+						.fa &#xf07a;
+						| View Orders
+				br
+		.pull-right.map-wrapper
+			#map-preview data-is_located="#{@store.is_located?}" data-longitude="#{@store.longitude}" data-latitude="#{@store.latitude}"&gt;
+			= (link_to "#{@store.is_located? ? "Update" : "Add"} Location", "#", id: "add-location") if spree_user_signed_in? && current_spree_user.stores.include?(@store)
+	- else
+		.col-md-4.col-md-offset-4
+
+
+		
+#map-dialog.modal.fade role="dialog" style=("margin-top: 45px;") 
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close data-dismiss="modal" type="button"  ×
+        h4.modal-title Please update your address
+      .modal-body
+        #map-canvas
+      .modal-footer
+        button#save-location.btn.btn-primary data-store_id="#{@store.slug}"  Save
+        button#cancel-location.btn.btn-default data-dismiss="modal" type="button"  Close
+
+- content_for :head do
+  script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwa_aSOU4vA1Z_E6Vlt5-AG-nncymVpqg&libraries=places" type="text/javascript" 
+- content_for :js do
+  javascript:
+    $(function() {
+      if(window.location.hash == "#map") {
+        $("#add-location").trigger("click")
+      }
+    });

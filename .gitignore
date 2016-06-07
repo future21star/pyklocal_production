@@ -22,4 +22,5 @@
 /solr/test/data/*
 /public/system/*
 /public/spree/*
+/node/node_modules/*
 dump.rdb

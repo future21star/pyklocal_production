@@ -25,6 +25,14 @@
                     input checked="checked" name="customer_group_id" type="radio" value="1" /
                     | Default
             .form-group.required.clearfix
+              label.col-sm-2.control-label for="input-email"  First Name
+              .col-sm-10
+                = f.text_field :first_name, :class => 'form-control', :tabindex => 1, :placeholder => Spree.t(:first_name)
+            .form-group.required.clearfix
+              label.col-sm-2.control-label for="input-email"  Last Name
+              .col-sm-10
+                = f.text_field :last_name, :class => 'form-control', :tabindex => 1, :placeholder => Spree.t(:last_name)
+            .form-group.required.clearfix
               label.col-sm-2.control-label for="input-email"  E-Mail
               .col-sm-10
                 = f.email_field :email, :class => 'form-control', :tabindex => 1, :placeholder => Spree.t(:email)
@@ -55,11 +63,3 @@
               a href=spree.signup_path  Register
             li
               a href=spree.recover_password_path  Forgotten Password
-            li
-              a href="#"  Reward Points
-            li
-              a href="#"  Returns
-            li
-              a href="#"  Transactions
-            li
-              a href="#"  Newsletter

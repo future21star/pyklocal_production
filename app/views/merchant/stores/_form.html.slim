@@ -66,7 +66,7 @@
     - @taxons.each do |taxon|
       .col-md-2.col-xs-6
         label.checkbox-inline title="#{taxon.name}" 
-          = check_box_tag "store[spree_taxon_ids][]", taxon.id, store_taxon_ids.include?(taxon.id)
+          = check_box_tag "merchant_store[spree_taxon_ids][]", taxon.id, store_taxon_ids.include?(taxon.id)
           = truncate(taxon.name, length: 22)
   .form-group
     .col-md-2.col-xs-12

@@ -10,7 +10,7 @@ module NavigationHelpers
     case page_name
 
     when /the home page/
-    	'/'
+      '/'
     when /the user profile page/
       '/profile/'
     when /the Work_report/

@@ -2,25 +2,18 @@
   .container
     ul.breadcrumb
       li
-        a href="" 
+        = link_to root_path , "data-no-turbolink" => true do 
           i.fa.fa-home
       li
-        a href=""  Clothing
+        a href=""  Shop
     .row
       column#column-left.col-sm-3.hidden-xs
-        h3 Categories
-        .box-category
-            - @taxons.each do |category|
-              ul#cat_accordion
-                li.custom_id
-                  = link_to shop_path(category.name) , "data-no-turbolink" => true do
-                    = category.name
         h3 Bestsellers
         .owl-carousel.bestseller_carousel
           .product-thumb.clearfix
             .image
               a href="" 
-                img.img-responsive alt=("Portable Mp3 Player") src="" title=("Portable Mp3 Player") /
+                img.img-responsive alt=("Portable Mp3 Player") src="" title=("Portable Mp3 Player") 
             .caption
               h4
                 a href=""  Portable Mp3 Player
@@ -34,142 +27,16 @@
                   i.fa.fa-heart
                 button data-toggle="tooltip" onclick="compare.add('48');" title=("Compare this Product") type="button" 
                   i.fa.fa-exchange
-          .product-thumb.clearfix
-            .image
-              a href="" 
-                img.img-responsive alt="iPhone5" src="" title="iPhone5" /
-            .caption
-              h4
-                a href=""  iPhone5
-              
-              p.price
-                | $123.20
-              .rating
-                span.fa.fa-stack
-                  i.fa.fa-star.fa-stack-2x
-                  i.fa.fa-star-o.fa-stack-2x
-                span.fa.fa-stack
-                  i.fa.fa-star.fa-stack-2x
-                  i.fa.fa-star-o.fa-stack-2x
-                span.fa.fa-stack
-                  i.fa.fa-star.fa-stack-2x
-                  i.fa.fa-star-o.fa-stack-2x
-                span.fa.fa-stack
-                  i.fa.fa-star.fa-stack-2x
-                  i.fa.fa-star-o.fa-stack-2x
-                span.fa.fa-stack
-                  i.fa.fa-star-o.fa-stack-2x
-            .button-group
-              button.btn-primary onclick="cart.add('40');" type="button" 
-                span Add to Cart
-              .add-to-links
-                button data-toggle="tooltip" onclick="wishlist.add('40');" title=("Add to Wish List") type="button" 
-                  i.fa.fa-heart
-                button data-toggle="tooltip" onclick="compare.add('40');" title=("Compare this Product") type="button" 
-                  i.fa.fa-exchange
-          .product-thumb.clearfix
-            .image
-              a href="" title=("Long Sleeve Shirt Fashion Men") /
-            .caption
-              h4
-                a href=""  Long Sleeve Shirt Fashion Men
-             
-              p.price
-                span.price-new $98.00
-                span.price-old $122.00
-                span.saving -20%
-            .button-group
-              button.btn-primary onclick="cart.add('30');" type="button" 
-                span Add to Cart
-              .add-to-links
-                button data-toggle="tooltip" onclick="wishlist.add('30');" title=("Add to Wish List") type="button" 
-                  i.fa.fa-heart
-                button data-toggle="tooltip" onclick="compare.add('30');" title=("Compare this Product") type="button" 
-                  i.fa.fa-exchange
-          .product-thumb.clearfix
-            .image
-              a href="" 
-                img.img-responsive alt=("Digital Camera for Elderly") src="" title=("Digital Camera for Elderly") /
-            .caption
-              h4
-                a href=""  Digital Camera for Elderly
-             
-              p.price
-                span.price-new $92.00
-                span.price-old $98.00
-                span.saving -6%
-            .button-group
-              button.btn-primary onclick="cart.add('31');" type="button" 
-                span Add to Cart
-              .add-to-links
-                button data-toggle="tooltip" onclick="wishlist.add('31');" title=("Add to Wish List") type="button" 
-                  i.fa.fa-heart
-                button data-toggle="tooltip" onclick="compare.add('31');" title=("Compare this Product") type="button" 
-                  i.fa.fa-exchange
-          .product-thumb.clearfix
-            .image
-              a href="" 
-                img.img-responsive alt=("Hair Care Products") src="" title=("Hair Care Products") /
-            .caption
-              h4
-                a href=""  Hair Care Products
-          
-              p.price
-                span.price-new $66.80
-                span.price-old $90.80
-                span.saving -27%
-              .rating
-                span.fa.fa-stack
-                  i.fa.fa-star.fa-stack-2x
-                  i.fa.fa-star-o.fa-stack-2x
-                span.fa.fa-stack
-                  i.fa.fa-star-o.fa-stack-2x
-                span.fa.fa-stack
-                  i.fa.fa-star-o.fa-stack-2x
-                span.fa.fa-stack
-                  i.fa.fa-star-o.fa-stack-2x
-                span.fa.fa-stack
-                  i.fa.fa-star-o.fa-stack-2x
-            .button-group
-              button.btn-primary onclick="cart.add('63');" type="button" 
-                span Add to Cart
-              .add-to-links
-                button data-toggle="tooltip" onclick="wishlist.add('63');" title=("Add to Wish List") type="button" 
-                  i.fa.fa-heart
-                button data-toggle="tooltip" onclick="compare.add('63');" title=("Compare this Product") type="button" 
-                  i.fa.fa-exchange
       #content.col-sm-9
-        h2 Clothing
         .row
-          /!
-        h3 Refine Search
-        .category-list.row
-          .col-sm-3
-            ul.list-item
-              li
-                a href=""  Men (3)
-              li
-                a href=""  Women (2)
-          .col-sm-3
-            ul.list-item
-              li
-                a href=""  Girls (2)
-              li
-                a href=""  Boys (3)
-          .col-sm-3
-            ul.list-item
-              li
-                a href=""  Baby (0)
-              li
-                a href=""  Accessories (0)
         .product-filter
           .row
             .col-md-4.col-sm-5
               .btn-group
-                button#grid-view.btn.btn-default data-toggle="tooltip" title="Grid" type="button" 
-                  i.fa.fa-th
-                
-              a#compare-total href="/opencart/marketshop/v3/index.php?route=product/compare"  Product Compare (0)
+                h4 
+                  |Shop By Category
+                  |&nbsp;
+                  i.fa.fa-caret-down
             .col-sm-3
             .col-sm-2.text-right
               label.control-label for="input-sort"  Sort By:
@@ -190,3 +57,5 @@
               - @products.each do |product|
                 .col-sm-3.product-grid
                   = render :partial => 'spree/shared/product', locals: {product: product}
+    
+     

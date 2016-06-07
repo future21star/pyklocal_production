@@ -150,7 +150,7 @@ Before do
     role = Spree::Role.where(name: data[:name]).first_or_create
     role.update_attributes(data.except(:name))
   end
-  Spree::Store.create(id: 1, name: "Felix Gray", url: "demo.spreecommerce.com", mail_from_address: "spree@example.com", default_currency: "USD", code: "spree", default: true, )
+  store = Merchant::Store.create(name: "fashion Point", description: "New sale for fashion ", manager_first_name: "test", manager_last_name: "user", phone_number: "1234569873", store_type: "Both", street_number: "captown city", city: "noida - 44", state: "Uttar Pradesh", zipcode: "201301", country: "India", site_url: "www.fashionpoint..com")
   country = Spree::Country.where(id: 232,iso_name: "UNITED STATES", name: "United States", states_required: true).first_or_create
 
   state = Spree::State.where(name: "Gaum", country_id:country.id, abbr: "GA").first_or_create

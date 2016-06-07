@@ -1,25 +1,36 @@
-.row
-  .col-sm-12 data-hook="billing_fieldset_wrapper" 
-    #billing.panel.panel-default data-hook="" 
-      = form.fields_for :bill_address do |bill_form|
-        .panel-heading
-          h2.panel-title Step 2: Billing Address
-            
-        .panel-body
-          = render :partial => 'spree/address/form', :locals => { :form => bill_form, :address_type => 'billing', :address => @order.bill_address }
+.col-sm-6
+  h3 = Spree.t(:billing_address)
+  #billing data-hook="billing_fieldset_wrapper" 
+    = form.fields_for :bill_address do |bill_form|
+        = render :partial => 'spree/address/form', :locals => { :form => bill_form, :address_type => 'billing', :address => @order.bill_address }
+.col-sm-6 
+  #shipping data-hook="shipping_fieldset_wrapper" 
+    = form.fields_for :ship_address do |ship_form|
+        h3.panel-title= Spree.t(:shipping_address)
 
-    #shipping.panel.panel-default data-hook="shipping_fieldset_wrapper" 
-      = form.fields_for :ship_address do |ship_form|
-        .panel-heading
-          h3.panel-title= Spree.t(:shipping_address)
-        .panel-body
-          p.field.checkbox data-hook="use_billing" 
-            = label_tag :order_use_billing, :id => 'use_billing' do
-              = check_box_tag 'order[use_billing]', '1', @order.shipping_eq_billing_address?
-              = Spree.t(:use_billing_address)
+        p.field.checkbox data-hook="use_billing" 
+          = label_tag :order_use_billing, :id => 'use_billing' do
+            = check_box_tag 'order[use_billing]', '1', @order.shipping_eq_billing_address?
+            = Spree.t(:use_billing_address)
+        
+        #shpping style=("display:none")
           = render :partial => 'spree/address/form', :locals => { :form => ship_form, :address_type => 'shipping', :address => @order.ship_address }
+          
           = form.hidden_field :bill_address
-  .well.text-right.form-buttons data-hook="buttons" 
-    = submit_tag Spree.t(:save_and_continue), :class => 'btn btn-lg btn-primary'
+.text-right.form-buttons.col-sm-12 data-hook="buttons" 
+  = submit_tag Spree.t(:save_and_continue), :class => 'btn btn-lg btn-primary'
   
     
+- content_for :js do
+  javascript:
+
+    $('input[type=\'checkbox\']').on('change', function() {
+      if (this.checked) {
+        $('#shpping').hide();
+        this.checked = 'true';
+     
+      } else {
+          $('#shpping').show();
+          this.checked = false;
+      }
+    });

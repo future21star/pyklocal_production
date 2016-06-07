@@ -1,0 +1,42 @@
+#container
+  .container
+    ul.breadcrumb
+      li
+        a href="" 
+          i.fa.fa-home
+      li
+        a href=spree.account_path  Account
+      li
+        a href=""  Payment History
+    .row
+      #content.col-sm-3
+        =render :partial => "spree/shared/user_menu" ,locals: {current: "payment_histories"}
+      #content.col-sm-9
+        
+          h1 Payment History
+          .table-responsive
+            table.table.table-hover
+              thead
+                tr
+                  th.text-center.strong Transaction Id
+                  th.text-center Total Payment
+                  th.text-center Due Payment
+                  th.text-center Transaction date
+                 
+              tbody
+                - unless @payment_histories.blank?
+                  -@payment_histories.each do |payment|
+                    tr
+                      td.text-center= payment.transaction_number
+                      td.text-center= number_to_currency(payment.amount)
+                      -if payment.amount_due==nil
+                        td.text-center No Amount Due
+                      -else
+                        td.text-center =number_to_currency(payment.amount_due)
+                      td.text-center =payment.created_at.strftime("%d-%m-%Y")
+                  end
+                - else
+                    tr
+                      td.text-center colspan="3"
+                        | You do not have any transactions!
+

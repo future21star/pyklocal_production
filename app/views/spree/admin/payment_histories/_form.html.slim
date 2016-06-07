@@ -1,0 +1,20 @@
+= form_for [:admin, @seller, @payment_history], html: {} do |f|
+	.form-group
+	  = f.field_container :transection_number do
+	    = f.label :transaction_number, raw(Spree.t(:transaction_number) + content_tag(:span, ' *', :class => 'required control-label'))
+	    = f.text_field :transaction_number, :class => 'fullwidth title form-control', :required => true
+	    = f.error_message_on :transaction_number
+	.form-group
+	  = f.field_container :amount do
+	  	= f.label :amount, raw(Spree.t(:amount) + content_tag(:span, ' *', class: 'required control-label'))
+	    = f.text_field :amount, class: 'fullwidth title form-control', required: true
+	    = f.error_message_on :amount 
+	.form-group
+		= f.field_container :button do
+			button.btn.btn-primary type="submit"
+				span.fa.fa-save
+				|  Save 
+			|      
+			= link_to spree.admin_seller_payment_histories_path(@seller), class: "btn btn-default", "data-no-turbolink" => true do
+				span.fa.fa-close
+				|  Cancel

@@ -1,17 +1,21 @@
-Dear 
-= @store.manager_full_name, 
-
-p Good news, you store is now approved
-
-p Store: 
-b= @store.name
+|Dear  
+= @store.manager_full_name
+|, 
 
 p 
-	|You can now add/delete products: 
-	= link_to merchant_store_url(id: @store.id), merchant_store_url(id: @store.id) 
+  |Good news, your store is now approved
 
-p If you did not send this request, please notify Coinclub.io support immediately.
-br
-|Best Regards,
-br
-|Pyklocal Support Team
+p 
+  |Store:  
+  b= @store.name
+
+p 
+  |You can now add/delete products:  
+  = link_to merchant_store_url(@store), merchant_store_url(@store) 
+
+p 
+  |If you did not send this request, please notify Coinclub.io support immediately.
+  br
+  |Best Regards,
+  br
+  |Pyklocal Support Team

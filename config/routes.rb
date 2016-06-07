@@ -1,5 +1,6 @@
 Pyklocal::Application.routes.draw do 
 
+
   namespace :merchant do
     get "/", to: "home#index"
     get "stores/products/:product_id/variants", to: "variants#index", as: "stores_products_variants"
@@ -39,15 +40,41 @@ Pyklocal::Application.routes.draw do
   mount Spree::Core::Engine, at: '/'
 
   Spree::Core::Engine.routes.draw do 
+    get "orders" => "home#orders"
+
+    resources :payment_histories
+    #Applications routes
     resources :shop , :only => [:index,:show]
+    resources :orders do 
+      put :ready_to_pick
+    end
+    resources :payment_preferences
+
+    #Api routes
     namespace :api do 
       namespace :v1 do 
         resources :merchant_stores do 
           put :update_location
         end
         resources :registrations 
+        resources :sessions
+        resources :users do
+          post :user_devices
+        end
+        resources :orders
       end
     end
+
+    #Admin routes
+    namespace :admin do 
+      resources :sellers do 
+        resources :payment_preferences
+        get :stores
+        resources :payment_histories
+        get :store_orders
+      end
+    end
+
   end
           # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

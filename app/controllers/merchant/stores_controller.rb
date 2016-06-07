@@ -16,7 +16,7 @@ class Merchant::StoresController < Merchant::ApplicationController
 	def show
     if @store.present?
       if !current_spree_user.nil? || current_spree_user.stores.collect(&:id).include?(@store.id) || current_spree_user.has_spree_role?('merchant') || current_spree_user.has_spree_role?('admin')
-        @products = @store.spree_products
+        @products = @store.spree_products.page(params[:page]).per(8).order("created_at desc")
       end
     else
       redirect_to new_merchant_store_path
@@ -44,7 +44,7 @@ class Merchant::StoresController < Merchant::ApplicationController
     @store.attributes = {store_users_attributes: [spree_user_id: current_spree_user.id], active: true}
     respond_to do |format|
       if @store.save
-        format.html { redirect_to @store, notice: 'Store pending approval' }
+        format.html { redirect_to merchant_store_url(id: @store.slug, anchor: "map"), notice: 'Store pending approval' }
         format.json { render action: 'show', status: :created, location: @store }
       else
         @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
@@ -99,6 +99,7 @@ class Merchant::StoresController < Merchant::ApplicationController
     end
 
     def validate_token
+      @store = Merchant::Store.find_by_slug(params[:id])
       if (@store.email_tokens.where(is_valid: true, token: params[:token]).blank? && current_spree_user.has_spree_role?("merchant") && !current_spree_user.has_spree_role?("admin"))
         redirect_to merchant_store_url(@store), flash: {error: "Please use the link provided in mail to edit the store, token was invalid"}
       end

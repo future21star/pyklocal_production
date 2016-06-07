@@ -1,5 +1,6 @@
 = form_for :order, :url => populate_orders_path do |f|
   #inside-product-cart-form data-hook="inside_product_cart_form" itemprop="offers" itemscope="" itemtype="https://schema.org/Offer" 
+<<<<<<< HEAD
     .add-to-cart
         br 
         .input-group
@@ -18,11 +19,39 @@
               = Spree.t(:add_to_cart)
               
                 
+=======
+    ul.list-unstyled.description
+      li.active
+        h1 itemprop="brand"
+          = @product.name
+
+      li
+        b Brand:
+        span itemprop="brand"
+          |&nbsp;
+      li
+        b Product Code:
+        span itemprop="mpn"  
+          |&nbsp;
+      li
+        b Availability:
+        span style=("color:#53af2e; font-weight:bold;")  In Stock
+    ul.price-box
+      li.price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" 
+        span itemprop="price"  
+          = number_to_currency(@product.price.to_s)
+        span content=("In Stock") itemprop="availability" 
+      li
+      li Ex Tax: $00.00
+
+>>>>>>> bab1eeb8aa802892fa9d29d02eda2e1c4f345847
     - if @product.variants_and_option_values(current_currency).any?
+      .cart
         ul.list-group
           - @product.variants_and_option_values(current_currency).each_with_index do |variant, index|
             li
               = radio_button_tag "variant_id", variant.id, index == 0, 'data-price' => variant.price_in(current_currency).money
+              | &nbsp;&nbsp;
               = label_tag "variant_id_#{ variant.id }" do
                 span.variant-description
                   = variant_options variant
@@ -32,6 +61,7 @@
                   span.out-of-stock= Spree.t(:out_of_stock)
     - else
       = hidden_field_tag "variant_id", @product.master.id
+<<<<<<< HEAD
   - if @product.price_in(current_currency) and !@product.price.nil?
     .col-md-5 data-hook="product_price" 
       #product-price 
@@ -46,3 +76,47 @@
       br 
       div
         span.price.selling itemprop="price" = Spree.t('product_not_available_in_this_currency')
+=======
+
+    - if @product.price_in(current_currency) and !@product.price.nil?
+       
+        #product-price data-hook="product_price" 
+          - if @product.master.can_supply?
+            link href="https://schema.org/InStock" itemprop="availability" /
+          - elsif @product.variants.empty?
+            br 
+            span.out-of-stock= Spree.t(:out_of_stock)
+        
+    - else
+      #product-price
+        br 
+        div
+          span.price.selling itemprop="price" = Spree.t('product_not_available_in_this_currency')
+    .delivery_item.cart.rating
+          ul.delivery-ul
+            li.delivery-li.active data-value="home_delivery"
+              span Home Delivery
+            li.delivery-li data-value="pickup"
+              span Pickup
+          = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
+    #product
+      .cart
+        div
+          .qty
+            label.control-label for="input-quantity"  Qty
+            = number_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
+            a.qtyBtn.plus.text-center href="javascript:void(0);" 
+              span.fa.fa-plus
+            br
+            a.qtyBtn.mines.text-center href="javascript:void(0);" 
+              span.fa.fa-minus
+            input name="product_id" type="hidden" value="41" /
+            .clear
+          
+        div
+          = button_tag :class => 'btn btn-primary', :id => 'add-to-cart-button', :type => :submit do
+              = Spree.t(:add_to_cart)
+      
+    
+
+>>>>>>> bab1eeb8aa802892fa9d29d02eda2e1c4f345847

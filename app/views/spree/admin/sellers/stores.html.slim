@@ -1,0 +1,18 @@
+= render partial: 'spree/admin/sellers/sidebar', locals: { current: :stores }
+- content_for :page_title do
+  |  
+  = @seller.full_name
+table.table.table-striped
+	thead
+		tr
+			th Name
+			th Products Count
+	tbody
+		- unless @store.blank?
+			tr
+				th= link_to @store.name, main_app.merchant_store_url(@store)
+				th= @products.count
+		- else
+			tr
+				td colspan="2"
+					span No store created by this merchant.

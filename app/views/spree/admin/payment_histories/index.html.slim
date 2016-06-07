@@ -1,0 +1,25 @@
+= render partial: 'spree/admin/sellers/sidebar', locals: { current: :payment_histories }
+- content_for :page_title do
+  |  
+  = @seller.full_name
+table.table.table-striped
+  thead
+    tr
+      th Transaction Number
+      th Amount Paid
+      th Amount Due
+      th Transaction Date
+  tbody
+    - unless @payment_histories.blank?
+      - @payment_histories.each do |payment_history|
+        tr
+          td= link_to payment_history.transaction_number, spree.edit_admin_seller_payment_history_path(@seller, payment_history)
+          td= number_to_currency(payment_history.amount)
+          td= number_to_currency(payment_history.amount_due)
+          td= payment_history.created_at.strftime("%d-%m-%Y")
+    - else
+      tr
+        td colspan="4"
+          span 
+            |No payment made for this merchant.  
+            = link_to "Add one", spree.new_admin_seller_payment_history_path

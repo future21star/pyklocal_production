@@ -1,0 +1,47 @@
+#container
+  .container
+    ul.breadcrumb
+      li
+        a href="#" 
+          i.fa.fa-home
+      li
+        a href="#"  My Payment Preferences
+    .row    
+      .col-sm-3
+        =render :partial => "spree/shared/user_menu", locals: {current: "payment_preferences"}
+      .col-sm-9
+        h1 Payment Information
+        #accordion.panel-group
+          .panel.panel-default
+            .panel-heading
+              h4.panel-title
+                  |  Payment Preferences 
+                  i.fa.fa-caret-down
+            #collapse-checkout-option.panel-collapse.collapse.in
+              .panel-body
+                - if @payment_preference.persisted?
+                  table.table.table-striped
+                    tr
+                      td Payee Name
+                      td= @payment_preference.payee_name
+                    tr
+                      td Account Number
+                      td= @payment_preference.a_c_no
+                    tr
+                      td Bank Name
+                      td= @payment_preference.bank_name
+                    tr
+                      td Swift Code
+                      td= @payment_preference.swift_code
+                    tr
+                      td Routing Number
+                      td= @payment_preference.routing_number
+                    tr
+                      td
+                        = link_to edit_payment_preference_path(@payment_preference), class: "btn btn-default", "data-no-turbolink" => true do 
+                          span.fa.fa-edit
+                        = link_to payment_preference_path(@payment_preference), class: "btn btn-danger margin-left" do 
+                          span.fa.fa-trash
+                - else
+                  .col-xs-12
+                    = render partial: "form"

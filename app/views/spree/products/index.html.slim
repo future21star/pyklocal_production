@@ -15,5 +15,12 @@
               = render :partial => 'spree/shared/filters'
             - else
               = render :partial => 'spree/shared/taxonomies'
-      
+      column#column-left.col-sm-9.hidden-xs
+        .products-category.product style=("margin-top:10px;")
+            .product-layout.col-xs-12
+              .product-thumb
+                - @products.each do |product|
+                  .col-sm-3.product-grid
+                    = render :partial => 'spree/shared/product', locals: {product: product}
+        
       
