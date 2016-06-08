@@ -84,7 +84,7 @@ Spree::User.class_eval do
     end
 
     def notify_user
-      if self.spree_role_ids.include?(Spree::Role.where(name: "merchant").first.try(:id)) && !stores.first.active
+      if self.spree_role_ids.include?(Spree::Role.where(name: "merchant").first.try(:id)) && stores.present? && !stores.first.try(:active)
         stores.first.update_attributes(active: true)
         UserMailer.notify_store_approval(self).deliver
       end

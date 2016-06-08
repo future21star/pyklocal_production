@@ -2,6 +2,8 @@ development:
   amazon_bucket_name: pyklocal-dev
   amazon_access_key: AKIAIJMNT4ZQTAM5CNKQ
   amazon_access_secret: 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
+  # amazon_access_key: AKIAIW4RAMM4QQ3XXXPA
+  # amazon_access_secret: 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
   s3_host_name: s3-us-west-2.amazonaws.com
 
 production:
