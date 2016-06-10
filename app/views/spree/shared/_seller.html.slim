@@ -9,8 +9,8 @@
         .panel-body.inf-content
           .row
             .col-md-12
-              = image_tag store.logo_file_name, class: "img-responsive  isTooltip"
-              ul.list-inline.ratings.text-center title="Ratings" 
+              = image_tag store.try(:logo).try(:url,:large),:class=>"img_center img-responsive"
+              ul.list-inline.ratings.text-center style=("margin-top:10px;") title="Ratings" 
                 li
                   a href="#" 
                     span.glyphicon.glyphicon-star
@@ -41,14 +41,14 @@
                           span.glyphicon.glyphicon-user.text-primary
                           | &nbsp; Store Name
                       td.text-primary
-                        = store.name
+                        = store.try(:name).titleize
                     tr
                       td
                         strong
                           span.glyphicon.glyphicon-envelope.text-primary
                           | &nbsp;Website
                       td.text-primary
-                        = store.site_url
+                        = store.try(:site_url)
                     tr
                       td
                         strong
@@ -62,11 +62,13 @@
                           span.glyphicon.glyphicon-phone-alt.text-primary
                           |&nbsp; Contact no:
                       td.text-primary
-                        = store.phone_number
+                        = store.try(:phone_number)
                     tr
                       td
                         strong
                           span.glyphicon.glyphicon-home.text-primary
                           |&nbsp; Address
                       td.text-primary
-                        = store.city
+                        = store.try(:city).titleize
+                        |,  
+                        = store.try(:country)

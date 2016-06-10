@@ -9,35 +9,41 @@
     .row
       column#column-left.col-sm-3.hidden-xs
         h3 Bestsellers
-        .owl-carousel.bestseller_carousel
-          .product-thumb.clearfix
-            .image
-              a href="" 
-                img.img-responsive alt=("Portable Mp3 Player") src="" title=("Portable Mp3 Player") 
-            .caption
-              h4
-                a href=""  Portable Mp3 Player
-              p.price
-                | $122.00
-            .button-group
-              button.btn-primary onclick="cart.add('48');" type="button" 
-                span Add to Cart
-              .add-to-links
-                button data-toggle="tooltip" onclick="wishlist.add('48');" title=("Add to Wish List") type="button" 
-                  i.fa.fa-heart
-                button data-toggle="tooltip" onclick="compare.add('48');" title=("Compare this Product") type="button" 
-                  i.fa.fa-exchange
+        -@store.each do |stores|
+          .owl-carousel.bestseller_carousel
+            .product-thumb.clearfix
+              .image
+                a href="#" 
+                  = image_tag stores.try(:logo).try(:url,:small),:class=>" img-responsive"
+              .caption
+                h4
+                  a href="#" 
+                    = stores.try(:name).titleize
+                p.price
+                  = stores.try(:city).titleize
+              .button-group
+                button.btn-primary onclick="cart.add('48');" type="button" 
+                  span Add to Cart
+                .add-to-links
+                  button data-toggle="tooltip" onclick="wishlist.add('48');" title=("Add to Wish List") type="button" 
+                    i.fa.fa-heart
+                  button data-toggle="tooltip" onclick="compare.add('48');" title=("Compare this Product") type="button" 
+                    i.fa.fa-exchange
       #content.col-sm-9
+        h1 Products
         .row
+          .col-sm-12
+        h3
         .product-filter
           .row
             .col-md-4.col-sm-5
               .btn-group
-                h5 
-                  |All Product
-            .col-sm-3
+                .btn.btn-default data-toggle="tooltip" title="All Product" 
+                  i.fa.fa-bars
+              a#compare-total  
+              |&nbsp;All Products 
             .col-sm-2.text-right
-              label.control-label 
+              label.control-label for="input-sort"  Sort By:
             .col-md-3.col-sm-2.text-right
               select#input-sort.form-control.col-sm-3 onchange=("location = this.value;") 
                 option selected="selected" value=""  Default Sorting
@@ -49,12 +55,18 @@
                 option value=""  Rating (Lowest)
                 option value=""  Model (A - Z)
                 option value=""  Model (Z - A)
-        .row.products-category.product style=("margin-top:10px;")
-          .product-layout.col-xs-12
+            .col-sm-2.text-right
+              label.control-label for="input-limit"  Showing product:
+            .text-left
+              span
+                b 20
+        .row.products-category
+          .product-layout.product-list.col-xs-12
             .product-thumb
               - @products.each do |product|
                 .col-sm-3.product-grid
                   = render :partial => 'spree/shared/product', locals: {product: product}
+            
     
         .row
           .col-sm-6.text-left

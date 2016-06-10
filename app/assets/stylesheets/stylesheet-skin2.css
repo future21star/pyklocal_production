@@ -47,9 +47,9 @@ a,a b{
 	text-decoration:none;
 	cursor:pointer;
 }
-a b:hover,a:hover{
+ a b:hover,a:hover{
 	text-decoration:none;
-	color:#000;
+	color:#B8CCB7;
 }
 .active-link{
   color: #C30505 !important;
@@ -1490,7 +1490,7 @@ div.required .control-label:before {
 .box-category a:hover,
 .list-item a:hover {
   text-decoration: underline;
-  color: #3e7cb4;
+  color: #3FA87F;
 }
 
 .box-category > ul > li ul li a,
@@ -1814,7 +1814,7 @@ div.required .control-label:before {
   padding: 7px;
   border: 3px solid transparent;
   margin-bottom: 15px;
-  min-height: 350px;
+  
 }
 
 .product-grid:hover {
