@@ -3,12 +3,12 @@
     .col-sm-3
       =render :partial => "merchant/shared/seller"
     .col-sm-9
-      = render partial: "merchant/shared/product_header", locals: {text: "New Product ", product_name: @product.name}
       .row
         .form-section
           .col-md-12
-            = form_for [:merchant, @product], :html => { :multipart => true } do |f|
+            = form_for [:merchant, @product], url: merchant_amazon_products_path, :html => { :multipart => true } do |f|
               = render :partial => '/spree/shared/error_messages', :locals => { :target => @product }
+              = f.hidden_field :image_url
               .top-margin-row
                 .form-group
                   = f.field_container :name do
@@ -56,7 +56,7 @@
                         button.btn.btn-primary type="submit"
                           span.fa.fa-save
                           |&nbsp; Save
-                      = link_to merchant_products_path, class: "btn btn-default margin-left" do 
+                      = link_to merchant_products_path, class: "btn btn-default" do 
                         span.fa.fa-arrow-left
                         |&nbsp; Cancel
 

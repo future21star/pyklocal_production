@@ -50,7 +50,7 @@
             = link_to spree.cart_path, "data-no-turbolink" => true do 
               span#cart-total 
                 i.fa.fa-shopping-cart
-                |  (
+                |  CART(
                 = simple_current_order.item_count
                 |&nbsp;
                 = "Item".pluralize(simple_current_order.item_count) 

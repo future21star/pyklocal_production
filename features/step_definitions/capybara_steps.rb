@@ -123,7 +123,7 @@ end
 
 
 Then(/^I should go store dashboard$/) do
-  click_on"Go To Store"
+  click_on"Go to Store"
 end
 
 Then(/^I should check the delivery status$/) do
@@ -159,6 +159,9 @@ When(/^I should update user details with first_name "([^"]*)" and last_name "([^
   click_on"Update Information"
 end
 
+When(/^I want to add my payment preferance$/) do
+  debugger
+end
 
 
 #  Scenario : 2

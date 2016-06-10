@@ -2,11 +2,13 @@ Pyklocal::Application.routes.draw do
 
 
   namespace :merchant do
+    get "stores/amazon/fetch", to: "amazon_products#fetch", as: "store_amazon_product"
     get "/", to: "home#index"
     get "stores/products/:product_id/variants", to: "variants#index", as: "stores_products_variants"
     get "stores/products/:product_id/variants/new", to: "variants#new", as: "stores_products_variants_new"
     resources :stores do
       collection do
+        resources :amazon_products
         resources :products do
           resources :images
           resources :variants
