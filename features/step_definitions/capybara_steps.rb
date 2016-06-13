@@ -135,6 +135,17 @@ Then(/^I should check the delivery status$/) do
 end
 
 
+When(/^I should go to all product list for mah store$/) do
+  click_on"Go to store"
+  click_on"View and edit all Products"
+  page.find(".table-striped").find_css("tbody").collect(&:all_text).should have_content "I-Phone" == true
+
+end
+
+When(/^I Should see "([^"]*)"$/) do |arg1|
+  page.find(".out-of-stock").text.should == "Out of Stock"
+end
+
 
 
 

@@ -13,9 +13,9 @@
   background-color: #C30505;
 }
 
-#blogArticle .articleHeader h1 a:hover, #blogCatArticles .articleHeader h3 a:hover, .articleHeader span a:hover, .box-category a:hover, .breadcrumb a:hover, .category .tabs li a:hover, .list-item a:hover, .login-content .right a:hover, .pagination > li > a:hover, .sitemap li a:hover, .tags-update .tags a:hover, a b:hover, a:hover {
-  color: #467AB7;
-}
+/*#blogArticle .articleHeader h1 a:hover, #blogCatArticles .articleHeader h3 a:hover, .articleHeader span a:hover, .box-category a:hover, .breadcrumb a:hover, .category .tabs li a:hover, .list-item a:hover, .login-content .right a:hover, .pagination > li > a:hover, .sitemap li a:hover, .tags-update .tags a:hover, a b:hover, a:hover {
+  color: #BFD4AD;
+}*/
 
 #header .htop {
   background-color: #eee;
@@ -168,7 +168,7 @@
   color: #666;
 }
 
-.product-thumb .button-group > button:hover {
+.product-thumb .button-group > button {
   background-color: #C30505;
   color: #fff;
 }

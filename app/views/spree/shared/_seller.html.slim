@@ -3,14 +3,16 @@
   - if store == nil
     h5.store
       | Store is not available
-  -else 
+  - else 
     .row
       .container.bootstrap.snippet style=("width:100%;")
         .panel-body.inf-content
           .row
             .col-md-12
-              = image_tag store.try(:logo_file_name), class: "img-responsive  isTooltip"
-              ul.list-inline.ratings.text-center title="Ratings" 
+
+
+              = image_tag store.try(:logo).try(:url,:large),:class=>"img_center img-responsive"
+              ul.list-inline.ratings.text-center style=("margin-top:10px;") title="Ratings" 
                 li
                   a href="#" 
                     span.glyphicon.glyphicon-star
@@ -41,7 +43,8 @@
                           span.glyphicon.glyphicon-user.text-primary
                           | &nbsp; Store Name
                       td.text-primary
-                        = store.try(:name)
+                        = store.try(:name).titleize
+
                     tr
                       td
                         strong
@@ -69,4 +72,7 @@
                           span.glyphicon.glyphicon-home.text-primary
                           |&nbsp; Address
                       td.text-primary
-                        = store.try(:city)
+                        = store.try(:city).titleize
+                        |,  
+                        = store.try(:country)
+

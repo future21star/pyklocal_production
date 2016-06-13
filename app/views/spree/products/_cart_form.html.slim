@@ -37,6 +37,7 @@
                 - if variant_price variant
                   span.price.diff= variant_price variant
                 - unless variant.can_supply?
+                  br/
                   span.out-of-stock= Spree.t(:out_of_stock)
     - else
       = hidden_field_tag "variant_id", @product.master.id

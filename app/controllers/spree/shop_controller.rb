@@ -4,6 +4,7 @@ class Spree::ShopController < Spree::StoreController
     @products = Spree::Product.all.page(params[:page]).per(20).order("created_at desc") 
     @taxons = Spree::Taxon.where.not(name:"categories") 
     @taxonomies = Spree::Taxonomy.includes(root: :children) 
+    @store = Merchant::Store.all
   end
 
   def show 
