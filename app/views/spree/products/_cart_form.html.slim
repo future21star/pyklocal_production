@@ -13,9 +13,9 @@
         b Product Code:
         span itemprop="mpn"  
           |&nbsp;
-      li
-        b Availability:
-        span style=("color:#53af2e; font-weight:bold;")  In Stock
+      / li
+      /   b Availability:
+      /   span style=("color:#53af2e; font-weight:bold;")  In Stock
     ul.price-box
       li.price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" 
         span itemprop="price"  
@@ -56,12 +56,23 @@
         div
           span.price.selling itemprop="price" = Spree.t('product_not_available_in_this_currency')
     .delivery_item.cart.rating
-          ul.delivery-ul
-            li.delivery-li.active data-value="home_delivery"
-              span Home Delivery
-            li.delivery-li data-value="pickup"
-              span Pickup
-          = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
+      h4 Delivery Option :
+      label.control-label.delivery-li data-value="home_delivery"
+        = radio_button_tag :delivery_type , "home_delivery" ,:checked => true
+        |&nbsp;
+        b Home Delivery
+      br
+      label.control-label data-value="pickup"
+        = radio_button_tag :delivery_type , "pickup"
+        |&nbsp;
+        b Pickup
+    / .delivery_item.cart.rating
+    /       ul.delivery-ul
+    /         li.delivery-li.active data-value="home_delivery"
+    /           span Home Delivery
+    /         li.delivery-li data-value="pickup"
+    /           span Pickup
+    /       = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
     #product
       .cart
         div

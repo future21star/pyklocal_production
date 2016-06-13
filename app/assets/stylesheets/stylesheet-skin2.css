@@ -42,6 +42,11 @@ ol,ul{
 #container h3 .viewall{
 	font-size:12px;
 }
+
+.store-btn a:hover{
+  text-decoration:none;
+  color:#fff;
+}
 a,a b{
 	color:#3e7cb4;
 	text-decoration:none;
@@ -49,8 +54,10 @@ a,a b{
 }
  a b:hover,a:hover{
 	text-decoration:none;
-	color:#B8CCB7;
+	color:#C30505;
 }
+
+
 .active-link{
   color: #C30505 !important;
 }
