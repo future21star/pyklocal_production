@@ -9,10 +9,10 @@
         a href=product_path(product) data-no-turbolink="true"  
         	= image_tag product.images.first.try(:attachment).try(:url), class: "img-responsive product-img" 
       div
-        .caption.trim-text
+        .caption
           h4
             a href=product_path(product) data-no-turbolink="true" 
-            	= product.name
+            	= truncate(product.name, :length => 25)
           p.price
             = number_to_currency(product.price)
         .button-group
