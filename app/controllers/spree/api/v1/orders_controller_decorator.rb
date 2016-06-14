@@ -43,6 +43,21 @@ module Spree
 			}
 		end
 
+		def pickup
+
+			@line_item = Spree::Order.find_by_number(params[:order_number]).line_items.find_by_id(params[:id])
+			if @line_item.update_attributes(is_pickedup: params[:option])
+				render json: {
+					success: true
+				}
+			else
+				render json: {
+					success: false,
+					message: @line_item.errors.full_messages.join(" ")
+				}
+			end
+		end
+
 		private
 
 			def load_order

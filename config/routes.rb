@@ -63,7 +63,9 @@ Pyklocal::Application.routes.draw do
         resources :users do
           post :user_devices
         end
-        resources :orders
+        resources :orders do 
+          put :pickup
+        end
       end
     end
 
