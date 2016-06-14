@@ -1,0 +1,12 @@
+## For more details refer to: http://tsamni.com/post/84515089035/sidekiq-performing-background-or-delayed-jobs-with
+# config/redis.yml
+# Redis db configuration file
+# development environment
+development:
+    host: 'localhost'
+    port: '6379'
+
+# production environment
+production:
+    host: '54.186.162.220'
+    port: '6379'

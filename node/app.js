@@ -10,7 +10,8 @@ var io = require('socket.io').listen(5000),
 
 // Activated if redis client publish any message
 subscriber.on("message", function(channel, message) {
-  message = JSON.parse(message)
+  message = JSON.parse(message);
+  console.log(message);
 
   // Emit an event that will be listened by angular controller
   // 'message' will contain all the data sent from backend to angular
@@ -25,4 +26,5 @@ subscriber.on("message", function(channel, message) {
 
 // Subascribe redis client for a channel
 // The same name will be used from backend while sending data
-subscriber.subscribe("channelName");
+subscriber.subscribe("newOrder");
+console.log('I am listening SUCKERS');

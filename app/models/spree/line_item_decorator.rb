@@ -1,6 +1,8 @@
 module Spree
 	LineItem.class_eval do 
 
+		after_update :notify_driver
+
 		def product_name
 			product.try(:name)
 		end
@@ -40,6 +42,14 @@ module Spree
 		def order_number
 			order.number
 		end
+
+		private
+
+			def notify_driver
+				if ready_to_pick
+					REDIS_CLIENT.PUBLISH("newOrder", {order_number: order.number, store_name: product.try(:store).try(:name)}.to_json)
+				end
+			end
 
 	end
 end
