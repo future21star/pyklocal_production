@@ -11,6 +11,7 @@
               .form-group
                 = select_tag :serch_index, options_for_select(['Marketplace','Baby','GiftCards','Luggage','Beauty','All','HomeGarden','VideoGames','Jewelry','SportingGoods','Apparel','DVD','Grocery','HealthPersonalCare','PCHardware','Books','Watches','Music','Shoes','Toys','Electronics','PetSupplies'], params[:serch_index] || "All"),class:" fullwidth form-control input-bg auto-select"
             .col-sm-1
+
               = number_field_tag :item_page, (params[:item_page] || 1),class:" fullwidth form-control input-bg auto-select"
             .col-sm-1
               = submit_tag "Submit", class:"pull-right btn btn-info"
@@ -29,3 +30,5 @@
           .col-sm-10
             | Total Results :
             b= @total_results
+          .col-sm-2
+           

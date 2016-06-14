@@ -168,7 +168,8 @@
   color: #666;
 }
 
-.product-thumb .button-group > button:  background-color: #C30505;
+.product-thumb .button-group > button {
+ background-color: #C30505;
   color: #fff;
 }
 
