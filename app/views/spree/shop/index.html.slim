@@ -9,56 +9,25 @@
     .row
       column#column-left.col-sm-3.hidden-xs
         h3 Bestsellers
-        -@store.each do |stores|
-          .owl-carousel.bestseller_carousel
-            .product-thumb.clearfix
-              .image
-                a href="#" 
-                  = image_tag stores.try(:logo).try(:url,:small),:class=>" img-responsive"
-              .caption
-                h4
-                  a href="#" 
-                    = stores.try(:name).titleize
-                p.price
-                  = stores.try(:city).titleize
-              .button-group
-                button.btn-primary onclick="cart.add('48');" type="button" 
-                  span Add to Cart
-                .add-to-links
-                  button data-toggle="tooltip" onclick="wishlist.add('48');" title=("Add to Wish List") type="button" 
-                    i.fa.fa-heart
-                  button data-toggle="tooltip" onclick="compare.add('48');" title=("Compare this Product") type="button" 
-                    i.fa.fa-exchange
       #content.col-sm-9
         h1 Products
-        .row
-          .col-sm-12
         h3
         .product-filter
           .row
-            .col-md-4.col-sm-5
+            .col-md-6.col-sm-4
               .btn-group
                 .btn.btn-default data-toggle="tooltip" title="All Product" 
                   i.fa.fa-bars
               a#compare-total  
               |&nbsp;All Products 
-            .col-sm-2.text-right
-              label.control-label for="input-sort"  Sort By:
-            .col-md-3.col-sm-2.text-right
+            .col-sm-4.text-right
               select#input-sort.form-control.col-sm-3 onchange=("location = this.value;") 
                 option selected="selected" value=""  Default Sorting
-                option value=""  Name (A - Z)
-                option value=""  Name (Z - A)
-                option value=""  Price (Low &gt; High)
-                option value=""  Price (High &gt; Low)
-                option value=""  Rating (Highest)
-                option value=""  Rating (Lowest)
-                option value=""  Model (A - Z)
-                option value=""  Model (Z - A)
+          
             .col-sm-2.text-right
-              label.control-label for="input-limit"  Showing product:
-            .text-left
+              label.control-label for="input-limit" Showing product:
               span
+                |&nbsp;
                 b 20
         .row.products-category
           .product-layout.product-list.col-xs-12
@@ -73,4 +42,16 @@
           .col-sm-6.text-right 
             - if @products.respond_to?(:num_pages)
               = paginate @products
+
+
+- content_for :js do
+  javascript:
+    $('#banner0').owlCarousel({
+      items: 2,
+      autoPlay: 3000,
+      singleItem: true,
+      navigation: false,
+      pagination: false,
+      transitionStyle: 'fade'
+    });
  
