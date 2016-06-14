@@ -41,22 +41,22 @@ br
 	- if current_spree_user && current_spree_user.try(:stores).try(:collect, &:id).try(:include?, @store.id)
 		- title_text = current_spree_user.has_spree_role?("merchant") ? "" : "Approval pending"
 		.s-link-wrap
-				.btn-default.btn-lg.btn-block.text-left.btn-border-radius
+				.btn-default.btn-lg.btn-block.text-left.btn-border-radius.store-btn
 					= link_to edit_store_email_tokens_path(id: @store.id, type: "Merchant::Store"), class: " store-link", "data-no-turbolink" => true, title: title_text do
 						.fa &#xf044;
 						| Edit Store Information
 			
-				.btn-default.btn-lg.btn-block.text-left.btn-border-radius
+				.btn-default.btn-lg.btn-block.text-left.btn-border-radius.store-btn
 					= link_to current_spree_user.has_spree_role?("merchant") ? new_merchant_product_path : "#", class: " store-link", "data-no-turbolink" => true, title: title_text do
 						.fa &#xf055;
 						| Add Products
 
-				.btn-default.btn-lg.btn-block.text-left.btn-border-radius
+				.btn-default.btn-lg.btn-block.text-left.btn-border-radius.store-btn
 					= link_to current_spree_user.has_spree_role?("merchant") ? merchant_products_path : "#", class: " store-link", "data-no-turbolink" => true, title: title_text do
 						.fa &#xf15c;
 						| View and edit all Products
 
-				.btn-default.btn-lg.btn-block.text-left.btn-border-radius
+				.btn-default.btn-lg.btn-block.text-left.btn-border-radius.store-btn
 					= link_to current_spree_user.has_spree_role?("merchant") ? merchant_orders_path : "#", class: "store-link ", "data-no-turbolink" => true, title: title_text do
 						.fa &#xf07a;
 						| View Orders
