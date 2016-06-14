@@ -12,7 +12,7 @@
         .caption
           h4
             a href=product_path(product) data-no-turbolink="true" 
-            	= truncate(product.name, :length => 50)
+            	= truncate(product.name, :length => 25)
           p.price
             = number_to_currency(product.price)
         .button-group
