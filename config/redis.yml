@@ -3,10 +3,10 @@
 # Redis db configuration file
 # development environment
 development:
-    host: 'localhost'
-    port: '6379'
+  host: 'localhost'
+  port: '6379'
 
 # production environment
 production:
-    host: '54.186.162.220'
-    port: '6379'
+  host: '54.186.162.220'
+  port: '6379'
