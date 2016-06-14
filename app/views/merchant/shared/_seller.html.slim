@@ -60,6 +60,10 @@ br
 					= link_to current_spree_user.has_spree_role?("merchant") ? merchant_orders_path : "#", class: "store-link ", "data-no-turbolink" => true, title: title_text do
 						.fa &#xf07a;
 						| View Orders
+				.btn-default.btn-lg.btn-block.text-left.btn-border-radius.store-btn
+					= link_to current_spree_user.has_spree_role?("merchant") ? merchant_store_amazon_product_path : "#", class: "store-link ", "data-no-turbolink" => true, title: title_text do
+						.fa &#xf270;
+						| Fetch Product From Amazon
 				br
 		.pull-right.map-wrapper
 			#map-preview data-is_located="#{@store.is_located?}" data-longitude="#{@store.longitude}" data-latitude="#{@store.latitude}"&gt;

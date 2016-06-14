@@ -1,5 +1,5 @@
 - if products.empty?
-  = Spree.t(:no_products_found)
+	b You donot have any product to sell. Add your products
 - elsif params.key?(:keywords)
   h6.search-results-title= Spree.t(:search_results, :keywords => h(params[:keywords]))
 

@@ -21,7 +21,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 	end
 
 	def create
-		p "============================================================"
+		
 		@product = Spree::Product.new(product_params)
 		if @product.save
 			image = @product.images.new({attachment: params[:product][:image_url]})
