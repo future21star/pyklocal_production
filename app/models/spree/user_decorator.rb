@@ -23,6 +23,18 @@ Spree::User.class_eval do
     return email
   end
 
+  def driver_orders_list
+    orders = []
+    Merchant::Store.all.each do |store|
+      store.spree_products.each do |store_prodct|
+        store_prodct.line_items.where(is_pickedup: true, delivery_type: "home_delivery", ready_to_pick: true).collect(&:order).uniq.each do |store_order|
+          orders << {order_number: store_order.number, store_name: store.name}
+        end
+      end
+    end
+    return orders
+  end
+
   def has_store
     stores.present?
   end

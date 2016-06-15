@@ -1,9 +1,13 @@
 module Spree
 	Order.class_eval do 
 
-		# def store_name
-		# 	line_items.
-		# end
+		def is_home_delivery_product_available?(item_ids)
+			line_items.where(id: item_ids).collect(&:delivery_type).include?("home_delivery")
+		end
+
+		def ready_to_pick_items(item_ids)
+			line_items.where(id: item_ids).collect(&:ready_to_pick).include?(true)
+		end
 
 	end
 end

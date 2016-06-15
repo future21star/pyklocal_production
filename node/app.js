@@ -26,5 +26,5 @@ subscriber.on("message", function(channel, message) {
 
 // Subascribe redis client for a channel
 // The same name will be used from backend while sending data
-subscriber.subscribe("newOrder");
+subscriber.subscribe("listUpdate");
 console.log('I am listening SUCKERS');

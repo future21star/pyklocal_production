@@ -63,7 +63,7 @@ module Merchant
     def pickable_line_items
       store_line_items = []
       spree_products.each do |product|
-        store_line_items << product.line_items.where(ready_to_pick: true)
+        store_line_items << product.line_items.where(ready_to_pick: true, is_pickedup: false, delivery_type: "home_delivery")
       end
       return store_line_items.flatten
     end

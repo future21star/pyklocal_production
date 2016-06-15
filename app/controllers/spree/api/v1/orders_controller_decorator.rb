@@ -1,9 +1,11 @@
 module Spree
 	Api::V1::OrdersController.class_eval do 
 
-		before_action :load_order, only: [:show]
-		before_action :find_store, only: [:show, :pickup]
-		# skip_before_filter :authenticate_user, only: [:pickup]
+		include Spree::Api::ApiHelpers
+
+		before_action :load_order, only: [:show, :pickup]
+		before_action :find_store, only: [:show]
+		skip_before_filter :authenticate_user, only: [:pickup, :apply_coupon_code]
 
 		def index
 			@orders_list = []
@@ -45,28 +47,31 @@ module Spree
 		end
 
 		def pickup
-			@line_item = Spree::Order.find_by_number(params[:order_id]).line_items.find_by_id(params[:line_item_id])
-			if @line_item.update_attributes(is_pickedup: params[:option])
-				@success = true
-				@message = "Working"
+			@line_items = @order.line_items.where(id: params[:line_item_ids], is_pickedup: false, ready_to_pick: true, delivery_type: "home_delivery")
+			@user = Spree::ApiToken.where(token: params[:user_id]).first.try(:user)
+			p "=============================================================================================================================================================================="
+			p @line_items
+			p "------------------------------------------------------"
+			p @user
+			if @line_items.present?
+				@line_items.find_each { |line_item| line_item.update_attributes(is_pickedup: eval(params[:option]), driver_id: @user.try(:id)) }
+				@response = get_response
+				@response[:message] = eval(params[:option]) ? "Item(s) picked up by you" : "Successfully canceled pikup"
 			else
-				@success = false
-				@message = @line_item.errors.full_messages.join(" ")
+				@response = error_response
+				@response[:message] = "Item not found either cancel by seller or picked up by another driver."
 			end
 		rescue Exception => e
 			api_exception_handler(e)
 		ensure
-			render json: {
-				success: @success,
-				message: @message
-			}
+			render json: @response
 		end
 
 		private
 
 			def load_order
 				id = params[:id] || params[:order_id]
-				@order = Spree::Order.find_by_number(params[:id])
+				@order = Spree::Order.find_by_number(id)
 			end
 
 			def find_store
