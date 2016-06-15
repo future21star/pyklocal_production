@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160614112131) do
+ActiveRecord::Schema.define(version: 20160615123958) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -279,7 +279,7 @@ ActiveRecord::Schema.define(version: 20160614112131) do
     t.string   "delivery_type",                limit: 255,                          default: "home_delivery"
     t.boolean  "ready_to_pick",                                                     default: false
     t.boolean  "is_pickedup",                                                       default: false
-    t.string   "pickup_by",                    limit: 255
+    t.integer  "driver_id",                    limit: 4
   end
 
   add_index "spree_line_items", ["order_id"], name: "index_spree_line_items_on_order_id", using: :btree

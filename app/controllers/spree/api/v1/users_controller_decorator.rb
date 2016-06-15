@@ -3,6 +3,9 @@ module Spree
 
 		include Spree::Api::ApiHelpers
 
+		before_filter :find_user, only: [:my_pickup_list]
+		skip_before_filter :authenticate_user, only: :my_pickup_list
+
 		def user_devices
 			@api_token = Spree::ApiToken.where(token: params[:user_id]).first
 			@user = @api_token.try(:user)
@@ -29,10 +32,22 @@ module Spree
 			render json: @response
 		end
 
+		def my_pickup_list
+			@orders = @user.driver_orders_list
+		rescue Exception => e
+			api_exception_handler(e)
+		ensure
+			render json: @orders.as_json()
+		end
+
 		private
 
 			def user_device_param
 				params.require(:user_device).permit(:device_token, :device_type, :user_id, :notification)
+			end
+
+			def find_user
+				@user = Spree::ApiToken.where(token: params[:user_id]).first.try(:user)
 			end
 	end
 end

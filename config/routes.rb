@@ -96,6 +96,7 @@ Pyklocal::Application.routes.draw do
         resources :sessions
         resources :users do
           post :user_devices
+          get :my_pickup_list
         end
         resources :orders, concerns: :order_routes
       end
