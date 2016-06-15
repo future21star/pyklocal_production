@@ -55,6 +55,40 @@ Pyklocal::Application.routes.draw do
     #Api routes
     namespace :api do 
       namespace :v1 do 
+
+
+        concern :order_routes do
+          member do
+            put :approve
+            put :cancel
+            put :empty
+            put :apply_coupon_code
+            put :pickup
+          end
+
+          resources :line_items
+          resources :payments do
+            member do
+              put :authorize
+              put :capture
+              put :purchase
+              put :void
+              put :credit
+            end
+          end
+
+          resources :addresses, only: [:show, :update]
+
+          resources :return_authorizations do
+            member do
+              put :add
+              put :cancel
+              put :receive
+            end
+          end
+        end
+
+
         resources :merchant_stores do 
           put :update_location
         end
@@ -63,9 +97,7 @@ Pyklocal::Application.routes.draw do
         resources :users do
           post :user_devices
         end
-        resources :orders do 
-          put :pickup
-        end
+        resources :orders, concerns: :order_routes
       end
     end
 

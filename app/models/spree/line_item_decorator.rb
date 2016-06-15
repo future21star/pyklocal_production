@@ -46,8 +46,8 @@ module Spree
 		private
 
 			def notify_driver
-				if ready_to_pick
-					REDIS_CLIENT.PUBLISH("newOrder", {order_number: order.number, store_name: product.try(:store).try(:name)}.to_json)
+				if self.changes.include?(:ready_to_pick) || self.changes.include?(:is_pickedup)
+					REDIS_CLIENT.PUBLISH("listUpdate", {order_number: order.number, store_name: product.try(:store).try(:name)}.to_json)
 				end
 			end
 
