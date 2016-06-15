@@ -1,33 +1,49 @@
-#container
+
   .container
-    .panel.panel-default
-      .panel-heading
-        .row
-          = form_tag "", {method: :get} do |f|
-            = hidden_field_tag :by, "keyword"
-            .col-sm-7.form-group
-              = text_field_tag :keywords, params[:keywords],class:"form-control"
-            .col-sm-3
-              .form-group
-                = select_tag :serch_index, options_for_select(['Marketplace','Baby','GiftCards','Luggage','Beauty','All','HomeGarden','VideoGames','Jewelry','SportingGoods','Apparel','DVD','Grocery','HealthPersonalCare','PCHardware','Books','Watches','Music','Shoes','Toys','Electronics','PetSupplies'], params[:serch_index] || "All"),class:" fullwidth form-control input-bg auto-select"
-            .col-sm-1
+    .row
+      column#column-left.col-sm-3.hidden-xs
+        =render :partial=>"merchant/shared/seller"
+      #content.col-sm-9
+        h1 Amazon Products
+        .panel.panel-default
+          .panel-heading
+            .row
+              = form_tag "", {method: :get} do |f|
+                = hidden_field_tag :by, "keyword"
+                .col-sm-1
+                  .btn.btn-default data-toggle="tooltip" title="All Product" 
+                    i.fa.fa-bars
+                .col-sm-6
+                  = text_field_tag :keywords, params[:keywords],class:"form-control"
+                .col-sm-3
+                  = select_tag :serch_index, options_for_select(['Marketplace','Baby','GiftCards','Luggage','Beauty','All','HomeGarden','VideoGames','Jewelry','SportingGoods','Apparel','DVD','Grocery','HealthPersonalCare','PCHardware','Books','Watches','Music','Shoes','Toys','Electronics','PetSupplies'], params[:serch_index] || "All"),class:" fullwidth form-control input-bg auto-select"
+                .col-sm-1
+                  = number_field_tag :item_page, (params[:item_page] || 1),class:" fullwidth form-control input-bg auto-select"
+                .col-sm-1
+                  = submit_tag "Search", class:"pull-right btn btn-default  "
+        - if @amazon_products.present?
+          .row
+            - @amazon_products.each do |item|
+              .col-md-3.product-item 
+                .thumbnail style=("min-height:280px;")
+                  .thumb-image-container.product-img
+                    a.aligner href=item.detail_page_url
+                      = image_tag item.large_image.try(:url) ,class:"img-responsive product-img "
+                  .product-details.trim-text
+                    = link_to  "#{item.item_attributes.title} ", item.detail_page_url, target: "_blank"
+                  .text-center
+                    = check_box_tag "sakn"
+                  .text-center
+                    = link_to "Import", new_merchant_amazon_product_path(asin: item.asin), class: "btn btn-default margin-bottom btn-xs", target: "_blank"
+                  / td= link_to "Create Product", new_product_path(asin: item.asin, product_source: "Amazon"), class: "btn btn-primary btn-xs", target: "_blank"
 
-              = number_field_tag :item_page, (params[:item_page] || 1),class:" fullwidth form-control input-bg auto-select"
-            .col-sm-1
-              = submit_tag "Submit", class:"pull-right btn btn-info"
-    .well
-      - if @amazon_products.present?
-        table.table
-          - @amazon_products.each do |item|
-            tr
-              td= link_to "#{item.asin} - #{item.item_attributes.title} ", item.detail_page_url, target: "_blank"
-              td= link_to "Import", new_merchant_amazon_product_path(asin: item.asin), class: "btn btn-default btn-xs", target: "_blank"
-              / td= link_to "Create Product", new_product_path(asin: item.asin, product_source: "Amazon"), class: "btn btn-primary btn-xs", target: "_blank"
-
-    .panel.panel-default
-      .panel-heading
-        .row
-          .col-sm-10
-            | Total Results :
-            b= @total_results
-  
+          .row style=("margin-bottom:10px;")
+            .col-sm-10
+              b Total Results :
+              b = @total_results
+            .col-sm-2
+              = form_tag "", {method: :get} do |f|
+                = hidden_field_tag :item_page,params[:item_page].to_i + 1 
+                = hidden_field_tag :keywords, params[:keywords]
+                = hidden_field_tag :serch_index, params[:serch_index]
+                = submit_tag "Next Page >", class:"pull-right btn btn-default margin-bottom"
