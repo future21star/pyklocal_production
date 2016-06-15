@@ -47,11 +47,11 @@ module Spree
 		end
 
 		def pickup
-			@line_items = @order.line_items.where(id: params[:line_item_ids], is_pickedup: false, ready_to_pickup: true)
+			@line_items = @order.line_items.where(id: params[:line_item_ids], is_pickedup: false, ready_to_pick: true)
 			if @line_items.present?
 				@line_items.find_each { |line_item| line_item.update_attributes(is_pickedup: eval(params[:option])) }
 				@response = get_response
-				@response[:message] = "Item(s) picked up by you"
+				@response[:message] = eval(params[:option]) ? "Item(s) picked up by you" : "Successfully canceled pikup"
 			else
 				@response = error_response
 				@response[:message] = "Item not found either cancel by seller or picked up by another driver."
