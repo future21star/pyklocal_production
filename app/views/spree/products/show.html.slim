@@ -5,13 +5,13 @@
           i.fa.fa-home
       li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"  
           span itemprop="title" 
-            = @product.name 
+            = @product.try(:name) 
     .row
       #content.col-sm-9
         div itemscope="" itemtype="http://schema.org/Product" 
           h1  
           .row.product-info
-            .col-sm-6
+            .col-sm-5
               #product-images data-hook="product_images"
                 #main-image.style
                   .image data-hook="product_images"
@@ -28,7 +28,7 @@
                       / = image_tag image.attachment.url(:mini), :itemprop => "image",image.attachment.url(:product)
                     - else
                     = product_image(@product, :itemprop => "image")
-            .col-sm-6
+            .col-sm-7
               #product
                   div
                     = render :partial => 'cart_form'
@@ -103,7 +103,7 @@
       zoomWindowFadeOut: 500,
       lensFadeIn: 500,
       lensFadeOut: 500,
-      loadingIcon: 'catalog/view/theme/marketshop/image/progress.gif'
+      loadingIcon: 'catalog'
     }); 
     $("#zoom_01").bind("click", function(e) {
       var ez =   $('#zoom_01').data('elevateZoom');
