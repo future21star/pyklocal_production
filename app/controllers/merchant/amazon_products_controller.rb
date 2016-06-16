@@ -3,12 +3,14 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 
 	def fetch
 		if  ["keyword", nil].include?(params[:by])
+			
 			if params[:keywords].present?
 				@amazon_products, @total_results = AMAZON_CLIENT.search_keywords(params[:keywords], {SearchIndex: (params[:serch_index] || "All"), ResponseGroup: (params[:response_type] || "Medium"), ItemPage: (params[:item_page] || 1)})
 			elsif params[:node].present?
 				@amazon_products = AMAZON_CLIENT.browse_node(params[:node])
 			end
 		else
+			
 			URI.parse(params[:url])
 		end
 	end
@@ -23,6 +25,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 	def create
 		
 		@product = Spree::Product.new(product_params)
+		@product.attributes = product_params.merge({store_id: current_spree_user.stores.first.try(:id)})
 		if @product.save
 			image = @product.images.new({attachment: params[:product][:image_url]})
 			image.save

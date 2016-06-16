@@ -23,20 +23,21 @@
                   = submit_tag "Search", class:"pull-right btn btn-default  "
         - if @amazon_products.present?
           .row
-            - @amazon_products.each do |item|
-              .col-md-3.product-item 
-                .thumbnail style=("min-height:280px;")
-                  .thumb-image-container.product-img
-                    a.aligner href=item.detail_page_url
-                      = image_tag item.large_image.try(:url) ,class:"img-responsive product-img "
-                  .product-details.trim-text
-                    = link_to  "#{item.item_attributes.title} ", item.detail_page_url, target: "_blank"
-                  .text-center
-                    = check_box_tag "sakn"
-                  .text-center
-                    = link_to "Import", new_merchant_amazon_product_path(asin: item.asin), class: "btn btn-default margin-bottom btn-xs", target: "_blank"
-                  / td= link_to "Create Product", new_product_path(asin: item.asin, product_source: "Amazon"), class: "btn btn-primary btn-xs", target: "_blank"
-
+              / = form_tag "" ,{method: :post} do |f|
+              - @amazon_products.each do |item|
+                .col-md-3.product-item 
+                  .thumbnail style=("min-height:280px;")
+                    .thumb-image-container.product-img
+                      a.aligner href=item.detail_page_url
+                        = image_tag item.large_image.try(:url) ,class:"img-responsive product-img "
+                    .product-details.trim-text
+                      = link_to  "#{item.item_attributes.title} ", item.detail_page_url, target: "_blank"
+                    .text-center
+                      = check_box_tag "product_ids[]",item.asin
+                    .text-center
+                      = link_to "Import", new_merchant_amazon_product_path(asin: item.asin), class: "btn btn-default margin-bottom btn-xs", target: "_blank"
+                    / td= link_to "Create Product", new_product_path(asin: item.asin, product_source: "Amazon"), class: "btn btn-primary btn-xs", target: "_blank"
+              / = submit_tag "Multiple Product", class:"pull-right btn btn-default margin-bottom"
           .row style=("margin-bottom:10px;")
             .col-sm-10
               b Total Results :
