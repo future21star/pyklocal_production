@@ -49,10 +49,6 @@ module Spree
 		def pickup
 			@line_items = @order.line_items.where(id: params[:line_item_ids], is_pickedup: false, ready_to_pick: true, delivery_type: "home_delivery")
 			@user = Spree::ApiToken.where(token: params[:user_id]).first.try(:user)
-			p "=============================================================================================================================================================================="
-			p @line_items
-			p "------------------------------------------------------"
-			p @user
 			if @line_items.present?
 				@line_items.find_each { |line_item| line_item.update_attributes(is_pickedup: eval(params[:option]), driver_id: @user.try(:id)) }
 				@response = get_response
