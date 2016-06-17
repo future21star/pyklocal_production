@@ -3,7 +3,7 @@ module Spree
 
 		include Spree::Api::ApiHelpers
 
-		before_filter :find_user, only: [:my_pickup_list]
+		before_filter :find_user, only: [:my_pickup_list, :update_location]
 		skip_before_filter :authenticate_user, only: :my_pickup_list
 
 		def user_devices
@@ -38,6 +38,18 @@ module Spree
 			api_exception_handler(e)
 		ensure
 			render json: @orders.as_json()
+		end
+
+		def update_location
+			if @user.api_tokens.last.update_attributes(latitude: params[:latitude], longitude: params[:longitude])
+				@response = get_response
+			else
+				@response = error_response
+			end
+		rescue Exception => e
+			api_exception_handler(e)
+		ensure
+			render json: @response
 		end
 
 		private
