@@ -9,6 +9,7 @@ Spree::User.class_eval do
   has_many :api_tokens
   has_many :user_devices
   has_many :payment_histories, foreign_key: :user_id, class_name: 'Spree::PaymentHistory'
+  has_many :drivers_line_items, -> {where(spree_line_items: {is_pickedup: true, delivery_type: "home_delivery", ready_to_pick: true})}, foreign_key: :driver_id, class_name: 'Spree::LineItem'
   belongs_to :spree_buy_privilege
   belongs_to :spree_sell_privilege 
   has_one :payment_preference, foreign_key: :user_id, class_name: 'Spree::PaymentPreference'
