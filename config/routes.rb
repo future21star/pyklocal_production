@@ -8,7 +8,11 @@ Pyklocal::Application.routes.draw do
     get "stores/products/:product_id/variants/new", to: "variants#new", as: "stores_products_variants_new"
     resources :stores do
       collection do
-        resources :amazon_products
+        resources :amazon_products do
+          collection do
+            post :import_collection
+          end
+        end 
         resources :products do
           resources :images
           resources :variants
