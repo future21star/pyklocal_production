@@ -48,11 +48,12 @@ module Spree
 
 		def pickup
 			@user = Spree::ApiToken.where(token: params[:user_id]).first.try(:user)
-			driver_id = params[:option] ? @user.try(:id) : nil
+			driver_id = eval(params[:option]) ? nil : @user.try(:id)
+			updating_value = eval(params[:option]) ? @user.try(:id) : nil
 			@line_items = @order.line_items.where(id: params[:line_item_ids], is_pickedup: !eval(params[:option]), ready_to_pick: true, delivery_type: "home_delivery", driver_id: driver_id)
 
 			if @line_items.present?
-				@line_items.find_each { |line_item| line_item.update_attributes(is_pickedup: eval(params[:option]), driver_id: driver_id) }
+				@line_items.find_each { |line_item| line_item.update_attributes(is_pickedup: eval(params[:option]), driver_id: updating_value) }
 				@response = get_response
 				@response[:message] = eval(params[:option]) ? "Item(s) picked up by you" : "You have canceled this pickup"
 			else
