@@ -12,7 +12,7 @@ module Spree
 		end
 
 		def store_location
-			{lat: product.try(:store).try(:latitude), long: product.try(:store).try(:longitude)}
+			{lat: product.try(:store).try(:latitude).to_f, lng: product.try(:store).try(:longitude).to_f}
 		end
 
 		def seller_name

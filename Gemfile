@@ -80,6 +80,7 @@ group :development do
   gem 'capistrano', '2.15.5'
   gem 'capistrano-unicorn', :require => false
   gem 'thin'
+  gem "rails-erd"
 end
 
 group :production do
