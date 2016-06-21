@@ -1,8 +1,8 @@
 - url = spree.product_url(product, :taxon_id => @taxon.try(:id))
 .col-md-3.product-item id= "product_#{product.id}"
   .thumbnail.store-product-item
-    .thumb-image-container.product-img
-      a.aligner href=spree.product_path(product)
+    .thumb-image-container.product-img.table-center
+      a.aligner.img-center href=spree.product_path(product)
         = product_image(product, :itemprop => "image",:class=>"product-img-height")
     .product-details
       = link_to truncate(product.name, :length => 20), spree.product_path(product), :class => 'product-title', :itemprop => "name", :title => product.name, "data-no-turbolink" => true

@@ -1730,7 +1730,7 @@ div.required .control-label:before {
 }
 
 .product-thumb .image a {
-  display: block;
+  /*display: block;*/
 }
 
 .product-thumb .image a img {
@@ -2912,6 +2912,15 @@ form#adv_ajaxfilter {
 }
 .product-img-height{
   max-height: 215px;
+}
+
+.table-center{
+  display:table;
+  width:100%;
+}
+.img-center{
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .trim-text{
