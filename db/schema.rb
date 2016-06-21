@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160621065626) do
+ActiveRecord::Schema.define(version: 20160621131238) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -512,6 +512,7 @@ ActiveRecord::Schema.define(version: 20160621065626) do
     t.string   "meta_title",           limit: 255
     t.integer  "store_id",             limit: 4
     t.string   "asin",                 limit: 255
+    t.string   "brand",                limit: 255
   end
 
   add_index "spree_products", ["available_on"], name: "index_spree_products_on_available_on", using: :btree

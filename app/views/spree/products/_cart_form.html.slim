@@ -9,10 +9,12 @@
         b Brand:
         span itemprop="brand"
           |&nbsp;
+          = @product.try(:brand)
       li
         b Product Code:
         span itemprop="mpn"  
           |&nbsp;
+          = @product.try(:asin)
       / li
       /   b Availability:
       /   span style=("color:#53af2e; font-weight:bold;")  In Stock
