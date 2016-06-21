@@ -1887,7 +1887,7 @@ div.required .control-label:before {
 
 .product-list .image {
   float: left;
-  margin-right: 15px;
+  /*margin-right: 15px;*/
 }
 
 .product-list .product-thumb h4 {
@@ -2910,8 +2910,8 @@ form#adv_ajaxfilter {
 .border_line{
   border-bottom: 1px solid #ddd;
 }
-.product-img{
-  min-height: 215px;
+.product-img-height{
+  max-height: 215px;
 }
 
 .trim-text{
@@ -2919,3 +2919,4 @@ form#adv_ajaxfilter {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+

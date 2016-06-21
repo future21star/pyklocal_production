@@ -1,8 +1,8 @@
   -product = @product.name
-  - store = Spree::Product.where(name:product).first.store  
+  - store = Spree::Product.where(name:product,store_id: @product.store_id).first.store  
   - if store == nil
     h5.store
-      | Store is not available
+      b  Store is not available
   -else 
     .row
       .container.bootstrap.snippet style=("width:100%;")

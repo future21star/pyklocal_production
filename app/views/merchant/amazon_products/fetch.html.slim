@@ -29,7 +29,7 @@
                   .thumbnail style=("min-height:280px;")
                     .thumb-image-container.product-img
                       a.aligner href=item.detail_page_url
-                        = image_tag item.large_image.try(:url) ,class:"img-responsive product-img "
+                        = image_tag item.medium_image.try(:url) ,class:"img-responsive  "
                     .product-details.trim-text
                       = link_to  "#{item.item_attributes.title} ", item.detail_page_url, target: "_blank"
                     .text-center
