@@ -323,6 +323,7 @@ GEM
     polyamorous (1.3.0)
       activerecord (>= 3.0)
     polyglot (0.3.5)
+    pr_geohash (1.0.0)
     premailer (1.8.6)
       css_parser (>= 1.3.6)
       htmlentities (>= 4.0.0)
@@ -379,6 +380,8 @@ GEM
     ref (2.0.0)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
+    rsolr (1.1.1)
+      builder (>= 2.1.2)
     rspec-core (3.4.1)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
@@ -424,9 +427,6 @@ GEM
       concurrent-ruby (~> 1.0)
       connection_pool (~> 2.2, >= 2.2.0)
       redis (~> 3.2, >= 3.2.1)
-    simple_form (3.2.0)
-      actionpack (~> 4.0)
-      activemodel (~> 4.0)
     simplecov (0.7.1)
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
@@ -457,6 +457,14 @@ GEM
       activerecord (~> 4.1)
       state_machines-activemodel (>= 0.3.0)
     stringex (2.6.0)
+    sunspot (2.2.5)
+      pr_geohash (~> 1.0)
+      rsolr (~> 1.1.1)
+    sunspot_rails (2.2.5)
+      nokogiri
+      rails (>= 3)
+      sunspot (= 2.2.5)
+    sunspot_solr (2.2.5)
     temple (0.7.6)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
@@ -529,7 +537,6 @@ DEPENDENCIES
   selenium-webdriver (= 2.52.0)
   shoulda-matchers (~> 3.1)
   sidekiq
-  simple_form
   simplecov
   slim
   slim-rails
@@ -537,6 +544,8 @@ DEPENDENCIES
   spree_auth_devise!
   spree_gateway!
   spring
+  sunspot_rails
+  sunspot_solr
   therubyracer
   thin
   turbolinks

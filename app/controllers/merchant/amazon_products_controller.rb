@@ -22,8 +22,6 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 		raw_product = AMAZON_CLIENT.lookup(params[:asin]).first
 		description = raw_product.try(:editorial_reviews).try(:editorial_review).try(:content)
 		offer_price = raw_product.try(:offer_summary).try(:lowest_new_price).try(:amount).to_f/100 || raw_product.try(:list_price).try(:amount).to_f/100 
-		p "==============================="
-		p offer_price
 		@shipping_categories = Spree::ShippingCategory.all
 		sku = raw_product.item_attributes.title[0..2].upcase+SecureRandom.hex(5).upcase
 		@product = Spree::Product.new({name: raw_product.item_attributes.title, description: description, sku: sku, price: offer_price , available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url)}) 

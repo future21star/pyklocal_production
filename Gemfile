@@ -23,9 +23,11 @@ gem "less-rails"
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 gem "font-awesome-rails" 
 
+gem 'sunspot_rails'
+gem 'sunspot_solr'
+
 gem 'asin'
 gem 'sidekiq'
-gem 'simple_form'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
