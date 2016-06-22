@@ -42,9 +42,10 @@
               = image_tag "/images/pyc-logo.png", class: "img-responsive"
         .col-table-cell.col-lg-5.col-md-5.col-md-push-0.col-sm-6.col-sm-push-6.col-xs-12
           #search.input-group
-            input#filter_name.form-control.input-lg.ac_input autocomplete="off" name="search" placeholder="Search" type="text" /
-            button.button-search type="button" 
-              i.fa.fa-search
+            = form_tag '/shop', :method => 'get', id: "search-box" do
+              input id="discover" class="form-control" autocomplete="off" name="search" placeholder="Search for..." value=(params[:search] rescue "")
+              button.button-search type="submit" 
+                i.fa.fa-search
         .col-table-cell.col-lg-3.col-md-3.col-md-pull-0.col-sm-6.col-sm-pull-6.col-xs-12.inner
           #cart
             = link_to spree.cart_path, "data-no-turbolink" => true do 

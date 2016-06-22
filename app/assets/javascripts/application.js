@@ -23,6 +23,7 @@ var pyklocal = {
 
 	init: function() {
 		this.setDeliveryType();
+		this.filterByRadius();
 	},
 
 	setDeliveryType: function() {
@@ -32,9 +33,27 @@ var pyklocal = {
 			$('.delivery-li').removeClass('active');
 			$(this).addClass('active');
 		});
+	},
+
+	filterByRadius: function() {
+		$('#radiusFilter').change(function() {
+			$('#rFilter').submit();
+		});
 	}
+
 };
 
 $(document).ready(function(){
 	pyklocal.init();
 });
+
+window.onload = function() {
+  var startPos;
+  var geoSuccess = function(position) {
+    startPos = position;
+    console.log(startPos.coords.latitude);
+    $('#lat').val(startPos.coords.latitude);
+    $('#lng').val(startPos.coords.longitude);
+  };
+  navigator.geolocation.getCurrentPosition(geoSuccess);
+};

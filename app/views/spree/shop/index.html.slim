@@ -14,12 +14,22 @@
         h3
         .product-filter
           .row
-            .col-md-6.col-sm-4
+            .col-sm-2
               .btn-group
                 .btn.btn-default data-toggle="tooltip" title="All Product" 
                   i.fa.fa-bars
               a#compare-total  
               |&nbsp;All Products 
+            .col-sm-4.col-xs-12
+              = form_tag "/shop", method: :get, id: "rFilter" do 
+                input id="lat" type="hidden" name="lat"
+                input id="lng" type="hidden" name="lng"
+                select.form-control#radiusFilter name="radius"
+                  option selected=(params[:radius] == "") value="" Sort By Location
+                  option selected=(params[:radius] == "2") value="2" 2 KM
+                  option selected=(params[:radius] == "5") value="5" 5 KM
+                  option selected=(params[:radius] == "10") value="10" 10 KM
+                  option selected=(params[:radius] == "50") value="50" 50 KM
             .col-sm-4.text-right
               select#input-sort.form-control.col-sm-3 onchange=("location = this.value;") 
                 option selected="selected" value=""  Default Sorting
@@ -28,7 +38,7 @@
               label.control-label for="input-limit" Showing product:
               span
                 |&nbsp;
-                b 20
+                = @products.try(:count)
         .row.products-category
           .product-layout.product-list.col-xs-12
             .product-thumb
