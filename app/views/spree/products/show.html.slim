@@ -14,9 +14,10 @@
             .col-sm-5
               #product-images data-hook="product_images"
                 #main-image.style
+                  - image_path = @product.images.present? ? @product.images.first.try(:attachment).try(:url) : "/images/no-img.jpg"
                   .image data-hook="product_images"
                     a href="#" 
-                      = image_tag @product.images.first.try(:attachment).try(:url),id:"zoom_01", class: "img-responsive img_center",data: { 'zoom-image' => @product.images.first.try(:attachment).try(:url, :large)}
+                      = image_tag image_path,id:"zoom_01", class: "img-responsive img_center",data: { 'zoom-image' => @product.images.first.try(:attachment).try(:url, :large)}
                 .center-block.text-center
                   span.zoom-gallery
                     i.fa.fa-search
