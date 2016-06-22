@@ -1729,9 +1729,9 @@ div.required .control-label:before {
   text-align: center;
 }
 
-.product-thumb .image a {
-  /*display: block;*/
-}
+/*.product-thumb .image a {
+  display: block;
+}*/
 
 .product-thumb .image a img {
   display: inline-block;

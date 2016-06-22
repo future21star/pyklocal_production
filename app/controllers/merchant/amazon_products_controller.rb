@@ -58,10 +58,13 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 					@product = Spree::Product.create({name: raw_product.item_attributes.title,brand: raw_product.item_attributes.try(:brand),description: description, price: raw_product.try(:offer_summary).try(:lowest_new_price).try(:amount).to_f/100 || raw_product.try(:list_price).try(:amount).to_f/100 , available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url),store_id: current_spree_user.stores.first.try(:id),asin:asin_no}) 
 					image = @product.images.new(attachment: raw_product.large_image.url)
 					image.save
+				else
+					redirect_to spree.shop_index_path,  notice: "Product is already exist"
+					return 	
 				end
 			end
 			if @product.save
-					redirect_to spree.shop_index_path 
+				redirect_to spree.shop_index_path 
 			end 
 		end
 
