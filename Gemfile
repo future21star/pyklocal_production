@@ -23,6 +23,9 @@ gem "less-rails"
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 gem "font-awesome-rails" 
 
+gem 'sunspot_rails'
+gem 'sunspot_solr'
+
 gem 'asin'
 gem 'sidekiq'
 # Use jquery as the JavaScript library

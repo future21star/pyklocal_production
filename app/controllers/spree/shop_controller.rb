@@ -1,7 +1,12 @@
 class Spree::ShopController < Spree::StoreController
 
-  def index   
-    @products = Spree::Product.all.page(params[:page]).per(20).order("created_at desc") 
+  def index 
+    @search = Sunspot.search(Spree::Product) do 
+      fulltext params[:search] if params[:search]
+      paginate(:page => params[:page], :per_page => 20)
+      with(:location).in_radius(params[:lat], params[:lng], params[:radius].to_i, bbox: true) if params[:lat].present? && params[:lng].present?
+    end
+    @products = @search.results
     @taxons = Spree::Taxon.where.not(name:"categories") 
     @taxonomies = Spree::Taxonomy.includes(root: :children) 
     @store = Merchant::Store.all
