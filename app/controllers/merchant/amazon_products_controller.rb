@@ -25,7 +25,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 		asin_no = raw_product.asin
 		@product = Spree::Product.where(asin: raw_product.asin,store_id: current_spree_user.stores.first.try(:id)).first
 		if @product.blank?
-			@product = Spree::Product.new({name: raw_product.item_attributes.title, description: description, sku: sku, price: offer_price ,brand: raw_product.item_attributes.try(:brand),  available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url), asin: asin_no}) 
+			@product = Spree::Product.new({name: raw_product.item_attributes.title, description: description, sku: sku, price: offer_price ,  available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url), asin: asin_no}) 
 		else
 			redirect_to :back, :params => @params , notice: "this product is already exist"
 		end
@@ -55,16 +55,16 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 				asin_no = raw_product.asin
 				@product = Spree::Product.where(asin: raw_product.asin,store_id: current_spree_user.stores.first.try(:id)).first
 				if @product.blank?
-					@product = Spree::Product.create({name: raw_product.item_attributes.title,brand: raw_product.item_attributes.try(:brand),description: description, price: raw_product.try(:offer_summary).try(:lowest_new_price).try(:amount).to_f/100 || raw_product.try(:list_price).try(:amount).to_f/100 , available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url),store_id: current_spree_user.stores.first.try(:id),asin:asin_no}) 
+					@product = Spree::Product.create({name: raw_product.item_attributes.title,description: description, price: raw_product.try(:offer_summary).try(:lowest_new_price).try(:amount).to_f/100 || raw_product.try(:list_price).try(:amount).to_f/100 , available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url),store_id: current_spree_user.stores.first.try(:id),asin:asin_no}) 
 					image = @product.images.new(attachment: raw_product.large_image.url)
 					image.save
 				else
-					redirect_to spree.shop_index_path,  notice: "Product is already exist"
+					redirect_to merchant_stores_path,  notice: "Product is already exist"
 					return 	
 				end
 			end
 			if @product.save
-				redirect_to spree.shop_index_path 
+				redirect_to merchant_stores_path 
 			end 
 		end
 
