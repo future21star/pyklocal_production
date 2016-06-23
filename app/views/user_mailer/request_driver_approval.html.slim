@@ -1,0 +1,12 @@
+p 
+	| Hi,
+
+p
+	b
+		| Requested - add 
+		= @user.full_name 
+		| &nbsp;as a driver
+
+p 
+  |You can now approve driver by : 
+  = link_to "Click Here", "#{ActionMailer::Base.default_url_options[:host]}/admin/users/#{@user.id}/edit" 
