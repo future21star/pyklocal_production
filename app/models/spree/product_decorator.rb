@@ -20,6 +20,14 @@ module Spree
     def store_name
       store.try(:name)
     end
+
+    def self.max_price
+      self.all.collect(&:price).max.to_i
+    end
+
+    def self.min_price
+      self.all.collect(&:price).min.to_i
+    end
     
 	end
 end

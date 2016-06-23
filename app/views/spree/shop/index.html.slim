@@ -8,7 +8,24 @@
         a href=""  Shop
     .row
       column#column-left.col-sm-3.hidden-xs
-        h3 Bestsellers
+        = form_tag("", :method => :get, :id => "facet-filter") do
+          - if params[:q] && params[:q][:lat]
+            = hidden_field_tag "q[lat]", params[:q][:lat]
+          - if params[:q] && params[:q][:lng]
+            = hidden_field_tag "q[lng]", params[:q][:lng]
+          - if params[:q] && params[:q][:radius]
+            = hidden_field_tag "q[radius]", params[:q][:radius]
+          .filter
+            .filter-block
+              .filter-heading Price
+              ul.filter-body
+                - @all_facets.facet(:price).rows.each do |price_row|
+                  - filter_found = true
+                  - selected = (@price_array.include?(price_row.value.to_s)) rescue false 
+                  li
+                    label.filter-field.checkbox-inline 
+                      = check_box_tag "q[price][]", price_row.value, selected, class: "filters"
+                      = number_to_currency("#{price_row.value}").gsub(/\.0\.\./," to $").gsub(/\.0/,"")+" (#{price_row.try(:count).to_i})".html_safe
       #content.col-sm-9
         h1 Products
         h3
@@ -18,18 +35,20 @@
               .btn-group
                 .btn.btn-default data-toggle="tooltip" title="All Product" 
                   i.fa.fa-bars
-              a#compare-total  
-              |&nbsp;All Products 
+              a#compare-total href=shop_index_path
+                |&nbsp;All Products 
             .col-sm-4.col-xs-12
               = form_tag "/shop", method: :get, id: "rFilter" do 
-                input id="lat" type="hidden" name="lat"
-                input id="lng" type="hidden" name="lng"
-                select.form-control#radiusFilter name="radius"
-                  option selected=(params[:radius] == "") value="" Sort By Location
-                  option selected=(params[:radius] == "2") value="2" 2 KM
-                  option selected=(params[:radius] == "5") value="5" 5 KM
-                  option selected=(params[:radius] == "10") value="10" 10 KM
-                  option selected=(params[:radius] == "50") value="50" 50 KM
+                = hidden_field_tag "q[price]", @price_array
+                input id="lat" type="hidden" name="q[lat]"
+                input id="lng" type="hidden" name="q[lng]"
+                - location = params[:q] && params[:q][:radius] ? params[:q][:radius] : " "
+                select.form-control#radiusFilter name="q[radius]"
+                  option selected=(location == "") value="" Sort By Location
+                  option selected=(location == "2") value="2" 2 KM
+                  option selected=(location == "5") value="5" 5 KM
+                  option selected=(location == "10") value="10" 10 KM
+                  option selected=(location == "50") value="50" More than 10 KM
             .col-sm-4.text-right
               select#input-sort.form-control.col-sm-3 onchange=("location = this.value;") 
                 option selected="selected" value=""  Default Sorting
@@ -64,4 +83,4 @@
       pagination: false,
       transitionStyle: 'fade'
     });
- 
+     

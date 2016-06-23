@@ -24,6 +24,7 @@ var pyklocal = {
 	init: function() {
 		this.setDeliveryType();
 		this.filterByRadius();
+		this.filterProducts();
 	},
 
 	setDeliveryType: function() {
@@ -38,6 +39,12 @@ var pyklocal = {
 	filterByRadius: function() {
 		$('#radiusFilter').change(function() {
 			$('#rFilter').submit();
+		});
+	},
+
+	filterProducts: function() {
+		$('.filter-field').click(function() {
+			$('#facet-filter').submit();
 		});
 	}
 
