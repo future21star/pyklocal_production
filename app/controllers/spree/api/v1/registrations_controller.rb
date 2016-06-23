@@ -22,7 +22,7 @@ module Spree
 		private
 
 			def user_params
-        params.require(:user).permit(permitted_user_attributes |
+        params.require(:user).permit(:mobile_number, :role_name, permitted_user_attributes |
                                        [bill_address_attributes: permitted_address_attributes,
                                         ship_address_attributes: permitted_address_attributes])
       end

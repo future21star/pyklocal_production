@@ -15,9 +15,10 @@ Spree::User.class_eval do
   has_one :payment_preference, foreign_key: :user_id, class_name: 'Spree::PaymentPreference'
   
   #---------------------Callbacks--------------------------
-  after_create :assign_api_key
+  after_create :assign_api_key 
+  after_create :notify_admin
   after_update :notify_user
-
+  attr_accessor :role_name
   accepts_nested_attributes_for :parse_links, :reject_if => lambda { |a| a[:url].blank? }
 
   def mailboxer_email(object)
@@ -90,6 +91,12 @@ Spree::User.class_eval do
     store_product_line_items.collect(&:order).uniq.flatten
   end
 
+  def notify_admin
+    if self.role_name == "driver"
+      UserMailer.request_driver_approval(self).deliver
+    end
+  end
+
   private
 
     def assign_api_key
@@ -100,7 +107,11 @@ Spree::User.class_eval do
       if self.spree_role_ids.include?(Spree::Role.where(name: "merchant").first.try(:id)) && stores.present? && !stores.first.try(:active)
         stores.first.update_attributes(active: true)
         UserMailer.notify_store_approval(self).deliver
+      elsif self.spree_role_ids.include?(Spree::Role.where(name: "driver").first.try(:id))
+        UserMailer.notify_driver_approval(self).deliver
       end
     end
+
+    
 
 end
