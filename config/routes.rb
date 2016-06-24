@@ -60,14 +60,12 @@ Pyklocal::Application.routes.draw do
     namespace :api do 
       namespace :v1 do 
 
-
         concern :order_routes do
           member do
             put :approve
             put :cancel
             put :empty
             put :apply_coupon_code
-            put :pickup
           end
 
           resources :line_items
@@ -102,8 +100,11 @@ Pyklocal::Application.routes.draw do
           post :user_devices
           get :my_pickup_list
           put :update_location
+          put :pickup
+
         end
         resources :orders, concerns: :order_routes
+
       end
     end
 

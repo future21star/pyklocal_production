@@ -3,9 +3,9 @@ module Spree
 
 		include Spree::Api::ApiHelpers
 
-		before_action :load_order, only: [:show, :pickup]
+		before_action :load_order, only: [:show]
 		before_action :find_store, only: [:show]
-		skip_before_filter :authenticate_user, only: [:pickup, :apply_coupon_code]
+		skip_before_filter :authenticate_user, only: [:apply_coupon_code]
 
 		def index
 			@orders_list = []
@@ -44,26 +44,6 @@ module Spree
 				}),
 				pick_up_and_delivery: @pick_up_and_delivery.as_json()
 			}
-		end
-
-		def pickup
-			@user = Spree::ApiToken.where(token: params[:user_id]).first.try(:user)
-			driver_id = eval(params[:option]) ? nil : @user.try(:id)
-			updating_value = eval(params[:option]) ? @user.try(:id) : nil
-			@line_items = @order.line_items.where(id: params[:line_item_ids], is_pickedup: !eval(params[:option]), ready_to_pick: true, delivery_type: "home_delivery", driver_id: driver_id)
-
-			if @line_items.present?
-				@line_items.find_each { |line_item| line_item.update_attributes(is_pickedup: eval(params[:option]), driver_id: updating_value) }
-				@response = get_response
-				@response[:message] = eval(params[:option]) ? "Item(s) picked up by you" : "You have canceled this pickup"
-			else
-				@response = error_response
-				@response[:message] = "Item not found either cancel by seller or picked up by another driver."
-			end
-		rescue Exception => e
-			api_exception_handler(e)
-		ensure
-			render json: @response
 		end
 
 		private
