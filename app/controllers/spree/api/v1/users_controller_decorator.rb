@@ -4,7 +4,7 @@ module Spree
 		include Spree::Api::ApiHelpers
 
 		before_filter :find_user, only: [:my_pickup_list, :update_location, :update, :pickup]
-		skip_before_filter :authenticate_user, only: [:my_pickup_list, :update_location, :pickup]
+		skip_before_filter :authenticate_user, only: [:my_pickup_list, :update_location, :pickup, :update]
 
 		def user_devices
 			@api_token = Spree::ApiToken.where(token: params[:user_id]).first
