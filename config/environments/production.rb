@@ -14,6 +14,8 @@ Rails.application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
+  Sunspot.config.solr.url = 'http://localhost:8983/solr'
+
   Rails.application.config.middleware.use ExceptionNotification::Rack, email: {
     :email_prefix => "[Error 500] ",
     :sender_address => %{"Simmpli Exception" <exception@shopfelixgray.com>},

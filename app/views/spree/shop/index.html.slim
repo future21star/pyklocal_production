@@ -38,8 +38,7 @@
               a#compare-total href=shop_index_path
                 |&nbsp;All Products 
             .col-sm-4.col-xs-12
-              = form_tag "/shop", method: :get, id: "rFilter" do 
-                = hidden_field_tag "q[price]", @price_array
+              = form_tag "/shop", method: :get, id: "rFilter" do
                 input id="lat" type="hidden" name="q[lat]"
                 input id="lng" type="hidden" name="q[lng]"
                 - location = params[:q] && params[:q][:radius] ? params[:q][:radius] : " "
