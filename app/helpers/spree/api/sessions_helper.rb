@@ -4,7 +4,7 @@ module Spree::Api::SessionsHelper
   		code: 1,
   		message: "Registered successfully!",
   		user: user.as_json({
-  			only: [:full_name, :spree_api_key]
+  			only: [:first_name, :last_name, :spree_api_key]
   		}).merge({token: generate_api_key(params, user.id).token})
   	}
 	end
