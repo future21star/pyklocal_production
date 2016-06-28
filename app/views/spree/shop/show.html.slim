@@ -8,7 +8,25 @@
         a href=""  Shop
     .row
       column#column-left.col-sm-3.hidden-xs
-        h3 Bestsellers
+        h2 Bestseller :
+        / = form_tag("", :method => :get, :id => "facet-filter") do
+        /   - if params[:q] && params[:q][:lat]
+        /     = hidden_field_tag "q[lat]", params[:q][:lat]
+        /   - if params[:q] && params[:q][:lng]
+        /     = hidden_field_tag "q[lng]", params[:q][:lng]
+        /   - if params[:q] && params[:q][:radius]
+        /     = hidden_field_tag "q[radius]", params[:q][:radius]
+        /   .filter
+        /     .filter-block
+        /       .filter-heading Price
+        /       ul.filter-body
+        /         - @all_facets.facet(:price).rows.each do |price_row|
+        /           - filter_found = true
+        /           - selected = (@price_array.include?(price_row.value.to_s)) rescue false 
+        /           li
+        /             label.filter-field.checkbox-inline 
+        /               = check_box_tag "q[price][]", price_row.value, selected, class: "filters"
+        /               = number_to_currency("#{price_row.value}").gsub(/\.0\.\./," to $").gsub(/\.0/,"")+" (#{price_row.try(:count).to_i})".html_safe
       #content.col-sm-9
         h1 Products
         h3
@@ -28,7 +46,7 @@
               label.control-label for="input-limit" Showing product:
               span
                 |&nbsp;
-                b 20
+                = @products.try(:count)
         .row.products-category
           .product-layout.product-list.col-xs-12
             .product-thumb
