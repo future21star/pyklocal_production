@@ -44,7 +44,7 @@ Spree::User.class_eval do
     driver_orders.where(is_delivered: false).each do |d_order|
       orders << {order_number: d_order.cart_order.number, store_name: d_order.store_name}
     end
-    return @orders
+    return orders
   end
 
   def has_store

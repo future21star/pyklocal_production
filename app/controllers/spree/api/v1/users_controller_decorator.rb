@@ -115,7 +115,13 @@ module Spree
 		rescue Exception => e
 			api_exception_handler(e)
 		ensure
-			render json: @user.drivers_cart.as_json
+			if @user.try(:drivers_cart).present?
+				render json: @user.drivers_cart.as_json
+			else
+				@response = error_response
+				@response[:message] = "No cart item available"
+				render json: @response
+			end
 		end
 
 		private
