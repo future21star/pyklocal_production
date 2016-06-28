@@ -13,7 +13,9 @@ class Spree::ShopController < Spree::StoreController
       facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
       if params[:q] && params[:q][:price]
         any_of do 
-          with(:price, Range.new(*params[:q][:price].pop.split("..").map(&:to_i)))
+          params[:q][:price].each do |price|
+            with(:price, Range.new(*price.split("..").map(&:to_i)))
+          end
         end
       end
     end
