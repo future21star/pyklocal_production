@@ -42,7 +42,7 @@
         .col-table-cell.col-lg-5.col-md-5.col-md-push-0.col-sm-6.col-sm-push-6.col-xs-12
           #search.input-group
             = form_tag '/shop', :method => 'get', id: "search-box" do 
-              input id="discover" class="form-control" autocomplete="off" name="q[search]" placeholder="Search for..." value=(params[:search] rescue "")
+              input id="discover" class="form-control" autocomplete="off" name="q[search]" placeholder="Search for..." value=(params[:q][:search] rescue "")
               button.button-search type="submit" 
                 i.fa.fa-search
         .col-table-cell.col-lg-3.col-md-3.col-md-pull-0.col-sm-6.col-sm-pull-6.col-xs-12.inner
