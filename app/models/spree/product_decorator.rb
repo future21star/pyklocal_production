@@ -5,6 +5,8 @@ module Spree
     inverse_of: :product, class_name: 'Spree::Variant'
     attr_accessor :image_url
 
+    accepts_nested_attributes_for :product_properties, allow_destroy: true
+
     searchable do
       text :name 
       text :store_name
