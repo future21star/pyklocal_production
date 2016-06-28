@@ -20,7 +20,7 @@ module Spree
 									state = item.delivery_state
 								end
 							end
-							@orders_list.push({number: s_o.number, store_name: store.name, state: state})
+							@orders_list.push({order_number: s_o.number, store_name: store.name, state: state})
 						end						
 					end
 				end

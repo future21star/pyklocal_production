@@ -89,19 +89,20 @@ module Spree
 		end
 
 		def add_to_cart
-			@stores = Merchant::Store.where(name: params[:stores_name])
-			Spree::Order.where(number: params[:order_ids]).each do |order|
+			params[:order_object].each do |obj|
 				line_item_ids = []
+				store = Merchant::Store.find_by_name(obj.store_name)
+				order = Spree::Order.find_by_number(obj.order_number)
 				order.line_items.each do |line_item|
-					if @stores.collect(&:spree_products).include?(line_item.product)
+					if store.collect(&:spree_products).include?(line_item.product)
 						line_item.update_attributes(delivery_state: "in_cart")
-						@response = get_response
-						@response[:message] = "Successfully added into cart"
 						line_item_ids << line_item.id
 					end
-					Spree::DriverOrder.create(order_id: order.id, driver_id: @user.id, line_item_ids: line_item_ids.join(", "))
 				end
+				Spree::DriverOrder.create(order_id: order.id, driver_id: @user.id, line_item_ids: line_item_ids.join(", "))
 			end
+			@response = get_response
+			@response[:message] = "Successfully added into cart"
 		rescue Exception => e
 			api_exception_handler(e)
 		ensure
