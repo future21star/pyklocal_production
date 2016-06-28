@@ -3,8 +3,8 @@ module Spree
 
 		include Spree::Api::ApiHelpers
 
-		before_filter :find_user, only: [:my_pickup_list, :update_location, :update, :pickup]
-		skip_before_filter :authenticate_user, only: [:my_pickup_list, :update_location, :pickup, :update]
+		before_filter :find_user, only: [:my_pickup_list, :update_location, :update, :pickup, :my_cart, :add_to_cart]
+		skip_before_filter :authenticate_user, only: [:my_pickup_list, :update_location, :pickup, :update, :my_cart, :add_to_cart]
 
 		def user_devices
 			@api_token = Spree::ApiToken.where(token: params[:user_id]).first
@@ -86,6 +86,33 @@ module Spree
 			api_exception_handler(e)
 		ensure
 			render json: @response
+		end
+
+		def add_to_cart
+			@stores = Merchant::Store.where(name: params[:stores_name])
+			Spree::Order.where(number: params[:order_ids]).each do |order|
+				line_item_ids = []
+				order.line_items.each do |line_item|
+					if @stores.collect(&:spree_products).include?(line_item.product)
+						line_item.update_attributes(delivery_state: "in_cart")
+						@response = get_response
+						@response[:message] = "Successfully added into cart"
+						line_item_ids << line_item.id
+					end
+					Spree::DriverOrder.create(order_id: order.id, driver_id: @user.id, line_item_ids: line_item_ids.join(", "))
+				end
+			end
+		rescue Exception => e
+			api_exception_handler(e)
+		ensure
+			render json: @response
+		end
+
+		def my_cart
+		rescue Exception => e
+			api_exception_handler(e)
+		ensure
+			render json: @user.drivers_cart.as_json
 		end
 
 		private

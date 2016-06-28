@@ -32,7 +32,7 @@ Spree::OrdersController.class_eval do
     @order = Spree::Order.find_by_number(params[:order_id])
     if @order.present?
       @line_items = @order.line_items.where(id: params[:item_ids])
-      @line_items.find_each {|line_item| line_item.update_attributes(ready_to_pick: eval(params[:option]))}
+      @line_items.find_each {|line_item| line_item.update_attributes(delivery_state: params[:option])}
       redirect_to :back, notice: "Notified successfully."
     else
       redirect_to :back, notice: "Order not found"

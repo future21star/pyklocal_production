@@ -13,9 +13,15 @@ module Spree
 			unless @stores.blank?
 				@stores.each do |store|
 					unless store.pickable_store_orders.blank?
-						store.pickable_store_orders.map do |s_o|
-							@orders_list.push({number: s_o.number, store_name: store.name})
-						end
+						store.pickable_store_orders.each do |s_o|
+							state = ""
+							store.pickable_line_items.each do |item|
+								if item.order_id == s_o.id
+									state = item.delivery_state
+								end
+							end
+							@orders_list.push({number: s_o.number, store_name: store.name, state: state})
+						end						
 					end
 				end
 			end

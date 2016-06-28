@@ -101,6 +101,8 @@ Pyklocal::Application.routes.draw do
           get :my_pickup_list
           put :update_location
           put :pickup
+          put :add_to_cart
+          get :my_cart
 
         end
         resources :orders, concerns: :order_routes

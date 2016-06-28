@@ -6,7 +6,7 @@ module Spree
 		end
 
 		def ready_to_pick_items(item_ids)
-			line_items.where(id: item_ids).collect(&:ready_to_pick).include?(true)
+			line_items.where(id: item_ids).collect(&:delivery_state).include?("ready_to_pick")
 		end
 
 	end
