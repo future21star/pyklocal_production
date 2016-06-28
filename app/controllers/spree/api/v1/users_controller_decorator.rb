@@ -96,7 +96,7 @@ module Spree
 				store = Merchant::Store.find_by_name(obj["store_name"])
 				order = Spree::Order.find_by_number(obj["order_number"])
 				order.line_items.each do |line_item|
-					if store.collect(&:spree_products).include?(line_item.product)
+					if line_item.product.store_id == store.id
 						line_item.update_attributes(delivery_state: "in_cart")
 						line_item_ids << line_item.id
 					end
@@ -115,7 +115,13 @@ module Spree
 		rescue Exception => e
 			api_exception_handler(e)
 		ensure
-			render json: @user.drivers_cart.as_json
+			if @user.try(:drivers_cart).present?
+				render json: @user.drivers_cart.as_json
+			else
+				@response = error_response
+				@response[:message] = "No cart item available"
+				render json: @response
+			end
 		end
 
 		private
