@@ -93,8 +93,8 @@ module Spree
 		def add_to_cart
 			params[:order_object].each do |obj|
 				line_item_ids = []
-				store = Merchant::Store.find_by_name(obj.store_name)
-				order = Spree::Order.find_by_number(obj.order_number)
+				store = Merchant::Store.find_by_name(obj["store_name"])
+				order = Spree::Order.find_by_number(obj["order_number"])
 				order.line_items.each do |line_item|
 					if store.collect(&:spree_products).include?(line_item.product)
 						line_item.update_attributes(delivery_state: "in_cart")
