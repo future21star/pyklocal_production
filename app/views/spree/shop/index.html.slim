@@ -15,6 +15,8 @@
             = hidden_field_tag "q[lng]", params[:q][:lng]
           - if params[:q] && params[:q][:radius]
             = hidden_field_tag "q[radius]", params[:q][:radius]
+          - if params[:q] && params[:q][:search]
+            = hidden_field_tag "q[search]", params[:q][:search]
           .filter
             .filter-block
               .filter-heading Price

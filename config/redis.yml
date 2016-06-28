@@ -8,5 +8,5 @@ development:
 
 # production environment
 production:
-  host: '54.186.162.220'
+  host: '54.186.114.27'
   port: '6379'
