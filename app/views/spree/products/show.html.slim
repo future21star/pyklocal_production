@@ -89,10 +89,9 @@
         = render :partial => 'spree/shared/seller'
       
     h3 Related Products
-    .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;") 
-      .owl-wrapper-outer
-        .owl-wrapper style=("width: 3648px; left: 0px; display: block;") 
-
+    .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")
+      - @product.similar.each do |similar_product|
+        = render :partial => 'spree/shared/product', locals: {product: similar_product}
 - content_for :js do        
   javascript:
     $("#zoom_01").elevateZoom({
@@ -111,3 +110,20 @@
       $.swipebox(ez.getGalleryList());
       return false;
     });
+
+    $('#slideshow0').owlCarousel({
+      items: 1,
+      autoPlay: 3000,
+      singleItem: true,
+      navigation: true,
+      navigationText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+      pagination: true  
+    });
+
+    $("#content .owl-carousel.bestseller_carousel").owlCarousel({
+      itemsCustom : [[320, 1],[600, 2],[768, 3],[992, 5],[1199, 5]],                         
+      lazyLoad : true,
+      navigation : true,
+      navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+      scrollPerPage : true
+    }); 

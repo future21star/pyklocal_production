@@ -4,7 +4,7 @@
 		h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Bestsellers
 		.owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
 	    	- @products.each do |product|
-				= render :partial => 'spree/shared/product', locals: {product: product}
+					= render :partial => 'spree/shared/product', locals: {product: product}
 	#marketshop-banner1.marketshop-banner
 	  .row
 	    .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns

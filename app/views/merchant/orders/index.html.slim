@@ -43,9 +43,9 @@
                     tr.text-right
                       td colspan= "7"
                         - if !order.ready_to_pick_items(line_item_ids)
-                          = link_to "Ready to pickup", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: true), class: "btn btn-success", method: :put
+                          = link_to "Ready to pickup", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: "ready_to_pick"), class: "btn btn-success", method: :put
                         - else
-                          = link_to "Cancel", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: false), class: "btn btn-default", method: :put
+                          = link_to "Cancel", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: "packaging"), class: "btn btn-default", method: :put
             - else
               tr
                 td colspan="7"

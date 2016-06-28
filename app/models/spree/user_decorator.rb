@@ -13,6 +13,8 @@ Spree::User.class_eval do
   belongs_to :spree_buy_privilege
   belongs_to :spree_sell_privilege 
   has_one :payment_preference, foreign_key: :user_id, class_name: 'Spree::PaymentPreference'
+  has_many :driver_orders, foreign_key: :driver_id, class_name: "Spree::DriverOrder"
+  has_many :cart_orders, through: :driver_orders, class_name: "Spree::Order"
   
   #---------------------Callbacks--------------------------
   after_create :assign_api_key 
@@ -29,12 +31,20 @@ Spree::User.class_eval do
     orders = []
     Merchant::Store.all.each do |store|
       store.spree_products.each do |store_prodct|
-        store_prodct.line_items.where(is_pickedup: true, delivery_type: "home_delivery", ready_to_pick: true, driver_id: id).collect(&:order).uniq.each do |store_order|
+        store_prodct.line_items.where(delivery_state: "confirmed_pickup", delivery_type: "home_delivery", driver_id: id).collect(&:order).uniq.each do |store_order|
           orders << {order_number: store_order.number, store_name: store.name}
         end
       end
     end
     return orders
+  end
+
+  def drivers_cart
+    orders = []
+    driver_orders.each do |d_order|
+      orders << {order_number: d_order.cart_order.number, store_name: d_order.store_name}
+    end
+    return @orders
   end
 
   def has_store
