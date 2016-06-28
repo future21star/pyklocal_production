@@ -29,6 +29,7 @@ html lang="#{I18n.locale}"
     = render partial: "spree/shared/footer"
     = javascript_include_tag 'spree/backend/all', media: "all", "data-turbolinks-track" => false
     = javascript_include_tag 'merchant', media: 'all', "data-turbolinks-track" => false
+    = javascript_include_tag 'custom', media: 'all', "data-turbolinks-track" => false
     = yield :js
     = render "spree/admin/shared/translations"
     - if Rails.env == "production"
