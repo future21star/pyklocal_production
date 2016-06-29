@@ -43,6 +43,7 @@ Spree::User.class_eval do
     orders = []
     driver_orders.where(is_delivered: false).each do |d_order|
       orders << {order_number: d_order.cart_order.number, store_name: d_order.store_name, line_item_ids: line_item_ids.split(", ")}
+    end
     return orders
   end
 
