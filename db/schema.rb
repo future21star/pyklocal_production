@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160628085200) do
+ActiveRecord::Schema.define(version: 20160629110028) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -27,10 +27,10 @@ ActiveRecord::Schema.define(version: 20160628085200) do
   create_table "drivers_orders", force: :cascade do |t|
     t.integer  "order_id",      limit: 4
     t.integer  "driver_id",     limit: 4
-    t.boolean  "is_delivered"
+    t.boolean  "is_delivered",              default: false
     t.string   "line_item_ids", limit: 255
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
   end
 
   create_table "email_tokens", force: :cascade do |t|
