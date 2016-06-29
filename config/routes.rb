@@ -103,7 +103,7 @@ Pyklocal::Application.routes.draw do
           put :pickup
           put :add_to_cart
           get :my_cart
-
+          put :remove_from_cart
         end
         resources :orders, concerns: :order_routes
 
