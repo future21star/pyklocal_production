@@ -146,6 +146,11 @@ div.required .control-label:before {
   padding: 0;
 }
 
+#header .pyklocal-logo{
+  display: inline-block;
+  min-height: 76px;
+}
+
 #currency,
 #language {
   float: left;
@@ -523,9 +528,9 @@ div.required .control-label:before {
   right: auto;
 }
 
-#header.style3 #cart {
-  text-align: right;
-}
+// #header.style3 #cart {
+//   text-align: right;
+// }
 
 #menu .navbar-collapse {
   padding-left: 0;

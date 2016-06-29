@@ -44,14 +44,12 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
         end
 			end	
 		else
-			flash.now[:failure] = 'Could not be saved - this product is already exist!'
-			redirect_to :back
+			redirect_to :back, notice: 'Could not be saved - this product is already exist!'
 		end
 	end
 
 	def create
 		@product = Spree::Product.new(product_params)
-		p @product.properties
 		@product.attributes = product_params.merge({store_id: current_spree_user.stores.first.try(:id)})
 		if @product.save
 			image = @product.images.new({attachment: params[:product][:image_url]})
@@ -59,9 +57,8 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 			redirect_to edit_merchant_product_path(@product), notice: "Successfully created"
 		else
 			@shipping_categories = Spree::ShippingCategory.all
-			render :new
+			render :back, notice: 'Could not be saved'
 		end
-		# redirect_to :back
 	end
 
 	def import_collection
@@ -98,12 +95,12 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 					image = @product.images.new(attachment: raw_product.large_image.url)
 					image.save
 				else
-					redirect_to merchant_stores_path,  notice: "Product is already exist"
+					redirect_to merchant_stores_path,  notice: 'Could not be saved - this product is already exist!'
 					return 	
 				end
 			end
 			if @product.save
-				redirect_to merchant_stores_path 
+				redirect_to merchant_stores_path , notice: 'Product are Successfully added !'
 				return
 			end 
 		end

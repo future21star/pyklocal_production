@@ -7,45 +7,25 @@ footer#footer
           ul
             li.address
               i.fa.fa-map-marker
-              | Central Square, 22 Hoi Wing Road, New Delhi, India
+              
             li.mobile
               i.fa.fa-phone
-              | +91 9898777656
+              
             li.email
               i.fa.fa-envelope
-              | Send email via our
-              a href="#"  Contact Us
+              
         .column.col-lg-2.col-md-2.col-sm-3.col-xs-12
           h5 Information
           ul
-            li
-              a href="#"  About Us
-            li
-              a href="#"  Delivery Information
-            li
-              a href="#"  Privacy Policy
-            li
-              a href="#"  Terms &amp; Conditions
+            
         .column.col-lg-2.col-md-2.col-sm-3.col-xs-12
           h5 Customer Service
           ul
-            li
-              a href="#"  Contact Us
-            li
-              a href="#"  Returns
-            li
-              a href="#"  Site Map
+            
         .column.col-lg-2.col-md-2.col-sm-3.col-xs-12
           h5 Extras
           ul
-            li
-              a href="#"  Brands
-            li
-              a href="#"  Gift Vouchers
-            li
-              a href="#"  Affiliates
-            li
-              a href="#"  Specials
+            
         .column.col-lg-2.col-md-2.col-sm-3.col-xs-12
           h5 My Account
           ul
@@ -57,10 +37,7 @@ footer#footer
               a 
                 = link_to spree_user_signed_in? ? spree.orders_path : spree.login_path, class: " store-link", "data-no-turbolink" => true do
                   |  Order History
-            li
-              a 
-                = link_to spree_user_signed_in? ? "#" : spree.login_path, class: " store-link", "data-no-turbolink" => true do
-                  | Wish List
+
 
   .fpart-second
     .container
