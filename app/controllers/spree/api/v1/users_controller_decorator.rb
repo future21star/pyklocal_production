@@ -32,23 +32,19 @@ module Spree
 			render json: @response
 		end
 
-
 		def pickup
 			driver_id = eval(params[:option]) ? nil : @user.try(:id)
 			updating_value = eval(params[:option]) ? @user.try(:id) : nil
 			state = eval(params[:option]) ? "in_cart" : "confirmed_pickup"
 			state_update = eval(params[:option]) ? "confirmed_pickup" : "in_cart"
-			params[:order_ids].each do |orders|
-				@orders = Spree::Order.where(number:orders).first
-				@line_items = @orders.line_items.where(id: params[:line_item_ids], delivery_state: state, delivery_type: "home_delivery", driver_id: driver_id)
-				if @line_items.present?
-					@line_items.find_each { |line_item| line_item.update_attributes(delivery_state: state_update, driver_id: updating_value) }
-					@response = get_response
-					@response[:message] = eval(params[:option]) ? "Item(s) picked up by you" : "You have canceled this pickup"
-				else
-					@response = error_response
-					@response[:message] = "Item not found either cancel by seller or picked up by another driver."
-				end
+			@line_items = Spree::LineItem.where(id: params[:line_item_ids], delivery_state: state, delivery_type: "home_delivery", driver_id: driver_id)
+			if @line_items.present?
+				@line_items.find_each { |line_item| line_item.update_attributes(delivery_state: state_update, driver_id: updating_value) }
+				@response = get_response
+				@response[:message] = eval(params[:option]) ? "Item(s) picked up by you" : "You have canceled this pickup"
+			else
+				@response = error_response
+				@response[:message] = "Item not found either cancel by seller or picked up by another driver."
 			end
 		rescue Exception => e
 			api_exception_handler(e)

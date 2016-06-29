@@ -3,6 +3,7 @@ class Spree::ShopController < Spree::StoreController
   def index 
     @price_array = params[:q][:price].to_s if params[:q] && params[:q][:price]
     @all_facets = Sunspot.search(Spree::Product) do 
+      fulltext params[:q][:search] if params[:q] && params[:q][:search]
       with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
       facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
     end
@@ -28,12 +29,13 @@ class Spree::ShopController < Spree::StoreController
   def show 
     @price_array = params[:q][:price].to_s if params[:q] && params[:q][:price]
     @all_facets = Sunspot.search(Spree::Product) do 
+      fulltext params[:q][:search] if params[:q] && params[:q][:search]
       with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
       with(:taxon_ids, Spree::Taxon.where(name: params[:id]).collect(&:id)) if params[:id].present?
       facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
     end
     @search = Sunspot.search(Spree::Product) do 
-      fulltext params[:q][:search] if params[:q] && params[:q][:search]*
+      fulltext params[:q][:search] if params[:q] && params[:q][:search]
       paginate(:page => params[:page], :per_page => 20)
       with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
       facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
