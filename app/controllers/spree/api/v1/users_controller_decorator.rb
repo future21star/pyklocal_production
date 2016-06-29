@@ -128,7 +128,7 @@ module Spree
 				@order = Spree::Order.find_by_number(cancel_order["order_number"])
 				@driver_orders = @user.driver_orders.where(order_id: @order.try(:id), line_item_ids: cancel_order["line_item_ids"].join(", "))
 				if @driver_orders.present?
-					Spree::LineItem.where(id: cancel_order["line_item_ids"]).update_all(delivery_state: "packaging")
+					Spree::LineItem.where(id: cancel_order["line_item_ids"]).update_all(delivery_state: "ready_to_pick")
 					@driver_orders.delete_all
 					@response = get_response
 					@response[:message] = "Successfully removed from cart"
