@@ -43,6 +43,6 @@
             .container-fluid
               legend.center-text Order Total
               .final-bill
-                span= number_to_currency(@order.payment_total)
+                span= number_to_currency(@order.total)
         .col-md-3
           = render partial: "merchant/shared/edit_order_sidebar", locals: {order: @order}

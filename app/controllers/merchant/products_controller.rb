@@ -8,7 +8,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   layout 'merchant'
 
 	def index
-    @collection =  Spree::Product.where(store_id: current_spree_user.stores.first.id)
+    @collection =  Spree::Product.where(store_id: current_spree_user.stores.first.id).order("created_at desc").page(params[:page]).per(15)
   end
 
   def new

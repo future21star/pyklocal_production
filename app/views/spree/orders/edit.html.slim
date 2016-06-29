@@ -8,11 +8,19 @@
         a href="/"  Shopping Cart
     #content
       div data-hook="cart_container" 
-        h1= Spree.t(:shopping_cart)
         - if @order.line_items.empty?
           div data-hook="empty_cart" 
-            .alert.alert-info= Spree.t(:your_cart_is_empty)
-            p= link_to Spree.t(:continue_shopping), shop_index_path, class: 'btn btn-default'
+           .row
+              .col-md-12
+                .jumbotron
+                  .col-sm-4
+                    .image
+                      = image_tag "/images/empty.gif", class: "img-responsive"
+                  .col-sm-8
+                    h1 Shopping Cart !
+                  h4 Your Shopping Cart is currenty empty
+                  p Please click on the 'Continue Shopping' button below to continue
+                  p= link_to Spree.t(:continue_shopping), shop_index_path, class: 'btn btn-primary'
         - else
           div data-hook="outside_cart_form" 
             = form_for @order, url: update_cart_path, html: { id: 'update-cart' } do |order_form|

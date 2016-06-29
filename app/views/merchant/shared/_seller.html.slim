@@ -43,23 +43,23 @@ br
 		.s-link-wrap
 				
 			= link_to edit_store_email_tokens_path(id: @store.id, type: "Merchant::Store"), class: "btn-default btn-lg btn-block text-left btn-border-radius store-btn ", "data-no-turbolink" => true, title: title_text do
-				.fa &#xf044;
+				.fa.fw &#xf044;
 				| Edit Store Information
 			
 			= link_to current_spree_user.has_spree_role?("merchant") ? new_merchant_product_path : "#", class: " store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
-				.fa &#xf055;
+				.fa.fw &#xf055;
 				| Add Products
 
 			= link_to current_spree_user.has_spree_role?("merchant") ? merchant_products_path : "#", class: " store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
-				.fa &#xf15c;
+				.fa.fw &#xf15c;
 				| View and edit all Products
 
 			= link_to current_spree_user.has_spree_role?("merchant") ? merchant_orders_path : "#", class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
-				.fa &#xf07a;
+				.fa.fw &#xf07a;
 				| View Orders
 		
 			= link_to current_spree_user.has_spree_role?("merchant") ? merchant_store_amazon_product_path : "#", class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
-				.fa &#xf270;
+				.fa.fw &#xf270;
 				| Fetch Product From Amazon
 			br
 		.pull-right.map-wrapper
