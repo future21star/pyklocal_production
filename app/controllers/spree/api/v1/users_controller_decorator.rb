@@ -93,23 +93,21 @@ module Spree
 		def add_to_cart
 			params[:order_object].each do |obj|
 				line_item_ids = []
-				success = false
+				success = true
 				message = ""
 				store = Merchant::Store.find_by_name(obj["store_name"])
 				order = Spree::Order.find_by_number(obj["order_number"])
 				order.line_items.each do |line_item|
 					if line_item.product.store_id == store.id
-						if @user.driver_orders.where(order_id: order.id, line_item_ids.try(:split, ", ").try(:include?, line_item.id.to_s)).blank?
-							success = true
-							line_item.update_attributes(delivery_state: "in_cart")
-							line_item_ids << line_item.id
-						else
-							message = "Item already in your cart."
-						end
+						line_item_ids << line_item.id
 					end
 				end
-				if success
+				if @user.driver_orders.where(order_id: order.id, line_item_ids: line_item_ids.join(", ")).blank?
+					Spree::LineItem.where(id: line_item_ids).update_all(delivery_state: "in_cart")
 					Spree::DriverOrder.create(order_id: order.id, driver_id: @user.id, line_item_ids: line_item_ids.join(", "))
+				else
+					success = false
+					message = "Some of your order may already present in your cart"
 				end
 			end
 			if success
@@ -130,6 +128,7 @@ module Spree
 				@order = Spree::Order.find_by_number(cancel_order["order_number"])
 				@driver_orders = @user.driver_orders.where(order_id: @order.try(:id), line_item_ids: cancel_order["line_item_ids"].join(", "))
 				if @driver_orders.present?
+					Spree::LineItem.where(id: cancel_order["line_item_ids"]).update_all(delivery_state: "packaging")
 					@driver_orders.delete_all
 					@response = get_response
 					@response[:message] = "Successfully removed from cart"
