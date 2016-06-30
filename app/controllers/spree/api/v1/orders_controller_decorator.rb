@@ -9,6 +9,8 @@ module Spree
 
 		def index
 			@orders_list = []
+			item_ids = []
+			@user = Spree::ApiToken.find_by_token(params[:token]).try(:user)
 			@stores = Merchant::Store.all
 			unless @stores.blank?
 				@stores.each do |store|
@@ -17,10 +19,11 @@ module Spree
 							state = ""
 							store.pickable_line_items.each do |item|
 								if item.order_id == s_o.id
-									state = item.delivery_state
+									item_ids << item.id
 								end
 							end
-							@orders_list.push({order_number: s_o.number, store_name: store.name, state: state})
+							in_cart = @user.driver_orders.where(order_id: s_o.try(:id), line_item_ids: item_ids.join(", ")).present?
+							@orders_list.push({order_number: s_o.number, store_name: store.name, in_cart: in_cart})
 						end						
 					end
 				end

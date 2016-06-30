@@ -48,6 +48,16 @@ module Merchant
       latitude?
     end
 
+    def item_count_of_this_store(order_number)
+      count = 0
+      Spree::Order.find_by_number(order_number).line_items.each do |item|
+        if item.product.try(:store_id) == id
+          count += 1
+        end
+      end
+      return count
+    end
+
     def product_line_items
       store_line_items = []
       spree_products.each do |product|
