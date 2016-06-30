@@ -35,8 +35,8 @@ module Spree
 		def pickup
 			driver_id = eval(params[:option]) ? nil : @user.try(:id)
 			updating_value = eval(params[:option]) ? @user.try(:id) : nil
-			state = eval(params[:option]) ? "in_cart" : "confirmed_pickup"
-			state_update = eval(params[:option]) ? "confirmed_pickup" : "in_cart"
+			state = eval(params[:option]) ? "ready_to_pick" : "confirmed_pickup"
+			state_update = eval(params[:option]) ? "confirmed_pickup" : "ready_to_pick"
 			@line_items = Spree::LineItem.where(id: params[:line_item_ids], delivery_state: state, delivery_type: "home_delivery", driver_id: driver_id)
 			if @line_items.present?
 				@line_items.find_each { |line_item| line_item.update_attributes(delivery_state: state_update, driver_id: updating_value) }
