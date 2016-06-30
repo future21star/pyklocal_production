@@ -35,8 +35,8 @@ module Spree
 		def pickup
 			driver_id = eval(params[:option]) ? nil : @user.try(:id)
 			updating_value = eval(params[:option]) ? @user.try(:id) : nil
-			state = eval(params[:option]) ? "in_cart" : "confirmed_pickup"
-			state_update = eval(params[:option]) ? "confirmed_pickup" : "in_cart"
+			state = eval(params[:option]) ? "ready_to_pick" : "confirmed_pickup"
+			state_update = eval(params[:option]) ? "confirmed_pickup" : "ready_to_pick"
 			@line_items = Spree::LineItem.where(id: params[:line_item_ids], delivery_state: state, delivery_type: "home_delivery", driver_id: driver_id)
 			if @line_items.present?
 				@line_items.find_each { |line_item| line_item.update_attributes(delivery_state: state_update, driver_id: updating_value) }
@@ -99,7 +99,7 @@ module Spree
 					end
 				end
 				if @user.driver_orders.where(order_id: order.id, line_item_ids: line_item_ids.join(", ")).blank?
-					Spree::LineItem.where(id: line_item_ids).update_all(delivery_state: "in_cart")
+					# Spree::LineItem.where(id: line_item_ids).update_all(delivery_state: "in_cart")
 					Spree::DriverOrder.create(order_id: order.id, driver_id: @user.id, line_item_ids: line_item_ids.join(", "))
 				else
 					success = false
@@ -124,7 +124,7 @@ module Spree
 				@order = Spree::Order.find_by_number(cancel_order["order_number"])
 				@driver_orders = @user.driver_orders.where(order_id: @order.try(:id), line_item_ids: cancel_order["line_item_ids"].join(", "))
 				if @driver_orders.present?
-					Spree::LineItem.where(id: cancel_order["line_item_ids"]).update_all(delivery_state: "ready_to_pick")
+					# Spree::LineItem.where(id: cancel_order["line_item_ids"]).update_all(delivery_state: "ready_to_pick")
 					@driver_orders.delete_all
 					@response = get_response
 					@response[:message] = "Successfully removed from cart"

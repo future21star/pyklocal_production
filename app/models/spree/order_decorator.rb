@@ -9,5 +9,9 @@ module Spree
 			line_items.where(id: item_ids).collect(&:delivery_state).include?("ready_to_pick")
 		end
 
+    def items_state(item_ids)
+      line_items.where(id: item_ids).collect(&:delivery_state).uniq.join
+    end
+
 	end
 end
