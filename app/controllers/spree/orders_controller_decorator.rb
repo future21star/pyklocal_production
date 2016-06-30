@@ -1,5 +1,7 @@
 Spree::OrdersController.class_eval do 
 
+  before_filter :load_order, only: [:cancel, :ready_to_pick]
+
 	def populate
     order    = current_order(create_order_if_necessary: true)
     variant  = Spree::Variant.find(params[:variant_id])
@@ -29,7 +31,6 @@ Spree::OrdersController.class_eval do
   end
 
   def ready_to_pick
-    @order = Spree::Order.find_by_number(params[:order_id])
     if @order.present?
       @line_items = @order.line_items.where(id: params[:item_ids])
       @line_items.find_each {|line_item| line_item.update_attributes(delivery_state: params[:option])}
@@ -38,5 +39,17 @@ Spree::OrdersController.class_eval do
       redirect_to :back, notice: "Order not found"
     end
   end
+
+  def cancel
+    @order.canceled_by(try_spree_current_user)
+    redirect_to :back, notice: "Order canceled"
+  end
+
+  private
+
+    def load_order
+      id = params[:id] || params[:order_id]
+      @order = Spree::Order.find_by_number(id)
+    end
 
 end
