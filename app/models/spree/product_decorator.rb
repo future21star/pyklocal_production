@@ -5,8 +5,10 @@ module Spree
     inverse_of: :product, class_name: 'Spree::Variant'
     attr_accessor :image_url
 
-    accepts_nested_attributes_for :product_properties, allow_destroy: true
+    after_create :save_image
 
+    accepts_nested_attributes_for :product_properties, allow_destroy: true
+    accepts_nested_attributes_for :variant_images
     searchable do
       text :name 
       text :store_name
@@ -75,6 +77,14 @@ module Spree
       end
       {product_property_name: dynamic_filters.flatten.collect(&:value), taxon_ids: search.facet(:taxon_ids).rows.collect(&:value)}
     end
+
+    private
+      def save_image
+        if image_url.present?
+          image = images.new({attachment: image_url})
+          image.save
+        end
+      end
     
 	end
 end

@@ -22,6 +22,7 @@
                 - line_item_ids = [] 
                 tr
                   td.align-middle rowspan=(current_spree_user.stores.first.item_count_of_this_store(order.number))
+                    = link_to order.try(:number), edit_merchant_order_path(order)
                   - order.line_items.each_with_index do |line_item, index|
                     - if current_spree_user.stores.first.spree_products.include?(line_item.product)
                       - if line_item.delivery_type == "home_delivery"
