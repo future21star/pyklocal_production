@@ -53,6 +53,7 @@ Pyklocal::Application.routes.draw do
     resources :shop , :only => [:index,:show]
     resources :orders do 
       put :ready_to_pick
+      put :cancel
     end
     resources :payment_preferences
 

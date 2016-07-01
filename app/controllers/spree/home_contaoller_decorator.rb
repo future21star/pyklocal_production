@@ -4,7 +4,7 @@ Spree::HomeController.class_eval do
 
 
 	def orders
-		@orders = current_spree_user.orders.where(state: "complete")if spree_user_signed_in?
+		@orders = current_spree_user.orders.where("state = ? OR state = ?", "complete", "canceled") if spree_user_signed_in?
 	end
 
 
