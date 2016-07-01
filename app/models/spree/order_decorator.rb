@@ -1,6 +1,8 @@
 module Spree
 	Order.class_eval do 
 
+    after_update :notify_driver
+
 		def is_home_delivery_product_available?(item_ids)
 			line_items.where(id: item_ids).collect(&:delivery_type).include?("home_delivery")
 		end
@@ -12,6 +14,14 @@ module Spree
     def items_state(item_ids)
       line_items.where(id: item_ids).collect(&:delivery_state).uniq.join
     end
+
+    private
+
+      def notify_driver
+        if state == "canceled"
+          REDIS_CLIENT.PUBLISH("listUpdate", {order_number: number}.to_json)
+        end
+      end
 
 	end
 end

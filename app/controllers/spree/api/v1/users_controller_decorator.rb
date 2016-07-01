@@ -107,14 +107,16 @@ module Spree
 			updating_value = eval(params[:option]) ? @user.try(:id) : nil
 			state = eval(params[:option]) ? "ready_to_pick" : "confirmed_pickup"
 			state_update = eval(params[:option]) ? "confirmed_pickup" : "ready_to_pick"
-			@line_items = Spree::LineItem.where(id: params[:line_item_ids], delivery_state: state, delivery_type: "home_delivery", driver_id: driver_id)
-			if @line_items.present?
-				@line_items.find_each { |line_item| line_item.update_attributes(delivery_state: state_update, driver_id: updating_value) }
-				@response = get_response
-				@response[:message] = eval(params[:option]) ? "Item(s) picked up by you" : "You have canceled this pickup"
-			else
-				@response = error_response
-				@response[:message] = "Item not found either cancel by seller or picked up by another driver."
+			params[:line_items_object].each do |item_object|
+				@line_items = Spree::LineItem.where(id: item_object["line_item_ids"], delivery_state: state, delivery_type: "home_delivery", driver_id: driver_id)
+				if @line_items.present?
+					@line_items.find_each { |line_item| line_item.update_attributes(delivery_state: state_update, driver_id: updating_value) }
+					@response = get_response
+					@response[:message] = eval(params[:option]) ? "Item(s) picked up by you" : "You have canceled this pickup"
+				else
+					@response = error_response
+					@response[:message] = "Item not found either cancel by seller or picked up by another driver."
+				end
 			end
 		rescue Exception => e
 			api_exception_handler(e)
