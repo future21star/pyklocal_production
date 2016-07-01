@@ -47,7 +47,7 @@ Pyklocal::Application.routes.draw do
 
   Spree::Core::Engine.routes.draw do 
     get "orders" => "home#orders"
-
+    resources :addresses 
     resources :payment_histories
     #Applications routes
     resources :shop , :only => [:index,:show]

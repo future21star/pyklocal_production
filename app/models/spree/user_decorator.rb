@@ -15,6 +15,7 @@ Spree::User.class_eval do
   has_one :payment_preference, foreign_key: :user_id, class_name: 'Spree::PaymentPreference'
   has_many :driver_orders, foreign_key: :driver_id, class_name: "Spree::DriverOrder"
   has_many :cart_orders, through: :driver_orders, class_name: "Spree::Order"
+  has_one :address, class_name: 'Spree::Address'
   
   #---------------------Callbacks--------------------------
   after_create :assign_api_key 

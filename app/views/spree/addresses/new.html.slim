@@ -1,0 +1,7 @@
+#container
+  .container
+    .row     
+      #content.col-sm-3
+        =render :partial => "spree/shared/user_menu", locals: {current: "address"}
+      .col-sm-9
+      	=render partial: 'form'

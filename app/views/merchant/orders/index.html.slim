@@ -22,7 +22,6 @@
                 - line_item_ids = [] 
                 tr
                   td.align-middle rowspan=(current_spree_user.stores.first.item_count_of_this_store(order.number))
-                    = link_to order.try(:number), edit_merchant_order_path(order)
                   - order.line_items.each_with_index do |line_item, index|
                     - if current_spree_user.stores.first.spree_products.include?(line_item.product)
                       - if line_item.delivery_type == "home_delivery"
@@ -35,6 +34,7 @@
                         td= line_item.delivery_type.try(:humanize)
                         - if order.is_home_delivery_product_available?(line_item_ids)
                           td.align-middle rowspan=(current_spree_user.stores.first.item_count_of_this_store(order.number))
+                            = order.items_state(line_item_ids)
                             - if order.items_state(line_item_ids) == "packaging"
                               = link_to "Ready to pickup", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: "ready_to_pick"), class: "btn btn-success", method: :put
                             - elsif order.items_state(line_item_ids) == "ready_to_pick"
