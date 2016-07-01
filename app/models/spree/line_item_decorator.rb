@@ -1,6 +1,8 @@
 module Spree
 	LineItem.class_eval do 
 
+		belongs_to :driver, foreign_key: :driver_id, class_name: "Spree::User"
+
 		after_update :notify_driver
 
 		def product_name

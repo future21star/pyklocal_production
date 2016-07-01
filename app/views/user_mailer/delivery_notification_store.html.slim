@@ -1,0 +1,13 @@
+.email-container style="font-family: &quot;Helvetica Neue&quot; , Helvetica, sans-serif; padding-bottom: 20px; width: 100%; margin: 0 auto; overflow-x: visible;"
+  .email-content style="width: 98%; padding: 0 1%;"
+    p= "Hi #{@sellr.full_name}, "
+    br
+    br
+    p style="text-align: justify"
+      = "Package with order number #{@order.number} to #{@order.user.try(:full_name)} is delivered."
+    br
+    br
+    p 
+      |Thanks & Regards
+      br
+      |pyklocal Team

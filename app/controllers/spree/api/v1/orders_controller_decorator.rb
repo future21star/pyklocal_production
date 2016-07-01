@@ -16,14 +16,18 @@ module Spree
 					unless store.pickable_store_orders.blank?
 						store.pickable_store_orders.each do |s_o|
 							state = ""
+							in_cart = false
 							item_ids = []
 							s_o.line_items.where(delivery_type: "home_delivery").each do |item|
 								if item.product.store_id == store.id
+									if item.delivery_state == "in_cart"
+										in_cart = true
+									end
 									item_ids << item.id
 								end
 							end
-							in_cart = @user.driver_orders.where(order_id: s_o.try(:id), line_item_ids: item_ids.join(", ")).present?
-							@orders_list.push({order_number: s_o.number, store_name: store.name, in_cart: in_cart, line_item_ids: item_ids})
+							# in_cart = @user.driver_orders.where(order_id: s_o.try(:id), line_item_ids: item_ids.join(", ")).present?
+							@orders_list.push({order_number: s_o.number, store_name: store.name, in_cart: in_cart, line_item_ids: item_ids, location: {lat: store.try(:latitude), long: store.try(:longitude)}})
 						end						
 					end
 				end

@@ -28,4 +28,17 @@ class UserMailer < ActionMailer::Base
  		@user = user
  		mail(to: user.email, subject: "#{@user.full_name} is now approved as a driver")
  	end
+
+  def delivery_notification_user(user, order)
+    @order = order
+    @user = user
+    mail(to: @user.email, subject: "Delivery Confirmation")
+  end
+
+  def delivery_notification_store(store, order)
+    @order = order
+    @store = store
+    @seller = @store.try(:spree_users).try(:first)
+    mail(to: @seller.try(:email), subject: "Delivery Confirmation")
+  end
 end

@@ -7,6 +7,7 @@ module Merchant
     # validates :terms_and_condition, acceptance: { accept: true }
     
   	has_many :store_users, dependent: :delete_all, foreign_key: :store_id, class_name: "Merchant::StoreUser"
+    has_many :spree_users, through: :store_users
     has_many :store_taxons, dependent: :delete_all, foreign_key: :store_id, class_name: "Merchant::StoreTaxon"
     has_many :spree_taxons , through: :store_taxons
     has_many :spree_products, dependent: :delete_all, foreign_key: :store_id, class_name: 'Spree::Product'
@@ -73,7 +74,7 @@ module Merchant
     def pickable_line_items
       store_line_items = []
       spree_products.each do |product|
-        store_line_items << product.line_items.where(delivery_state: "ready_to_pick", delivery_type: "home_delivery")
+        store_line_items << product.line_items.where("delivery_state = ? OR delivery_state = ? AND delivery_type = ?", "ready_to_pick", "in_cart", "home_delivery")
       end
       return store_line_items.flatten
     end

@@ -32,8 +32,9 @@ Spree::User.class_eval do
     orders = []
     Merchant::Store.all.each do |store|
       store.spree_products.each do |store_prodct|
-        store_prodct.line_items.where(delivery_state: "confirmed_pickup", delivery_type: "home_delivery", driver_id: id).collect(&:order).uniq.each do |store_order|
-          orders << {order_number: store_order.number, store_name: store.name}
+        line_items = store_prodct.line_items.where(delivery_state: "confirmed_pickup", delivery_type: "home_delivery", driver_id: id)
+        line_items.collect(&:order).uniq.each do |store_order|
+          orders << {order_number: store_order.number, store_name: store.name, line_item_ids: line_items.collect(&:id)}
         end
       end
     end
@@ -43,6 +44,16 @@ Spree::User.class_eval do
   def drivers_cart
     orders = []
     driver_orders.where(is_delivered: false).each do |d_order|
+      if Spree::LineItem.where(id: d_order.line_item_ids.split(", "), delivery_state: "in_cart").present?
+        orders << {order_number: d_order.cart_order.number, store_name: d_order.store_name, line_item_ids: d_order.line_item_ids.split(", ")}
+      end
+    end
+    return orders
+  end
+
+  def delivered_orders
+    orders = []
+    driver_orders.where(is_delivered: true).each do |d_order|
       orders << {order_number: d_order.cart_order.number, store_name: d_order.store_name, line_item_ids: d_order.line_item_ids.split(", ")}
     end
     return orders

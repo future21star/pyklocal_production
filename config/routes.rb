@@ -105,6 +105,8 @@ Pyklocal::Application.routes.draw do
           put :add_to_cart
           get :my_cart
           put :remove_from_cart
+          put :mark_as_deliver
+          get :my_delivery_list
         end
         resources :orders, concerns: :order_routes
 
