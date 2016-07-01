@@ -11,7 +11,7 @@
               = f.hidden_field :asin
               = f.hidden_field :image_url
               - @product.images.each do |thumb_image|
-                  = hidden_field_tag "images[attachment]",thumb_image.try(:url)
+                  / = hidden_field_tag "product[variant_images_attributes][attachment]",thumb_image.try(:attachment)
               - @product.product_properties.each do |product_property|
                 - property = product_property.try(:property)
                 - if property.try(:new_record?)
