@@ -22,13 +22,11 @@
                   span.zoom-gallery
                     i.fa.fa-search
                     | Click image for Zoom
-                / #gallery_01.image-additional
-                /   a.thumbnail 
-                    / - if defined?(image) && image
-                    /   = link_to , image.attachment.url(:product))
-                    /   / = image_tag image.attachment.url(:mini), :itemprop => "image",image.attachment.url(:product)
-                    / - else
-                    / = product_image(@product, :itemprop => "image")
+                #gallery_01.image-additional
+                  -@product.images.each do |thumb_images|
+                    a.thumbnail data-zoom-image=thumb_images.try(:attachment).try(:url,:large) data-image=thumb_images.try(:attachment).try(:url,:large) href="#"
+                      = image_tag thumb_images.try(:attachment).try(:url,:mini), class: "img-responsive img_center",id:"zoom_01"
+   
             .col-sm-7
               #product
                   div
@@ -46,44 +44,10 @@
           ul.nav.nav-tabs
             li.active
               a data-toggle="tab" href="#tab-description"  Description
-            / li
-            /   a data-toggle="tab" href="#tab-review"  Reviews 
           .tab-content
             #tab-description.tab-pane.active itemprop="description" 
               .cpt_product_description
                 = product_description(@product) rescue Spree.t(:product_has_no_description)
-            / #tab-review.tab-pane
-            /   form.form-horizontal
-            /     #review
-            /     h2 Write a review
-            /     .form-group.required
-            /       .col-sm-12
-            /         label.control-label for="input-name"  Your Name
-            /         input#input-name.form-control name="name" type="text" value="" 
-            /     .form-group.required
-            /       .col-sm-12
-            /         label.control-label for="input-review"  Your Review
-            /         textarea#input-review.form-control name="text" rows="5" 
-            /         .help-block
-            /           span.text-danger Note:
-            /           | HTML is not translated!
-            /     .form-group.required
-            /       .col-sm-12
-            /         label.control-label Rating
-            /         | &nbsp;&nbsp;&nbsp; Bad&nbsp;
-            /         input name="rating" type="radio" value="1" 
-            /         | &nbsp;
-            /         input name="rating" type="radio" value="2" 
-            /         | &nbsp;
-            /         input name="rating" type="radio" value="3" 
-            /         | &nbsp;
-            /         input name="rating" type="radio" value="4" 
-            /         | &nbsp;
-            /         input name="rating" type="radio" value="5" 
-            /         | &nbsp;Good
-            /     .buttons
-            /       .pull-right
-            /         button#button-review.btn.btn-primary data-loading-text="Loading..." type="button"  Continue
       column#column-right.col-sm-3.hidden-xs
         h4 Sold by :
         = render :partial => 'spree/shared/seller'
@@ -94,22 +58,25 @@
         = render :partial => 'spree/shared/product', locals: {product: similar_product}
 - content_for :js do        
   javascript:
+   //initiate the plugin and pass the id of the div containing gallery images
     $("#zoom_01").elevateZoom({
-      gallery:'gallery_01',
-      cursor: 'pointer',
-      galleryActiveClass: 'active',
-      imageCrossfade: true,
-      zoomWindowFadeIn: 500,
-      zoomWindowFadeOut: 500,
-      lensFadeIn: 500,
-      lensFadeOut: 500,
-      loadingIcon: 'catalog'
+    constrainType:"height", 
+    constrainSize:274, 
+    zoomType: "lens", 
+    containLensZoom: true, 
+    gallery:'gallery_01', 
+    cursor: 'pointer', 
+    galleryActiveClass: "active"
+
     }); 
-    $("#zoom_01").bind("click", function(e) {
-      var ez =   $('#zoom_01').data('elevateZoom');
-      $.swipebox(ez.getGalleryList());
+
+    //pass the images to Fancybox
+    $("#zoom_01").bind("click", function(e) {  
+      var ez =   $('#zoom_01').data('elevateZoom'); 
+      $.fancybox(ez.getGalleryList());
       return false;
     });
+
 
     $('#slideshow0').owlCarousel({
       items: 1,
@@ -119,6 +86,7 @@
       navigationText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
       pagination: true  
     });
+
 
     $("#content .owl-carousel.bestseller_carousel").owlCarousel({
       itemsCustom : [[320, 1],[600, 2],[768, 3],[992, 5],[1199, 5]],                         

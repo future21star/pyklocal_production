@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160629110028) do
+ActiveRecord::Schema.define(version: 20160701061411) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -137,6 +137,7 @@ ActiveRecord::Schema.define(version: 20160629110028) do
     t.integer  "country_id",        limit: 4
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+    t.string   "user_id",           limit: 255
   end
 
   add_index "spree_addresses", ["country_id"], name: "index_spree_addresses_on_country_id", using: :btree

@@ -30,6 +30,9 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 		@product = Spree::Product.where(asin: raw_product.asin,store_id: current_spree_user.stores.first.try(:id)).first
 		if @product.blank?
 			@product = Spree::Product.new({name: raw_product.item_attributes.title, description: description, sku: sku, price: offer_price ,  available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url), asin: asin_no}) 
+			raw_product.image_sets.image_set.each do |product_images|
+				thumb_image = @product.images.build(attachment: product_images.try(:large_image).try(:url))
+			end
 			raw_product.item_attributes.each do |amazon_products_properties|
 				if amazon_products_properties[1].class.to_s == "REXMLUtiliyNodeString"
           property = Spree::Property.where(name: amazon_products_properties[0], presentation: amazon_products_properties[0].titleize).first_or_create
@@ -92,8 +95,10 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 		        end
 		        @product.save
 					end
-					image = @product.images.new(attachment: raw_product.large_image.url)
-					image.save
+					raw_product.image_sets.image_set.each do |product_images|
+						thumb_image = @product.images.build(attachment: product_images.try(:large_image).try(:url))
+						thumb_image.save
+					end
 				else
 					redirect_to merchant_stores_path,  notice: 'Could not be saved - this product is already exist!'
 					return 	
@@ -110,7 +115,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 	private
 
 		def product_params
-			params.require(:product).permit(:name, :sku, :price, :prototype_id, :available_on,:asin,:brand, :shipping_category_id, :image_url, :description , product_properties_attributes: [:value, :id, :property_id, :product_id, property_attributes: [:id, :name, :presentation]])
+			params.require(:product).permit(:name, :sku, :price, :prototype_id, :available_on,:asin,:brand, :shipping_category_id, :image_url, :description, images_attributes: [:attachment], product_properties_attributes: [:value, :id, :property_id, :product_id, property_attributes: [:id, :name, :presentation]])
 		end
 
 end

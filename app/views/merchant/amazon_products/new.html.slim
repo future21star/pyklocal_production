@@ -10,6 +10,8 @@
               = render :partial => '/spree/shared/error_messages', :locals => { :target => @product }
               = f.hidden_field :asin
               = f.hidden_field :image_url
+              - @product.images.each do |thumb_image|
+                  = hidden_field_tag "images[attachment]",thumb_image.try(:url)
               - @product.product_properties.each do |product_property|
                 - property = product_property.try(:property)
                 - if property.try(:new_record?)

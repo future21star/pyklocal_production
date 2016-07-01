@@ -19,6 +19,7 @@ Spree.user_class = "Spree::LegacyUser"
 Spree::PermittedAttributes.line_item_attributes.push :delivery_type
 Spree::PermittedAttributes.user_attributes.push :first_name, :last_name ,:mobile_number
 Spree::PermittedAttributes.product_attributes.push :asin
+Spree::PermittedAttributes.address_attributes.push :user_id
 Spree::BackendConfiguration.class_eval do 
 	SELLER_TAB			||= [:merchants]
 end
