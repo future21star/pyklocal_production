@@ -1,5 +1,7 @@
 module Spree
 	Order.class_eval do 
+    # ---------------------------------------- Associations -----------------------------------------------------
+
 
     after_update :notify_driver
 
