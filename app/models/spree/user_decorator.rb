@@ -33,13 +33,14 @@ Spree::User.class_eval do
     Merchant::Store.all.each do |store|
       store.spree_products.each do |store_prodct|
         line_items = store_prodct.line_items.where(delivery_state: "confirmed_pickup", delivery_type: "home_delivery", driver_id: id)
+        order = line_items.collect(&:order).uniq
         line_items.collect(&:order).uniq.each do |store_order| 
           line_item_ids = driver_orders.where(order_id: store_order.id, is_delivered: false).first.try(:line_item_ids)
           orders << {order_number: store_order.number, store_name: store.name, line_item_ids: line_item_ids.split(", ")}
         end
       end
     end
-    return orders
+    return orders.uniq
   end
 
   def drivers_cart

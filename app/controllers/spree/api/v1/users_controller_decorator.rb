@@ -85,7 +85,7 @@ module Spree
 		def remove_from_cart
 			params[:cancel_orders].each do |cancel_order|
 				@order = Spree::Order.find_by_number(cancel_order["order_number"])
-				@driver_orders = @user.driver_orders.where(order_id: @order.try(:id), line_item_ids: cancel_order["line_item_ids"].join(", "))
+				@driver_orders = @user.driver_orders.where(order_id: @order.id,line_item_ids: cancel_order["line_item_ids"].join(", "))
 				if @driver_orders.present?
 					Spree::LineItem.where(id: cancel_order["line_item_ids"]).update_all(delivery_state: "ready_to_pick")
 					@driver_orders.delete_all
@@ -111,8 +111,18 @@ module Spree
 				@line_items = Spree::LineItem.where(id: item_object["line_item_ids"], delivery_type: "home_delivery", driver_id: driver_id)
 				if @line_items.present?
 					@line_items.find_each { |line_item| line_item.update_attributes(delivery_state: state_update, driver_id: updating_value) }
-					@response = get_response
-					@response[:message] = eval(params[:option]) ? "Item(s) picked up by you" : "You have canceled this pickup"
+					if eval(params[:option]) == false
+						item_object["line_item_ids"].join(", ")
+						@result= Spree::DriverOrder.where( line_item_ids:item_object["line_item_ids"].join(", ")).first
+						if @result.present?
+							@result.delete
+						end
+						@response = get_response
+						@response[:message] = "You have canceled this pickup"
+					else
+						@response = get_response
+						@response[:message] =  "Item(s) picked up by you"
+					end
 				else
 					@response = error_response
 					@response[:message] = "Item not found either cancel by seller or picked up by another driver."
@@ -126,6 +136,9 @@ module Spree
 
 		def my_pickup_list
 			@orders = @user.driver_orders_list
+			p "========================="
+			p @orders
+			p "========================"
 		rescue Exception => e
 			api_exception_handler(e)
 		ensure
