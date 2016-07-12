@@ -2903,7 +2903,7 @@ form#adv_ajaxfilter {
 .style{
   width: 100%;
   padding: 15%;
-  border: 1px solid rgba(0, 0, 0, 0.17);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.17);
 } 
 .img_center{
   margin: 0px auto;

@@ -5,11 +5,14 @@
         a href="/" 
           i.fa.fa-home
       li
-        a href="/"  Shopping Cart
+        a href=""  Shopping Cart
     #content
       div data-hook="cart_container" 
         - if @order.line_items.empty?
-          div data-hook="empty_cart" 
+          .empty-cart data-hook="empty_cart" 
+            h4 
+              |Your cart is empty  
+              = link_to "Continue Shopping", shop_index_path, class: "anchor-font"
         - else
           div data-hook="outside_cart_form" 
             = form_for @order, url: update_cart_path, html: { id: 'update-cart' } do |order_form|

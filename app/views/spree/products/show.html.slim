@@ -24,8 +24,8 @@
                     | Click image for Zoom
                 #gallery_01.image-additional
                   -@product.images.each do |thumb_images|
-                    a.thumbnail style=("min-height: 58px;max-height: 58px;") data-zoom-image=thumb_images.try(:attachment).try(:url,:large) data-image=thumb_images.try(:attachment).try(:url,:large) href="#"
-                      = image_tag thumb_images.try(:attachment).try(:url,:mini), class: "img-responsive img_center",id:"zoom_01"
+                    a.thumbnail style=("min-height: 58px;max-height: 58px; border: none;") data-zoom-image=thumb_images.try(:attachment).try(:url,:large) data-image=thumb_images.try(:attachment).try(:url,:large) href="#"
+                      = image_tag thumb_images.try(:attachment).try(:url, :mini), class: "img-responsive img_center", id: "zoom_01"
    
             .col-sm-7
               #product

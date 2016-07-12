@@ -17,48 +17,45 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 	end
 
 	def new
-			if params[:asin].blank?
-			 redirect_to :back, :params => @params , notice: "please Select Product created"
-			else 
-				raw_product = AMAZON_CLIENT.lookup(params[:asin]).first
-				description = raw_product.try(:editorial_reviews).try(:editorial_review).try(:content)
-				if raw_product.try(:offer_summary).try(:lowest_new_price).try(:amount).to_f/100 == 0
-					offer_price = raw_product.item_attributes.try(:list_price).try(:amount).to_f/100
-				else
-					offer_price = raw_product.try(:offer_summary).try(:lowest_new_price).try(:amount).to_f/100
+		if params[:asin].blank?
+		 redirect_to :back, :params => @params , notice: "please Select Product created"
+		else 
+			raw_product = AMAZON_CLIENT.lookup(params[:asin]).first
+			description = raw_product.try(:editorial_reviews).try(:editorial_review).try(:content)
+			if raw_product.try(:offer_summary).try(:lowest_new_price).try(:amount).to_f/100 == 0
+				offer_price = raw_product.item_attributes.try(:list_price).try(:amount).to_f/100
+			else
+				offer_price = raw_product.try(:offer_summary).try(:lowest_new_price).try(:amount).to_f/100
+			end
+			image_u = raw_product.large_image.try(:url)
+			sku = raw_product.item_attributes.title[0..2].upcase+SecureRandom.hex(5).upcase
+			asin_no = raw_product.asin
+			@product = Spree::Product.where(asin: raw_product.asin,store_id: current_spree_user.stores.first.try(:id)).first
+			if @product.blank?
+				@product = Spree::Product.create({name: raw_product.item_attributes.title,description: description, price: offer_price, available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url),store_id: current_spree_user.stores.first.try(:id),asin:asin_no}) 
+				raw_product.item_attributes.each do |amazon_products_properties|
+					if amazon_products_properties[1].class.to_s == "REXMLUtiliyNodeString"
+	          property = Spree::Property.where(name: amazon_products_properties[0], presentation: amazon_products_properties[0].titleize).first_or_create
+	          product_property = @product.product_properties.build(value: amazon_products_properties[1])
+	          product_property.property = property  
+	        elsif amazon_products_properties[1].class.to_s == "Array"
+	          property = Spree::Property.where(name: amazon_products_properties[0], presentation: amazon_products_properties[0].titleize).first_or_create
+	          amazon_products_properties[1].each do |ap|
+	            product_property = @product.product_properties.build({value: ap})
+	            product_property.property = property
+	          end
+	        end
+	        @product.save
 				end
-				image_u = raw_product.large_image.try(:url)
-				sku = raw_product.item_attributes.title[0..2].upcase+SecureRandom.hex(5).upcase
-				asin_no = raw_product.asin
-				@product = Spree::Product.where(asin: raw_product.asin,store_id: current_spree_user.stores.first.try(:id)).first
-				if @product.blank?
-					@product = Spree::Product.create({name: raw_product.item_attributes.title,description: description, price: offer_price, available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url),store_id: current_spree_user.stores.first.try(:id),asin:asin_no}) 
-					raw_product.item_attributes.each do |amazon_products_properties|
-						if amazon_products_properties[1].class.to_s == "REXMLUtiliyNodeString"
-		          property = Spree::Property.where(name: amazon_products_properties[0], presentation: amazon_products_properties[0].titleize).first_or_create
-		          product_property = @product.product_properties.build(value: amazon_products_properties[1])
-		          product_property.property = property  
-		        elsif amazon_products_properties[1].class.to_s == "Array"
-		          property = Spree::Property.where(name: amazon_products_properties[0], presentation: amazon_products_properties[0].titleize).first_or_create
-		          amazon_products_properties[1].each do |ap|
-		            product_property = @product.product_properties.build({value: ap})
-		            product_property.property = property
-		          end
-		        end
-		        @product.save
-					end
-					raw_product.image_sets.image_set.each do |product_images|
-						thumb_image = @product.images.build(attachment: product_images.try(:large_image).try(:url))
-						thumb_image.save
-					end
-				else
-					redirect_to merchant_stores_path,  notice: 'Could not be saved - this product is already exist!'
-					return 	
+				raw_product.image_sets.image_set.each do |product_images|
+					thumb_image = @product.images.build(attachment: product_images.try(:large_image).try(:url))
+					thumb_image.save
 				end
-			if @product.save
-				redirect_to merchant_stores_path , notice: 'Product are Successfully added !'
-				return
-			end 	
+				redirect_to spree.product_path(@product)
+			else
+				redirect_to merchant_stores_path,  notice: 'Could not be saved - this product is already exist!'
+					
+			end 
 		end
 	end
 
