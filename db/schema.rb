@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160701061411) do
+ActiveRecord::Schema.define(version: 20160714083807) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -1184,6 +1184,13 @@ ActiveRecord::Schema.define(version: 20160701061411) do
     t.integer  "device_token", limit: 4
     t.string   "device_type",  limit: 255
     t.boolean  "notification",             default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "wishlists", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.integer  "variant_id", limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
   end

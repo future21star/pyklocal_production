@@ -41,6 +41,10 @@ module Merchant
       Merchant::Store.where(slug: slug).first
     end
 
+    def location
+      {lat: latitude.to_f, lng: longitude.to_f}
+    end
+
     def address
       [street_number, city, state, country].compact.join(", ")
     end
