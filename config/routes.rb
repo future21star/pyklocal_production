@@ -49,6 +49,7 @@ Pyklocal::Application.routes.draw do
     get "orders" => "home#orders"
     resources :addresses 
     resources :payment_histories
+    resources :wishlists
     #Applications routes
     resources :shop , :only => [:index,:show]
     resources :orders do 

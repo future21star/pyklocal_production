@@ -58,7 +58,6 @@ window.onload = function() {
   var startPos;
   var geoSuccess = function(position) {
     startPos = position;
-    console.log(startPos.coords.latitude);
     $('#lat').val(startPos.coords.latitude);
     $('#lng').val(startPos.coords.longitude);
   };

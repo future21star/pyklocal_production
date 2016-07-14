@@ -2,15 +2,15 @@
   nav#top.htop
     .container
       .row
-        span.drop-icon.visible-sm.visible-xs
-          i.fa.fa-align-justify
-        .pull-left.flip.left-top
-          .links
-            ul
-              li
-                a#wishlist-total href="#"  Wish List (Add Product)
-            input name="code" type="hidden" value="" 
-            input name="redirect" type="hidden" value="" 
+        / span.drop-icon.visible-sm.visible-xs
+        /   i.fa.fa-align-justify
+        / .pull-left.flip.left-top
+        /   .links
+        /     ul
+        /       li
+        /         a#wishlist-total href="#"  Wish List (Add Product)
+        /     input name="code" type="hidden" value="" 
+        /     input name="redirect" type="hidden" value="" 
         #top-links.nav.pull-right.flip
           ul
             -if spree_user_signed_in? 
@@ -22,6 +22,8 @@
                 ul.dropdown-menu.dropdown-menu-right
                   li
                     = link_to "My Account",spree.edit_account_path
+                  li
+                    = link_to "Wishlists",spree.wishlists_path
                   li
                     = link_to "Logout", spree.logout_path ,"data-no-turbolink" => true
               

@@ -1,7 +1,8 @@
+- product = wish.variant.product
 .item style=("overflow:hidden; min-height:350px;")
   = form_for :order, :url => populate_orders_path do |f|
     = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
-    = hidden_field_tag "variant_id", product.master.id
+    = hidden_field_tag "variant_id", wish.variant_id
     = hidden_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
     .product-thumb.clearfix
       .image.table-center style=("min-height: 244px; max-height: 244px;")
@@ -19,11 +20,5 @@
           button.btn.btn-default type="submit" 
             span Add to Cart
   .wish-list-section
-    = form_for Spree::Wishlist.new, url: wishlists_path, method: :post do |f|
-      = f.hidden_field :variant_id, value: product.master.id
-      button.btn.btn-success.wish-btn type="submit"
-        span.fa.fa-heart
-       
-
-	
-
+    = link_to wishlist_path(wish), class: "btn btn-danger wish-btn", method: :delete, title: "Remove from wish list" do 
+      span.fa.fa-trash
