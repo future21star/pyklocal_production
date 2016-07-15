@@ -41,6 +41,14 @@ module Spree
 			unless @user.driver_orders.blank?
 				in_cart = @user.driver_orders.where(line_item_ids: line_items.collect(&:id).join(", ")).present?
 			end
+			pick_up_and_delivery = {
+																store_address: @store.address, 
+																store_zipcode: @store.zipcode, 
+																buyer_name: @order.buyer_name, 
+																buyer_address: @order.delivery_address, 
+																buyer_zipcode: @order.buyer_zipcode, 
+																lat_long: @store.location
+															}
 		rescue Exception => e
 			api_exception_handler(e)
 		ensure
@@ -49,7 +57,7 @@ module Spree
 					only: [:id, :price, :quantity], 
 					methods: [:product_name]
 				}),
-				pick_up_and_delivery: {store_address: @store.address, store_zipcode: @store.zipcode, buyer_name: @order.buyer_name, buyer_address: @order.delivery_address, buyer_zipcode: @order.buyer_zipcode, lat_long: @store.location}.as_json(),
+				pick_up_and_delivery: pick_up_and_delivery.as_json(),
 				state: line_items.collect(&:delivery_state).uniq.join,
 				in_cart: in_cart
 			}
