@@ -31,15 +31,14 @@ Spree::User.class_eval do
 
   def driver_orders_list
     orders = []
-
-    Merchant::Store.all.each do |store|
-      store.spree_products.each do |store_prodct|
-        line_items = store_prodct.line_items.where("delivery_state = ? OR delivery_state = ? AND delivery_type = ? AND driver_id = ?", "confirmed_pickup", "out_for_delivery", "home_delivery", id)
-        order = line_items.collect(&:order).uniq
-        line_items.collect(&:order).uniq.each do |store_order| 
-          line_item_ids = driver_orders.where(order_id: store_order.id, is_delivered: false).first.try(:line_item_ids)
+    if driver_orders.present?
+      driver_orders.each do |d_order|
+        order = d_order.cart_order
+        line_items = order.line_items.where("id = ? AND delivery_state = ? OR delivery_state = ?", d_order.line_item_ids.split(", "), "confirmed_pickup", "out_for_delivery")
+        if line_items.present?
+          store_name = line_items.first.product.store_name
           state = line_items.collect(&:delivery_state).uniq.join
-          orders << {order_number: store_order.number, store_name: store.name, line_item_ids: line_item_ids.split(", "), state: state}
+          orders << {order_number: order.number, line_item_ids: line_items.collect(&:id), state: state, store_name: store_name}
         end
       end
     end

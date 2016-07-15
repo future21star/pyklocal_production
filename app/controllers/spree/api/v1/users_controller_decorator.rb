@@ -86,6 +86,7 @@ module Spree
 			render json: @response
 		end
 
+		#Pickup item(s) added in the cart
 		def pickup
 			driver_id = eval(params[:option]) ? @user.id : nil
 			state = eval(params[:option]) ? "confirmed_pickup" : "ready_to_pick"
@@ -108,12 +109,13 @@ module Spree
 			render json: @response
 		end
 
+		#See list of picked item(s)
 		def my_pickup_list
 			if @user.driver_orders_list.present?
 				@response = @user.driver_orders_list
 			else
 				@response = error_response
-				@response[:message] = "No item found"
+				@response[:message] = "No item(s) in your list"
 			end
 		rescue Exception => e
 			api_exception_handler(e)
@@ -121,6 +123,7 @@ module Spree
 			render json: @response.as_json()
 		end
 
+		#Set item as delivered
 		def mark_as_deliver
 			@order = Spree::Order.find_by_number(params[:order_number])
 			@line_items = @order.line_items.where(id: params[:line_item_ids], delivery_state: "out_for_delivery")
@@ -139,6 +142,7 @@ module Spree
 			render json: @response
 		end
 
+		#See the list of item(s) you delivered
 		def my_delivery_list
 		rescue Exception => e
 			api_exception_handler(e)
@@ -152,6 +156,7 @@ module Spree
 			end
 		end
 
+		#Update Users information
 		def update
       if @user.update_attributes(user_params)
         @response = get_response
@@ -165,6 +170,7 @@ module Spree
     	render json: @response
     end
 
+    #Update drivers location
 		def update_location
 			if @user.api_tokens.last.update_attributes(latitude: params[:latitude], longitude: params[:longitude])
 				@response = get_response
