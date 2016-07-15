@@ -111,7 +111,7 @@ module Spree
 
 		#See list of picked item(s)
 		def my_pickup_list
-			if @user.driver_orders_list.present?
+			unless @user.driver_orders_list.blank?
 				@response = @user.driver_orders_list
 			else
 				@response = error_response
