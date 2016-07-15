@@ -111,16 +111,16 @@ module Spree
 
 		#See list of picked item(s)
 		def my_pickup_list
-			unless @user.driver_orders_list.blank?
-				@response = @user.driver_orders_list
-			else
-				@response = error_response
-				@response[:message] = "No item(s) in your list"
-			end
 		rescue Exception => e
 			api_exception_handler(e)
 		ensure
-			render json: @response.as_json()
+			unless @user.driver_orders_list.blank?
+				render json: @user.driver_orders_list.as_json()
+			else
+				@response = error_response
+				@response[:message] = "No item(s) in your list"
+				render json: @response.as_json()
+			end
 		end
 
 		#Set item as delivered
@@ -197,7 +197,7 @@ module Spree
 			def find_user
 				id = params[:id] || params[:user_id]
 				@user = Spree::ApiToken.where(token: id).first.try(:user)
-				render json: {code: 0, message: "User not found"} if @user.blank?
+				render json: {code: 0, message: "User not found"} unless @user.present?
 			end
 	end
 end
