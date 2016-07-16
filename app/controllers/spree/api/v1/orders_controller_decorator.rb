@@ -57,9 +57,9 @@ module Spree
 					only: [:id, :price, :quantity], 
 					methods: [:product_name]
 				}),
-				pick_up_and_delivery: pick_up_and_delivery.as_json(),
 				state: line_items.collect(&:delivery_state).uniq.join,
-				in_cart: in_cart
+				in_cart: in_cart,
+				pick_up_and_delivery: pick_up_and_delivery
 			}
 		end
 
