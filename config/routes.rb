@@ -46,6 +46,7 @@ Pyklocal::Application.routes.draw do
   mount Spree::Core::Engine, at: '/'
 
   Spree::Core::Engine.routes.draw do 
+    get "new_store_application", to: "home#new_store_application"
     get "orders" => "home#orders"
     resources :addresses 
     resources :payment_histories

@@ -17,7 +17,7 @@ end
 
 Spree.user_class = "Spree::LegacyUser"
 Spree::PermittedAttributes.line_item_attributes.push :delivery_type
-Spree::PermittedAttributes.user_attributes.push :first_name, :last_name ,:mobile_number
+Spree::PermittedAttributes.user_attributes.push :first_name, :last_name ,:mobile_number, stores_attributes: [:name, :active, :payment_mode, :description, :manager_first_name, :manager_last_name, :phone_number, :store_type, :street_number, :city, :state, :zipcode, :country, :site_url, :terms_and_condition, :payment_information, :logo, spree_taxon_ids: [], store_users_attributes: [:spree_user_id, :store_id, :id]]
 Spree::PermittedAttributes.product_attributes.push :asin
 Spree::PermittedAttributes.address_attributes.push :user_id
 Spree::BackendConfiguration.class_eval do 

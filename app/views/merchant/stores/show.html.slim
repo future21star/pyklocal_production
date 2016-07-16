@@ -14,3 +14,12 @@
       - if @products.respond_to?(:num_pages)
         = paginate @products
 
+- content_for :js do
+  javascript:
+    $(window).load(function(){ 
+      var store = "#{@store.is_located?}" == "true" ? true : false; 
+      if(!store){
+        $("#add-location").trigger("click");
+      }
+    });
+

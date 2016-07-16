@@ -24,6 +24,8 @@ Spree::User.class_eval do
   after_update :notify_user
   attr_accessor :role_name
   accepts_nested_attributes_for :parse_links, :reject_if => lambda { |a| a[:url].blank? }
+  accepts_nested_attributes_for :stores, allow_destroy: true
+  accepts_nested_attributes_for :store_users, allow_destroy: true
 
   def mailboxer_email(object)
     return email

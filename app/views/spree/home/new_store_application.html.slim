@@ -1,0 +1,111 @@
+#container
+  .container
+    ul.breadcrumb
+      li
+        = link_to spree.root_path , "data-no-turbolink" => true do
+          i.fa.fa-home
+      li
+        = link_to "Home", root_path 
+      li.active Authentication
+    .row
+      #content.col-xs-12
+        h1.b-header-title Sell With Us!
+        p.b-header-subtitle 
+          i.fa &#xf00c;
+          |  Use our platform to sell your products.
+        = form_for Spree::User.new, html: {class: "form-horizontal form-body"}, :as => :spree_user, url: spree.registration_path do |user_form|
+          .form-group
+            .col-md-2.col-xs-12
+              = user_form.label :email, class: "control-label"
+            .col-md-4.col-xs-12
+              = user_form.email_field :email, class: "form-control input-bg"
+          .form-group
+            .col-md-2.col-xs-12
+              = user_form.label :password, class: "control-label"
+            .col-md-4.col-xs-12
+              = user_form.password_field :password, class: "form-control input-bg"
+          .form-group
+            .col-md-2.col-xs-12
+              = user_form.label :password_confirmation, class: "control-label"
+            .col-md-4.col-xs-12
+              = user_form.password_field :password_confirmation, class: "form-control input-bg"
+          hr
+          .form-group
+            .col-md-2.col-xs-12
+              = label_tag :name, "Store Name", class: "control-label"
+            .col-md-4.col-xs-12
+              span.input-icon.icon-right
+                = text_field_tag "spree_user[stores_attributes][][name]", "", class: "form-control input-bg" 
+          .form-group
+            .col-md-2.col-xs-12
+              = label_tag :logo, "Logo", class: "control-label"
+            .col-md-4.col-xs-12
+              span
+                = file_field_tag "spree_user[stores_attributes][][logo]", class: "form-control" 
+          .form-group
+            .col-md-2.col-xs-12
+              = label_tag :manager_name, "Manager Name", class: "control-label"
+            .col-md-2.col-xs-6
+              span.input-icon.icon-right
+                = text_field_tag "spree_user[stores_attributes][][manager_first_name]", "", class: "form-control input-bg", placeholder: "First Name" 
+            .col-md-2.col-xs-6
+              span.input-icon.icon-right
+                = text_field_tag "spree_user[stores_attributes][][manager_last_name]", "", class: "form-control input-bg", placeholder: "Last Name" 
+          .form-group
+            .col-md-2.col-xs-12
+              = label_tag :phone_number, "Phone Number", class: "control-label"
+            .col-md-4.col-xs-12
+              span.input-icon.icon-right
+                = text_field_tag "spree_user[stores_attributes][][phone_number]", "", class: "form-control input-bg" 
+          .form-group
+            .col-md-2.col-xs-12
+              = label_tag :store_type, "Store Type", class: "control-label"
+            .col-md-4.col-xs-12
+              = select_tag "spree_user[stores_attributes][][store_type]", options_for_select([['Physical', 'Physical' ],['Online', 'Online' ],['Both', 'Both' ]]), class: "form-control input-bg"
+          .form-group
+            .col-md-2.col-xs-12
+              = label_tag :site_url, "Website(s)", class: "control-label"
+            .col-md-4.col-xs-12
+              span.input-icon.icon-right
+                = text_field_tag "spree_user[stores_attributes][][site_url]", "", class: "form-control input-bg", placeholder: "www.example.com" 
+          .form-group
+            .col-md-2.col-xs-12
+              = label_tag :street_number, "Address", class: "control-label"
+            .col-md-8.col-xs-12
+              span.input-icon.icon-right
+                = text_field_tag "spree_user[stores_attributes][][street_number]", "", class: "form-control input-bg", placeholder: "Street Address" 
+          .form-group
+            .col-md-2.col-xs-12
+              = label_tag :street_number, " ", class: "control-label"
+            .col-md-2.col-xs-6
+              span.input-icon.icon-right
+                = text_field_tag "spree_user[stores_attributes][][city]", "", class: "form-control input-bg", placeholder: "City"
+            .col-md-2.col-xs-6
+              span.input-icon.icon-right
+                = text_field_tag "spree_user[stores_attributes][][state]", "", class: "form-control input-bg", placeholder: "State"
+            .col-md-2.col-xs-6
+              span.input-icon.icon-right
+                = text_field_tag "spree_user[stores_attributes][][zipcode]", "", class: "form-control input-bg", placeholder: "Zipcode"
+            .col-md-2.col-xs-6
+              span.input-icon.icon-right
+                = text_field_tag "spree_user[stores_attributes][][country]", "", class: "form-control input-bg", placeholder: "Country"
+          .form-group
+            .col-md-2.col-xs-12
+              = label_tag :catogories, "Category", class: "control-label"
+            - @taxons.each do |taxon|
+              .col-md-2.col-xs-6
+                label.checkbox-inline title="#{taxon.name}" 
+                  = check_box_tag "spree_user[stores_attributes][][spree_taxon_ids][]", taxon.id
+                  = truncate(taxon.name, length: 22)
+          .form-group
+            .col-md-2.col-xs-12
+              = label_tag :description, "Description", class: "control-label"
+            .col-md-8.col-xs-12
+              span.input-icon.icon-right
+                = text_area_tag "spree_user[stores_attributes][][description]", "", class: "form-control input-bg", placeholder: "Few lines about your store...", rows: 5 
+          .form-group
+            .col-xs-offset-2.col-xs-10
+              button.btn.btn-primary type="submit"
+                i.fa.fa-check
+                |  Apply
+              = link_to "<span class='fa fa-close'></span> Cancel".html_safe, spree.root_path, class: "btn btn-default margin-left"
