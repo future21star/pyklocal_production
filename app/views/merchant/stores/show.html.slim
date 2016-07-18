@@ -16,7 +16,7 @@
 
 - content_for :js do
   javascript:
-    $(window).load(function(){ 
+    $(document).ready(function(){ 
       var store = "#{@store.is_located?}" == "true" ? true : false; 
       if(!store){
         $("#add-location").trigger("click");

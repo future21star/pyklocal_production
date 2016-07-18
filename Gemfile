@@ -25,6 +25,8 @@ gem "font-awesome-rails"
 gem 'sunspot_rails'
 gem 'sunspot_solr'
 
+gem 'noty-rails'
+
 gem 'asin'
 gem 'sidekiq'
 # Use jquery as the JavaScript library

@@ -13,4 +13,18 @@ Spree::BaseHelper.module_eval do
       country
     end.sort_by { |c| c.name.parameterize }
   end
+
+  def flash_message
+    message = ""
+    [:notice, :alert, :success, :error, :warning, :information, :confirm].each do |type| 
+      if(!flash[type].blank?)
+        return {
+          text: flash[type],
+          type: ((type == :notice) ? 'information' : type)
+        }
+      end
+    end
+    return nil;
+  end
+
 end
