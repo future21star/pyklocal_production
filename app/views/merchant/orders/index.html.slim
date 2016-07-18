@@ -19,7 +19,7 @@
           tbody
             - unless @orders.blank?
               - @orders.each do |order|
-                -order.line_items.each_with_index do |line_item, index|
+                - order.line_items.each_with_index do |line_item, index|
                   - line_item_ids = []
                   - if index == 0
                     tr

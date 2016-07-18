@@ -52,7 +52,7 @@ module Spree
 		private
 
 			def notify_driver
-				if (self.changes.include?(:delivery_state)) && (self.delivery_state == "packaging" || self.delivery_state == "ready_to_pick")
+				if (self.changes.include?(:delivery_state)) && (self.delivery_state == "packaging" || self.delivery_state == "ready_to_pick" || self.delivery_state == "out_for_delivery")
 					REDIS_CLIENT.PUBLISH("listUpdate", {order_number: order.number, store_name: product.try(:store).try(:name)}.to_json)
 				end
 			end

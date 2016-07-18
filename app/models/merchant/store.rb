@@ -66,7 +66,7 @@ module Merchant
     def product_line_items
       store_line_items = []
       spree_products.each do |product|
-        store_line_items << product.line_items
+        store_line_items << product.line_items.order("cretaed_at desc")
       end
       return store_line_items.flatten
     end
