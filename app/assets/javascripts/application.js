@@ -29,6 +29,7 @@ var pyklocal = {
 		this.setDeliveryType();
 		this.filterByRadius();
 		this.filterProducts();
+    this.sortProduct();
 	},
 
 	showNoty: function() {
@@ -84,7 +85,13 @@ var pyklocal = {
 		$('.filter-field').click(function() {
 			$('#facet-filter').submit();
 		});
-	}
+	},
+
+  sortProduct: function() {
+    $('#input-sort').change(function() {
+      $('#sortFilter').submit();
+    });
+  }
 
 };
 

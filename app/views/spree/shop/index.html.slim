@@ -41,6 +41,8 @@
                 |&nbsp;All Products 
             .col-sm-4.col-xs-12
               = form_tag "/shop", method: :get, id: "rFilter" do
+                - if params[:q] && params[:q][:search]
+                  = hidden_field_tag "q[search]", params[:q][:search]
                 input id="lat" type="hidden" name="q[lat]"
                 input id="lng" type="hidden" name="q[lng]"
                 - location = params[:q] && params[:q][:radius] ? params[:q][:radius] : " "
@@ -51,8 +53,16 @@
                   option selected=(location == "10") value="10" 10 KM
                   option selected=(location == "50") value="50" More than 10 KM
             .col-sm-4.text-right
-              select#input-sort.form-control.col-sm-3 onchange=("location = this.value;") 
-                option selected="selected" value=""  Default Sorting
+              = form_tag "/shop", method: :get, id: "sortFilter" do
+                - if params[:q] && params[:q][:search]
+                  = hidden_filed_tag "q[search]", params[:q][:search]
+                - if params[:q] && params[:q][:lat]
+                  = hidden_field_tag "q[lat]", params[:q][:lat]
+                - if params[:q] && params[:q][:lng]
+                  = hidden_field_tag "q[lng]", params[:q][:lng]
+                - if params[:q] && params[:q][:radius]
+                  = hidden_field_tag "q[radius]", params[:q][:radius]
+                = select_tag "q[sort_by]", options_for_select(["Sort By", "Highest Price", "Lowest Price"], selected: params[:sort_by]), class: "form-control col-sm-3", id: "input-sort"
           
             .col-sm-2.text-right
               label.control-label for="input-limit" Showing product:
@@ -62,9 +72,12 @@
         .row.products-category
           .product-layout.product-list.col-xs-12
             .product-thumb
-              - @products.each do |product|
-                .col-sm-3.product-grid
-                  = render :partial => 'spree/shared/product', locals: {product: product}
+              - unless @products.blank?
+                - @products.each do |product|
+                  .col-sm-3.product-grid
+                    = render :partial => 'spree/shared/product', locals: {product: product}
+              - else
+                | No product(s) available
             
     
         .row

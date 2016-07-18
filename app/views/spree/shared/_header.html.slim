@@ -43,6 +43,12 @@
         .col-table-cell.col-lg-5.col-md-5.col-md-push-0.col-sm-6.col-sm-push-6.col-xs-12
           #search.input-group
             = form_tag '/shop', :method => 'get', id: "search-box" do 
+              - if params[:q] && params[:q][:lat]
+                = hidden_field_tag "q[lat]", params[:q][:lat]
+              - if params[:q] && params[:q][:lng]
+                = hidden_field_tag "q[lng]", params[:q][:lng]
+              - if params[:q] && params[:q][:radius]
+                = hidden_field_tag "q[radius]", params[:q][:radius]
               input id="discover" class="form-control" autocomplete="off" name="q[search]" placeholder="Search for..." value=(params[:q][:search] rescue "")
               button.button-search type="submit" 
                 i.fa.fa-search
