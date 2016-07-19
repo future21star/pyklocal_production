@@ -54,7 +54,7 @@
             .col-sm-4.text-right
               = form_tag "/shop/#{params[:id]}", method: :get, id: "sortFilter" do
                 - if params[:q] && params[:q][:search]
-                  = hidden_filed_tag "q[search]", params[:q][:search]
+                  = hidden_field_tag "q[search]", params[:q][:search]
                 - if params[:q] && params[:q][:lat]
                   = hidden_field_tag "q[lat]", params[:q][:lat]
                 - if params[:q] && params[:q][:lng]

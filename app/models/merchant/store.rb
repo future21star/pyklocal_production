@@ -42,7 +42,7 @@ module Merchant
     end
 
     def location
-      {lat: latitude.to_f, lng: longitude.to_f}
+      {lat: latitude, lng: longitude}
     end
 
     def address
@@ -78,13 +78,21 @@ module Merchant
     def pickable_line_items
       store_line_items = []
       spree_products.each do |product|
-        store_line_items << product.line_items.where("delivery_state = ? OR delivery_state = ? AND delivery_type = ?", "ready_to_pick", "in_cart", "home_delivery")
+        store_line_items << product.line_items.where("delivery_state = ? AND delivery_type = ?", "ready_to_pick", "home_delivery")
       end
       return store_line_items.flatten
     end
 
     def pickable_store_orders
       pickable_line_items.collect(&:order).uniq.flatten
+    end
+
+    searchable do 
+      latlon(:loctn) { Sunspot::Util::Coordinates.new(latitude, longitude) }
+    end
+
+    def loctn
+      [latitude, longitude].compact.join(", ")
     end
 
     private

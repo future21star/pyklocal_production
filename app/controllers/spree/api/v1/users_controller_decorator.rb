@@ -34,57 +34,57 @@ module Spree
 		end
 
 		# add_cart_cart a order if order is ready_to_pick
-		def add_to_cart
-			params[:order_object].each do |ord_obj|
-				order = Spree::Order.find_by_number(ord_obj["order_number"])
-				line_items = order.line_items.where(id: ord_obj["line_item_ids"])
-				if @user.driver_orders.where(line_item_ids: ord_obj["line_item_ids"].join(", ")).blank?
-					line_items.update_all(delivery_state: "in_cart")
-					@user.driver_orders.create(line_item_ids: ord_obj["line_item_ids"].join(", "), order_id: order.id)
-				end
-			end
-			@response = get_response
-			@response[:message] = "Successfully added into cart"
-		rescue Exception => e
-			api_exception_handler(e)
-		ensure
-			render json: @response
-		end
+		# def add_to_cart
+		# 	params[:order_object].each do |ord_obj|
+		# 		order = Spree::Order.find_by_number(ord_obj["order_number"])
+		# 		line_items = order.line_items.where(id: ord_obj["line_item_ids"])
+		# 		if @user.driver_orders.where(line_item_ids: ord_obj["line_item_ids"].join(", ")).blank?
+		# 			line_items.update_all(delivery_state: "in_cart")
+		# 			@user.driver_orders.create(line_item_ids: ord_obj["line_item_ids"].join(", "), order_id: order.id)
+		# 		end
+		# 	end
+		# 	@response = get_response
+		# 	@response[:message] = "Successfully added into cart"
+		# rescue Exception => e
+		# 	api_exception_handler(e)
+		# ensure
+		# 	render json: @response
+		# end
 
-		# See list of orders in a drivers cart
-		def my_cart
-		rescue Exception => e
-			api_exception_handler(e)
-		ensure
-			if @user.try(:drivers_cart).present?
-				render json: @user.drivers_cart.as_json
-			else
-				@response = error_response
-				@response[:message] = "No cart item available"
-				render json: @response
-			end
-		end
+		# # See list of orders in a drivers cart
+		# def my_cart
+		# rescue Exception => e
+		# 	api_exception_handler(e)
+		# ensure
+		# 	if @user.try(:drivers_cart).present?
+		# 		render json: @user.drivers_cart.as_json
+		# 	else
+		# 		@response = error_response
+		# 		@response[:message] = "No cart item available"
+		# 		render json: @response
+		# 	end
+		# end
 
-		# Remove orders form driver's cart
-		def remove_from_cart
-			params[:cancel_orders].each do |cancel_order|
-				@order = Spree::Order.find_by_number(cancel_order["order_number"])
-				@line_items = @order.line_items.where(id: cancel_order["line_item_ids"])
-				@driver_orders = @user.driver_orders.where(order_id: @order.id, line_item_ids: cancel_order["line_item_ids"].join(", "))
-				if @driver_orders.present?
-					@driver_orders.delete_all
-					if Spree::DriverOrder.where(order_id: @order.id, line_item_ids: cancel_order["line_item_ids"]).blank?
-						@line_items.update_all(delivery_state: "ready_to_pick")
-					end
-				end
-			end
-			@response = get_response
-			@response[:message] = "Successfully removed from cart"
-		rescue Exception => e
-			api_exception_handler(e)
-		ensure
-			render json: @response
-		end
+		# # Remove orders form driver's cart
+		# def remove_from_cart
+		# 	params[:cancel_orders].each do |cancel_order|
+		# 		@order = Spree::Order.find_by_number(cancel_order["order_number"])
+		# 		@line_items = @order.line_items.where(id: cancel_order["line_item_ids"])
+		# 		@driver_orders = @user.driver_orders.where(order_id: @order.id, line_item_ids: cancel_order["line_item_ids"].join(", "))
+		# 		if @driver_orders.present?
+		# 			@driver_orders.delete_all
+		# 			if Spree::DriverOrder.where(order_id: @order.id, line_item_ids: cancel_order["line_item_ids"]).blank?
+		# 				@line_items.update_all(delivery_state: "ready_to_pick")
+		# 			end
+		# 		end
+		# 	end
+		# 	@response = get_response
+		# 	@response[:message] = "Successfully removed from cart"
+		# rescue Exception => e
+		# 	api_exception_handler(e)
+		# ensure
+		# 	render json: @response
+		# end
 
 		#Pickup item(s) added in the cart
 		def pickup
@@ -94,7 +94,8 @@ module Spree
 				order = Spree::Order.find_by_number(item_obj["order_number"])
 				line_items = order.line_items.where(id: item_obj["line_item_ids"])
 				if eval(params[:option])
-					Spree::DriverOrder.where("order_id = ? AND line_item_ids = ? AND driver_id <> ?", order.id, item_obj["line_item_ids"].join(", "), @user.id).delete_all
+					driver_order = Spree::DriverOrder.where(order_id: order.id, line_item_ids: item_obj["line_item_ids"].join(", "), driver_id: @user.id).first_or_initialize
+					driver_order.save
 				else
 					@user.driver_orders.where(order_id: order.id, line_item_ids: item_obj["line_item_ids"].join(", ")).delete_all
 				end

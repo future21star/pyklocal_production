@@ -10,37 +10,39 @@ module Spree
 
 		def index
 			@orders_list = []
-			# @user = Spree::ApiToken.find_by_token(params[:token]).try(:user)
-			@stores = Merchant::Store.all
+			p "*********************************************************"
+			p @user
+			params[:lat] = @user.api_tokens.last.try(:latitude)
+			params[:lng] = @user.api_tokens.last.try(:longitude)
+			p params[:lat]
+			p params[:lng]
+			@search = Sunspot.search(Merchant::Store) do
+				order_by_geodist(:loctn, params[:lat], params[:lng])
+			end
+			@stores = @search.results
+			
+			p @stores
 			unless @stores.blank?
 				@stores.each do |store|
 					unless store.pickable_store_orders.blank?
 						store.pickable_store_orders.each do |s_o|
 							line_items = s_o.line_items.joins(:product).where(spree_line_items: {delivery_type: "home_delivery"}, spree_products: {store_id: store.id})
 							line_item_ids = line_items.collect(&:id)
-							if @user.driver_orders.blank?
-								in_cart = false
-							else
-								in_cart = @user.driver_orders.where(order_id: s_o.id, line_item_ids: line_item_ids.join(", ")).present?
-							end
-							@orders_list.push({order_number: s_o.number, store_name: store.name, in_cart: in_cart, line_item_ids: line_item_ids, state: line_items.collect(&:delivery_state).uniq.join, location: {lat: store.try(:latitude), long: store.try(:longitude)}})
+							@orders_list.push({order_number: s_o.number, store_name: store.name, line_item_ids: line_item_ids, state: line_items.collect(&:delivery_state).uniq.join, location: {lat: store.try(:latitude), long: store.try(:longitude)}})
 						end						
 					end
 				end
 			end
-		rescue Exception => e
-			api_exception_handler(e)
-		ensure
 			render json: @orders_list.as_json()
+		# rescue Exception => e
+		# 	api_exception_handler(e)
+		# ensure
+		# 	render json: @orders_list.as_json()
 		end
 
 		def show
 			# @user = Spree::ApiToken.where(token: params[:token]).try(:first).try(:user)
-			in_cart = false
 			line_items = @order.line_items.joins(:product).where(spree_line_items: {delivery_type: "home_delivery"}, spree_products: {store_id: @store.id})
-			unless @user.driver_orders.blank?
-				in_cart = @user.driver_orders.where(line_item_ids: line_items.collect(&:id).join(", ")).present?
-			end
 			pick_up_and_delivery = {
 																store_address: @store.address, 
 																store_zipcode: @store.zipcode, 
@@ -58,7 +60,6 @@ module Spree
 					methods: [:product_name]
 				}),
 				state: line_items.collect(&:delivery_state).uniq.join,
-				in_cart: in_cart,
 				pick_up_and_delivery: pick_up_and_delivery
 			}
 		end
@@ -76,7 +77,7 @@ module Spree
 			end 
 
 			def find_driver
-				@user = @user = Spree::ApiToken.where(token: params[:token]).try(:first).try(:user)
+				@user = Spree::ApiToken.where(token: params[:token]).first.try(:user)
 				render json: {code: 0, message: "Driver not found"} unless @user.present?
 			end
 

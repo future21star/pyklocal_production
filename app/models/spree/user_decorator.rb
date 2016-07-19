@@ -36,7 +36,8 @@ Spree::User.class_eval do
     if driver_orders.present?
       driver_orders.each do |d_order|
         order = d_order.cart_order
-        line_items = order.line_items.where("id = ? AND delivery_state = ? OR delivery_state = ?", d_order.line_item_ids.split(", "), "confirmed_pickup", "out_for_delivery")
+        line_items = order.line_items.where(id: d_order.line_item_ids.split(", "))
+        line_items = line_items.where("delivery_state = ? OR delivery_state = ?", "confirmed_pickup", "out_for_delivery")
         if line_items.present?
           store_name = line_items.first.product.store_name
           state = line_items.collect(&:delivery_state).uniq.join
