@@ -4,7 +4,8 @@ class Merchant::OrdersController < Merchant::ApplicationController
   before_filter :find_order, only: [:edit, :update, :validate_actions, :customer, :adjustments, :payments, :returns, :approve, :cancel]
 
 	def index
-    @orders = current_spree_user.store_orders 
+    @store = Merchant::Store.find_by_slug(params[:store_id])
+    @orders = @store.try(:store_orders)
   end
 
   def new

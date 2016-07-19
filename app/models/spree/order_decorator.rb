@@ -29,6 +29,14 @@ module Spree
       ship_address.zipcode
     end
 
+    def get_store_line_items(store_id)
+      line_items.joins(:product).where(spree_products: {store_id: store_id})
+    end
+
+    def get_home_delivery_line_item_ids(store_id)
+      line_items.joins(:product).where(spree_products: {store_id: store_id}, spree_line_items: {delivery_type: "home_delivery"}).collect(&:id)
+    end
+
     private
 
       def notify_driver

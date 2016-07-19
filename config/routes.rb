@@ -6,6 +6,7 @@ Pyklocal::Application.routes.draw do
     get "/", to: "home#index"
     get "stores/products/:product_id/variants", to: "variants#index", as: "stores_products_variants"
     get "stores/products/:product_id/variants/new", to: "variants#new", as: "stores_products_variants_new"
+    get "stores/:store_id/orders", to: "orders#index", as: :store_orders
     resources :stores do
       collection do
         resources :amazon_products do
