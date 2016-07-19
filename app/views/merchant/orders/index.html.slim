@@ -55,3 +55,5 @@
               tr
                 td colspan="7"
                   span No orders found.
+      - if @orders.respond_to?(:num_pages)
+        = paginate @orders

@@ -5,7 +5,7 @@ class Merchant::OrdersController < Merchant::ApplicationController
 
 	def index
     @store = Merchant::Store.find_by_slug(params[:store_id])
-    @orders = @store.try(:store_orders)
+    @orders = Kaminari.paginate_array(@store.try(:store_orders)).page(params[:page]).per(10)
   end
 
   def new
