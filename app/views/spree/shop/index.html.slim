@@ -17,6 +17,8 @@
             = hidden_field_tag "q[radius]", params[:q][:radius]
           - if params[:q] && params[:q][:search]
             = hidden_field_tag "q[search]", params[:q][:search]
+          - if params[:q] && params[:q][:sort_by]
+            = hidden_field_tag "q[sort_by]", params[:q][:sort_by]
           .filter
             .filter-block
               .filter-heading Price
@@ -43,6 +45,10 @@
               = form_tag "/shop", method: :get, id: "rFilter" do
                 - if params[:q] && params[:q][:search]
                   = hidden_field_tag "q[search]", params[:q][:search]
+                - if params[:q] && params[:q][:price]
+                  = hidden_field_tag "q[price][]", params[:q][:price]
+                - if params[:q] && params[:q][:sort_by]
+                  = hidden_field_tag "q[sort_by]", params[:q][:sort_by]
                 input id="lat" type="hidden" name="q[lat]"
                 input id="lng" type="hidden" name="q[lng]"
                 - location = params[:q] && params[:q][:radius] ? params[:q][:radius] : " "
@@ -62,6 +68,8 @@
                   = hidden_field_tag "q[lng]", params[:q][:lng]
                 - if params[:q] && params[:q][:radius]
                   = hidden_field_tag "q[radius]", params[:q][:radius]
+                - if params[:q] && params[:q][:price]
+                  = hidden_field_tag "q[price][]", params[:q][:price]
                 = select_tag "q[sort_by]", options_for_select(["Sort By", "Highest Price", "Lowest Price"], selected: params[:sort_by]), class: "form-control col-sm-3", id: "input-sort"
           
             .col-sm-2.text-right

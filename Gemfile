@@ -24,7 +24,7 @@ gem "font-awesome-rails"
 
 gem 'sunspot_rails'
 gem 'sunspot_solr'
-
+gem 'jquery-raty-rails', github: 'bmc/jquery-raty-rails'
 gem 'noty-rails'
 
 gem 'asin'

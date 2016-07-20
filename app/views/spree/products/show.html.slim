@@ -60,14 +60,11 @@
   javascript:
    //initiate the plugin and pass the id of the div containing gallery images
     $("#zoom_01").elevateZoom({
-    constrainType:"height", 
-    constrainSize:274, 
-    zoomType: "lens", 
-    containLensZoom: true, 
-    gallery:'gallery_01', 
-    cursor: 'pointer', 
-    galleryActiveClass: "active"
-
+      zoomWindowFadeIn: 500,
+      zoomWindowFadeOut: 500,
+      lensFadeIn: 500,
+      lensFadeOut: 500,
+      easing : true
     }); 
 
     //pass the images to Fancybox

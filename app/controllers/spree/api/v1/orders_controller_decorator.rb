@@ -10,12 +10,8 @@ module Spree
 
 		def index
 			@orders_list = []
-			p "*********************************************************"
-			p @user
 			params[:lat] = @user.api_tokens.last.try(:latitude)
 			params[:lng] = @user.api_tokens.last.try(:longitude)
-			p params[:lat]
-			p params[:lng]
 			@search = Sunspot.search(Merchant::Store) do
 				order_by_geodist(:loctn, params[:lat], params[:lng])
 			end

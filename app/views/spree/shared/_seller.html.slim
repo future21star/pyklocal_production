@@ -3,29 +3,20 @@
   - if store == nil
     h5.store
       b  Store is not available
-  -else 
+  - else 
     .row
       .container.bootstrap.snippet style=("width:100%;")
         .panel-body.inf-content
           .row
             .col-md-12
-              = image_tag store.try(:logo).try(:url,:large),:class=>"img_center img-responsive"
-              ul.list-inline.ratings.text-center style=("margin-top:10px;") title="Ratings" 
-                li
-                  a href="#" 
-                    span.glyphicon.glyphicon-star
-                li
-                  a href="#" 
-                    span.glyphicon.glyphicon-star
-                li
-                  a href="#" 
-                    span.glyphicon.glyphicon-star
-                li
-                  a href="#" 
-                    span.glyphicon.glyphicon-star
-                li
-                  a href="#" 
-                    span.glyphicon.glyphicon-star
+              = link_to main_app.merchant_store_url(store) do 
+                = image_tag store.try(:logo).try(:url,:large),:class=>"img_center img-responsive"
+              .list-inline.ratings.text-center style=("margin-top:10px;") title="Ratings" 
+                |Ratings:  
+                - num_user = store.user_store_ratings.count > 0 ? store.user_store_ratings.count : 1
+                span.rate= (store.user_store_ratings.try(:sum, :rating) / num_user).round(2)
+                |   
+                / a style="color: blue; text-decoration: underline;" href="#" id="rateUs" Rate Us
           .row
             br
           .row
@@ -72,3 +63,57 @@
                         = store.try(:city).titleize
                         |,  
                         = store.try(:country)
+
+    #rating.modal.fade role="dialog" style=("margin-top: 45px;") 
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close data-dismiss="modal" type="button"  ×
+            h4.modal-title Rate Us
+          .modal-body
+            .form-group
+              = label_tag :rating, "Rating", class: "control-label"
+              .form-group
+                - for i in 0..5
+                  i#star
+              = hidden_field_tag "point", 0, id: "point"
+            .form-group
+              = label_tag :comment, "Comment", class: "control-label"
+              = text_area_tag "comment", "", class: "form-control", rows: 7, id: "review"
+          .modal-footer
+            button#save-rating.btn.btn-primary data-store_id="#{store.slug}" data-user_id="#{current_spree_user.try(:id)}"  Save
+            button#cancel-rating.btn.btn-default data-dismiss="modal" type="button"  Close
+
+    - content_for :js do 
+      javascript:
+        $('#rateUs').click(function() {
+          $('#rating').modal('show');
+          return false;
+        });
+        $(document).ready(function(){
+          $('#star').raty({
+            halfShow: true,
+            half: true,
+            score : parseFloat("#{current_spree_user.try(:user_store_ratings).try(:last).try(:rating).to_f}")
+          });
+
+          $('#save-rating').click(function() {
+            var userId = $(this).data('user_id');
+            if(!!userId){
+              rateParams = { rating: $("input[name=score]").val(), user_id: userId };
+              $.post("/api/v1/merchant_stores/"+$(this).data('store_id')+"/rate", rateParams, function(data){
+                if(data.success){
+                  $('.modal').modal('hide');
+                  $('.rate').text(data.rating);
+                  noty({text: data.message, type: "info"});
+                } else {
+                  $('.modal').modal('hide');
+                  noty({text: data.message, type: "error"});
+                }
+              });
+            } else {
+              window.location = "/login";
+              noty({text: "You need to login/signup to rate a store", type: "error"});
+            }
+          });
+        });
