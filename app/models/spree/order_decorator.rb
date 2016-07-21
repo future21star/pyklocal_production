@@ -41,6 +41,10 @@ module Spree
       item_total.to_f >= 35
     end
 
+    def self_pickup
+      !line_items.collect(&:delivery_type).include?("home_delivery")
+    end
+
     private
 
       def notify_driver
