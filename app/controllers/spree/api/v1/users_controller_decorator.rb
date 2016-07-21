@@ -3,7 +3,7 @@ module Spree
 
 		include Spree::Api::ApiHelpers
 
-		before_filter :find_user, only: [:profile, :my_pickup_list, :update_location, :update, :pickup, :my_cart, :add_to_cart, :remove_from_cart, :my_delivery_list, :mark_as_deliver]
+		before_filter :find_user, only: [:show, :profile, :my_pickup_list, :update_location, :update, :pickup, :my_cart, :add_to_cart, :remove_from_cart, :my_delivery_list, :mark_as_deliver]
 		skip_before_filter :authenticate_user, only: [:profile, :my_pickup_list, :update_location, :pickup, :update, :my_cart, :add_to_cart, :remove_from_cart, :my_delivery_list, :mark_as_deliver]
 
 		# Adding user_devices data regarding a driver
@@ -194,11 +194,17 @@ module Spree
 			render json: @response
 		end
 
+		def show
+			render json: @user.as_json({
+				only: [:email, :first_name, :last_name]
+			})
+		end
+
 		private
 
 			def user
         @user = Spree::ApiToken.where(token: params[:user_id]).first.try(:user)
-        render json: {code: 0, message: "User not found, invalid login token"}
+        # render json: {code: 0, message: "User not found, invalid login token"}
       end
 
 			def user_device_param
