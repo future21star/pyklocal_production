@@ -1,4 +1,4 @@
-- if current_spree_user 
+- if current_spree_user && @is_owner
   - @store = current_spree_user.stores.first
 br
   = link_to merchant_store_url(@store) do 
@@ -97,7 +97,7 @@ br
           = hidden_field_tag "point", 0, id: "point"
         .form-group
           = label_tag :comment, "Comment", class: "control-label"
-          = text_area_tag "comment", current_spree_user.try(:user_store_ratings).try(:first).try(:comment), class: "form-control", rows: 7, id: "review"
+          = text_area_tag "comment", current_spree_user.try(:user_store_ratings).try(:where, store_id: @store.id).try(:first).try(:comment), class: "form-control", rows: 7, id: "review"
       .modal-footer
         button#save-rating.btn.btn-primary data-store_id="#{@store.slug}" data-user_id="#{current_spree_user.try(:id)}"  Save
         button#cancel-rating.btn.btn-default data-dismiss="modal" type="button"  Close
@@ -132,13 +132,13 @@ br
       $('#star').raty({
         halfShow: true,
         half: true,
-        score : parseFloat("#{current_spree_user.try(:user_store_ratings).try(:last).try(:rating).to_f}")
+        score : parseFloat("#{current_spree_user.try(:user_store_ratings).try(:where, store_id: @store.id).try(:first).try(:rating).to_f}")
       });
 
       $('#save-rating').click(function() {
         var userId = $(this).data('user_id');
         if(!!userId){
-          rateParams = { rating: $("input[name=score]").val(), user_id: userId };
+          rateParams = { rating: $("input[name=score]").val(), user_id: userId, comment: $('#review').val() };
           $.post("/api/v1/merchant_stores/"+$(this).data('store_id')+"/rate", rateParams, function(data){
             if(data.success){
               $('.modal').modal('hide');

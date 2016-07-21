@@ -1,5 +1,5 @@
-  -product = @product.name
-  - store = Spree::Product.where(name:product,store_id: @product.store_id).first.store  
+  - product = @product.name
+  - store = @product.store  
   - if store == nil
     h5.store
       b  Store is not available
@@ -16,7 +16,7 @@
                 - num_user = store.user_store_ratings.count > 0 ? store.user_store_ratings.count : 1
                 span.rate= (store.user_store_ratings.try(:sum, :rating) / num_user).round(2)
                 |   
-                / a style="color: blue; text-decoration: underline;" href="#" id="rateUs" Rate Us
+                a style="color: blue; text-decoration: underline;" href="#" id="rateUs" Rate Us
           .row
             br
           .row
@@ -79,7 +79,7 @@
               = hidden_field_tag "point", 0, id: "point"
             .form-group
               = label_tag :comment, "Comment", class: "control-label"
-              = text_area_tag "comment", "", class: "form-control", rows: 7, id: "review"
+              = text_area_tag "comment", current_spree_user.try(:user_store_ratings).try(:where, store_id: store.id).try(:first).try(:comment), class: "form-control", rows: 7, id: "review"
           .modal-footer
             button#save-rating.btn.btn-primary data-store_id="#{store.slug}" data-user_id="#{current_spree_user.try(:id)}"  Save
             button#cancel-rating.btn.btn-default data-dismiss="modal" type="button"  Close

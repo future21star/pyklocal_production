@@ -20,11 +20,8 @@ module Spree
 		end
 
 		def rate
-			if @user.user_store_ratings.where(store_id: @store.id).present?
-				@user.user_store_ratings.where(store_id: @store.id).delete_all
-			end
-			@rating = Merchant::UserStoreRating.create(user_id: @user.id, store_id: @store.id, comment: params[:comment], rating: params[:rating])
-			if @rating.persisted?
+			@rating = Merchant::UserStoreRating.new(user_id: @user.id, store_id: @store.id, comment: params[:comment], rating: params[:rating])
+			if @rating.save
 				render json: {
 					success: true,
 					message: "Submitted successfully",

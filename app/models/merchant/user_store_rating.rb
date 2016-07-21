@@ -4,7 +4,7 @@ module Merchant
     self.table_name = "users_stores_ratings"
 
     belongs_to :user, foreign_key: :user_id, class_name: "Spree::User"
-    belongs_to :store
+    belongs_to :store, foreign_key: :store_id, class_name: "Merchant::Store"
 
     validate :uniq_record, on: :create
 
