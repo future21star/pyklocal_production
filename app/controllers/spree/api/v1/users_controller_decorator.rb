@@ -3,8 +3,8 @@ module Spree
 
 		include Spree::Api::ApiHelpers
 
-		before_filter :find_user, only: [:my_pickup_list, :update_location, :update, :pickup, :my_cart, :add_to_cart, :remove_from_cart, :my_delivery_list, :mark_as_deliver]
-		skip_before_filter :authenticate_user, only: [:my_pickup_list, :update_location, :pickup, :update, :my_cart, :add_to_cart, :remove_from_cart, :my_delivery_list, :mark_as_deliver]
+		before_filter :find_user, only: [:profile, :my_pickup_list, :update_location, :update, :pickup, :my_cart, :add_to_cart, :remove_from_cart, :my_delivery_list, :mark_as_deliver]
+		skip_before_filter :authenticate_user, only: [:profile, :my_pickup_list, :update_location, :pickup, :update, :my_cart, :add_to_cart, :remove_from_cart, :my_delivery_list, :mark_as_deliver]
 
 		# Adding user_devices data regarding a driver
 		def user_devices
@@ -31,6 +31,15 @@ module Spree
 			api_exception_handler(e)
 		ensure
 			render json: @response
+		end
+
+		def profile
+		rescue Exception => e
+			api_exception_handler(e)
+		ensure
+			render json: @user.as_json({
+				only: [:first_name, :last_name, :email]
+			})
 		end
 
 		# add_cart_cart a order if order is ready_to_pick
@@ -189,6 +198,7 @@ module Spree
 
 			def user
         @user = Spree::ApiToken.where(token: params[:user_id]).first.try(:user)
+        render json: {code: 0, message: "User not found, invalid login token"}
       end
 
 			def user_device_param

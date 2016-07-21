@@ -38,7 +38,7 @@
               .btn-group
                 .btn.btn-default data-toggle="tooltip" title="All Product" 
                   i.fa.fa-bars
-              a#compare-total href=shop_path(params[:id])
+              a#compare-total href=shop_path(params[:id]) data-no-turbolink=true
                 |&nbsp;All Products 
             .col-sm-4.col-xs-12
               = form_tag "/shop/#{params[:id]}", method: :get, id: "rFilter" do

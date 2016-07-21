@@ -16,8 +16,6 @@ module Spree
 				order_by_geodist(:loctn, params[:lat], params[:lng])
 			end
 			@stores = @search.results
-			
-			p @stores
 			unless @stores.blank?
 				@stores.each do |store|
 					unless store.pickable_store_orders.blank?

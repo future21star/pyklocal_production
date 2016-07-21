@@ -23,7 +23,7 @@ table.table data-hook="order_summary"
     tr data-hook="shipping_total" 
       td
         = Spree.t(:shipping_total)
-        | \:
+        | :
       td= Spree::Money.new(order.shipments.to_a.sum(&:cost), currency: order.currency).to_html
     - if order.shipment_adjustments.nonzero.exists?
       tbody data-hook="order_details_shipment_promotion_adjustments" 

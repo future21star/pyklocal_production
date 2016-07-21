@@ -1,7 +1,7 @@
 module Spree
-	Order.class_eval do 
-    # ---------------------------------------- Associations -----------------------------------------------------
+	Order.class_eval do
 
+    # ---------------------------------------- Associations -----------------------------------------------------
 
     after_update :notify_driver
 
@@ -37,12 +37,20 @@ module Spree
       line_items.joins(:product).where(spree_products: {store_id: store_id}, spree_line_items: {delivery_type: "home_delivery"}).collect(&:id)
     end
 
+    def eligible_for_free_delivery
+      item_total.to_f >= 35
+    end
+
     private
 
       def notify_driver
         if state == "canceled"
           REDIS_CLIENT.PUBLISH("listUpdate", {order_number: number}.to_json)
         end
+      end
+
+      def full_street_address
+        [ship_address.address1, ship_address.address2, ship_address.city, ship_address.state, ship_address.country, ship_address.zipcode].compact.join(", ")
       end
 
 	end

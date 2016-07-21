@@ -27,6 +27,10 @@ gem 'sunspot_solr'
 gem 'jquery-raty-rails', github: 'bmc/jquery-raty-rails'
 gem 'noty-rails'
 
+# Use geokit gem to calculate distance
+# gem 'geokit-rails', '2.0.1'
+# gem 'geokit', '1.8.5'
+
 gem 'asin'
 gem 'sidekiq'
 # Use jquery as the JavaScript library

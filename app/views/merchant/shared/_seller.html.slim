@@ -97,7 +97,7 @@ br
           = hidden_field_tag "point", 0, id: "point"
         .form-group
           = label_tag :comment, "Comment", class: "control-label"
-          = text_area_tag "comment", "", class: "form-control", rows: 7, id: "review"
+          = text_area_tag "comment", current_spree_user.try(:user_store_ratings).try(:first).try(:comment), class: "form-control", rows: 7, id: "review"
       .modal-footer
         button#save-rating.btn.btn-primary data-store_id="#{@store.slug}" data-user_id="#{current_spree_user.try(:id)}"  Save
         button#cancel-rating.btn.btn-default data-dismiss="modal" type="button"  Close
