@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160720103845) do
+ActiveRecord::Schema.define(version: 20160722094132) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -22,6 +22,15 @@ ActiveRecord::Schema.define(version: 20160720103845) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_device_id", limit: 4
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer  "user_id",          limit: 4
+    t.integer  "commentable_id",   limit: 4
+    t.string   "commentable_type", limit: 255
+    t.text     "comment",          limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "drivers_orders", force: :cascade do |t|
@@ -118,6 +127,15 @@ ActiveRecord::Schema.define(version: 20160720103845) do
     t.integer  "spree_user_id", limit: 4
     t.integer  "store_id",      limit: 4
     t.string   "role",          limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.integer  "user_id",       limit: 4
+    t.integer  "rateable_id",   limit: 4
+    t.string   "rateable_type", limit: 255
+    t.float    "rating",        limit: 24,  default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1184,15 +1202,6 @@ ActiveRecord::Schema.define(version: 20160720103845) do
     t.integer  "device_token", limit: 4
     t.string   "device_type",  limit: 255
     t.boolean  "notification",             default: true
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "users_stores_ratings", force: :cascade do |t|
-    t.integer  "user_id",    limit: 4
-    t.integer  "store_id",   limit: 4
-    t.float    "rating",     limit: 24
-    t.text     "comment",    limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
   end

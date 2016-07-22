@@ -12,8 +12,8 @@ module Merchant
     has_many :spree_taxons , through: :store_taxons
     has_many :spree_products, dependent: :delete_all, foreign_key: :store_id, class_name: 'Spree::Product'
     has_many :email_tokens, as: :resource
-    has_many :raitings, as: :rateable
-    has_many :user_store_ratings, dependent: :delete_all, foreign_key: :store_id, class_name: "Merchant::UserStoreRating"
+    has_many :ratings, as: :rateable
+    has_many :comments, as: :commentable 
 
     accepts_nested_attributes_for :store_users, allow_destroy: true 
     attr_accessor :taxon_ids

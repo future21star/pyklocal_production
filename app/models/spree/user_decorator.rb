@@ -17,7 +17,8 @@ Spree::User.class_eval do
   has_many :cart_orders, through: :driver_orders, class_name: "Spree::Order"
   has_one :address, class_name: 'Spree::Address'
   has_many :wishlists
-  has_many :user_store_ratings, foreign_key: :user_id, class_name: 'Merchant::UserStoreRating'
+  has_many :ratings, foreign_key: :user_id
+  has_many :comments, foreign_key: :user_id
   
   #---------------------Callbacks--------------------------
   after_create :assign_api_key 

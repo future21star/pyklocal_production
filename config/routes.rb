@@ -64,6 +64,10 @@ Pyklocal::Application.routes.draw do
     namespace :api do 
       namespace :v1 do 
 
+        resources :products do 
+          post :rate_and_comment
+        end
+
         concern :order_routes do
           member do
             put :approve

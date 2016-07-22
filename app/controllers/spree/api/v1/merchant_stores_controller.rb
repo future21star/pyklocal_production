@@ -20,12 +20,13 @@ module Spree
 		end
 
 		def rate
-			@rating = Merchant::UserStoreRating.new(user_id: @user.id, store_id: @store.id, comment: params[:comment], rating: params[:rating])
-			if @rating.save
+			@rating = Rating.new(user_id: @user.id, rateable_id: @store.id, rating: params[:rating], rateable_type: "Merchant::Store")
+			@comment = Comment.new(user_id: @user.id, commentable_id: @store.id, comment: params[:comment], commentable_type: "Merchant::Store")
+			if @rating.save && @comment.save
 				render json: {
 					success: true,
 					message: "Submitted successfully",
-					rating: (@store.user_store_ratings.sum(:rating) / @store.user_store_ratings.count).round(2)
+					rating: (@store.ratings.sum(:rating) / @store.ratings.count).round(2)
 				}
 			else
 				render json: {

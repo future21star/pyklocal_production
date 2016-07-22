@@ -51,37 +51,9 @@
               .cpt_product_description
                 = product_description(@product) rescue Spree.t(:product_has_no_description)
             #tab-review.tab-pane
-                form.form-horizontal
-                  #review
-                  h2 Write a review
-                  .form-group.required
-                    .col-sm-12
-                      label.control-label for="input-name"  Your Name
-                      input#input-name.form-control name="name" type="text" value="" 
-                  .form-group.required
-                    .col-sm-12
-                      label.control-label for="input-review"  Your Review
-                      textarea#input-review.form-control name="text" rows="5" 
-                      .help-block
-                        span.text-danger Note:
-                        | HTML is not translated!
-                  .form-group.required
-                    .col-sm-12
-                      label.control-label Rating
-                      | &nbsp;&nbsp;&nbsp; Bad&nbsp;
-                      input name="rating" type="radio" value="1" 
-                      | &nbsp;
-                      input name="rating" type="radio" value="2" 
-                      | &nbsp;
-                      input name="rating" type="radio" value="3" 
-                      | &nbsp;
-                      input name="rating" type="radio" value="4" 
-                      | &nbsp;
-                      input name="rating" type="radio" value="5" 
-                      | &nbsp;Good
-                  .buttons
-                    .pull-right
-                      button#button-review.btn.btn-primary data-loading-text="Loading..." type="button"  Continue
+              #rating
+                = render partial: "spree/shared/previous_rate_and_comment"
+              = render partial: "spree/shared/review_section"
       column#column-right.col-sm-3.hidden-xs
         h4 Sold by :
         = render :partial => 'spree/shared/seller'
@@ -125,4 +97,4 @@
       navigation : true,
       navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
       scrollPerPage : true
-    }); 
+    });

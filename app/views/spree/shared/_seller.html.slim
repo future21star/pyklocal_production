@@ -11,11 +11,11 @@
             .col-md-12
               = link_to main_app.merchant_store_url(store) do 
                 = image_tag store.try(:logo).try(:url,:large),:class=>"img_center img-responsive"
-              .list-inline.ratings.text-center style=("margin-top:10px;") title="Ratings" 
-                |Ratings:  
-                - num_user = store.user_store_ratings.count > 0 ? store.user_store_ratings.count : 1
-                span.rate= (store.user_store_ratings.try(:sum, :rating) / num_user).round(2)
-                |   
+              .list-inline.ratings.text-center style=("margin-top:10px;") title="Ratings"
+                - num_user = store.ratings.count > 0 ? store.ratings.count : 1
+                - rate_count = (store.ratings.try(:sum, :rating) / num_user).round(2)
+                span#rate
+                |  
                 a style="color: blue; text-decoration: underline;" href="#" id="rateUs" Rate Us
           .row
             br
@@ -79,7 +79,7 @@
               = hidden_field_tag "point", 0, id: "point"
             .form-group
               = label_tag :comment, "Comment", class: "control-label"
-              = text_area_tag "comment", current_spree_user.try(:user_store_ratings).try(:where, store_id: store.id).try(:first).try(:comment), class: "form-control", rows: 7, id: "review"
+              = text_area_tag "comment", current_spree_user.try(:comments).try(:where, commentable_id: store.id).try(:first).try(:comment), class: "form-control", rows: 7, id: "review"
           .modal-footer
             button#save-rating.btn.btn-primary data-store_id="#{store.slug}" data-user_id="#{current_spree_user.try(:id)}"  Save
             button#cancel-rating.btn.btn-default data-dismiss="modal" type="button"  Close
@@ -90,21 +90,22 @@
           $('#rating').modal('show');
           return false;
         });
+
         $(document).ready(function(){
           $('#star').raty({
             halfShow: true,
             half: true,
-            score : parseFloat("#{current_spree_user.try(:user_store_ratings).try(:last).try(:rating).to_f}")
+            score : parseFloat("#{current_spree_user.try(:ratings).try(:first).try(:rating).to_f}")
           });
 
           $('#save-rating').click(function() {
             var userId = $(this).data('user_id');
             if(!!userId){
-              rateParams = { rating: $("input[name=score]").val(), user_id: userId };
+              rateParams = { rating: $('#star').children("input[name=score]").val(), user_id: userId, comment: $('#review').val() };
               $.post("/api/v1/merchant_stores/"+$(this).data('store_id')+"/rate", rateParams, function(data){
                 if(data.success){
                   $('.modal').modal('hide');
-                  $('.rate').text(data.rating);
+                  storeRating(data.rating);
                   noty({text: data.message, type: "info"});
                 } else {
                   $('.modal').modal('hide');
@@ -116,4 +117,16 @@
               noty({text: "You need to login/signup to rate a store", type: "error"});
             }
           });
+
+          storeRating("#{rate_count}");
+
+          function storeRating(n) {
+            $('#rate').raty({
+              halfShow: true,
+              half: true,
+              score: n,
+              readOnly: true
+            });
+          }
+
         });
