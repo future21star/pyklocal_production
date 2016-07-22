@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/bmc/jquery-raty-rails.git
-  revision: d36753c77c9b825e6e2746c1c70c3b11b85b86cc
-  specs:
-    jquery-raty-rails (0.0.2)
-      rails (>= 3.2.3)
-
-GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
   revision: c6893c3db02108bcdee7f8f333531b99806779ac
   specs:
@@ -533,7 +526,6 @@ DEPENDENCIES
   font-awesome-rails
   jbuilder (~> 2.0)
   jquery-rails
-  jquery-raty-rails!
   less-rails
   mysql2 (>= 0.3.13, < 0.5)
   noty-rails

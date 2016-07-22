@@ -17,8 +17,6 @@
 //= require turbolinks
 //= require_tree .
 //= stub merchant.js
-//= require jquery.raty
-//= require jquery.raty.min
 //= require noty/jquery.noty
 //= require noty/layouts/topCenter
 //= require noty/themes/default
