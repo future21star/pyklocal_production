@@ -1,3 +1,5 @@
+- ratings_count = @product.try(:ratings).try(:count) > 0 ? @product.try(:ratings).try(:count) : 1
+- overall_ratings = @product.try(:ratings).try(:sum, :rating).to_f / ratings_count
 #container
   .container
     ul.breadcrumb
@@ -51,7 +53,10 @@
               .cpt_product_description
                 = product_description(@product) rescue Spree.t(:product_has_no_description)
             #tab-review.tab-pane
-              #rating
+              .rating-info
+                label Overall Ratings
+                span#overall-rating.ratings-info
+              #rating style="margin-top: 15px;"
                 = render partial: "spree/shared/previous_rate_and_comment"
               = render partial: "spree/shared/review_section"
       column#column-right.col-sm-3.hidden-xs
@@ -98,3 +103,12 @@
       navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
       scrollPerPage : true
     });
+
+    $(document).ready(function() {
+      $('#overall-rating').raty({
+        halfShow: true,
+        half: true,
+        score: parseFloat("#{overall_ratings}"),
+        readOnly: true
+      });
+    })
