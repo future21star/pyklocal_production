@@ -72,13 +72,14 @@
           li
             a.home_link href=spree.root_path title="Home" data-no-turbolink="true" 
               span Home
-          li.categories.dropdown.sub
-            = link_to spree.shop_index_path ,"data-no-turbolink" => true
-              | All Categories
-              |&nbsp;&nbsp;
-              i.fa.fa-caret-down
-            .dropdown-menu style=("display: none;") 
-              = render :partial => "spree/shared/taxonomies"
-                
-          li.custom-link-right
-            = goto_merchant_path
+          - if params["controller"] != "spree/checkout"
+            li.categories.dropdown.sub
+              = link_to spree.shop_index_path ,"data-no-turbolink" => true
+                | All Categories
+                |&nbsp;&nbsp;
+                i.fa.fa-caret-down
+              .dropdown-menu style=("display: none;") 
+                = render :partial => "spree/shared/taxonomies"
+                  
+            li.custom-link-right
+              = goto_merchant_path
