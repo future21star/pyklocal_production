@@ -25,9 +25,9 @@ module Spree
 			delivery_state
 		end
 
-		# def pickup_address
-		# 	product.store.try(:address)
-		# end
+		def pickup_address
+			product.store.try(:address)
+		end
 
 		# def delivery_address
 		# 	[order.ship_address.try(:address1), order.ship_address.try(:address2), order.ship_address.try(:city), order.ship_address.try(:state), order.ship_address.try(:country)].compact.join(", ")

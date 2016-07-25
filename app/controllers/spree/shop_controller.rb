@@ -12,10 +12,12 @@ class Spree::ShopController < Spree::StoreController
       if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Lowest Price")
         order_by(:price, :asc) if params[:q] && params[:q][:sort_by]
       end
-    end
+    end 
+    per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12
     @search = Sunspot.search(Spree::Product) do 
       fulltext params[:q][:search] if params[:q] && params[:q][:search]
-      paginate(:page => params[:page], :per_page => 20)
+
+      paginate(:page => params[:page], :per_page => per_page)
       with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
       facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
       if params[:q] && params[:q][:price]

@@ -36,7 +36,7 @@ module Spree
     end
 
     def upc_code
-      product_properties.where(property_id: properties.find_by_name("brand").try(:id)).try(:first).try(:value)
+      product_properties.where(property_id: properties.find_by_name("UPC Code").try(:id)).try(:first).try(:value)
     end
 
     def location

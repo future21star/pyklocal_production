@@ -1,6 +1,8 @@
 module Spree
 	Order.class_eval do
 
+    has_many :pickable_line_items, -> {where(spree_line_items: {delivery_type: "pickup"})}, class_name: "Spree::LineItem"
+
     # ---------------------------------------- Associations -----------------------------------------------------
 
     after_update :notify_driver

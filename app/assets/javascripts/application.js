@@ -30,6 +30,7 @@ var pyklocal = {
 		this.filterByRadius();
 		this.filterProducts();
     this.sortProduct();
+    this.changeNoOfProductShow();
 	},
 
 	showNoty: function() {
@@ -90,6 +91,12 @@ var pyklocal = {
   sortProduct: function() {
     $('#input-sort').change(function() {
       $('#sortFilter').submit();
+    });
+  },
+
+  changeNoOfProductShow: function() {
+    $('#noOfItem').change(function() {
+      $('#itemShow').submit();
     });
   }
 

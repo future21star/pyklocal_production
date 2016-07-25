@@ -22,25 +22,37 @@ table.table.table-bordered.table-hover
               - order.payments.valid.each do |payment|
                 i.fa.fa-money
                 = render payment
-                br/
-table.table.table-bordered.table-hover
-  thead
-    tr
-      td.text-left style=("width:50%;")  Payment Address
-      td.text-left Shipping Address
+                br
+- if !order.self_pickup
+  table.table.table-bordered.table-hover
+    thead
+      tr
+        td.text-left style=("width:50%;")  Billing Address
+        td.text-left Shipping Address
 
-  tbody
-    tr 
-    - if order.has_step?("address")
-      td data-hook="order-bill-address" 
-        h4
-          = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
-        = render 'spree/shared/address', address: order.bill_address
-    - if order.has_step?("delivery")
-      td data-hook="order-ship-address" 
-        h4
-          = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
-        = render 'spree/shared/address', address: order.ship_address
+    tbody
+      tr 
+      - if order.has_step?("address")
+        td data-hook="order-bill-address" 
+          h4
+            = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
+          = render 'spree/shared/address', address: order.bill_address
+      - if order.has_step?("delivery")
+        td data-hook="order-ship-address" 
+          h4
+            = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
+          = render 'spree/shared/address', address: order.ship_address
+- if order.pickable_line_items.present?
+  table.table.table-bordered.table-hover style="width: 50%;"
+    thead
+      tr
+        th Store
+        th Pickup Address
+    tbody
+      - order.pickable_line_items.each do |pickable_item|
+        tr
+          td= pickable_item.seller_name || "No store"
+          td= pickable_item.pickup_address || "No address"
 
 .table-responsive
   table.table.table-bordered.table-hover
