@@ -14,6 +14,7 @@ module Spree
     searchable do
       text :name 
       text :store_name
+      text :upc_code
       latlon(:location) { Sunspot::Util::Coordinates.new(store.try(:latitude), store.try(:longitude)) }
 
       float :price
@@ -32,6 +33,10 @@ module Spree
       string :product_property_name, references: Spree::ProductProperty, multiple: true do
         product_properties.collect { |p| p.value }.flatten
       end
+    end
+
+    def upc_code
+      product_properties.where(property_id: properties.find_by_name("brand").try(:id)).try(:first).try(:value)
     end
 
     def location

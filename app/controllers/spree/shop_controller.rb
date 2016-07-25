@@ -41,16 +41,16 @@ class Spree::ShopController < Spree::StoreController
   def show 
     @price_array = params[:q][:price].to_s if params[:q] && params[:q][:price]
     @all_facets = Sunspot.search(Spree::Product) do 
-      # fulltext params[:q][:search] if params[:q] && params[:q][:search]
-      # with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
-      # with(:taxon_ids, Spree::Taxon.where(name: params[:id]).collect(&:id)) if params[:id].present?
+      fulltext params[:q][:search] if params[:q] && params[:q][:search]
+      with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
+      with(:taxon_ids, Spree::Taxon.where(name: params[:id]).collect(&:id)) if params[:id].present?
       facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
-      # if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Highest Price")
-      #   order_by(:price, :desc)
-      # end
-      # if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Lowest Price")
-      #   order_by(:price, :asc) if params[:q] && params[:q][:sort_by]
-      # end
+      if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Highest Price")
+        order_by(:price, :desc)
+      end
+      if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Lowest Price")
+        order_by(:price, :asc) if params[:q] && params[:q][:sort_by]
+      end
     end
     @search = Sunspot.search(Spree::Product) do 
       fulltext params[:q][:search] if params[:q] && params[:q][:search]

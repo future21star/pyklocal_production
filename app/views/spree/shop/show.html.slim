@@ -17,6 +17,8 @@
             = hidden_field_tag "q[radius]", params[:q][:radius]
           - if params[:q] && params[:q][:search]
             = hidden_field_tag "q[search]", params[:q][:search]
+          - if params[:q] && params[:q][:sort_by]
+            = hidden_field_tag "q[sort_by]", params[:q][:sort_by]
           .filter
             .filter-block
               .filter-heading Price
@@ -42,6 +44,10 @@
                 |&nbsp;All Products 
             .col-sm-4.col-xs-12
               = form_tag "/shop/#{params[:id]}", method: :get, id: "rFilter" do
+                - if params[:q] && params[:q][:price]
+                  = hidden_field_tag "q[price][]", params[:q][:price]
+                - if params[:q] && params[:q][:sort_by]
+                  = hidden_field_tag "q[sort_by]", params[:q][:sort_by]
                 input id="lat" type="hidden" name="q[lat]"
                 input id="lng" type="hidden" name="q[lng]"
                 - location = params[:q] && params[:q][:radius] ? params[:q][:radius] : " "
@@ -53,8 +59,8 @@
                   option selected=(location == "50") value="50" More than 10 KM
             .col-sm-4.text-right
               = form_tag "/shop/#{params[:id]}", method: :get, id: "sortFilter" do
-                - if params[:q] && params[:q][:search]
-                  = hidden_field_tag "q[search]", params[:q][:search]
+                - if params[:q] && params[:q][:price]
+                  = hidden_field_tag "q[price][]", params[:q][:price]
                 - if params[:q] && params[:q][:lat]
                   = hidden_field_tag "q[lat]", params[:q][:lat]
                 - if params[:q] && params[:q][:lng]
