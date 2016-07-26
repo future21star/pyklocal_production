@@ -362,6 +362,10 @@ div.required .control-label:before {
   margin-right: 5px;
 }
 
+.jumbotron h4 .fa{
+  margin-right: 5px;
+}
+
 #header #cart .heading h4:before {
   clear: both;
   content: ' ';

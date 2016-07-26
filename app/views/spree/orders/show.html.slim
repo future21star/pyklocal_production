@@ -14,25 +14,41 @@
     li
       a href="#"  Order Information
   #content
-    h3.panel-title data-hook="checkout_title"
-      | Order Complete
-    table.table.table-bordered.table-hover
-        thead
-          tr
-            td.text-left colspan="2"  Order Details
-        tbody
-          tr
-            td style=("width: 50%;")
-              b =accurate_title
-            td
-              b Order Date:
-              |&nbsp;
-              =@order.created_at
+    / h3.panel-title data-hook="checkout_title"
+    /   | Order Complete
+    / table.table.table-bordered.table-hover
+    /     thead
+    /       tr
+    /         td.text-left colspan="2"  Order Details
+    /     tbody
+    /       tr
+    /         td style=("width: 50%;")
+    /           b =accurate_title
+    /         td
+    /           b Order Date:
+    /           |&nbsp;
+    /           =@order.created_at
               
     - if order_just_completed?(@order)
       strong= Spree.t(:thank_you_for_your_order)
     #order data-hook="" 
-      = render partial: 'spree/shared/order_details', locals: { order: @order }
+      .jumbotron
+        h1 
+          strong Thank You !
+          |&nbsp; for shopping at 
+          span style=("color:#be0404;") Pyk
+          span style=("color:##00154d;") Local
+
+        p You will receive an e-mail comfirmaton shortly
+
+        h4 
+          strong Order Number :
+          = @order.number
+          .pull-right 
+            a href=order_placed_path(@order)
+              i.fa.fa-yelp
+              | Review your order
+      / = render partial: 'spree/shared/order_placed', locals: { order: @order }
       br.clear
       p.pull-right data-hook="links" 
         = link_to Spree.t(:continue), spree.root_path, class: "button btn btn-info"
