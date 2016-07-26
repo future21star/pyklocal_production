@@ -362,6 +362,10 @@ div.required .control-label:before {
   margin-right: 5px;
 }
 
+.jumbotron h4 .fa{
+  margin-right: 5px;
+}
+
 #header #cart .heading h4:before {
   clear: both;
   content: ' ';
@@ -2556,6 +2560,7 @@ div.required .control-label:before {
 
 .marketshop-banner > div.row div {
   margin-bottom: 25px;
+  margin-top: 20px;
 }
 
 .marketshop-banner div img {

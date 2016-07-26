@@ -1,0 +1,43 @@
+- content_for :google_analytics do
+  - if order_just_completed?(@order)
+    = render partial: 'spree/shared/google_purchase.js', locals: { order: @order }
+
+#container
+  ul.breadcrumb
+    li
+      a href="#" 
+        i.fa.fa-home  Home
+    li
+      a href="#"  Account
+    li
+      a href="#"  Order History
+    li
+      a href="#"  Order Information
+  #content
+    h3.panel-title data-hook="checkout_title"
+      | Order Complete
+    table.table.table-bordered.table-hover
+        thead
+          tr
+            td.text-left colspan="2"  Order Details
+        tbody
+          tr
+            td style=("width: 50%;")
+              b =accurate_title
+            td
+              b Order Date:
+              |&nbsp;
+              =@order.created_at
+              
+    - if order_just_completed?(@order)
+      strong= Spree.t(:thank_you_for_your_order)
+    #order data-hook="" 
+      = render partial: 'spree/shared/order_details', locals: { order: @order }
+      br.clear
+      p.pull-right data-hook="links" 
+        = link_to Spree.t(:continue), spree.root_path, class: "button btn btn-info"
+        - unless order_just_completed?(@order)
+          - if try_spree_current_user && respond_to?(:spree_account_path)
+            = link_to Spree.t(:my_account), spree_account_path, class: "button"
+
+    

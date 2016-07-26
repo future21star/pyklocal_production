@@ -1,11 +1,12 @@
 = render partial: "spree/shared/slider1"
 .container style=("margin-top: 20px;")
-	.row style=("max-height:450px; overflow:hidden;")
+	.category-module style=("max-height:450px; overflow:hidden;")
 		h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Bestsellers
-		.owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
-	    	- @products.each do |product|
-					= render :partial => 'spree/shared/product', locals: {product: product}
-	#marketshop-banner1.marketshop-banner
+		.category-module-content 
+			.owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
+		    	- @products.each do |product|
+						= render :partial => 'spree/shared/product', locals: {product: product}
+	#marketshop-banner1.marketshop-banner.margin-top
 	  .row
 	    .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
 	      a href="#" 
@@ -16,7 +17,14 @@
 	    .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
 	      a href="#" 
 	        = image_tag "sample-banner-2-360x360.jpg", class: "img-responsive" 
-	#latest_category0.category-module
+	#latest_category0.category-module style=("max-height:450px; overflow:hidden;")
+		h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") 
+			|Bags - 
+		.category-module-content
+			.owl-carousel.latest_category_tabs style=("opacity: 1; display: block;")
+				= render :partial => 'spree/shared/bag_categories'
+
+	= render :partial => 'spree/shared/clothing_categories'
 
 	#marketshop-banner2.marketshop-banner
 	  .row
@@ -43,3 +51,13 @@
 		navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
 		scrollPerPage : true
 	}); 
+
+	$(document).ready(function() {
+		$("#content #latest_category0 .owl-carousel.latest_category_tabs").owlCarousel({
+			itemsCustom : [[320, 1],[600, 2],[768, 3],[992, 5],[1199, 5]],											   
+			lazyLoad : true,
+			navigation : true,
+			navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+			scrollPerPage : true,
+	});
+	

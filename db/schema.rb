@@ -232,13 +232,14 @@ ActiveRecord::Schema.define(version: 20160726111231) do
   add_index "spree_calculators", ["id", "type"], name: "index_spree_calculators_on_id_and_type", using: :btree
 
   create_table "spree_countries", force: :cascade do |t|
-    t.string   "iso_name",        limit: 255
-    t.string   "iso",             limit: 255
-    t.string   "iso3",            limit: 255
-    t.string   "name",            limit: 255
-    t.integer  "numcode",         limit: 4
-    t.boolean  "states_required",             default: false
+    t.string   "iso_name",         limit: 255
+    t.string   "iso",              limit: 255
+    t.string   "iso3",             limit: 255
+    t.string   "name",             limit: 255
+    t.integer  "numcode",          limit: 4
+    t.boolean  "states_required",              default: false
     t.datetime "updated_at"
+    t.boolean  "zipcode_required",             default: true
   end
 
   create_table "spree_credit_cards", force: :cascade do |t|
@@ -1069,6 +1070,32 @@ ActiveRecord::Schema.define(version: 20160726111231) do
   add_index "spree_stores", ["default"], name: "index_spree_stores_on_default", using: :btree
   add_index "spree_stores", ["url"], name: "index_spree_stores_on_url", using: :btree
 
+  create_table "spree_taggings", force: :cascade do |t|
+    t.integer  "tag_id",        limit: 4
+    t.integer  "taggable_id",   limit: 4
+    t.string   "taggable_type", limit: 255
+    t.integer  "tagger_id",     limit: 4
+    t.string   "tagger_type",   limit: 255
+    t.string   "context",       limit: 128
+    t.datetime "created_at"
+  end
+
+  add_index "spree_taggings", ["context"], name: "index_spree_taggings_on_context", using: :btree
+  add_index "spree_taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "spree_taggings_idx", unique: true, using: :btree
+  add_index "spree_taggings", ["tag_id"], name: "index_spree_taggings_on_tag_id", using: :btree
+  add_index "spree_taggings", ["taggable_id", "taggable_type", "tagger_id", "context"], name: "spree_taggings_idy", using: :btree
+  add_index "spree_taggings", ["taggable_id"], name: "index_spree_taggings_on_taggable_id", using: :btree
+  add_index "spree_taggings", ["taggable_type"], name: "index_spree_taggings_on_taggable_type", using: :btree
+  add_index "spree_taggings", ["tagger_id", "tagger_type"], name: "index_spree_taggings_on_tagger_id_and_tagger_type", using: :btree
+  add_index "spree_taggings", ["tagger_id"], name: "index_spree_taggings_on_tagger_id", using: :btree
+
+  create_table "spree_tags", force: :cascade do |t|
+    t.string  "name",           limit: 255
+    t.integer "taggings_count", limit: 4,   default: 0
+  end
+
+  add_index "spree_tags", ["name"], name: "index_spree_tags_on_name", unique: true, using: :btree
+
   create_table "spree_tax_categories", force: :cascade do |t|
     t.string   "name",        limit: 255
     t.string   "description", limit: 255
@@ -1189,22 +1216,21 @@ ActiveRecord::Schema.define(version: 20160726111231) do
   add_index "spree_users", ["spree_api_key"], name: "index_spree_users_on_spree_api_key", using: :btree
 
   create_table "spree_variants", force: :cascade do |t|
-    t.string   "sku",               limit: 255,                          default: "",    null: false
-    t.decimal  "weight",                        precision: 8,  scale: 2, default: 0.0
-    t.decimal  "height",                        precision: 8,  scale: 2
-    t.decimal  "width",                         precision: 8,  scale: 2
-    t.decimal  "depth",                         precision: 8,  scale: 2
+    t.string   "sku",             limit: 255,                          default: "",    null: false
+    t.decimal  "weight",                      precision: 8,  scale: 2, default: 0.0
+    t.decimal  "height",                      precision: 8,  scale: 2
+    t.decimal  "width",                       precision: 8,  scale: 2
+    t.decimal  "depth",                       precision: 8,  scale: 2
     t.datetime "deleted_at"
     t.datetime "discontinue_on"
-    t.boolean  "is_master",                                              default: false
-    t.integer  "product_id",        limit: 4
-    t.decimal  "cost_price",                    precision: 10, scale: 2
-    t.string   "cost_currency",     limit: 255
-    t.integer  "position",          limit: 4
-    t.boolean  "track_inventory",                                        default: true
-    t.integer  "tax_category_id",   limit: 4
+    t.boolean  "is_master",                                            default: false
+    t.integer  "product_id",      limit: 4
+    t.decimal  "cost_price",                  precision: 10, scale: 2
+    t.string   "cost_currency",   limit: 255
+    t.integer  "position",        limit: 4
+    t.boolean  "track_inventory",                                      default: true
+    t.integer  "tax_category_id", limit: 4
     t.datetime "updated_at"
-    t.integer  "stock_items_count", limit: 4,                            default: 0,     null: false
   end
 
   add_index "spree_variants", ["deleted_at"], name: "index_spree_variants_on_deleted_at", using: :btree

@@ -2,6 +2,10 @@ Spree::OrdersController.class_eval do
 
   before_filter :load_order, only: [:cancel, :ready_to_pick]
 
+  def order_placed
+    @order = current_spree_user.orders.includes(line_items: [variant: [:option_values, :images, :product]], bill_address: :state, ship_address: :state).find_by_number!(params[:id])
+  end
+
 	def populate
     order    = current_order(create_order_if_necessary: true)
     variant  = Spree::Variant.find(params[:variant_id])

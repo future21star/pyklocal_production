@@ -49,6 +49,7 @@ Pyklocal::Application.routes.draw do
   Spree::Core::Engine.routes.draw do 
     get "new_store_application", to: "home#new_store_application"
     get "orders" => "home#orders"
+    get "order_placed/:id", to: "orders#order_placed", as: "order_placed"
     resources :addresses 
     resources :payment_histories
     resources :wishlists
