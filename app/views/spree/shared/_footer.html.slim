@@ -17,6 +17,10 @@ footer#footer
         .column.col-lg-2.col-md-2.col-sm-3.col-xs-12
           h5 Information
           ul
+            - unless static_contents.blank?
+              - static_contents.each do |static_content|
+                li
+                  = link_to static_content.title, static_url(static_content.slug)
             
         .column.col-lg-2.col-md-2.col-sm-3.col-xs-12
           h5 Customer Service

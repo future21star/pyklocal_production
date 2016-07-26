@@ -4,6 +4,10 @@ module ApplicationHelper
 		(controller.class.to_s == "Spree::HomeController") && (action_name == "index")
 	end
 
+  def static_contents
+    Spree::Page.visible
+  end
+
   def flash_message
     message = ""
     [:notice, :alert, :success, :error].each do |type|

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160722094132) do
+ActiveRecord::Schema.define(version: 20160726111231) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -203,6 +203,19 @@ ActiveRecord::Schema.define(version: 20160722094132) do
   add_index "spree_assets", ["position"], name: "index_spree_assets_on_position", using: :btree
   add_index "spree_assets", ["viewable_id"], name: "index_assets_on_viewable_id", using: :btree
   add_index "spree_assets", ["viewable_type", "type"], name: "index_assets_on_viewable_type_and_type", using: :btree
+
+  create_table "spree_bookkeeping_documents", force: :cascade do |t|
+    t.integer  "printable_id",   limit: 4
+    t.string   "printable_type", limit: 255
+    t.string   "template",       limit: 255
+    t.string   "number",         limit: 255
+    t.string   "firstname",      limit: 255
+    t.string   "lastname",       limit: 255
+    t.string   "email",          limit: 255
+    t.decimal  "total",                      precision: 12, scale: 2
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
+  end
 
   create_table "spree_calculators", force: :cascade do |t|
     t.string   "type",            limit: 255
@@ -422,6 +435,36 @@ ActiveRecord::Schema.define(version: 20160722094132) do
   add_index "spree_orders", ["ship_address_id"], name: "index_spree_orders_on_ship_address_id", using: :btree
   add_index "spree_orders", ["store_id"], name: "index_spree_orders_on_store_id", using: :btree
   add_index "spree_orders", ["user_id", "created_by_id"], name: "index_spree_orders_on_user_id_and_created_by_id", using: :btree
+
+  create_table "spree_pages", force: :cascade do |t|
+    t.string   "title",                    limit: 255
+    t.text     "body",                     limit: 65535
+    t.string   "slug",                     limit: 255
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
+    t.boolean  "show_in_header",                         default: false, null: false
+    t.string   "foreign_link",             limit: 255
+    t.integer  "position",                 limit: 4,     default: 1,     null: false
+    t.boolean  "visible",                                default: true
+    t.string   "meta_keywords",            limit: 255
+    t.string   "meta_description",         limit: 255
+    t.string   "layout",                   limit: 255
+    t.boolean  "show_in_sidebar",                        default: false, null: false
+    t.string   "meta_title",               limit: 255
+    t.boolean  "render_layout_as_partial",               default: false
+  end
+
+  add_index "spree_pages", ["slug"], name: "index_spree_pages_on_slug", using: :btree
+
+  create_table "spree_pages_stores", id: false, force: :cascade do |t|
+    t.integer  "store_id",   limit: 4
+    t.integer  "page_id",    limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "spree_pages_stores", ["page_id"], name: "index_spree_pages_stores_on_page_id", using: :btree
+  add_index "spree_pages_stores", ["store_id"], name: "index_spree_pages_stores_on_store_id", using: :btree
 
   create_table "spree_payment_capture_events", force: :cascade do |t|
     t.decimal  "amount",               precision: 10, scale: 2, default: 0.0

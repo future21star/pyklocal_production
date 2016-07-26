@@ -15,6 +15,13 @@ Spree.config do |config|
   # config.track_inventory_levels = false
 end
 
+Spree::PrintInvoice::Config.set(logo_path: '/images/pyc-logo.png')
+Spree::PrintInvoice::Config.set(next_number: 1|1234)
+# Spree::PrintInvoice::Config.set(buttons: 'invoice')
+Spree::PrintInvoice::Config.set(page_layout: :landscape, page_size: 'A4')
+Spree::PrintInvoice::Config.set(store_pdf: true)
+Spree::PrintInvoice::Config.set(storage_path: 'pdfs/orders')
+
 Spree.user_class = "Spree::LegacyUser"
 Spree::PermittedAttributes.line_item_attributes.push :delivery_type
 Spree::PermittedAttributes.user_attributes.push :first_name, :last_name ,:mobile_number, stores_attributes: [:name, :active, :payment_mode, :description, :manager_first_name, :manager_last_name, :phone_number, :store_type, :street_number, :city, :state, :zipcode, :country, :site_url, :terms_and_condition, :payment_information, :logo, spree_taxon_ids: [], store_users_attributes: [:spree_user_id, :store_id, :id]]
