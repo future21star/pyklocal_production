@@ -1,6 +1,6 @@
 class Merchant::StoresController < Merchant::ApplicationController
 
-	before_filter :authenticate_spree_user!, except: [:show]
+	before_filter :authenticate_user!, except: [:show]
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   before_filter :validate_token, only: [:edit, :update] 
 
@@ -14,13 +14,8 @@ class Merchant::StoresController < Merchant::ApplicationController
 	end
 
 	def show
-    if @store.present?
-      if !current_spree_user.nil? || current_spree_user.stores.collect(&:id).include?(@store.id) || current_spree_user.has_spree_role?('merchant') || current_spree_user.has_spree_role?('admin')
-        @products = @store.spree_products.page(params[:page]).per(8).order("created_at desc")
-      end
-    else
-      redirect_to new_merchant_store_path
-    end
+    @products = @store.spree_products.page(params[:page]).per(8).order("created_at desc")
+    @is_owner = is_owner?(@store)
   end
 
   # GET /stores/new
@@ -44,7 +39,7 @@ class Merchant::StoresController < Merchant::ApplicationController
     @store.attributes = {store_users_attributes: [spree_user_id: current_spree_user.id], active: true}
     respond_to do |format|
       if @store.save
-        format.html { redirect_to merchant_store_url(id: @store.slug, anchor: "map"), notice: 'Store pending approval' }
+        format.html { redirect_to merchant_store_url(id: @store.slug, anchor: "map"), notice: 'Store approval is pending' }
         format.json { render action: 'show', status: :created, location: @store }
       else
         @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
@@ -91,6 +86,7 @@ class Merchant::StoresController < Merchant::ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_store
       @store = Merchant::Store.where(slug: params[:id]).first
+      redirect_to spree.root_url, notice: "Store not available" unless @store.present?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

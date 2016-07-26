@@ -11,9 +11,8 @@ gem 'sass-rails', '~> 5.0.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
 
 gem 'exception_notification'
 gem 'aws-sdk', '< 2.0'
@@ -26,6 +25,11 @@ gem "font-awesome-rails"
 gem 'sunspot_rails'
 gem 'sunspot_solr'
 gem 'progress_bar'
+gem 'noty-rails'
+
+# Use geokit gem to calculate distance
+# gem 'geokit-rails', '2.0.1'
+# gem 'geokit', '1.8.5'
 gem 'asin'
 gem 'sidekiq'
 # Use jquery as the JavaScript library

@@ -1,6 +1,5 @@
-= form_for :order, :url => populate_orders_path do |f|
-  .item style=("overflow:hidden; min-height:350px;")
-
+.item style=("overflow:hidden; min-height:350px;")
+  = form_for :order, :url => populate_orders_path do |f|
     = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
     = hidden_field_tag "variant_id", product.master.id
     = hidden_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
@@ -17,8 +16,13 @@
           p.price
             = number_to_currency(product.price)
         
-          button.btn.btn-default  type="submit" 
+          button.btn.btn-default type="submit" 
             span Add to Cart
+  .wish-list-section
+    = form_for Spree::Wishlist.new, url: wishlists_path, method: :post do |f|
+      = f.hidden_field :variant_id, value: product.master.id
+      button.btn.btn-success.wish-btn type="submit"
+        span.fa.fa-heart
        
 
 	

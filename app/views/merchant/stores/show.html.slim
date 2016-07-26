@@ -1,7 +1,7 @@
 .container
   .row
     .col-sm-3
-      = render :partial => "merchant/shared/seller" 
+      = render :partial => "merchant/shared/seller"
             / = link_to "Contact Seller", new_message_path(to_user_id: @store.store_spree_users.first.spree_user_id), class: "store-link"
     .col-sm-9
       br
@@ -13,4 +13,13 @@
     .col-sm-6.text-right 
       - if @products.respond_to?(:num_pages)
         = paginate @products
+
+- content_for :js do
+  javascript:
+    $(document).ready(function(){ 
+      var store = "#{@store.is_located?}" == "true" ? true : false; 
+      if(!store){
+        $("#add-location").trigger("click");
+      }
+    });
 

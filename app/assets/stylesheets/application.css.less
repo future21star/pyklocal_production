@@ -169,6 +169,26 @@ b{
   font-size: 14px;
 }
 
+.b-header-title,
+.b-header-subtitle{
+    display: block;
+    color: #333;
+}
+
+.b-header-title{
+    font-size: 43px;
+    font-weight: 400;
+}
+
+.b-header-subtitle{
+    font-size: 20px;
+    font-weight: 300;
+
+    .fa{
+        color: #87D37C;
+    }
+}
+
 
 /*===============================Filters Styles====================================*/
 
@@ -192,4 +212,66 @@ b{
 
 .ui-rangeslider {
   margin: .5em 0;
+}
+
+.filter-select {
+  padding: 2px 12px;
+}
+
+/*=====================================Empty Cart Styles=================================*/
+
+.empty-cart {
+  padding: 20px 0px;
+}
+
+.anchor-font {
+  color: #3e7cb4;
+}
+
+/*========================================Wishlist Styles===================================*/
+
+.wish-list-section {
+  display: none;
+}
+
+.item:hover .wish-list-section {
+  display: block;
+}
+
+.wished_item {
+  border: 1px solid transparent;
+}
+
+.wished_item:hover{
+  border: 1px solid #eee;
+}
+
+.wish-btn {
+  border-radius: 50%;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+/*=====================================Comments and Ratings Styles================================*/
+
+.rating-info {
+  padding: 10px 0;
+  font-size: 15px;
+  text-transform: uppercase;
+  .user-rating {
+    padding: 0 10px;
+    vertical-align: text-top;
+  }
+}
+
+.ratings-info {
+  padding: 0 10px;
+  vertical-align: text-top;
+}
+
+.comment-text {
+  padding: 10px 0px 10px 10px;
+  text-align: justify;
+  font-size: 13px;
 }

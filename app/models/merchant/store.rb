@@ -12,7 +12,8 @@ module Merchant
     has_many :spree_taxons , through: :store_taxons
     has_many :spree_products, dependent: :delete_all, foreign_key: :store_id, class_name: 'Spree::Product'
     has_many :email_tokens, as: :resource
-    has_many :raitings, as: :rateable
+    has_many :ratings, as: :rateable
+    has_many :comments, as: :commentable 
 
     accepts_nested_attributes_for :store_users, allow_destroy: true 
     attr_accessor :taxon_ids
@@ -41,6 +42,10 @@ module Merchant
       Merchant::Store.where(slug: slug).first
     end
 
+    def location
+      {lat: latitude, lng: longitude}
+    end
+
     def address
       [street_number, city, state, country].compact.join(", ")
     end
@@ -62,7 +67,7 @@ module Merchant
     def product_line_items
       store_line_items = []
       spree_products.each do |product|
-        store_line_items << product.line_items
+        store_line_items << product.line_items.order("created_at desc")
       end
       return store_line_items.flatten
     end
@@ -74,13 +79,21 @@ module Merchant
     def pickable_line_items
       store_line_items = []
       spree_products.each do |product|
-        store_line_items << product.line_items.where("delivery_state = ? OR delivery_state = ? AND delivery_type = ?", "ready_to_pick", "in_cart", "home_delivery")
+        store_line_items << product.line_items.where("delivery_state = ? AND delivery_type = ?", "ready_to_pick", "home_delivery")
       end
       return store_line_items.flatten
     end
 
     def pickable_store_orders
       pickable_line_items.collect(&:order).uniq.flatten
+    end
+
+    searchable do 
+      latlon(:loctn) { Sunspot::Util::Coordinates.new(latitude, longitude) }
+    end
+
+    def loctn
+      [latitude, longitude].compact.join(", ")
     end
 
     private

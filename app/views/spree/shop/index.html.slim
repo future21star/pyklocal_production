@@ -8,15 +8,9 @@
         a href=""  Shop
     .row
       column#column-left.col-sm-3.hidden-xs
-        = form_tag("", :method => :get, :id => "facet-filter") do
-          - if params[:q] && params[:q][:lat]
-            = hidden_field_tag "q[lat]", params[:q][:lat]
-          - if params[:q] && params[:q][:lng]
-            = hidden_field_tag "q[lng]", params[:q][:lng]
-          - if params[:q] && params[:q][:radius]
-            = hidden_field_tag "q[radius]", params[:q][:radius]
-          - if params[:q] && params[:q][:search]
-            = hidden_field_tag "q[search]", params[:q][:search]
+        = form_tag(" ", :method => :get, :id => "facet-filter") do
+          - if params[:q]
+            = render partial: "spree/shared/filter_form", locals: {filters: [:lat, :lng, :radius, :search, :sort_by, :per_page]}
           .filter
             .filter-block
               .filter-heading Price
@@ -37,10 +31,12 @@
               .btn-group
                 .btn.btn-default data-toggle="tooltip" title="All Product" 
                   i.fa.fa-bars
-              a#compare-total href=shop_index_path
+              a#compare-total href=shop_index_path data-no-turbolink=true
                 |&nbsp;All Products 
-            .col-sm-4.col-xs-12
-              = form_tag "/shop", method: :get, id: "rFilter" do
+            .col-sm-3.col-xs-12
+              = form_tag " ", method: :get, id: "rFilter" do
+                - if params[:q]
+                  = render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]}
                 input id="lat" type="hidden" name="q[lat]"
                 input id="lng" type="hidden" name="q[lng]"
                 - location = params[:q] && params[:q][:radius] ? params[:q][:radius] : " "
@@ -50,21 +46,30 @@
                   option selected=(location == "5") value="5" 5 KM
                   option selected=(location == "10") value="10" 10 KM
                   option selected=(location == "50") value="50" More than 10 KM
-            .col-sm-4.text-right
-              select#input-sort.form-control.col-sm-3 onchange=("location = this.value;") 
-                option selected="selected" value=""  Default Sorting
+            .col-sm-3.text-right
+              - selected = params[:q] && params[:q][:sort_by] ? params[:q][:sort_by] : nil
+              = form_tag " ", method: :get, id: "sortFilter" do
+                - if params[:q]
+                  = render partial: "spree/shared/filter_form", locals: {filters: [:lat, :lng, :radius, :search, :price, :per_page]}
+                = select_tag "q[sort_by]", options_for_select(["Sort By", "Highest Price", "Lowest Price"], selected: selected), class: "form-control col-sm-3", id: "input-sort"
           
-            .col-sm-2.text-right
-              label.control-label for="input-limit" Showing product:
-              span
-                |&nbsp;
-                = @products.try(:count)
+            .col-sm-4
+              - selected = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : nil
+              label.control-label for="input-limit" No of products:
+              |  
+              = form_tag " ", method: :get, id: "itemShow" do 
+                - if params[:q]
+                  = render partial: "spree/shared/filter_form", locals: {filters: [:lat, :lng, :radius, :search, :sort_by, :price]}
+                = select_tag "q[per_page]", options_for_select([12, 24, 48, 96], selected: selected), class: "filter-select", id: "noOfItem"
         .row.products-category
           .product-layout.product-list.col-xs-12
             .product-thumb
-              - @products.each do |product|
-                .col-sm-3.product-grid
-                  = render :partial => 'spree/shared/product', locals: {product: product}
+              - unless @products.blank?
+                - @products.each do |product|
+                  .col-sm-3.product-grid
+                    = render :partial => 'spree/shared/product', locals: {product: product}
+              - else
+                | No product(s) available
             
     
         .row

@@ -30,6 +30,11 @@ html lang="#{I18n.locale}"
     = javascript_include_tag 'spree/backend/all', media: "all", "data-turbolinks-track" => false
     = javascript_include_tag 'merchant', media: 'all', "data-turbolinks-track" => false
     = javascript_include_tag 'custom', media: 'all', "data-turbolinks-track" => false
+    script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.3.8/packaged/jquery.noty.packaged.min.js"
+    script type="text/javascript"
+      | var noty_option = 
+      = flash_message.to_json.html_safe
+      |;
     = yield :js
     = render "spree/admin/shared/translations"
     - if Rails.env == "production"
@@ -42,19 +47,19 @@ html lang="#{I18n.locale}"
         ga('create', 'UA-52341750-2', 'auto');
         ga('send', 'pageview');
       /! Facebook Conversion Code for CoinClub
-      javascript:
-        (function() {
-                var _fbq = window._fbq || (window._fbq = []);
-                if (!_fbq.loaded) {
-                var fbds = document.createElement('script');
-                fbds.async = true;
-                fbds.src = '//connect.facebook.net/en_US/fbds.js';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(fbds, s);
-                _fbq.loaded = true;
-                }
-                })();
-                window._fbq = window._fbq || [];
-                window._fbq.push(['track', '6017226589260', {'value':'0.01','currency':'USD'}]);
-      noscript
-        img alt="" height="1" src="https://www.facebook.com/tr?ev=6017226589260&cd[value]=0.01&cd[currency]=USD&noscript=1" style="display:none" width="1" 
+      / javascript:
+      /   (function() {
+      /     var _fbq = window._fbq || (window._fbq = []);
+      /     if (!_fbq.loaded) {
+      /     var fbds = document.createElement('script');
+      /     fbds.async = true;
+      /     fbds.src = '//connect.facebook.net/en_US/fbds.js';
+      /     var s = document.getElementsByTagName('script')[0];
+      /     s.parentNode.insertBefore(fbds, s);
+      /     _fbq.loaded = true;
+      /     }
+      /     })();
+      /     window._fbq = window._fbq || [];
+      /     window._fbq.push(['track', '6017226589260', {'value':'0.01','currency':'USD'}]);
+      / noscript
+      /   img alt="" height="1" src="https://www.facebook.com/tr?ev=6017226589260&cd[value]=0.01&cd[currency]=USD&noscript=1" style="display:none" width="1" 

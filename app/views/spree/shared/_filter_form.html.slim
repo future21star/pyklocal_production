@@ -1,0 +1,7 @@
+- unless filters.blank?
+  - filters.each do |filter|
+    - if params[:q][:"#{filter}"]
+      - if "#{filter}" == "price"
+        = hidden_field_tag "q[price][]", params[:q][:price]
+      - else
+        = hidden_field_tag "q[#{filter}]", params[:q][:"#{filter}"]

@@ -6,6 +6,7 @@ Pyklocal::Application.routes.draw do
     get "/", to: "home#index"
     get "stores/products/:product_id/variants", to: "variants#index", as: "stores_products_variants"
     get "stores/products/:product_id/variants/new", to: "variants#new", as: "stores_products_variants_new"
+    get "stores/:store_id/orders", to: "orders#index", as: :store_orders
     resources :stores do
       collection do
         resources :amazon_products do
@@ -46,9 +47,11 @@ Pyklocal::Application.routes.draw do
   mount Spree::Core::Engine, at: '/'
 
   Spree::Core::Engine.routes.draw do 
+    get "new_store_application", to: "home#new_store_application"
     get "orders" => "home#orders"
     resources :addresses 
     resources :payment_histories
+    resources :wishlists
     #Applications routes
     resources :shop , :only => [:index,:show]
     resources :orders do 
@@ -60,6 +63,10 @@ Pyklocal::Application.routes.draw do
     #Api routes
     namespace :api do 
       namespace :v1 do 
+
+        resources :products do 
+          post :rate_and_comment
+        end
 
         concern :order_routes do
           member do
@@ -94,6 +101,7 @@ Pyklocal::Application.routes.draw do
 
         resources :merchant_stores do 
           put :update_location
+          post :rate
         end
         resources :registrations 
         resources :sessions

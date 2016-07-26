@@ -1,0 +1,47 @@
+h2 style="margin-top: 25px;" Write a review
+.form-group
+  .col-sm-12.rating-container
+    label.control-label.required Rating
+    .help-block
+      i#product-rating
+.form-group
+  .col-sm-12
+    label.control-label.required for="input-review"  Your Review
+    = text_area_tag "comment", "", class: "form-control", id: "input-review", rows: "5"
+    .help-block
+      span.text-danger Note:
+      | HTML is not translated!
+.buttons
+  .pull-right
+    button#button-review.btn.btn-primary data-user_id=(current_spree_user.try(:spree_api_key)) data-product_id=(@product.try(:slug)) data-loading-text="Loading..." type="button"  Continue
+
+- content_for :js do 
+
+  javascript:
+
+    $(document).ready(function(){
+      $('#product-rating').raty({
+        halfShow: true,
+        half: true,
+        score : 0
+      });
+
+      $('#button-review').click(function(){
+        var userId = $(this).data('user_id');
+        if(!!userId){
+          rateParams = { rating: $('#product-rating').children("input[name=score]").val(), user_id: userId, comment: $('#input-review').val() };
+          $.post("/api/v1/products/"+$(this).data('product_id')+"/rate_and_comment", rateParams, function(data){
+            if(data.success){
+              $('.modal').modal('hide');
+              noty({text: data.message, type: "info"});
+            } else {
+              $('.modal').modal('hide');
+              noty({text: data.message, type: "error"});
+            }
+          });
+        } else {
+          window.location = "/login";
+          noty({text: "You need to login/signup to rate a store", type: "error"});
+        }
+      });
+    });

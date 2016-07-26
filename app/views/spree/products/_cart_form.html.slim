@@ -38,19 +38,17 @@
                   = variant_options variant
                 - if variant_price variant
                   span.price.diff= variant_price variant
-                - unless variant.can_supply?
-                  span.out-of-stock= Spree.t(:out_of_stock)
     - else
       = hidden_field_tag "variant_id", @product.master.id
 
     - if @product.price_in(current_currency) and !@product.price.nil?
        
         #product-price data-hook="product_price" 
-          - if @product.master.can_supply?
-            link href="https://schema.org/InStock" itemprop="availability" /
-          - elsif @product.variants.empty?
-            br 
-            span.out-of-stock= Spree.t(:out_of_stock)
+          / - if @product.master.can_supply?
+          /   link href="https://schema.org/InStock" itemprop="availability" /
+          / - elsif @product.variants.empty?
+          /   br 
+          /   span.out-of-stock= Spree.t(:out_of_stock)
         
     - else
       #product-price
@@ -79,12 +77,12 @@
             br
             a.qtyBtn.mines.text-center href="javascript:void(0);" 
               span.fa.fa-minus
-            input name="product_id" type="hidden" value="41" /
+            input name="product_id" type="hidden" value="41" 
             .clear
-          
         div
-          = button_tag :class => 'btn btn-primary', :id => 'add-to-cart-button', :type => :submit do
-              = Spree.t(:add_to_cart)
+          - button_text = @product.master.can_supply? ? "Add To Cart" : "Out Of Stock"
+          = button_tag :class => 'btn btn-primary', :id => 'add-to-cart-button', :type => :submit, disabled: !@product.master.can_supply? do
+              = button_text
       
     
 

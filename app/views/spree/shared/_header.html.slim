@@ -2,15 +2,15 @@
   nav#top.htop
     .container
       .row
-        span.drop-icon.visible-sm.visible-xs
-          i.fa.fa-align-justify
-        .pull-left.flip.left-top
-          .links
-            ul
-              li
-                a#wishlist-total href="#"  Wish List (Add Product)
-            input name="code" type="hidden" value="" 
-            input name="redirect" type="hidden" value="" 
+        / span.drop-icon.visible-sm.visible-xs
+        /   i.fa.fa-align-justify
+        / .pull-left.flip.left-top
+        /   .links
+        /     ul
+        /       li
+        /         a#wishlist-total href="#"  Wish List (Add Product)
+        /     input name="code" type="hidden" value="" 
+        /     input name="redirect" type="hidden" value="" 
         #top-links.nav.pull-right.flip
           ul
             -if spree_user_signed_in? 
@@ -22,6 +22,8 @@
                 ul.dropdown-menu.dropdown-menu-right
                   li
                     = link_to "My Account",spree.edit_account_path
+                  li
+                    = link_to "Wishlists",spree.wishlists_path
                   li
                     = link_to "Logout", spree.logout_path ,"data-no-turbolink" => true
               
@@ -41,6 +43,12 @@
         .col-table-cell.col-lg-5.col-md-5.col-md-push-0.col-sm-6.col-sm-push-6.col-xs-12
           #search.input-group
             = form_tag '/shop', :method => 'get', id: "search-box" do 
+              - if params[:q] && params[:q][:lat]
+                = hidden_field_tag "q[lat]", params[:q][:lat]
+              - if params[:q] && params[:q][:lng]
+                = hidden_field_tag "q[lng]", params[:q][:lng]
+              - if params[:q] && params[:q][:radius]
+                = hidden_field_tag "q[radius]", params[:q][:radius]
               input id="discover" class="form-control" autocomplete="off" name="q[search]" placeholder="Search for..." value=(params[:q][:search] rescue "")
               button.button-search type="submit" 
                 i.fa.fa-search
@@ -64,13 +72,14 @@
           li
             a.home_link href=spree.root_path title="Home" data-no-turbolink="true" 
               span Home
-          li.categories.dropdown.sub
-            = link_to spree.shop_index_path ,"data-no-turbolink" => true
-              | All Categories
-              |&nbsp;&nbsp;
-              i.fa.fa-caret-down
-            .dropdown-menu style=("display: none;") 
-              = render :partial => "spree/shared/taxonomies"
-                
-          li.custom-link-right
-            = goto_merchant_path
+          - if params["controller"] != "spree/checkout"
+            li.categories.dropdown.sub
+              = link_to spree.shop_index_path ,"data-no-turbolink" => true
+                | All Categories
+                |&nbsp;&nbsp;
+                i.fa.fa-caret-down
+              .dropdown-menu style=("display: none;") 
+                = render :partial => "spree/shared/taxonomies"
+                  
+            li.custom-link-right
+              = goto_merchant_path

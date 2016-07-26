@@ -2,7 +2,7 @@
 - unless Spree::Taxonomy.where(name: "Categories").blank?
   - Spree::Taxonomy.where(name: "Categories").first.taxons.where(name: "Categories").first.children.each do |taxon| 
     .column
-      a href= spree.shop_path(taxon.name)
+      a data-no-turbolink=true href= spree.shop_path(taxon.name)
         -if taxon.children.blank?
           = taxon.name
         - else
@@ -13,7 +13,7 @@
           - taxon.children.each do |sub_taxon| 
             ul
               li
-                a href=spree.shop_path(sub_taxon.name)
+                a data-no-turbolink=true href=spree.shop_path(sub_taxon.name)
                   |&nbsp;
                   = sub_taxon.name
             

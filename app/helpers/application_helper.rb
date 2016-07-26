@@ -68,11 +68,13 @@ module ApplicationHelper
         else
           link_to "Go to store", main_app.merchant_stores_path, "data-no-turbolink" => true
         end
+      elsif current_spree_user.has_store
+        link_to "Go to store", main_app.merchant_stores_path, "data-no-turbolink" => true
       else
-        link_to "Sell with us", main_app.merchant_path, "data-no-turbolink" => true
+        link_to "Sell with us", main_app.new_merchant_store_path, "data-no-turbolink" => true
       end
     else
-      link_to "Sell with us", main_app.merchant_path, "data-no-turbolink" => true
+      link_to "Sell with us", spree.new_store_application_path, "data-no-turbolink" => true
     end
   end
 
