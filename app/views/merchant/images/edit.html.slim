@@ -1,4 +1,11 @@
 .container.margin-top
+  ul.breadcrumb
+    li
+      a href="/" 
+        i.fa.fa-home
+        | Home
+    li
+      span  Edit Product Image
   = render partial: 'spree/admin/shared/error_messages', locals: { target: @image }
   = form_for [:merchant, @product, @image], html: { multipart: true } do |f|
     .panel.panel-default[data-hook="edit_image"]

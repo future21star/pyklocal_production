@@ -1,5 +1,12 @@
-
+#container
   .container
+    ul.breadcrumb
+      li
+        a href="/" 
+          i.fa.fa-home
+          | Home
+      li
+        span  Fetch Amazon product
     .row
       column#column-left.col-sm-3.hidden-xs
         =render :partial=>"merchant/shared/seller"

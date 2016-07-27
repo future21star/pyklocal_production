@@ -1,7 +1,15 @@
-.container
-	= render partial: "merchant/shared/product_header", locals: {text: "Edit Product ", product_name: @product.name}
-.container
-  .row
-    .col-md-12
-	  	.form-section
-	      = render partial: "form"
+#container
+	.container
+		ul.breadcrumb
+			li
+				a href="/" 
+					i.fa.fa-home
+					| Home
+			li
+				span  Update Product Information
+		= render partial: "merchant/shared/product_header", locals: {text: "Edit Product ", product_name: @product.name}
+	.container
+		.row
+			.col-md-12
+				.form-section
+					= render partial: "form"

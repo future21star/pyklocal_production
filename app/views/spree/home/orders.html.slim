@@ -2,12 +2,13 @@
   .container
     ul.breadcrumb
       li
-        a href="" 
+        a href="/" 
           i.fa.fa-home
+          | Home
       li
         a href=spree.account_path  Account
       li
-        a href="#"  Order  History
+        span  Order  History
     .row
       #content.col-sm-3
         =render :partial => "spree/shared/user_menu" ,locals: {current: "orders"}
@@ -37,7 +38,7 @@
                     td.text-center= order.email
                     td.text-center= order.total
                     td.text-center
-                      = link_to spree.order_path(order), title: "View", class: "btn btn-default" do 
+                      = link_to spree.order_placed_path(order), title: "View", class: "btn btn-default" do 
                         i.fa.fa-eye
                       - if order.state != "canceled"
                         = link_to order_cancel_path(order), class: "btn btn-danger", title: "Cancel Order", method: :put do 

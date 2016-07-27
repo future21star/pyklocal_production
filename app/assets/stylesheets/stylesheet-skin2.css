@@ -966,6 +966,10 @@ div.required .control-label:before {
   display: inline-block;
 }
 
+.breadcrumb li .fa{
+  margin-right: 5px;
+}
+
 .pagination {
   margin: 0;
 }
