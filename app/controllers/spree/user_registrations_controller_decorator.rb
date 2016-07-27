@@ -17,8 +17,6 @@ module Spree
           respond_with resource, location: after_inactive_sign_up_path_for(resource)
         end
       else
-        p "----------------------------------------------------"
-        p resource.errors
         clean_up_passwords(resource)
         render :new
       end
