@@ -957,8 +957,8 @@ div.required .control-label:before {
 }
 
 .breadcrumb a:hover {
-  color: #2f4a90;
-  text-decoration: underline;
+  color: #c30505;
+  
 }
 
 .breadcrumb a i dd {
