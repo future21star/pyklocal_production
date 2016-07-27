@@ -15,7 +15,7 @@ Spree.config do |config|
   # config.track_inventory_levels = false
 end
 
-Spree::PrintInvoice::Config.set(logo_path: '/images/pyc-logo.png')
+Spree::PrintInvoice::Config.set(logo_path: "pyc_logo.png")
 Spree::PrintInvoice::Config.set(next_number: 1|1234)
 # Spree::PrintInvoice::Config.set(buttons: 'invoice')
 Spree::PrintInvoice::Config.set(page_layout: :landscape, page_size: 'A4')
