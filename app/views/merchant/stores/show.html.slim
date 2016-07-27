@@ -1,18 +1,26 @@
-.container
-  .row
-    .col-sm-3
-      = render :partial => "merchant/shared/seller"
-            / = link_to "Contact Seller", new_message_path(to_user_id: @store.store_spree_users.first.spree_user_id), class: "store-link"
-    .col-sm-9
-      br
-      h2 Store Product
-      = render partial: "merchant/shared/products", locals: {products: @products}
-      hr
+#container
+  .container
+    ul.breadcrumb
+        li
+          a href="/" 
+            i.fa.fa-home
+            | Home
+        li
+          span  My Store
+    .row
+      .col-sm-3
+        = render :partial => "merchant/shared/seller"
+              / = link_to "Contact Seller", new_message_path(to_user_id: @store.store_spree_users.first.spree_user_id), class: "store-link"
+      .col-sm-9
+        br
+        h2 Store Product
+        = render partial: "merchant/shared/products", locals: {products: @products}
+        hr
 
-    .col-sm-6.text-left
-    .col-sm-6.text-right 
-      - if @products.respond_to?(:num_pages)
-        = paginate @products
+      .col-sm-6.text-left
+      .col-sm-6.text-right 
+        - if @products.respond_to?(:num_pages)
+          = paginate @products
 
 - content_for :js do
   javascript:

@@ -4,9 +4,11 @@
   .container
     ul.breadcrumb
       li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"  
-          i.fa.fa-home
+          a href=root_path
+            i.fa.fa-home
+            | Home
       li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"  
-          span itemprop="title" 
+          span 
             = @product.try(:name) 
     .row
       #content.col-sm-9

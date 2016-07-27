@@ -4,8 +4,9 @@
       li
         a href="/" 
           i.fa.fa-home
+          | Home
       li
-        a href=""  Shopping Cart
+        span  Shopping Cart
     #content
       div data-hook="cart_container" 
         - if @order.line_items.empty?

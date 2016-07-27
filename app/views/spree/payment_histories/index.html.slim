@@ -2,12 +2,13 @@
   .container
     ul.breadcrumb
       li
-        a href="" 
+        a href="/" 
           i.fa.fa-home
+          | Home
       li
         a href=spree.account_path  Account
       li
-        a href=""  Payment History
+        span  Payment History
     .row
       #content.col-sm-3
         =render :partial => "spree/shared/user_menu" ,locals: {current: "payment_histories"}

@@ -1,34 +1,42 @@
-.container
-  .row
-    .col-sm-3
-      =render :partial=>"merchant/shared/seller"
-    .col-sm-9
-      = render partial: "merchant/shared/product_header", locals: {text: "Products Listing", product_name: @product.try(:name), store_id: @collection.first.try(:store).try(:friendly_id)}
-      - content_for :page_title do
- 
-      .form-section 
-        table.table.table-striped
-          thead
-            tr
-              th SKU
-              th Name
-              th Price
-              th Available From 
-              th Action
-          tbody
-            - unless @collection.blank?
-              - @collection.each do |product|
-                tr
-                  td= product.sku
-                  td= product.name
-                  td= product.price
-                  td= product.available_on.try(:to_date) 
-                  td.btn-fix
-                    = link_to "<span class='fa'>&#xf044;</span>".html_safe, edit_merchant_product_path(product.slug), class: "btn btn-info btn-sm", "data-no-turbolink" => true
-                    
-                    = link_to "<span class='fa'>&#xf014;</span>".html_safe, merchant_product_path(product.slug), class: "btn btn-danger btn-sm", method: "delete"
-      .row
-        .col-sm-6.text-left
-        .col-sm-6.text-right 
-          - if @collection.respond_to?(:num_pages)
-            = paginate @collection
+#container
+  .container
+    ul.breadcrumb
+      li
+        a href="/" 
+          i.fa.fa-home
+          | Home
+      li
+        span  Add New Product
+    .row
+      .col-sm-3
+        =render :partial=>"merchant/shared/seller"
+      .col-sm-9
+        = render partial: "merchant/shared/product_header", locals: {text: "Products Listing", product_name: @product.try(:name), store_id: @collection.first.try(:store).try(:friendly_id)}
+        - content_for :page_title do
+   
+        .form-section 
+          table.table.table-striped
+            thead
+              tr
+                th SKU
+                th Name
+                th Price
+                th Available From 
+                th Action
+            tbody
+              - unless @collection.blank?
+                - @collection.each do |product|
+                  tr
+                    td= product.sku
+                    td= product.name
+                    td= product.price
+                    td= product.available_on.try(:to_date) 
+                    td.btn-fix
+                      = link_to "<span class='fa'>&#xf044;</span>".html_safe, edit_merchant_product_path(product.slug), class: "btn btn-info btn-sm", "data-no-turbolink" => true
+                      
+                      = link_to "<span class='fa'>&#xf014;</span>".html_safe, merchant_product_path(product.slug), class: "btn btn-danger btn-sm", method: "delete"
+        .row
+          .col-sm-6.text-left
+          .col-sm-6.text-right 
+            - if @collection.respond_to?(:num_pages)
+              = paginate @collection

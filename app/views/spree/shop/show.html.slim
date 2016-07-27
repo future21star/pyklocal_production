@@ -4,8 +4,9 @@
       li
         = link_to root_path , "data-no-turbolink" => true do 
           i.fa.fa-home
+          | Home
       li
-        a href=""  Shop
+        Span Shop
     .row
       column#column-left.col-sm-3.hidden-xs
          = form_tag("", :method => :get, :id => "facet-filter") do
