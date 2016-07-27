@@ -12,48 +12,52 @@
     li
       a href=spree.orders_path  Order History
     li
-      a href="#"  Order Information
+      span  Order Information
   #content
-    / h3.panel-title data-hook="checkout_title"
-    /   | Order Complete
-    / table.table.table-bordered.table-hover
-    /     thead
-    /       tr
-    /         td.text-left colspan="2"  Order Details
-    /     tbody
-    /       tr
-    /         td style=("width: 50%;")
-    /           b =accurate_title
-    /         td
-    /           b Order Date:
-    /           |&nbsp;
-    /           =@order.created_at
               
     - if order_just_completed?(@order)
+      #order data-hook="" 
+        .jumbotron style=("padding-top: 100px; padding-bottom: 100px;")
+          h1 
+            center
+              strong Thank You !
+              |&nbsp; for shopping at 
+              span style=("color:#be0404;") Pyk
+              span style=("color:##00154d;") Local
+          center
+            p You will receive an e-mail comfirmaton shortly
+            p if you fail to receive the email order invoice from us in our Inbox please check your spam folder.
+
+          h2
+          h4
+            .pull-left 
+              a href=order_placed_path(@order)
+                i.fa.fa-yelp
+                | View your order
+              
+            .pull-right data-hook="links" 
+              = link_to Spree.t(:continue), spree.root_path
+              - unless order_just_completed?(@order)
+                - if try_spree_current_user && respond_to?(:spree_account_path)
+                  = link_to Spree.t(:my_account), spree_account_path, class: "button"
       strong= Spree.t(:thank_you_for_your_order)
-    #order data-hook="" 
-      .jumbotron
-        h1 
-          strong Thank You !
-          |&nbsp; for shopping at 
-          span style=("color:#be0404;") Pyk
-          span style=("color:##00154d;") Local
 
-        p You will receive an e-mail comfirmaton shortly
+    - else
+      h3.panel-title data-hook="checkout_title"
+        | Order History
+      table.table.table-bordered.table-hover
+          thead
+            tr
+              td.text-left colspan="2"  Order Details
+          tbody
+            tr
+              td style=("width: 50%;")
+                b =accurate_title
+              td
+                b Order Date:
+                |&nbsp;
+                =@order.created_at 
+      #order data-hook=""
+        = render partial: 'spree/shared/order_details', locals: { order: @order }
 
-        h4 
-          strong Order Number :
-          = @order.number
-          .pull-right 
-            a href=order_placed_path(@order)
-              i.fa.fa-yelp
-              | Review your order
-      / = render partial: 'spree/shared/order_placed', locals: { order: @order }
-      br.clear
-      p.pull-right data-hook="links" 
-        = link_to Spree.t(:continue), spree.root_path, class: "button btn btn-info"
-        - unless order_just_completed?(@order)
-          - if try_spree_current_user && respond_to?(:spree_account_path)
-            = link_to Spree.t(:my_account), spree_account_path, class: "button"
-
-    
+      
