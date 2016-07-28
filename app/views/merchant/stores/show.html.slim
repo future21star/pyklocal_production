@@ -6,7 +6,8 @@
             i.fa.fa-home
             | Home
         li
-          span  My Store
+          span 
+            =@stores.name
     .row
       .col-sm-3
         = render :partial => "merchant/shared/seller"

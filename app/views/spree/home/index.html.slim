@@ -7,6 +7,14 @@
 				.owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
 			    	- @products.each do |product|
 							= render :partial => 'spree/shared/product', locals: {product: product}
+
+		.category-module style=("max-height:450px; overflow:hidden;")
+			h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") New Arrivals
+			.category-module-content 
+				.owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
+			    	- @new_arrival.each do |product|
+							= render :partial => 'spree/shared/product', locals: {product: product}
+
 		#marketshop-banner1.marketshop-banner.margin-top
 		  .row
 		    .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
