@@ -6,12 +6,12 @@
     .product-thumb.clearfix
       .image.table-center style=("min-height: 244px; max-height: 244px;")
         - image_path = product.images.present? ? product.images.first.try(:attachment).try(:url) : "/images/no-img.jpg"
-        a.img-center href=product_path(product) data-no-turbolink="true" 
+        a.img-center href=product_path(product) data-no-turbolink=true
         	= image_tag(image_path, class: "img-responsive" )
       div
         .caption
           h4
-            a href=product_path(product) data-no-turbolink="true" 
+            a href=product_path(product) data-no-turbolink=true 
             	= truncate(product.name, :length =>16)
           p.price
             = number_to_currency(product.price)
