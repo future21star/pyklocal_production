@@ -6,7 +6,7 @@ Spree::HomeController.class_eval do
 		@searcher = build_searcher(params.merge(include_images: true))
     @products = @searcher.retrieve_products.includes(:possible_promotions)
 		@bag_categories = Spree::Taxon.where(name: "Bags").first.products
-		@clothing_categories = Spree::Taxon.where(name: "Clothing").first.products
+		@clothing_categories = Spree::Taxon.where(name: "Mugs").first.products
 	end
 
 	def orders
