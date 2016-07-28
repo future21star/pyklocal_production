@@ -18,6 +18,7 @@ module Spree
       latlon(:location) { Sunspot::Util::Coordinates.new(store.try(:latitude), store.try(:longitude)) }
 
       float :price
+      integer :sell_count
 
       dynamic_string :product_property_ids, :multiple => true do
         product_properties.inject(Hash.new { |h, k| h[k] = [] }) do |map, product_property| 
@@ -53,6 +54,10 @@ module Spree
 
     def self.min_price
       self.all.collect(&:price).min.to_i
+    end
+
+    def sell_count
+      line_items.joins(:order).where(spree_orders: {state: "completed"}).count
     end
 
     def similar
