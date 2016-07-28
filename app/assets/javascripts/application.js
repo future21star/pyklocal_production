@@ -112,6 +112,8 @@ window.onload = function() {
     startPos = position;
     $('#lat').val(startPos.coords.latitude);
     $('#lng').val(startPos.coords.longitude);
+    var location_data = { lat: startPos.coords.latitude, lng: startPos.coords.longitude }
+    $.post("/api/v1/store_sessions", location_data, function(data){});
   };
   navigator.geolocation.getCurrentPosition(geoSuccess);
 };

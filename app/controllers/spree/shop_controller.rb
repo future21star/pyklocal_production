@@ -10,7 +10,7 @@ class Spree::ShopController < Spree::StoreController
         order_by(:price, :desc)
       end
       if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Lowest Price")
-        order_by(:price, :asc) if params[:q] && params[:q][:sort_by]
+        order_by(:price, :asc)
       end
     end 
     per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12
