@@ -2942,3 +2942,7 @@ form#adv_ajaxfilter {
   text-overflow: ellipsis;
 }
 
+.addthis_sharing_toolbox{
+  min-height: 39px;
+  margin-bottom: 20px;
+}

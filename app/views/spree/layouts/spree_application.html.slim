@@ -2,10 +2,13 @@
 = I18n.locale
 | "> 
 head[data-hook="inside_head"]
+  = yield :meta_tags 
   = render :partial => 'spree/shared/head'
   / link[rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"]
   link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
-  = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => false 
+  = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => false
+  <!-- Go to www.addthis.com/dashboard to customize your tools -->
+  script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5799d7abbbb1ae8a"
 body
   .container-fluid style = ("padding-left: 0;padding-right: 0;")
     = render :partial => 'spree/shared/header'
