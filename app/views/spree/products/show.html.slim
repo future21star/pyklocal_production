@@ -115,3 +115,8 @@
   meta property="og:image:url" content=@product.images.first.attachment.url
   meta property="og:description" content=@product.description
   meta property="og:url" content=request.url
+
+  meta content="summary_large_image" name="twitter:card"
+  meta content=@product.name name="twitter:title"
+  meta content=@product.description name="twitter:description"
+  meta content=@product.images.first.attachment.url name="twitter:image"
