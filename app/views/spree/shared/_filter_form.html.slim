@@ -3,5 +3,9 @@
     - if params[:q][:"#{filter}"]
       - if "#{filter}" == "price"
         = hidden_field_tag "q[price][]", params[:q][:price]
+      - if "#{filter}" == "brand"
+        = hidden_field_tag "q[brand][]", params[:q][:brand]
+      - if "#{filter}" == "store"
+        = hidden_field_tag "q[store][]", params[:q][:store]
       - else
         = hidden_field_tag "q[#{filter}]", params[:q][:"#{filter}"]

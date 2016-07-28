@@ -27,6 +27,12 @@ module Spree
         end
       end
 
+      string :store_name
+
+      string :brand_name, references: Spree::ProductProperty, multiple: true do
+        product_properties.where(property_id: properties.where(name: "Brand").first.try(:id)).collect { |p| p.value }.flatten
+      end
+
       integer :taxon_ids, references: Spree::Taxon, multiple: true do
         taxons.collect { |t| t.self_and_ancestors.map(&:id) }.flatten
       end

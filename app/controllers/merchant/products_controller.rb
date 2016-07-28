@@ -9,17 +9,20 @@ class Merchant::ProductsController < Merchant::ApplicationController
 
 	def index
     @collection =  Spree::Product.where(store_id: current_spree_user.stores.first.id).order("created_at desc").page(params[:page]).per(15)
+    @is_owner = is_owner?(current_spree_user.stores.first)
   end
 
   def new
     @product = Spree::Product.new
     @product.sku = SecureRandom.hex(10).upcase
     @shipping_categories = Spree::ShippingCategory.all
+    @is_owner = is_owner?(current_spree_user.stores.first)
   end
 
   def edit
     @shipping_categories = Spree::ShippingCategory.all
     @tax_categories = Spree::TaxCategory.all
+    @is_owner = is_owner?(current_spree_user.stores.first)
   end
 
   def create
@@ -56,9 +59,11 @@ class Merchant::ProductsController < Merchant::ApplicationController
   def images
     @image = Spree::Image.new
     @images = Spree::Image.where(viewable_id: @product.id)
+    @is_owner = is_owner?(current_spree_user.stores.first)
   end
 
   def stock
+    @is_owner = is_owner?(current_spree_user.stores.first)
     @stock = Spree::StockItem.new
     @stock_locations = Spree::StockLocation.all
     @variants = @product.variants
