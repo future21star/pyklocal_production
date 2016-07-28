@@ -111,7 +111,7 @@
 
 - content_for :meta_tags do
 
-  meta content=@product.name property="og:title"
-  meta content=@product.images.first.attachment.url property="og:image:secure_url"
-  meta content=@product.description property="og:description"
-  meta content=request.url property="og:url"
+  meta property="og:title" content=@product.name
+  meta property="og:image:url" content=@product.images.first.attachment.url
+  meta property="og:description" content=@product.description
+  meta property="og:url" content=request.url
