@@ -19,7 +19,7 @@ body
         = yield :templates
   = render :partial => 'spree/shared/custome_feature' 
   = render :partial => 'spree/shared/footer'
-  = javascript_include_tag 'application'
+  = javascript_include_tag 'application', "data-turbolinks-track" => false
   = javascript_include_tag 'jquery.raty'
   script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5799d7abbbb1ae8a"
   script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.3.8/packaged/jquery.noty.packaged.min.js"

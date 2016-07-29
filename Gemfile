@@ -43,6 +43,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'therubyracer', platforms: :ruby
 
+gem 'impressionist'
+
+# gem 'import_products', :git => 'git://github.com/pkumarmis/spree-import-products.git', branch: '3-1-stable'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 # Use Unicorn as the app server
