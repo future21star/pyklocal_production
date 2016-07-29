@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160726111231) do
+ActiveRecord::Schema.define(version: 20160729081353) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -771,6 +771,7 @@ ActiveRecord::Schema.define(version: 20160726111231) do
     t.boolean  "mutable",                default: true
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
+    t.string   "store_id",   limit: 255
   end
 
   create_table "spree_return_authorizations", force: :cascade do |t|
