@@ -71,7 +71,11 @@ br
       = link_to current_spree_user.has_spree_role?("merchant") ? merchant_store_orders_path(@store.slug) : "#", class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
         .fa.fw &#xf07a;
         | View Orders
-    
+
+      = link_to current_spree_user.has_spree_role?("merchant") ? merchant_return_authorization_reasons_path : "#", class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
+        .fa.fw &#xf07a;
+        | Return Authorization Reason
+
       = link_to current_spree_user.has_spree_role?("merchant") ? merchant_store_amazon_product_path : "#", class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
         .fa.fw &#xf270;
         | Fetch Product From Amazon

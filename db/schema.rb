@@ -796,6 +796,7 @@ ActiveRecord::Schema.define(version: 20160729130023) do
     t.boolean  "mutable",                default: true
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
+    t.string   "store_id",   limit: 255
   end
 
   create_table "spree_return_authorizations", force: :cascade do |t|
