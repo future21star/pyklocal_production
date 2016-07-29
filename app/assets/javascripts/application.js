@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require spree/frontend/all
 //= require twitter/bootstrap
-//= require turbolinks
 //= require_tree .
 //= stub merchant.js
 //= require noty/jquery.noty

@@ -62,7 +62,12 @@ Pyklocal::Application.routes.draw do
       put :cancel
     end
     resources :payment_preferences
-
+    resources :customer_returns, only: [:index, :new, :edit, :create, :update] do
+        member do
+          put :refund
+        end
+      end
+    
     #Api routes
     namespace :api do 
       namespace :v1 do 
