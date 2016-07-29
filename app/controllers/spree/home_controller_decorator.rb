@@ -10,6 +10,11 @@ Spree::HomeController.class_eval do
 		# @searcher = build_searcher(params.merge(include_images: true))
     # @products = @searcher.retrieve_products.includes(:possible_promotions)
     @products = @search.results
+    @view_search = Sunspot.search(Spree::Product) do 
+      order_by(:view_count, :desc)
+      paginate page: 1, per_page: 20
+    end
+    @most_viewed_products = @view_search.results
     @new_arrival = Spree::Product.all.limit(30).order('created_at DESC')
 		@bag_categories = Spree::Taxon.where(name: "Bags").first.products
 		@clothing_categories = Spree::Taxon.where(name: "Mugs").first.products
