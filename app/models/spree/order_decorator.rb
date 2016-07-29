@@ -2,10 +2,17 @@ module Spree
 	Order.class_eval do
 
     has_many :pickable_line_items, -> {where(spree_line_items: {delivery_type: "pickup"})}, class_name: "Spree::LineItem"
+    has_many :stores, through: :products
+
+    self.whitelisted_ransackable_associations = %w[shipments user promotions bill_address ship_address line_items stores]
 
     # ---------------------------------------- Associations -----------------------------------------------------
 
     after_update :notify_driver
+
+    def store
+      stores.first
+    end
 
 		def is_home_delivery_product_available?(item_ids)
 			line_items.where(id: item_ids).collect(&:delivery_type).include?("home_delivery")
