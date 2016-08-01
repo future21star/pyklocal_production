@@ -2,11 +2,13 @@
   .container
     ul.breadcrumb
       li
-        = link_to root_path , "data-no-turbolink" => true do 
+        a href="/"
           i.fa.fa-home
           | Home
       li
-        Span Shop
+        a href=shop_path Shop  
+      li
+        span  Categories
     .row
       column#column-left.col-sm-3.hidden-xs
          = form_tag("", :method => :get, :id => "facet-filter") do

@@ -4,7 +4,7 @@
     = hidden_field_tag "variant_id", product.master.id
     = hidden_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
     .product-thumb.clearfix
-      .image.table-center style=("min-height: 244px; max-height: 244px;")
+      .image.table-center style=("min-height: 244px; max-height: 244px; height: 0px;")
         - image_path = product.images.present? ? product.images.first.try(:attachment).try(:url) : "/images/no-img.jpg"
         a.img-center href=product_path(product) data-no-turbolink=true
         	= image_tag(image_path, class: "img-responsive" )
