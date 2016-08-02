@@ -4,8 +4,8 @@ class Spree::CustomerReturnsController < Spree::StoreController
     before_action :parent # ensure order gets loaded to support our pseudo parent-child relationship
     before_action :load_form_data, only: [:new, :edit]
 
-    create.before :build_return_items_from_params
-    create.fails  :load_form_data
+    # create.before :build_return_items_from_params
+    # create.fails  :load_form_data
 
     def edit
       returned_items = @customer_return.return_items

@@ -2,6 +2,7 @@ require 'uri'
 class Merchant::AmazonProductsController < Merchant::ApplicationController
 
 	def fetch
+		@is_owner = true
 		if  ["keyword", nil].include?(params[:by])
 			
 			if params[:keywords].present?
@@ -17,6 +18,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 	end
 
 	def new
+		@is_owner = true
 		if params[:asin].blank?
 		 redirect_to :back, :params => @params , notice: "please Select Product created"
 		else 
@@ -60,6 +62,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 	end
 
 	def create
+		@is_owner = true
 		@product = Spree::Product.new(product_params)
 		@product.attributes = product_params.merge({store_id: current_spree_user.stores.first.try(:id)})
 		if @product.save
@@ -71,6 +74,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 	end
 
 	def import_collection
+		@is_owner = true
 		if params[:product_ids].blank?
 			 redirect_to :back, :params => @params , notice: "please Select Product created"
 		else 

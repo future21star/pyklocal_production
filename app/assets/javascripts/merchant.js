@@ -13,6 +13,12 @@ var Store = function(){
   this.init();
 }
 
+$(document).ready(function() {
+  console.log("*********************************************************");
+  var myStore = new Store();
+  console.log(myStore);
+});
+
 Store.prototype = {
   init: function() {
     this.showNoty();
@@ -140,13 +146,13 @@ Store.prototype = {
         $.ajax({
           url: "/api/v1/merchant_stores/"+$this.data("store_id")+"/update_location",
           method: "put",
-          data: { "merchant_store[latitude]": myCompany.lastMarker.position.lat(), "merchant_store[longitude]": myCompany.lastMarker.position.lng()},
+          data: { "merchant_store[latitude]": myStore.lastMarker.position.lat(), "merchant_store[longitude]": myStore.lastMarker.position.lng()},
           success: function(data, status) {
             if(data.success) {
-              $("#map-preview").data("latitude", myCompany.lastMarker.position.lat());
-              $("#map-preview").data("longitude", myCompany.lastMarker.position.lng());
+              $("#map-preview").data("latitude", myStore.lastMarker.position.lat());
+              $("#map-preview").data("longitude", myStore.lastMarker.position.lng());
               $("#map-preview").data("is_located", true);
-              myCompany.previewMap(); 
+              myStore.previewMap(); 
               location = window.location.href.split("#")[0];
               $('.modal').modal('hide');
               noty({text: "Location updated successfully", type: "info"});
@@ -218,7 +224,3 @@ Store.prototype = {
     }
   }
 }
-
-$(document).ready(function() {
-  var myCompany = new Store();
-})

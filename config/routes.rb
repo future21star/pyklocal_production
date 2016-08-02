@@ -20,6 +20,9 @@ Pyklocal::Application.routes.draw do
           resources :variants
           resources :product_properties
           get :stock
+          collection do
+            post :bulk_upload
+          end
         end
         resources :orders do
           get :customer

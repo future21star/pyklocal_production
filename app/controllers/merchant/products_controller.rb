@@ -37,6 +37,15 @@ class Merchant::ProductsController < Merchant::ApplicationController
     end
   end
 
+  def bulk_upload
+    row_array = Array.new
+    my_file = params[:file]
+    p "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+    p my_file.path
+    ImportProductWorker.perform_in(5.seconds, my_file.path, current_spree_user.email)
+    redirect_to merchant_products_path, notice: "Your Product importing from the csv you uploaded, we will notify you it's progress through email"
+  end
+
   def update
     redirect_path = params[:redirect_path].present? ? params[:redirect_path] : edit_merchant_product_path(@product)
     if @product.update_attributes(product_params)

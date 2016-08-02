@@ -103,6 +103,67 @@ module Spree
       {product_property_name: dynamic_filters.flatten.collect(&:value), taxon_ids: search.facet(:taxon_ids).rows.collect(&:value)}
     end
 
+    def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants, categories)
+      product = Spree::Product.new({name: name, price: master_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id})
+      product.save
+      unless categories.blank?
+        product.build_category(product, categories)
+      end
+      unless image_url.blank?
+        product.build_image(product, image_url)
+      end
+      unless properties.blank?
+        product.build_property(product, properties)
+      end
+      unless variants.blank?
+        product.build_variant(product, variants)
+      end
+    end
+
+    def build_category(product, categories)
+      taxon_ids = []
+      categories.split(",").each do |category|
+        taxon = Spree::Taxon.where(permalink: category.strip).first
+        p taxon
+        if taxon.present?
+          taxon_ids << taxon.id
+        end
+      end
+      product.update_attributes(taxon_ids: taxon_ids)
+      p product.taxon_ids
+    end
+
+    def build_image(product, image_url)
+      image_url.split(",").each do |url|
+        image = product.images.build(attachment: File.open(url.strip))
+        image.save
+      end
+    end
+
+    def build_property(product, properties)
+      properties.split(",").each do |item|
+        property_hash = item.split(":")
+        property = Spree::Property.where(name: property_hash[0].strip, presentation: property_hash[0].strip.titleize).first_or_create
+        product_property = product.product_properties.build(value: property_hash[1].strip.titleize, property_id: property.id)
+        product_property.save
+      end
+    end
+
+    def build_variant(product, variants)
+      option_type_ids = []
+      option_value_ids = []
+      variants.split(",").each do |item|
+        option_fields = item.split(":")
+        option_type = Spree::OptionType.where(name: option_fields[0].strip, presentation: option_fields[0].strip.titleize).first_or_create
+        option_type_ids << option_type.id
+        option_value = Spree::OptionValue.where(name: option_fields[1].strip, presentation: option_fields[1].strip.titleize, option_type_id: option_type.try(:id)).first_or_create
+        option_value_ids << option_value.id
+      end
+      product.update_attributes(option_type_ids: option_type_ids)
+      variant = product.variants.build(option_value_ids: option_value_ids)
+      variant.save
+    end
+
     private
       def save_image
         if image_url.present?
