@@ -4,7 +4,7 @@ br
   = link_to merchant_store_url(@store) do 
     .store-logo-wrapper
       .image style=("display: table-cell; vertical-align: middle;")
-        = image_tag @store.try(:logo).try(:url,:large),:class=>"img_center img-responsive"
+        = image_tag @store.try(:logo).try(:url,:large),:class=>"center img-responsive"
   h4 style="padding-top:15px;"
     strong Store Information
   .table-responsive

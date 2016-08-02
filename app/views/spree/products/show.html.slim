@@ -3,13 +3,21 @@
 #container
   .container
     ul.breadcrumb
-      li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"  
-          a href=root_path
-            i.fa.fa-home
-            | Home
-      li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"  
-          span 
-            = @product.try(:name) 
+      li
+        a href="/"
+          i.fa.fa-home
+          | Home
+      li
+        a href=shop_path Shop  
+      li
+        a href=shop_path Categories
+      - if !@product.taxons.blank?  
+        li
+          a href=shop_path(@product.try(:taxons).first.try(:name))
+            = @product.try(:taxons).first.try(:name)
+
+      li 
+        span =@product.name
     .row
       #content.col-sm-9
         div itemscope="" itemtype="http://schema.org/Product" 
@@ -17,10 +25,10 @@
           .row.product-info
             .col-sm-5
               #product-images data-hook="product_images"
-                #main-image.style
+                #main-image 
                   - image_path = @product.images.present? ? @product.images.first.try(:attachment).try(:url) : "/images/no-img.jpg"
-                  .image data-hook="product_images"
-                    a href="#" 
+                  .image.table-center style=("height: 0px;min-height: 330px;max-height: 330px;") data-hook="product_images"
+                    a.img-center href="#" 
                       = image_tag image_path,id:"zoom_01", class: "img-responsive img_center",data: { 'zoom-image' => @product.images.first.try(:attachment).try(:url, :large)}
                 .center-block.text-center
                   span.zoom-gallery
@@ -28,7 +36,7 @@
                     | Click image for Zoom
                 #gallery_01.image-additional
                   -@product.images.each do |thumb_images|
-                    a.thumbnail style=("min-height: 58px;max-height: 58px; border: none;") data-zoom-image=thumb_images.try(:attachment).try(:url,:large) data-image=thumb_images.try(:attachment).try(:url,:large) href="#"
+                    a.thumbnail style=("min-height: 58px;max-height: 58px; border: 1px; height:0px;") data-zoom-image=thumb_images.try(:attachment).try(:url,:large) data-image=thumb_images.try(:attachment).try(:url,:large) href="#"
                       = image_tag thumb_images.try(:attachment).try(:url, :mini), class: "img-responsive img_center", id: "zoom_01"
    
             .col-sm-7

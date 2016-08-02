@@ -1348,6 +1348,11 @@ div.required .control-label:before {
   display: none;
 }
 
+.center{
+  text-align: center;
+  display: table;
+}
+
 .addthis_default_style > a {
   padding: 0;
 }

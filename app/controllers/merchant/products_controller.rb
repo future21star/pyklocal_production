@@ -26,6 +26,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   end
 
   def create
+    @is_owner = is_owner?(current_spree_user.stores.first)
     @product = Spree::Product.new(product_params)
     @product.attributes = product_params.merge({store_id: current_spree_user.stores.first.id})
     if @product.save
@@ -40,8 +41,6 @@ class Merchant::ProductsController < Merchant::ApplicationController
   def bulk_upload
     row_array = Array.new
     my_file = params[:file]
-    p "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-    p my_file.path
     ImportProductWorker.perform_in(5.seconds, my_file.path, current_spree_user.email)
     redirect_to merchant_products_path, notice: "Your Product importing from the csv you uploaded, we will notify you it's progress through email"
   end
