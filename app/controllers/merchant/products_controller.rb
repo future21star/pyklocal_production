@@ -26,6 +26,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   end
 
   def create
+    @is_owner = is_owner?(current_spree_user.stores.first)
     @product = Spree::Product.new(product_params)
     @product.attributes = product_params.merge({store_id: current_spree_user.stores.first.id})
     if @product.save

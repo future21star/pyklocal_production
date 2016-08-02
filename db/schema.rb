@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160729130023) do
+ActiveRecord::Schema.define(version: 20160802070707) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -288,10 +288,12 @@ ActiveRecord::Schema.define(version: 20160729130023) do
   add_index "spree_credit_cards", ["user_id"], name: "index_spree_credit_cards_on_user_id", using: :btree
 
   create_table "spree_customer_returns", force: :cascade do |t|
-    t.string   "number",            limit: 255
-    t.integer  "stock_location_id", limit: 4
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.string   "number",                         limit: 255
+    t.integer  "stock_location_id",              limit: 4
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.string   "user_id",                        limit: 255
+    t.string   "return_authorization_reason_id", limit: 255
   end
 
   create_table "spree_gateways", force: :cascade do |t|

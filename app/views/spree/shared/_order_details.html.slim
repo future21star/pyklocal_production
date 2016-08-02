@@ -81,8 +81,8 @@ table.table.table-bordered.table-hover
             span= item.single_money.to_html
           td.text-center data-hook="order_item_total" 
             span= item.display_amount.to_html
-          td.text-text-right style=("white-space: nowrap;") 
-            a.btn.btn-primary data-toggle="tooltip" href=new_customer_return_path title="Return" 
+          td.text-text-right style=("white-space: nowrap;")
+            = link_to  new_customer_return_path(order_number: order.number), class: "btn btn-primary"
               i.fa.fa-reply
     tfoot#order-total data-hook="order_details_total" 
       tr.warning.total

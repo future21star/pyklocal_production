@@ -1,69 +1,38 @@
 class Spree::CustomerReturnsController < Spree::StoreController
-    # belongs_to 'spree/order', find_by: :number  
 
-    before_action :parent # ensure order gets loaded to support our pseudo parent-child relationship
-    before_action :load_form_data, only: [:new, :edit]
-
-    create.before :build_return_items_from_params
-    create.fails  :load_form_data
-
-    def edit
-      returned_items = @customer_return.return_items
-      @pending_return_items = returned_items.select(&:pending?)
-      @accepted_return_items = returned_items.select(&:accepted?)
-      @rejected_return_items = returned_items.select(&:rejected?)
-      @manual_intervention_return_items = returned_items.select(&:manual_intervention_required?)
-      @pending_reimbursements = @customer_return.reimbursements.select(&:pending?)
-
-      super
-    end
+  def index
+    @customer_return_request = spree_current_user.customer_returns
     
-    def create
+  end
+
+  def new
+    if params[:order_number].blank?
+      redirect_to :back, :params => @params 
+    else
+      @customer_return = Spree::CustomerReturn.new
+      @order = Spree::Order.where(number: params[:order_number]).first
+      @request_auth = @order.return_authorizations.last
+      @inventoryunit = @order.inventory_units.last
+    end
+
+  end
+
+
+  def create
+    @customer_return = Spree::CustomerReturn.new(customer_returns_param.merge({user_id: current_spree_user.id}))
+    p @customer_return.errors
+    if @customer_return.save
+      redirect_to customer_returns_path, notice: " Your request have been submitted"
+    else
+      redirect_to customer_returns_path, notice: "Request is already submitted"
+    end
+  end
+
+  private
+
+    def customer_returns_param
+      params.require(:customer_return).permit(:number, :stock_location_id, :return_authorization_reason_id)
       
     end
-
-    private
-
-    def location_after_save
-      url_for([:edit, :admin, @order, @customer_return])
-    end
-
-    def build_resource
-      Spree::CustomerReturn.new
-    end
-
-    def find_resource
-      Spree::CustomerReturn.accessible_by(current_ability, :read).find(params[:id])
-    end
-
-    def collection
-      parent # trigger loading the order
-      @collection ||= Spree::ReturnItem
-        .accessible_by(current_ability, :read)
-        .where(inventory_unit_id: @order.inventory_units.pluck(:id))
-        .map(&:customer_return).uniq.compact
-      @customer_returns = @collection
-    end
-
-    def load_form_data
-      return_items = @order.inventory_units.map(&:current_or_new_return_item).reject(&:customer_return_id)
-      @rma_return_items = return_items.select(&:return_authorization_id)
-    end
-
-    def permitted_resource_params
-      @permitted_resource_params ||= params.require('customer_return').permit(permitted_customer_return_attributes)
-    end
-
-    def build_return_items_from_params
-      return_items_params = permitted_resource_params.delete(:return_items_attributes).values
-
-      @customer_return.return_items = return_items_params.map do |item_params|
-        next unless item_params.delete('returned') == '1'
-        return_item = item_params[:id] ? Spree::ReturnItem.find(item_params[:id]) : Spree::ReturnItem.new
-        return_item.attributes = item_params
-        return_item
-      end.compact
-    end
-
 
 end

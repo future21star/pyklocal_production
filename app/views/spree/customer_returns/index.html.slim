@@ -1,0 +1,23 @@
+#container
+  .container
+    .col-sm-3
+      =render :partial => "spree/shared/user_menu", locals: {current: "customer_return"}
+    .col-sm-9
+      h2 Your Order Return Request
+      - if !@customer_return_request.blank?
+        table#listing_named_types.table data-hook="" 
+          thead
+            tr 
+              th Request Number
+              th Order Number 
+          tbody id="" 
+            - @customer_return_request.each do |named_type|
+              tr data-hook="" id="" 
+                td.align-center
+                  = named_type.number
+                td.align-center
+                / td.actions.actions-1.text-right
+                /   = link_to "<span class='fa'></span>".html_safe, edit_merchant_return_authorization_reason_path(named_type.id), class: "btn btn-info btn-sm", "data-no-turbolink" => true
+                /   = link_to "<span class='fa'></span>".html_safe, merchant_return_authorization_reason_path(named_type.id), class: "btn btn-danger btn-sm", method: "delete"
+      - else
+          | You didnt make any request to Order return

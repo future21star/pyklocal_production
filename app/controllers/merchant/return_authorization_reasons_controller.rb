@@ -1,9 +1,6 @@
 class Merchant::ReturnAuthorizationReasonsController < Merchant::ApplicationController
 
   def index
-    p "----------------------------"
-    p current_spree_user.stores.first.id
-    p "--------------------------------"
     @return_auth_reason = Spree::ReturnAuthorizationReason.where(store_id: current_spree_user.stores.first.id).order("created_at desc")
     @is_owner = is_owner?(current_spree_user.stores.first)
   end

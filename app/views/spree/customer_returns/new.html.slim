@@ -1,0 +1,45 @@
+#container
+  .container
+    = form_for @customer_return do |f|
+      fieldset.no-border-top
+        div data-hook="admin_customer_return_form_fields" 
+          fieldset
+            - if !@request_auth.blank?
+              table.table.table-condensed.table-bordered
+                thead
+                  tr
+                    th.text-center= Spree.t(:product)
+                    th.text-center= Spree.t(:sku)
+                    th.text-center= Spree.t(:pre_tax_amount)
+                    th.text-center= Spree.t(:exchange_for)
+                    th.text-center= Spree.t(:resellable)
+                tbody
+                    tr
+                      td.text-center
+                        .variant-name= @inventoryunit.variant.name
+                        .variant-options= @inventoryunit.variant.options_text
+                      td.text-center
+                        = @inventoryunit.variant.sku
+                      td.text-center
+                        =@request_auth.return_items.first.pre_tax_amount
+                      td.text-center
+                      td 
+              = hidden_field_tag "[customer_return][number]", @order.number
+              = f.field_container :stock_location, class: ['form-group'] do
+                = f.label :stock_location, Spree.t(:stock_location)
+                = f.select :stock_location_id, Spree::StockLocation.order_default.active.to_a.collect{|l|[l.name, l.id]}, {include_blank: true}, {class: ' form-control select2', "data-placeholder" => Spree.t(:select_a_stock_location)}
+                = f.error_message_on :stock_location_id
+
+              = f.field_container :reason, class: ['form-group'] do
+                = f.label :reason, Spree.t(:reason)
+                = f.select :return_authorization_reason_id, Spree::ReturnAuthorizationReason.all.collect{|r|[r.name, r.id]}, {include_blank: true}, {class: 'form-control select2', "data-placeholder" => Spree.t(:select_a_return_authorization_reason)}
+                = f.error_message_on :reason
+
+
+            - else
+              .alert.alert-info.no-objects-found
+                | This Item is not authorized to return 
+        .form-actions data-hook="buttons" 
+          = button Spree.t(:create), 'submit'
+          span.or= Spree.t(:or)
+          = button_link_to Spree.t('actions.cancel'), spree.customer_returns_path, icon: 'delete'

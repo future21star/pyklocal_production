@@ -19,6 +19,7 @@ Spree::User.class_eval do
   has_many :wishlists
   has_many :ratings, foreign_key: :user_id
   has_many :comments, foreign_key: :user_id
+  has_many :customer_returns, class_name: 'Spree::CustomerReturn'
   
   #---------------------Callbacks--------------------------
   after_create :assign_api_key 
