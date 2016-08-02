@@ -135,7 +135,7 @@ module Spree
 
     def build_image(product, image_url)
       image_url.split(",").each do |url|
-        image = product.images.build(attachment: File.open(url.strip))
+        image = product.images.build(attachment: url.strip)
         image.save
       end
     end
