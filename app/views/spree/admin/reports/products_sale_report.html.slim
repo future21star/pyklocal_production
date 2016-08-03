@@ -1,0 +1,24 @@
+- content_for :page_title do 
+  = link_to Spree.t(:reports), spree.admin_reports_url
+  = Spree.t(:sales_totals)
+
+.well
+  = render :partial => 'spree/admin/shared/report_product_criteria'
+
+table.table.table-bordered.admin-report data-hook="sales_total"
+  thead
+    tr
+      th= Spree.t(:sku)
+      th= Spree.t(:product_name)
+      th= Spree.t(:price)
+      th= Spree.t(:sales_total)
+      th= Spree.t(:store)
+  tbody
+    - unless @products.blank?
+      - @products.each do |product|
+        tr
+          td= product.sku
+          td= product.name
+          td= number_to_currency(product.price)
+          td= product.sell_count
+          td= product.store_name

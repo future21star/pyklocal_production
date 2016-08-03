@@ -143,6 +143,12 @@ Pyklocal::Application.routes.draw do
         resources :payment_histories
         get :store_orders
       end
+      resources :reports, only: [:index] do
+        collection do
+          get :products_sale_report
+          post :products_sale_report
+        end
+      end
     end
 
   end

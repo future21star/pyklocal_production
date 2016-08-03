@@ -5,6 +5,7 @@ module Spree
     inverse_of: :product, class_name: 'Spree::Variant'
     has_many :comments, as: :commentable
     has_many :ratings, as: :rateable
+
     attr_accessor :image_url
 
     after_create :save_image
@@ -13,6 +14,10 @@ module Spree
 
     accepts_nested_attributes_for :product_properties, allow_destroy: true
     accepts_nested_attributes_for :variant_images
+
+    self.whitelisted_ransackable_associations = %w[stores variants_including_master master variants store]
+    self.whitelisted_ransackable_attributes = %w[description name slug sell_count]
+
     searchable do
       text :name 
       text :store_name
@@ -66,7 +71,7 @@ module Spree
     end
 
     def sell_count
-      line_items.joins(:order).where(spree_orders: {state: "completed"}).count
+      line_items.joins(:order).where(spree_orders: {state: "complete"}).count
     end
 
     def view_count
