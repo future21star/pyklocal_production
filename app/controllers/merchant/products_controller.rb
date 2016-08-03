@@ -45,6 +45,10 @@ class Merchant::ProductsController < Merchant::ApplicationController
     redirect_to merchant_products_path, notice: "Your Product importing from the csv you uploaded, we will notify you it's progress through email"
   end
 
+  def sample_csv
+    send_file(File.open(Rails.root.join("public", "sample_csv.csv"), "r"))
+  end
+
   def update
     redirect_path = params[:redirect_path].present? ? params[:redirect_path] : edit_merchant_product_path(@product)
     if @product.update_attributes(product_params)
@@ -86,7 +90,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   private
 
   def product_params
-    params.require(:product).permit(:name, :slug, :description,:asin,:brand, :taxon_ids, :option_type_ids, :tax_category_id, :price, :sku, :store_id, :shipping_category_id, :available_on, :discontinue_on, :promotionable, :payment_method, product_properties_attributes: [:property_id, :value, :id, :property_name])
+    params.require(:product).permit(:name, :slug, :description,:asin,:brand, :taxon_ids, :option_type_ids, :tax_category_id, :price, :sku, :store_id, :shipping_category_id, :available_on, :discontinue_on, :promotionable, :payment_method, :cost_price, :cost_currency, :weight, :height, :width, :depth, :meta_keywords, :meta_description, product_properties_attributes: [:property_id, :value, :id, :property_name])
   end
 
   def verify_access_for_merchants

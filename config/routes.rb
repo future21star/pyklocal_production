@@ -22,6 +22,7 @@ Pyklocal::Application.routes.draw do
           get :stock
           collection do
             post :bulk_upload
+            get :sample_csv
           end
         end
         resources :orders do

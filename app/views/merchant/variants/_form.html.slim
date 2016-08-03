@@ -4,9 +4,10 @@
   .row.top-margin-row
     .col-md-6
       .form-content-left
-        .form-group
-          = f.label :size, class: "control-label"
-          = f.select :option_value_ids, Spree::OptionValue.where(option_type_id: @product.option_types.collect(&:id)).collect {|s| [s.name, s.id]}, {}, class: "select2 fullwidth form-control input-bg auto-select"
+        - @product.option_types.each do |option_type|
+          .form-group
+            = f.label option_type.presentation, class: "control-label"
+            = select_tag "variant[option_value_ids][]", options_for_select(Spree::OptionValue.where(option_type_id: option_type.id).collect {|s| [s.presentation, s.id]}, option_type.presentation), class: "select2 fullwidth form-control input-bg auto-select"
         .form-group
           = f.label :sku, class: "control-label"
           span.input-icon.icon-right
@@ -53,7 +54,8 @@
       .col-md-6.update-btn
         button.btn.btn-primary type="submit"
           i.fa.fa-check
-          |  Create 
+          |  
+          = "#{@variant.new_record? ? 'Create' : 'Update'}" 
       .col-md-6
         = link_to merchant_stores_products_variants_path(product_id: @product.slug), class: "btn btn-default" do 
           i.fa.fa-remove

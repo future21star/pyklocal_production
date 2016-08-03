@@ -23,7 +23,7 @@
               - unless @variants.blank?
                 - @variants.each do |variant|
                   tr
-                    td= Spree::OptionValue.where(id: variant.option_value_ids).first.try(:name)
+                    td= variant.option_values.try(:collect, &:presentation).join(", ")
                     td= @product.try(:price)
                     td= @product.sku
                     td.btn-part

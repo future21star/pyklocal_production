@@ -1,0 +1,3 @@
+Product Name,Price,Description,Image Urls,Properties,Variants,Categories
+Sample Product 1,120,This is a sample Product,https://s3.amazonaws.com/mashkar_prod/spree/printings/57/large/IMG_6032.JPG,"Brand: Samsung, Material: Leather","color: red, size: large","Bags, Mugs"
+Sample Product 2,140,This is a sample Product 1,https://s3.amazonaws.com/mashkar_prod/spree/printings/57/large/IMG_6032.JPG,"Brand: Samsung, Material: Leather","color: red, size: large","categories/bags, categories/clothings/men"

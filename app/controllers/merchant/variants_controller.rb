@@ -46,7 +46,7 @@ class Merchant::VariantsController < Merchant::ApplicationController
 	private
 
 		def variant_params
-			params.require(:variant).permit(:sku, :weight, :height, :width, :depth, :is_master, :product_id, :cost_price, :cost_currency, :position, :track_inventory, :tax_category_id, :option_value_ids, :price)
+			params.require(:variant).permit(:sku, :weight, :height, :width, :depth, :is_master, :product_id, :cost_price, :cost_currency, :position, :track_inventory, :tax_category_id, :price, option_value_ids: [])
 		end
 
 		def find_variant

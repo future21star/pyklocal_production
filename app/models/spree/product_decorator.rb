@@ -104,19 +104,23 @@ module Spree
     end
 
     def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants, categories)
-      product = Spree::Product.new({name: name, price: master_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id})
-      product.save
-      unless categories.blank?
-        product.build_category(product, categories)
-      end
-      unless image_url.blank?
-        product.build_image(product, image_url)
-      end
-      unless properties.blank?
-        product.build_property(product, properties)
-      end
-      unless variants.blank?
-        product.build_variant(product, variants)
+      p "*************************************************************************************************************"
+      p Spree::Product.where(name: name, store_id: store_id).present?
+      unless Spree::Product.where(name: name, store_id: store_id).present?
+        product = Spree::Product.new({name: name, price: master_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id})
+        product.save
+        unless categories.blank?
+          product.build_category(product, categories)
+        end
+        unless image_url.blank?
+          product.build_image(product, image_url)
+        end
+        unless properties.blank?
+          product.build_property(product, properties)
+        end
+        unless variants.blank?
+          product.build_variant(product, variants)
+        end
       end
     end
 
@@ -124,13 +128,11 @@ module Spree
       taxon_ids = []
       categories.split(",").each do |category|
         taxon = Spree::Taxon.where(permalink: category.strip).first
-        p taxon
         if taxon.present?
           taxon_ids << taxon.id
         end
       end
       product.update_attributes(taxon_ids: taxon_ids)
-      p product.taxon_ids
     end
 
     def build_image(product, image_url)
