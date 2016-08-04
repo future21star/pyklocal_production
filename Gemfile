@@ -27,6 +27,7 @@ gem 'sunspot_solr'
 gem 'progress_bar'
 gem 'noty-rails'
 
+
 # Use geokit gem to calculate distance
 # gem 'geokit-rails', '2.0.1'
 # gem 'geokit', '1.8.5'

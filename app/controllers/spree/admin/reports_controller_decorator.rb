@@ -29,6 +29,14 @@ module Spree
         @search = Spree::Product.ransack(params[:q])
         @products = @search.result(distinct: true).joins(:orders)
         @merchant = Merchant::Store.all
+
+        if params[:download_excel] && eval(params[:download_excel])
+          request.format = "xls"
+          respond_to do |format|
+            format.xls #{ send_file(file_name) }
+          end
+        end
+
       end
 
     end

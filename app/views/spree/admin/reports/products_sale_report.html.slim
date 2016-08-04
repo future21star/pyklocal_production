@@ -3,7 +3,7 @@
   |/
   = Spree.t(:products_sale)
   .pull-right
-    = link_to "Download As Excel", products_sale_report_admin_reports_path(download_excel: true), class: "btn btn-primary"
+    = link_to "Download As Excel", products_sale_report_admin_reports_path(download_excel: true, :format => :xls, q: params[:q]), class: "btn btn-primary"
 
 .well
   = render :partial => 'spree/admin/shared/report_product_criteria'
