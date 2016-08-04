@@ -13,15 +13,8 @@ var Store = function(){
   this.init();
 }
 
-$(document).ready(function() {
-  console.log("*********************************************************");
-  var myStore = new Store();
-  console.log(myStore);
-});
-
 Store.prototype = {
   init: function() {
-    this.showNoty();
     this.bindAddLocation();
     this.previewMap();
     this.saveLocation();
@@ -141,21 +134,20 @@ Store.prototype = {
     $(document).on("click", "#save-location", function(event) {
       var $this = $(event.target);
       if(this.lastMarker) {
-        alert("Please select the location");
+        noty({text: "Please select the location", type: "error"});
       } else {
         $.ajax({
           url: "/api/v1/merchant_stores/"+$this.data("store_id")+"/update_location",
           method: "put",
-          data: { "merchant_store[latitude]": myStore.lastMarker.position.lat(), "merchant_store[longitude]": myStore.lastMarker.position.lng()},
+          data: { "merchant_store[latitude]": myCompany.lastMarker.position.lat(), "merchant_store[longitude]": myCompany.lastMarker.position.lng()},
           success: function(data, status) {
             if(data.success) {
-              $("#map-preview").data("latitude", myStore.lastMarker.position.lat());
-              $("#map-preview").data("longitude", myStore.lastMarker.position.lng());
+              $("#map-preview").data("latitude", myCompany.lastMarker.position.lat());
+              $("#map-preview").data("longitude", myCompany.lastMarker.position.lng());
               $("#map-preview").data("is_located", true);
-              myStore.previewMap(); 
-              location = window.location.href.split("#")[0];
-              $('.modal').modal('hide');
+              myCompany.previewMap();
               noty({text: "Location updated successfully", type: "info"});
+              $('.modal').modal('hide');
             } else {
               noty({text: data.message, type: "error"});
             }
@@ -199,10 +191,10 @@ Store.prototype = {
       dismissQueue: true, // If you want to use queue feature set this true
       template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
       animation: {
-          open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
-          close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
-          easing: 'swing',
-          speed: 500 // opening & closing animation speed
+        open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+        close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+        easing: 'swing',
+        speed: 500 // opening & closing animation speed
       },
       timeout: 5000, // delay for closing event. Set false for sticky notifications
       force: false, // adds notification to the beginning of queue when set to true
@@ -224,3 +216,7 @@ Store.prototype = {
     }
   }
 }
+
+// $(document).ready(function() {
+var myCompany = new Store();
+// });
