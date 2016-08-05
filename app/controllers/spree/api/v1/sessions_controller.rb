@@ -10,8 +10,13 @@ module Spree
 				user = Spree::User.find_by_email(params[:email])
 				unless user.blank?
 					if user.valid_password?(params[:password])
-						@response = get_response(user)
-						@response[:message] = "Login successfull"
+						if user.has_spree_role?("driver")
+							@response = get_response(user)
+							@response[:message] = "Login successfull"
+						else
+							@response = error_response
+							@response[:message] = "Your account has not actived by admin"
+						end
 					else
 						@response = error_response
 						@response[:message] = "Invalid password"
