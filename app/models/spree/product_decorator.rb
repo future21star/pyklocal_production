@@ -15,7 +15,7 @@ module Spree
     accepts_nested_attributes_for :product_properties, allow_destroy: true
     accepts_nested_attributes_for :variant_images
 
-    self.whitelisted_ransackable_associations = %w[stores variants_including_master master variants store orders]
+    self.whitelisted_ransackable_associations = %w[stores variants_including_master master variants store orders line_items]
     self.whitelisted_ransackable_attributes = %w[description name slug sell_count]
 
     searchable do

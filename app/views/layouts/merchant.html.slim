@@ -28,13 +28,14 @@ html lang="#{I18n.locale}"
         = yield :templates
     = render partial: "spree/shared/footer"
     = javascript_include_tag 'spree/backend/all', media: "all", "data-turbolinks-track" => false
-    = javascript_include_tag 'merchant', media: 'all', "data-turbolinks-track" => false
-    = javascript_include_tag 'custom', media: 'all', "data-turbolinks-track" => false
-    script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.3.8/packaged/jquery.noty.packaged.min.js"
+    
     script type="text/javascript"
       | var noty_option = 
       = flash_message.to_json.html_safe
       |;
+    = javascript_include_tag 'merchant', media: 'all', "data-turbolinks-track" => false
+    = javascript_include_tag 'custom', media: 'all', "data-turbolinks-track" => false
+    script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.3.8/packaged/jquery.noty.packaged.min.js"
     = yield :js
     = render "spree/admin/shared/translations"
     - if Rails.env == "production"

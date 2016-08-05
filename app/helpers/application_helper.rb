@@ -10,7 +10,7 @@ module ApplicationHelper
 
   def flash_message
     message = ""
-    [:notice, :alert, :success, :error].each do |type|
+    [:notice, :alert, :success, :error, :warning, :information, :confirm].each do |type| 
       if(!flash[type].blank?)
         return {
           text: flash[type],
