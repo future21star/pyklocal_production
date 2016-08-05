@@ -13,7 +13,7 @@
         p.b-header-subtitle 
           i.fa &#xf00c;
           |  Use our platform to sell your products.
-        = form_for Spree::User.new, html: {class: "form-horizontal form-body"}, :as => :spree_user, url: spree.registration_path do |user_form|
+        = form_for Spree::User.new, html: {class: "form-horizontal form-body", multipart: true}, :as => :spree_user, url: spree.registration_path do |user_form|
           .form-group
             .col-md-2.col-xs-12
               = user_form.label :email, class: "control-label"
@@ -41,7 +41,7 @@
               = label_tag :logo, "Logo", class: "control-label"
             .col-md-4.col-xs-12
               span
-                = file_field_tag "spree_user[stores_attributes][][logo]", class: "form-control" 
+                = file_field_tag "spree_user[stores_attributes][][logo]",class: "form-control" 
           .form-group
             .col-md-2.col-xs-12
               = label_tag :manager_name, "Manager Name", class: "control-label"

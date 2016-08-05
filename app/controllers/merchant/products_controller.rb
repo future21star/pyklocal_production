@@ -51,6 +51,16 @@ class Merchant::ProductsController < Merchant::ApplicationController
 
   def update
     redirect_path = params[:redirect_path].present? ? params[:redirect_path] : edit_merchant_product_path(@product)
+    if params[:product][:taxon_ids].present?
+      p "***********************************************************"
+      params[:product][:taxon_ids] = params[:product][:taxon_ids].split(",")
+      p product_params
+    end
+    if params[:product][:option_type_ids].present?
+      p "***************************123********************************"
+      params[:product][:option_type_ids] = params[:product][:option_type_ids].split(",")
+      p params[:product][:option_type_ids]
+    end
     if @product.update_attributes(product_params)
       redirect_to redirect_path, notice: "Product updated successfully"
     else
@@ -90,7 +100,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   private
 
   def product_params
-    params.require(:product).permit(:name, :slug, :description,:asin,:brand, :taxon_ids, :option_type_ids, :tax_category_id, :price, :sku, :store_id, :shipping_category_id, :available_on, :discontinue_on, :promotionable, :payment_method, :cost_price, :cost_currency, :weight, :height, :width, :depth, :meta_keywords, :meta_description, product_properties_attributes: [:property_id, :value, :id, :property_name])
+    params.require(:product).permit(:name, :slug, :description, :asin, :brand, :tax_category_id, :price, :sku, :store_id, :shipping_category_id, :available_on, :discontinue_on, :promotionable, :payment_method, :cost_price, :cost_currency, :weight, :height, :width, :depth, :meta_keywords, :meta_description, product_properties_attributes: [:property_id, :value, :id, :property_name], taxon_ids: [], option_type_ids: [])
   end
 
   def verify_access_for_merchants
