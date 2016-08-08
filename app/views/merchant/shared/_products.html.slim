@@ -1,7 +1,10 @@
-- if products.empty?
-	b You donot have any product to sell. Add your products
-- elsif params.key?(:keywords)
-  h6.search-results-title= Spree.t(:search_results, :keywords => h(params[:keywords]))
+- if @is_owner
+  - if products.empty? && @store.active
+  	b You donot have any product to sell. Add your products
+  - elsif products.empty? && !@store.active
+    b We are reviewing your application and will let you know within 24 - 48 hours.
+- else
+  b No product listed for this store.
 
 - if products.any?
   .row#products

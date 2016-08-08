@@ -41,7 +41,7 @@ class Merchant::ApplicationController < ActionController::Base
   end
 
   def is_owner?(store)
-    if current_spree_user && current_spree_user.has_spree_role?("merchant")
+    if current_spree_user
       current_spree_user.stores.include?(store)
     else
       false

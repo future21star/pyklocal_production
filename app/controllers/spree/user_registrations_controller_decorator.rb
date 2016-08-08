@@ -7,7 +7,7 @@ module Spree
       yield resource if block_given?
       if resource_saved
         if resource.active_for_authentication?
-          set_flash_message :notice, spree_user_params["stores_attributes"].present? ? Spree.t(:"PYKLOCAL_is_currently_reviewing_the_registration_request_and_will_approve_in_next_24-48_hours") : :signed_up
+          set_flash_message :notice, spree_user_params["stores_attributes"].present? ? :inactive_store : :signed_up
           sign_up(resource_name, resource)
           session[:spree_user_signup] = true
           respond_with resource, location: after_sign_up_path_for(resource)

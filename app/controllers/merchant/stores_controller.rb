@@ -14,7 +14,6 @@ class Merchant::StoresController < Merchant::ApplicationController
 	end
 
 	def show
-    @stores = current_spree_user.try(:stores).first
     @products = @store.spree_products.page(params[:page]).per(8).order("created_at desc")
     @is_owner = is_owner?(@store)
   end
