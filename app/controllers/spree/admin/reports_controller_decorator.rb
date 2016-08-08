@@ -20,14 +20,11 @@ module Spree
           params[:q][:orders_completed_at_lt] = Time.zone.parse(params[:q][:orders_completed_at_lt]).end_of_day rescue ""
         end
 
-        if params[:q] && !params[:q][:sell_count_gt].blank?
-          params[:q][:sell_count_gt] = "sell_count desc"
-        end
-
         params[:q][:s] ||= "orders_completed_at desc"
         
         @search = Spree::Product.ransack(params[:q])
-        @products = @search.result(distinct: true).joins(:orders)
+        @products = @search.result(distinct: true).joins(:orders).where(spree_orders: {state: "complete"}).page(params[:page]).
+          per(30)
         @merchant = Merchant::Store.all
 
         if params[:download_excel] && eval(params[:download_excel])

@@ -1,5 +1,12 @@
 #container
   .container
+    ul.breadcrumb
+      li
+        a href="/"
+          i.fa.fa-home
+          | Home
+      li
+        span Shop
     .row
       column#column-left.col-sm-3.hidden-xs
         = form_tag(" ", :method => :get, :id => "facet-filter") do

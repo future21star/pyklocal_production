@@ -13,8 +13,8 @@ table.table.table-bordered.admin-report data-hook="sales_total"
     tr
       th= Spree.t(:sku)
       th= Spree.t(:product_name)
-      th= Spree.t(:price)
-      th= sort_link @search, :line_items_count, Spree.t(:sales_total)
+      th= sort_link @search, :master_default_price_amount, Spree.t(:master_price), {}, {title: 'admin_products_listing_price_title'} 
+      th= sort_link @search, :line_items_count, Spree.t(:sales_total), {}, {title: 'line_items_count'}
       th= Spree.t(:store)
   tbody
     - unless @products.blank?
