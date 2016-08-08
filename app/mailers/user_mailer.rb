@@ -14,6 +14,11 @@ class UserMailer < ActionMailer::Base
  		mail(to: "prashant.mishra@w3villa.com", subject: "#{store.name} is created/updated")
  	end
 
+  def notify_user_store_save(store)
+    @store = store
+    mail(to: @store.spree_users.first.email, subject: "#{store.name} Is Created")
+  end  
+
  	def notify_store_approval(user)
  		@store = user.stores.first
  		mail(to: user.email, subject: "#{@store.name} is now approved")

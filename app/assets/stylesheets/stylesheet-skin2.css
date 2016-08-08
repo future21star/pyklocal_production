@@ -1,46 +1,46 @@
 @font-face{
-	font-family:OpenSansRegular;
-	src:url(../fonts/OpenSans-Regular-webfont.eot);
-	src:url(../fonts/OpenSans-Regular-webfont.eot?#iefix) format('embedded-opentype'),url(../fonts/OpenSans-Regular-webfont.woff) format('woff'),url(../fonts/OpenSans-Regular-webfont.ttf) format('truetype'),url(../fonts/OpenSans-Regular-webfont.svg#OpenSansRegular) format('svg');
-	font-weight:400;
-	font-style:normal;
+  font-family:OpenSansRegular;
+  src:url(../fonts/OpenSans-Regular-webfont.eot);
+  src:url(../fonts/OpenSans-Regular-webfont.eot?#iefix) format('embedded-opentype'),url(../fonts/OpenSans-Regular-webfont.woff) format('woff'),url(../fonts/OpenSans-Regular-webfont.ttf) format('truetype'),url(../fonts/OpenSans-Regular-webfont.svg#OpenSansRegular) format('svg');
+  font-weight:400;
+  font-style:normal;
 }
 html{
-	overflow:-moz-scrollbars-vertical;
-	margin:0;
-	padding:0;
-	-webkit-font-smoothing:antialiased;
+  overflow:-moz-scrollbars-vertical;
+  margin:0;
+  padding:0;
+  -webkit-font-smoothing:antialiased;
 }
 body{
-	background:#fff;
-	color:#222;
-	line-height:18px;
-	font-size:12px;
+  background:#fff;
+  color:#222;
+  line-height:18px;
+  font-size:12px;
   font-family: Droid Sans;
 }
 ol,ul{
-	margin:0;
-	padding:0;
+  margin:0;
+  padding:0;
 }
 #container h1{
-	color:#000;
-	margin:0 0 20px;
-	font-size:35px;
-	line-height:normal;
-	font-weight:400;
-	text-rendering:optimizelegibility;
+  color:#000;
+  margin:0 0 20px;
+  font-size:35px;
+  line-height:normal;
+  font-weight:400;
+  text-rendering:optimizelegibility;
 }
 #container h2,#container h3{
-	position:relative;
-	padding:0 0 3px;
-	margin:0 0 20px;
-	line-height:normal;
-	font-size:20px;
-	color:#000;
-	border-bottom:2px solid #ddd;
+  position:relative;
+  padding:0 0 3px;
+  margin:0 0 20px;
+  line-height:normal;
+  font-size:20px;
+  color:#000;
+  border-bottom:2px solid #ddd;
 }
 #container h3 .viewall{
-	font-size:12px;
+  font-size:12px;
 }
 
 .store-btn a:hover{
@@ -48,13 +48,13 @@ ol,ul{
   color:#fff;
 }
 a,a b{
-	color:#3e7cb4;
-	text-decoration:none;
-	cursor:pointer;
+  color:#3e7cb4;
+  text-decoration:none;
+  cursor:pointer;
 }
  a b:hover,a:hover{
-	text-decoration:none;
-	color:#C30505;
+  text-decoration:none;
+  color:#C30505;
 }
 
 
@@ -63,31 +63,31 @@ a,a b{
 }
 
 a:focus{
-	outline:0;
+  outline:0;
 }
 legend{
-	font-size:18px;
-	padding:7px 0;
+  font-size:18px;
+  padding:7px 0;
 }
 label{
-	font-weight:400;
+  font-weight:400;
 }
 .clear{
-	clear:both;
+  clear:both;
 }
 form{
-	padding:0;
-	margin:0;
-	display:inline;
+  padding:0;
+  margin:0;
+  display:inline;
 }
 .form-control{
-	border-radius:0;
+  border-radius:0;
 }
 img{
 vertical-align:inherit;
 }
 .img-thumbnail{
-	border-radius:0;
+  border-radius:0;
 }
 span.hidden-lg,
 span.hidden-md,

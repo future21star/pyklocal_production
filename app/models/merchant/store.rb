@@ -19,6 +19,7 @@ module Merchant
     attr_accessor :taxon_ids
     
     after_save :notify_admin
+    after_create :notify_user
 
     has_attached_file :logo,  
       Pyklocal::Configuration.paperclip_options[:stores][:logo]
@@ -113,6 +114,12 @@ module Merchant
         unless self.changes.include?(:active)
           UserMailer.notify_store_save(self).deliver
         end
+      end
+
+      def notify_user
+        p "***************************************"
+        p self.spree_users
+        # UserMailer.notify_user_store_save(self).deliver
       end
 
   end

@@ -26,6 +26,7 @@ Spree::User.class_eval do
   after_create :notify_admin
   after_update :notify_user
   attr_accessor :role_name
+
   accepts_nested_attributes_for :parse_links, :reject_if => lambda { |a| a[:url].blank? }
   accepts_nested_attributes_for :stores, allow_destroy: true
   accepts_nested_attributes_for :store_users, allow_destroy: true
@@ -145,6 +146,13 @@ Spree::User.class_eval do
         UserMailer.notify_driver_approval(self).deliver
       end
     end
+
+    # def notify_user
+    #   if self.spree_role_ids.include?(Spree::Role.where(name: "merchant").first.try(:id)) && !stores.first.active
+    #     stores.first.update_attributes(active: true)
+    #     UserMailer.notify_store_approval(self).deliver
+    #   end
+    # end
 
     
 

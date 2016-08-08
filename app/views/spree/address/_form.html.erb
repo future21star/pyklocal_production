@@ -52,9 +52,9 @@
       <% end %>
 
       <%== state_elements = [
-         form.collection_select(:state_id, address.country.states.where(abbr: "NY"),
+         form.collection_select(:state_id, address.country.states,
                             :id, :name,
-                            {},
+                            {:include_blank => true},
                             {:class => have_states ? 'form-control required' : 'form-control hidden',
                             :disabled => !have_states}) +
          form.text_field(:state_name,
@@ -67,6 +67,7 @@
         <%= form.text_field :state_name, :class => 'form-control required' %>
       </noscript>
   <% end %>
+
 
   <p class="form-group" id=<%="#{address_id}zipcode" %>>
     <%= form.label :zipcode do %>
