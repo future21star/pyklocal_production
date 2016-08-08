@@ -1,12 +1,15 @@
 #container
-	ul.breadcrumb
+  .container
+    ul.breadcrumb
       li
         a href="/" 
           i.fa.fa-home
           | Home
+      li 
+        a href=merchant_path
+          | Merchant
       li
-        span  Update Store Information
-	.container
-	  legend Editing store
+        span  Edit store
 
+	  legend Editing store
 	  = render 'form' 

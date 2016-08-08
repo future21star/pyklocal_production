@@ -107,14 +107,15 @@ Store.prototype = {
 
   addSearchBoxInMap: function(map) {
 
-    var input = $("<input>").attr({type: "text", id: "pac-input", class: "controls form-control map-search", placeholder: "Search a location..."})[0];
+    var input = $("<input>").attr({type: "text", id: "pac-input", class: "controls form-control map-search"})[0];
     map.controls[google.maps.ControlPosition.TOP].push(input);
-    var searchBox = new google.maps.places.SearchBox(input);
+    var searchBox = new google.maps.places.Autocomplete(input);
+    // searchBox.bindTo('bounds', map);
     var markers = [];
 
     google.maps.event.addListener(searchBox, 'places_changed', function() {
 
-      var places = searchBox.getPlaces();
+      var place = searchBox.getPlace();
 
       for (var i = 0, marker; marker = markers[i]; i++) {
         marker.setMap(null);
@@ -125,18 +126,19 @@ Store.prototype = {
       var bounds = new google.maps.LatLngBounds();
 
       for (var i = 0, place; place = places[i]; i++) {
-        var image = {
-          url: place.icon,
-          size: new google.maps.Size(71, 71),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(17, 34),
-          scaledSize: new google.maps.Size(25, 25)
-        };
+        var place = places[i];
+        var marker = new google.maps.Marker({
+          map: map,
+          title: place.name,
+          position: place.geometry.location,
+          draggable: true
+        });
+        markers.push(marker);
 
         bounds.extend(place.geometry.location);
       }
-
       map.fitBounds(bounds);
+      if (markers.length == 1) map.setZoom(17);
     });
 
     google.maps.event.addListener(map, 'bounds_changed', function() {

@@ -20,6 +20,9 @@ class Merchant::StoresController < Merchant::ApplicationController
 
   # GET /stores/new
   def new
+    if current_spree_user && current_spree_user.stores.present?
+      redirect_to current_spree_user.stores.first
+    end
     @store = Merchant::Store.new()
     @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
   end
