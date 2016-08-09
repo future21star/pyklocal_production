@@ -10,12 +10,12 @@ table.table.table-striped
 			th Total Amount
 	tbody
 		- unless @store_order.blank?
-			-@store_order.each do |order|
+			- @store_order.each do |order|
 				tr
 
 					th= link_to order.number, spree.edit_admin_order_path(order)
 					th= order.quantity
-					th= order.total
+					th= order.total_after_commission
 			end
 		- else
 			tr

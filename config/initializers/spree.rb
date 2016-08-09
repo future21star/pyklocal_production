@@ -30,3 +30,6 @@ Spree::PermittedAttributes.address_attributes.push :user_id
 Spree::BackendConfiguration.class_eval do 
 	SELLER_TAB			||= [:merchants]
 end
+Spree::BackendConfiguration.class_eval do 
+  COMMISSION_TAB      ||= [:commission]
+end
