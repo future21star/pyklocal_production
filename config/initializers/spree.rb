@@ -29,7 +29,6 @@ Spree::PermittedAttributes.product_attributes.push :asin
 Spree::PermittedAttributes.address_attributes.push :user_id
 Spree::BackendConfiguration.class_eval do 
 	SELLER_TAB			||= [:merchants]
-end
-Spree::BackendConfiguration.class_eval do 
   COMMISSION_TAB      ||= [:commission]
+  CAROUSEL_IMAGE_TAB  ||= [:carousel_image]
 end

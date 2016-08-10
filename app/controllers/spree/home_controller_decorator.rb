@@ -18,6 +18,7 @@ Spree::HomeController.class_eval do
     @new_arrival = Spree::Product.all.limit(30).order('created_at DESC')
 		@bag_categories = Spree::Taxon.where(name: "Bags").first.products
 		@clothing_categories = Spree::Taxon.where(name: "Mugs").first.products
+    @carousel_images = Spree::CarouselImage.active
 	end
 
 	def orders

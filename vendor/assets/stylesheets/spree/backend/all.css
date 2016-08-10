@@ -8,3 +8,7 @@
  *= require_self
  *= require_tree .
 */
+
+.margin-left {
+  margin-left: 10px;
+}

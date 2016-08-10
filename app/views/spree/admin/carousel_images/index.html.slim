@@ -1,0 +1,24 @@
+- content_for :page_title do
+  = Spree.t(:carousel_images)
+- content_for :page_actions do
+  = button_link_to Spree.t(:new_carousel_image), new_admin_carousel_image_url, :class => "btn-success", :icon => 'add', :id => 'admin_new_order'
+
+table.table.table-stripped
+  thead
+    tr
+      td Image
+      td Active
+      td Actions
+  tbody
+    - unless @carousel_images.blank?
+      - @carousel_images.each do |carousel_image|
+        tr
+          td= image_tag carousel_image.image.url(:mini), class: 'img-responsive'
+          td= carousel_image.active
+          td
+            = button_link_to "", edit_admin_carousel_image_url(carousel_image), class: "btn-default", icon: 'edit'
+            = button_link_to "", admin_carousel_image_path(carousel_image), class: "btn-danger margin-left", icon: 'remove', method: :delete
+    - else
+      tr
+        td colspan="3"
+          span No record found

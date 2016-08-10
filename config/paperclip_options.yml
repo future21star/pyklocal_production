@@ -41,6 +41,22 @@ production: &production
       :default_url: '/images/pyc-logo.png'
       :convert_options:
         :all: '-strip -auto-orient -colorspace sRGB'
+  :carousel_images:
+    :image:
+      :storage: !ruby/symbol s3
+      :s3_protocol: <%= Rails.env == 'production' ? :https : :http %>
+      :s3_credentials:
+        <<: *default_settings
+      :styles:
+        :mini: '50x50>'
+        :large: '350x350>'
+        :banner: '750x400#'
+      :url: '/carousel_images/:id/:style/:basename.:extension'
+      :path: '/carousel_images/:id/:style/:basename.:extension'
+      :default_style: :banner
+      :default_url: '/images/pyc-logo.png'
+      :convert_options:
+        :all: '-strip -auto-orient -colorspace sRGB'
         
 development:
   <<: *production

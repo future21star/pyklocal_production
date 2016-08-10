@@ -5,8 +5,8 @@
       h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Bestsellers
       .category-module-content 
         .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
-            - @products.each do |product|
-              = render :partial => 'spree/shared/product', locals: {product: product}
+          - @products.each do |product|
+            = render :partial => 'spree/shared/product', locals: {product: product}
 
     .category-module style=("max-height:450px; overflow:hidden;")
       h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") New Arrivals

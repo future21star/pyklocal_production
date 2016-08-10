@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160809075916) do
+ActiveRecord::Schema.define(version: 20160810120003) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -22,6 +22,16 @@ ActiveRecord::Schema.define(version: 20160809075916) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_device_id", limit: 4
+  end
+
+  create_table "carousel_images", force: :cascade do |t|
+    t.string   "image_file_name",    limit: 255
+    t.string   "image_content_type", limit: 255
+    t.integer  "image_file_size",    limit: 4
+    t.datetime "image_updated_at"
+    t.boolean  "active"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "comments", force: :cascade do |t|

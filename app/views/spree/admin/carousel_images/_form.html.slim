@@ -1,0 +1,21 @@
+- content_for :page_title do
+  - if @carousel_image.new_record?
+    = Spree.t(:new_carousel_image)
+  - else
+    = Spree.t(:edit_carousel_image)
+- content_for :page_actions do
+  = button_link_to Spree.t(:back_to_carousel_images), admin_carousel_images_url, :class => "btn-success", :icon => 'arrow-left', :id => 'admin_new_order'
+.row
+  .col-md-6.col-xs-12
+    = form_for [:admin, @carousel_image], html: {class: 'horizontal-form'} do |f|
+      .form-group
+        = f.label Spree.t(:image), class: 'control-label'
+        = f.file_field :image, class: 'form-control'
+      .form-group
+        label
+          = f.check_box :active
+          |  Active
+      .form-group
+        = f.submit nil, class: 'btn btn-primary'
+        = link_to Spree.t(:cancel), admin_carousel_images_url, class: 'btn btn-default margin-left'
+
