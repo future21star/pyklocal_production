@@ -2,7 +2,7 @@ class Merchant::StoresController < Merchant::ApplicationController
 
 	before_filter :authenticate_user!, except: [:show]
   before_action :set_store, only: [:show, :edit, :update, :destroy]
-  before_filter :validate_token, only: [:edit, :update] 
+  before_action :validate_token, only: [:edit, :update] 
 
 	def index
 		@stores = current_spree_user.try(:stores)
@@ -99,7 +99,7 @@ class Merchant::StoresController < Merchant::ApplicationController
 
     def validate_token
       @store = Merchant::Store.find_by_slug(params[:id])
-      if (@store.email_tokens.where(is_valid: true, token: params[:token]).blank? && current_spree_user.has_spree_role?("merchant") && !current_spree_user.has_spree_role?("admin"))
+      if @store.email_tokens.where(is_valid: true, token: params[:token]).blank?
         redirect_to merchant_store_url(@store), flash: {error: "Please use the link provided in mail to edit the store, token was invalid"}
       end
     end
