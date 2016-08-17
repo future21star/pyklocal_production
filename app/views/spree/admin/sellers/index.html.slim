@@ -34,7 +34,7 @@ table#listing_users.table data-hook=""
   tbody
     - @collection.each do |merchant|
       tr data-hook="admin_users_index_rows" id=("#{spree_dom_id merchant}") 
-        td.user_email= link_to merchant.email, edit_admin_user_url(merchant)
+        td.user_email= link_to merchant.email, edit_admin_seller_url(merchant)
         td.user_email= merchant.first_name
         td.user_email= merchant.stores.try(:first).try(:store_orders).try(:collect, &:total_after_commission).try(:sum).try(:to_f)
         td.actions.actions-2.text-right data-hook="admin_users_index_row_actions" 

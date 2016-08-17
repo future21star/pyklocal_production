@@ -1,7 +1,7 @@
 module Spree
 	class Admin::SellersController < Admin::ResourceController
 
-    before_filter :find_seller, only: [:edit, :update, :delete, :stores, :store_orders]
+    before_filter :find_seller, only: [:edit, :update, :delete, :stores, :store_orders, :delete_store]
 
 		def index
 			respond_with(@collection) do |format|
@@ -29,11 +29,20 @@ module Spree
 
     def stores
       @store = @seller.stores.first
-      @products = @store.spree_products
+      @products = @store.spree_products if @store.present?
+    end
+
+    def delete_store
+      @store = @seller.stores.first
+      if @store.destroy
+        redirect_to admin_seller_stores_path(@seller), notice: "Store deleted successfully"
+      else
+        redirect_to admin_seller_stores_path(@seller), notice: "Something went wrong"
+      end
     end
 
     def store_orders
-      @store_order = @seller.stores.first.store_orders
+      @store_order = @seller.stores.first.store_orders if @seller.stores.present?
     end
 
 		protected

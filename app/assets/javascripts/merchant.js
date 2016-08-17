@@ -15,6 +15,7 @@ var Store = function(){
 
 Store.prototype = {
   init: function() {
+    this.lastMarker = null;
     this.showNoty();
     this.bindAddLocation();
     this.previewMap();
@@ -107,44 +108,92 @@ Store.prototype = {
 
   addSearchBoxInMap: function(map) {
 
-    var input = $("<input>").attr({type: "text", id: "pac-input", class: "controls form-control map-search"})[0];
+    var input = $("<input>").attr({type: "text", id: "pac-input", class: "controls form-control map-search", placeholder: "Search a location..."})[0];
+    var searchBox = new google.maps.places.SearchBox(input);
     map.controls[google.maps.ControlPosition.TOP].push(input);
-    var searchBox = new google.maps.places.Autocomplete(input);
-    // searchBox.bindTo('bounds', map);
+    // Bias the SearchBox results towards current map's viewport.
+    map.addListener('bounds_changed', function() {
+      searchBox.setBounds(map.getBounds());
+    });
     var markers = [];
 
-    google.maps.event.addListener(searchBox, 'places_changed', function() {
+    searchBox.addListener('places_changed', function() {
+      var places = searchBox.getPlaces();
 
-      var place = searchBox.getPlace();
-
-      for (var i = 0, marker; marker = markers[i]; i++) {
-        marker.setMap(null);
+      if (places.length == 0) {
+        return;
       }
 
+      // Clear out the old markers.
+      markers.forEach(function(marker) {
+        marker.setMap(null);
+      });
       markers = [];
 
+      // For each place, get the icon, name and location.
       var bounds = new google.maps.LatLngBounds();
+      places.forEach(function(place) {
+        if (!place.geometry) {
+          console.log("Returned place contains no geometry");
+          return;
+        }
+        var icon = {
+          url: place.icon,
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(25, 25)
+        };
 
-      for (var i = 0, place; place = places[i]; i++) {
-        var place = places[i];
-        var marker = new google.maps.Marker({
+        // Create a marker for each place.
+        markers.push(new google.maps.Marker({
           map: map,
+          icon: icon,
           title: place.name,
-          position: place.geometry.location,
-          draggable: true
-        });
-        markers.push(marker);
+          position: place.geometry.location
+        }));
 
-        bounds.extend(place.geometry.location);
-      }
+        if (place.geometry.viewport) {
+          // Only geocodes have viewport.
+          bounds.union(place.geometry.viewport);
+        } else {
+          bounds.extend(place.geometry.location);
+        }
+      });
       map.fitBounds(bounds);
-      if (markers.length == 1) map.setZoom(17);
     });
 
-    google.maps.event.addListener(map, 'bounds_changed', function() {
-      var bounds = map.getBounds();
-      searchBox.setBounds(bounds);
-    });
+    // google.maps.event.addListener(searchBox, 'places_changed', function() {
+
+    //   var places = searchBox.getPlaces();
+
+    //   for (var i = 0, marker; marker = markers[i]; i++) {
+    //     marker.setMap(null);
+    //   }
+
+    //   markers = [];
+
+    //   var bounds = new google.maps.LatLngBounds();
+
+    //   for (var i = 0, place; place = places[i]; i++) {
+    //     var image = {
+    //       url: place.icon,
+    //       size: new google.maps.Size(71, 71),
+    //       origin: new google.maps.Point(0, 0),
+    //       anchor: new google.maps.Point(17, 34),
+    //       scaledSize: new google.maps.Size(25, 25)
+    //     };
+
+    //     bounds.extend(place.geometry.location);
+    //   }
+
+    //   map.fitBounds(bounds);
+    // });
+
+    // google.maps.event.addListener(map, 'bounds_changed', function() {
+    //   var bounds = map.getBounds();
+    //   searchBox.setBounds(bounds);
+    // });
 
   },
 
@@ -220,6 +269,6 @@ Store.prototype = {
   }
 }
 
-// $(document).ready(function() {
-var myCompany = new Store();
-// });
+$(document).ready(function() {
+  var myCompany = new Store();
+});
