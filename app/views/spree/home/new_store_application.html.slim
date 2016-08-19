@@ -44,6 +44,12 @@
                 = file_field_tag "spree_user[stores_attributes][][logo]",class: "form-control" 
           .form-group
             .col-md-2.col-xs-12
+              = label_tag :certificate, "Certificate of Authority", class: "control-label"
+            .col-md-4.col-xs-12
+              span
+                = file_field_tag "spree_user[stores_attributes][][certificate]",class: "form-control" 
+          .form-group
+            .col-md-2.col-xs-12
               = label_tag :manager_name, "Manager Name", class: "control-label"
             .col-md-2.col-xs-6
               span.input-icon.icon-right

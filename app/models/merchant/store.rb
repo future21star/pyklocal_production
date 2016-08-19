@@ -25,6 +25,10 @@ module Merchant
       Pyklocal::Configuration.paperclip_options[:stores][:logo]
     validates_attachment :logo, content_type: { content_type: /\Aimage\/.*\Z/ }
 
+    # has_attached_file :certificate,  
+    #   Pyklocal::Configuration.paperclip_options[:stores][:certificate]
+    # validates_attachment :certificate, content_type: { content_type: /\Aimage\/.*\Z/ }
+
     extend FriendlyId
     friendly_id :name, use: :slugged
 

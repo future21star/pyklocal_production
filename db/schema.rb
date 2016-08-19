@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160810120003) do
+ActiveRecord::Schema.define(version: 20160817124533) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -129,31 +129,35 @@ ActiveRecord::Schema.define(version: 20160810120003) do
   end
 
   create_table "pyklocal_stores", force: :cascade do |t|
-    t.string   "name",                limit: 255
-    t.text     "description",         limit: 65535
-    t.string   "manager_first_name",  limit: 255
-    t.string   "manager_last_name",   limit: 255
-    t.string   "phone_number",        limit: 255
-    t.string   "store_type",          limit: 255
-    t.string   "street_number",       limit: 255
-    t.string   "city",                limit: 255
-    t.string   "state",               limit: 255
-    t.string   "zipcode",             limit: 255
-    t.string   "country",             limit: 255
-    t.string   "site_url",            limit: 255
+    t.string   "name",                     limit: 255
+    t.text     "description",              limit: 65535
+    t.string   "manager_first_name",       limit: 255
+    t.string   "manager_last_name",        limit: 255
+    t.string   "phone_number",             limit: 255
+    t.string   "store_type",               limit: 255
+    t.string   "street_number",            limit: 255
+    t.string   "city",                     limit: 255
+    t.string   "state",                    limit: 255
+    t.string   "zipcode",                  limit: 255
+    t.string   "country",                  limit: 255
+    t.string   "site_url",                 limit: 255
     t.boolean  "terms_and_condition"
-    t.text     "payment_information", limit: 65535
-    t.boolean  "active",                            default: false
+    t.text     "payment_information",      limit: 65535
+    t.boolean  "active",                                 default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "logo_file_name",      limit: 255
-    t.string   "logo_content_type",   limit: 255
-    t.integer  "logo_file_size",      limit: 4
+    t.string   "logo_file_name",           limit: 255
+    t.string   "logo_content_type",        limit: 255
+    t.integer  "logo_file_size",           limit: 4
     t.datetime "logo_updated_at"
-    t.string   "payment_mode",        limit: 255
-    t.string   "slug",                limit: 255
-    t.string   "latitude",            limit: 255
-    t.string   "longitude",           limit: 255
+    t.string   "payment_mode",             limit: 255
+    t.string   "slug",                     limit: 255
+    t.string   "latitude",                 limit: 255
+    t.string   "longitude",                limit: 255
+    t.string   "certificate_file_name",    limit: 255
+    t.string   "certificate_content_type", limit: 255
+    t.integer  "certificate_file_size",    limit: 4
+    t.datetime "certificate_updated_at"
   end
 
   create_table "pyklocal_stores_taxons", force: :cascade do |t|
