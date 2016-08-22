@@ -17,8 +17,13 @@ module Spree
           respond_with resource, location: after_inactive_sign_up_path_for(resource)
         end
       else
-        clean_up_passwords(resource)
-        render :new
+        if spree_user_params["stores_attributes"].present?
+          set_flash_message :notice, :"#{resource.errors.full_messages.join(', ')}"
+          redirect_to new_store_application_url
+        else
+          clean_up_passwords(resource)
+          render :new
+        end
       end
     end
 
