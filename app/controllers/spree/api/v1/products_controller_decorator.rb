@@ -5,6 +5,36 @@ module Spree
     before_filter :find_user, only: [:rate_and_comment]
     before_filter :get_product, only: [:rate_and_comment]
 
+    def index
+      if params[:id]
+        @taxon = Spree::Taxon.where(id: params[:id]).first
+        @products = @taxon.products
+        render json: {
+          status: 1,
+          message: "Home Screen",
+          category_id: @taxon.id,
+          total_count: @products.count,
+          details: @products.as_json({
+            only: [:sku, :name, :price, :id, :description],
+            methods: [:stock_status, :total_on_hand, :average_ratings],
+            include: [images: {methods: :all_size_images}]
+          })
+        }
+      else
+        @products = Spree::Product.all
+        render json: {
+          status: 1,
+          message: "Home Screen",
+          total_count: @products.count,
+          details: @products.as_json({
+            only: [:sku, :name, :price, :id, :description],
+            methods: [:price, :stock_status, :total_on_hand, :average_ratings, :taxon_ids, :product_images],
+            include: [variants: {only: :id, methods: [:price, :option_name, :stock_status, :total_on_hand, :product_images]}]
+          })
+        }
+      end
+    end
+
     def rate_and_comment
       @rating = Rating.new(user_id: @user.id, rateable_id: @product.id, rateable_type: "Spree::Product", rating: params[:rating]) if params[:rating].present?
       @comment = Comment.new(user_id: @user.id, commentable_id: @product.id, commentable_type: "Spree::Product", comment: params[:comment]) if params[:comment].present?

@@ -54,6 +54,34 @@ module Spree
       product_properties.where(property_id: properties.find_by_name("UPC Code").try(:id)).try(:first).try(:value)
     end
 
+    def product_images
+      img_arr = []
+      if images.present?
+        images.each do |image|
+          img = {"#{image.attachment_file_name}" => {
+                  mini_image: image.attachment.url(:mini),
+                  small_url: image.attachment.url(:small),
+                  thumb_url: image.attachment.url(:thumb),
+                  original_url: image.attachment.url(:original)
+                }}
+          img_arr << img
+        end
+      end
+      return img_arr
+    end
+
+    def stock_status
+      total_on_hand > 0 ? 1 : 0
+    end
+
+    def average_ratings
+      if ratings.present?
+        (ratings.sum(rating) / ratings.count).to_f.round(2)
+      else
+        0
+      end
+    end
+
     def location
       [store.try(:latitude), store.try(:longitude)].compact.join(", ")
     end
