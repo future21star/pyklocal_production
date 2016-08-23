@@ -3,6 +3,7 @@ module Spree
 
 		before_filter :load_store, only: [:update_location, :rate]
 		before_filter :find_user, only: [:rate]
+		before_filter :not_an_owner, only: [:rate]
 		# before_filter :check_for_purchased_item, only[:rate]
 		skip_before_filter :authenticate_user
 
@@ -51,6 +52,15 @@ module Spree
 			def find_user
 				@user = Spree::User.where(id: params[:user_id]).first
 				render json: {success: false, message: "User not found"} unless @user.present?
+			end
+
+			def not_an_owner
+				@user = Spree::User.where(id: params[:user_id]).first
+				slug = params[:id] || params[:merchant_store_id]
+				@store = Merchant::Store.find_by_slug(slug)
+				if @user.stores.include?(@store)
+					render json: {success: false, message: "You are an owner of this store, you can not rate it"}
+				end
 			end
 
 			# def check_for_purchased_item

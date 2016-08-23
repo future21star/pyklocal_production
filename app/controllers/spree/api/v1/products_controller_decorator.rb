@@ -6,7 +6,7 @@ module Spree
     before_filter :get_product, only: [:rate_and_comment]
 
     def index
-      if params[:id]
+      if params[:category_id]
         @taxon = Spree::Taxon.where(id: params[:id]).first
         @products = @taxon.products
         render json: {
@@ -16,8 +16,8 @@ module Spree
           total_count: @products.count,
           details: @products.as_json({
             only: [:sku, :name, :price, :id, :description],
-            methods: [:stock_status, :total_on_hand, :average_ratings],
-            include: [images: {methods: :all_size_images}]
+            methods: [:price, :stock_status, :total_on_hand, :average_ratings, :taxon_ids, :product_images],
+            include: [variants: {only: :id, methods: [:price, :option_name, :stock_status, :total_on_hand, :product_images]}]
           })
         }
       else

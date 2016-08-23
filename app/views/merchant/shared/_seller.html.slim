@@ -59,26 +59,26 @@ br
       = link_to edit_store_email_tokens_path(id: @store.id, type: "Merchant::Store"), class: "btn-default btn-lg btn-block text-left btn-border-radius store-btn ", "data-no-turbolink" => true, title: title_text do
         .fa.fw &#xf044;
         | Edit Store Information
-      
-      = link_to current_spree_user.has_spree_role?("merchant") ? new_merchant_product_path : "#", class: " store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
-        .fa.fw &#xf055;
-        | Add Products
+      - if current_spree_user.has_spree_role?("merchant")
+        = link_to new_merchant_product_path, class: " store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
+          .fa.fw &#xf055;
+          | Add Products
 
-      = link_to current_spree_user.has_spree_role?("merchant") ? merchant_products_path : "#", class: " store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
-        .fa.fw &#xf15c;
-        | View and edit all Products
+        = link_to merchant_products_path, class: " store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
+          .fa.fw &#xf15c;
+          | View and edit all Products
 
-      = link_to current_spree_user.has_spree_role?("merchant") ? merchant_store_orders_path(@store.slug) : "#", class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
-        .fa.fw &#xf07a;
-        | View Orders
+        = link_to merchant_store_orders_path(@store.slug), class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
+          .fa.fw &#xf07a;
+          | View Orders
 
-      = link_to current_spree_user.has_spree_role?("merchant") ? merchant_return_authorization_reasons_path : "#", class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
-        .fa.fw &#xf07a;
-        | Return Authorization Reason
+        = link_to merchant_return_authorization_reasons_path, class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
+          .fa.fw &#xf07a;
+          | Return Authorization Reason
 
-      = link_to current_spree_user.has_spree_role?("merchant") ? merchant_store_amazon_product_path : "#", class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
-        .fa.fw &#xf270;
-        | Fetch Product From Amazon
+        = link_to merchant_store_amazon_product_path, class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
+          .fa.fw &#xf270;
+          | Fetch Product From Amazon
       br
     .pull-right.map-wrapper
       #map-preview data-is_located="#{@store.is_located?}" data-longitude="#{@store.longitude}" data-latitude="#{@store.latitude}"&gt;

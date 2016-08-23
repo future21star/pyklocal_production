@@ -22,39 +22,39 @@
                   
             #collapse-checkout-option.panel-collapse.collapse.in
               .panel-body
-                - if @addresses.present?
+                - if current_spree_user.address.present?
                   table.table.table-striped
                     tr
                       td First Name
-                      td= @addresses.firstname.titleize
+                      td= @address.firstname.titleize
                     tr
                       td Last Number
-                      td= @addresses.lastname.titleize
+                      td= @address.lastname.titleize
                     tr
                       td Address1
-                      td= @addresses.address1.titleize
+                      td= @address.address1.titleize
                     tr
                       td Address2
-                      td= @addresses.address2.titleize
+                      td= @address.address2.titleize
                     tr
                       td City
-                      td= @addresses.city.titleize
+                      td= @address.city.titleize
                     tr
                       td ZipCode
-                      td= @addresses.zipcode
+                      td= @address.zipcode
                     tr
                       td State
 
-                      td= @addresses.state.name
+                      td= @address.state.name
                     tr
                       td Country
-                      td= @addresses.country.name
+                      td= @address.country.name
                     tr
                       td Contact no:
-                      td= @addresses.phone
-                    tr.text-center
+                      td= @address.phone
+                    tr
                       td
-                        = link_to edit_address_path(@addresses), class: "btn btn-default", "data-no-turbolink" => true do 
+                        = link_to edit_address_path(@address), class: "btn btn-default", "data-no-turbolink" => true do 
                           span.fa.fa-edit
                           | Edit
                         / = link_to addresses_path(@addresses), class: "btn btn-danger margin-left" do 

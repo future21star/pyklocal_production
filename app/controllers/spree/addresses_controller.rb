@@ -3,9 +3,9 @@ class Spree::AddressesController < Spree::StoreController
 	before_action :find_address, only: [:create, :edit, :update, :destroy]
 	
 	def index
-		@addresses = current_spree_user.address
+		@address = current_spree_user.address
 		if @addresses.blank?
-			@addresses = Spree::Address.build_default
+			@address = current_spree_user.orders.first.try(:bill_address).present? ? current_spree_user.orders.first.bill_address : Spree::Address.build_default
 		end
 	end
 
