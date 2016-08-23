@@ -6,7 +6,24 @@ module Spree
 		include Spree::Api::SessionsHelper
 
 		def create
-			if required_params_present? params, 'email', 'password'
+			if params[:is_guest]
+				@api_token = ApiToken.where(user_device_id: params[:device_token],expire: nil).last
+				if !@api_token
+					email = SecureRandom.hex(4)+"@pyklocal.com"
+					password = SecureRandom.hex(4)
+					@user = Spree::User.new(email: email, password: password, password_confirmation: password, is_guest: true)
+					if @user.save
+						@response = get_response(@user)
+						@response[:message] = "Login successfull"
+					else
+						@response = error_response
+						@response[:message] = @user.errors.full_messages.join(", ")
+					end
+				else
+					@response =get_response(@api_token.user)
+					@response[:message] = "User Already logged in"
+				end
+			elsif required_params_present? params, 'email', 'password'
 				user = Spree::User.find_by_email(params[:email])
 				unless user.blank?
 					if user.valid_password?(params[:password])
@@ -30,6 +47,21 @@ module Spree
 			api_exception_handler(e)
 		ensure 
 			render json: @response
+		end
+
+
+		def destroy
+			@token=ApiToken.where(token: params[:token], expire: nil).last
+			if @token.present?
+				if @token.update_attributes(expire: Time.zone.now)
+					render json: {code: 1, message: "Log Out successfully"}
+				else
+					render json: {code: 0, message: "Something went wrong"}
+				end
+			else
+				render json: {code: 0, message: "Already Logged out"}
+			end
+
 		end
 
 	end

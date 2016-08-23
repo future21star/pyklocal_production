@@ -8,6 +8,7 @@ module Spree
 		    token: (Digest::SHA1.hexdigest "#{Time.now.to_i}#{1}"),
 		    latitude: params[:latitude],
 		    longitude: params[:longitude],
+		    user_device_id: params[:device_token],
 		    user_id: user_id
 		  })
 		end

@@ -74,7 +74,9 @@ Pyklocal::Application.routes.draw do
     
     #Api routes
     namespace :api do 
-      namespace :v1 do 
+      namespace :v1 do
+
+        resources :home 
 
         resources :categories
 
@@ -121,6 +123,7 @@ Pyklocal::Application.routes.draw do
         end
         resources :registrations 
         resources :sessions
+        resources :password
         resources :users do
           post :user_devices
           get :my_pickup_list

@@ -35,6 +35,18 @@ module Spree
       end
     end
 
+    def show
+      @product = Spree::Product.where(id: params[:id]).first
+      render json: {
+        status: @product.present? ? 1 : 0,
+        message: "Product Detail",
+        details: @product.as_json({ only: [:sku, :name, :price, :id, :description],
+            methods: [:price, :stock_status, :total_on_hand, :average_ratings, :taxon_ids, :product_images],
+            include: [variants: {only: :id, methods: [:price, :option_name, :stock_status, :total_on_hand, :product_images]}]})
+      }
+    end
+      
+
     def rate_and_comment
       @rating = Rating.new(user_id: @user.id, rateable_id: @product.id, rateable_type: "Spree::Product", rating: params[:rating]) if params[:rating].present?
       @comment = Comment.new(user_id: @user.id, commentable_id: @product.id, commentable_type: "Spree::Product", comment: params[:comment]) if params[:comment].present?

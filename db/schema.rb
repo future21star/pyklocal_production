@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160817124533) do
+ActiveRecord::Schema.define(version: 20160823102746) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20160817124533) do
     t.datetime "expire"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_device_id", limit: 4
+    t.string   "user_device_id", limit: 255
   end
 
   create_table "carousel_images", force: :cascade do |t|
@@ -1229,8 +1229,8 @@ ActiveRecord::Schema.define(version: 20160817124533) do
     t.string   "persistence_token",      limit: 255
     t.string   "reset_password_token",   limit: 255
     t.string   "perishable_token",       limit: 255
-    t.integer  "sign_in_count",          limit: 4,   default: 0, null: false
-    t.integer  "failed_attempts",        limit: 4,   default: 0, null: false
+    t.integer  "sign_in_count",          limit: 4,   default: 0,     null: false
+    t.integer  "failed_attempts",        limit: 4,   default: 0,     null: false
     t.datetime "last_request_at"
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -1243,8 +1243,8 @@ ActiveRecord::Schema.define(version: 20160817124533) do
     t.string   "unlock_token",           limit: 255
     t.datetime "locked_at"
     t.datetime "reset_password_sent_at"
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.string   "spree_api_key",          limit: 48
     t.datetime "remember_created_at"
     t.datetime "deleted_at"
@@ -1254,6 +1254,7 @@ ActiveRecord::Schema.define(version: 20160817124533) do
     t.string   "first_name",             limit: 255
     t.string   "last_name",              limit: 255
     t.string   "mobile_number",          limit: 255
+    t.boolean  "is_guest",                           default: false
   end
 
   add_index "spree_users", ["bill_address_id"], name: "index_spree_users_on_bill_address_id", using: :btree
