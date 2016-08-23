@@ -7,8 +7,7 @@ module Spree
 				user.send_reset_password_instructions
 				render json: {code: 1, message: "Link send successfully"}
 			else
-				@response = error_response
-				@response[:message] = "Invalid email"
+				render json: {code: 0, message: "Invalid email"}
 			end
 		end
 	end
