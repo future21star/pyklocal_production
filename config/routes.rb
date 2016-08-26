@@ -76,7 +76,11 @@ Pyklocal::Application.routes.draw do
     namespace :api do 
       namespace :v1 do
 
-        resources :home 
+        resources :home
+
+        resources :search do 
+          get :filters, on: :collection
+        end
 
         resources :categories
 
