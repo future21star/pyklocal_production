@@ -2,6 +2,7 @@ module Spree
 	Api::V1::OrdersController.class_eval do 
 
 		include Spree::Api::ApiHelpers
+		include Spree::Core::ControllerHelpers::Order
 
 		before_action :load_order, only: [:show]
 		before_action :find_store, only: [:show]
@@ -34,6 +35,26 @@ module Spree
 		# 	render json: @orders_list.as_json()
 		end
 
+		def create
+		  authorize! :create, Order
+		  order_user = if @current_user_roles.include?('admin') && order_params[:user_id]
+		    Spree.user_class.find(order_params[:user_id])
+		  elsif params[:user_id]
+		    Spree::user_class.find(params[:user_id])
+		  else
+		    current_api_user
+		  end
+
+		  import_params = if @current_user_roles.include?("admin")
+		    params[:order].present? ? params[:order].permit! : {}
+		  else
+		    order_params
+		  end
+
+		  @order = Spree::Core::Importer::Order.import(order_user, import_params)
+		  respond_with(@order, default_template: :show, status: 201)
+		end    
+
 		def show
 			# @user = Spree::ApiToken.where(token: params[:token]).try(:first).try(:user)
 			line_items = @order.line_items.joins(:product).where(spree_line_items: {delivery_type: "home_delivery"}, spree_products: {store_id: @store.id})
@@ -59,6 +80,31 @@ module Spree
 		end
 
 		private
+
+			def order_params
+        if params[:order]
+          normalize_params
+          params.require(:order).permit(permitted_order_attributes)
+        else
+          {}
+        end
+    	end
+
+    	def add_cart
+        if params[:order]
+          params.require(:order).permit(:variant_id , :quantity)
+        else
+          {}
+        end
+       end
+
+      def normalize_params
+        params[:order][:payments_attributes] = params[:order].delete(:payments) if params[:order][:payments]
+        params[:order][:shipments_attributes] = params[:order].delete(:shipments) if params[:order][:shipments]
+        params[:order][:line_items_attributes] = params[:order].delete(:line_items) if params[:order][:line_items]
+        params[:order][:ship_address_attributes] = params[:order].delete(:ship_address) if params[:order][:ship_address]
+        params[:order][:bill_address_attributes] = params[:order].delete(:bill_address) if params[:order][:bill_address]
+      end
 
 			def load_order
 				id = params[:id] || params[:order_id]

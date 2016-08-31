@@ -7,7 +7,7 @@
       - else
         = link_to image_tag(variant.images.first.attachment.url(:mini)), variant.product,class:"img-thumbnail"
     td.text-left data-hook="cart_item_description" 
-      h4= link_to line_item.name, product_path(variant.product)
+      h4= link_to line_item.try(:name), product_path(variant.product)
       = variant.options_text
       - if line_item.insufficient_stock?
         span.out-of-stock
@@ -17,7 +17,7 @@
       span.line-item-description data-hook="line_item_description" 
        
     td.text-center data-hook="cart_item_total"
-      = line_item.name 
+      = line_item.try(:name) 
     td.text-center data-hook="cart_item_quantity"
       .input-group.btn-block style=("max-width: 200px;") 
         = item_form.number_field :quantity, min: 0, class: "form-control text-center line_item_quantity", size: 5

@@ -45,6 +45,12 @@ module Spree
 		# 	product.store.try(:zipcode)
 		# end
 
+		def copy_tax_category
+      if variant
+        self.tax_category_id = variant.tax_category_id
+      end
+    end
+
 		def order_number
 			order.number
 		end

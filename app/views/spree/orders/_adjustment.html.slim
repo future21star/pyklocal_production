@@ -12,7 +12,7 @@ tbody#cart_adjustments data-hook=""
       td align="right" colspan="4" 
         h5
           = Spree.t(:shipping)
-          | \: #{shipment.shipping_method.name}
+          | \: #{shipment.shipping_method.try(:name)}
       td colspan="2" 
         h5= shipment.display_discounted_cost
   - @order.adjustments.eligible.group_by(&:label).each do |label, adjustments|
