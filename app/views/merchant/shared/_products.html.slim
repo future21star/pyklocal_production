@@ -1,7 +1,7 @@
 - if @is_owner
-  - if products.empty? && @store.active
-  	b You donot have any product to sell. Add your products
-  - elsif products.empty? && !@store.active
+  - if products.empty? && (@store.active && current_spree_user.has_spree_role?("merchant"))
+  	b You have not uploaded any product(s). Add your products.
+  - elsif products.empty? && (!@store.active || !current_spree_user.has_spree_role?("merchant"))
     b We are reviewing your application and will let you know within 24 - 48 hours.
 - else
   b No product listed for this store.

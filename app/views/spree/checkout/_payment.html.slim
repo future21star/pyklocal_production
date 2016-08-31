@@ -39,5 +39,6 @@
       = form.text_field :coupon_code, :class => 'form-control'
 .text-right.form-buttons data-hook="buttons" 
   = submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary'
+- content_for :js
   javascript:
-    | Spree.disableSaveOnClick();
+    Spree.disableSaveOnClick();

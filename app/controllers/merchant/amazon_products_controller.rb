@@ -74,6 +74,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 	end
 
 	def import_collection
+		success = false
 		@is_owner = true
 		if params[:product_ids].blank?
 			 redirect_to :back, :params => @params , notice: "please Select Product created"
@@ -103,7 +104,9 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 		            product_property.property = property
 		          end
 		        end
-		        @product.save
+		        if @product.save
+		        	success = true
+		        end
 					end
 					raw_product.image_sets.image_set.each do |product_images|
 						thumb_image = @product.images.build(attachment: product_images.try(:large_image).try(:url))
@@ -114,9 +117,11 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 					return 	
 				end
 			end
-			if @product.save
-				redirect_to merchant_stores_path , notice: 'Product are Successfully added !'
+			if success
+				redirect_to merchant_stores_path, notice: 'Product are Successfully added !'
 				return
+			else
+				redirect_to merchant_stores_path, notice: 'Something went wrong'
 			end 
 		end
 
