@@ -29,7 +29,7 @@ gem 'noty-rails'
 
 gem 'active_model_serializers', '~> 0.10.0'
 
-
+gem 'spree_braintree_vzero', github: 'spree-contrib/spree_braintree_vzero', branch: '3-1-stable'
 # Use geokit gem to calculate distance
 # gem 'geokit-rails', '2.0.1'
 # gem 'geokit', '1.8.5'
