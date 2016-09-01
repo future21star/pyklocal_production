@@ -11,6 +11,7 @@ module Merchant
     has_many :store_taxons, dependent: :delete_all, foreign_key: :store_id, class_name: "Merchant::StoreTaxon"
     has_many :spree_taxons , through: :store_taxons
     has_many :spree_products, dependent: :delete_all, foreign_key: :store_id, class_name: 'Spree::Product'
+    has_many :orders, through: :spree_products
     has_many :email_tokens, as: :resource
     has_many :ratings, as: :rateable
     has_many :comments, as: :commentable 

@@ -5,7 +5,27 @@ class Merchant::OrdersController < Merchant::ApplicationController
 
 	def index
     @store = Merchant::Store.find_by_slug(params[:store_id])
-    @orders = Kaminari.paginate_array(@store.try(:store_orders)).page(params[:page]).per(10)
+    if @store.present?
+      params[:q] = {} unless params[:q]
+      if params[:q][:orders_completed_at_gt].blank?
+        params[:q][:orders_completed_at_gt] = Time.zone.now.beginning_of_month
+      else
+        params[:q][:orders_completed_at_gt] = Time.zone.parse(params[:q][:orders_completed_at_gt]).beginning_of_day rescue Time.zone.now.beginning_of_month
+      end
+
+      if params[:q] && !params[:q][:orders_completed_at_lt].blank?
+        params[:q][:orders_completed_at_lt] = Time.zone.parse(params[:q][:orders_completed_at_lt]).end_of_day rescue ""
+      end
+
+      params[:q][:s] ||= "orders_completed_at desc"
+
+      @search = @store.orders.complete.ransack(params[:q])
+
+      @orders = Kaminari.paginate_array(@search.result).page(params[:page]).per(10)
+      @is_owner = is_owner?(@store)
+    else
+      @orders = nil
+    end
   end
 
   def new

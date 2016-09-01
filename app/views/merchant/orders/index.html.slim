@@ -11,17 +11,17 @@
       .col-sm-3
         =render :partial => "merchant/shared/seller"
       .col-sm-9
-        = render partial: "merchant/shared/order_header", locals: {order: "Order"}
+        = render partial: "merchant/shared/order_header", locals: {order: nil}
         .form-section
           table.table.table-striped
             thead
               tr
-                th Order Number
-                th Date
+                th= sort_link @search, :number, "Order Number"
+                th= sort_link @search, :completed_at, "Date"
                 th Item Name
                 th Variants
                 th Quantity
-                th Amount
+                th= sort_link @search, :total, "Amount"
                 th Delivery Type
                 th Driver Name
                 th Actions
@@ -33,7 +33,8 @@
                     tr
                       td.align-middle rowspan="#{order.get_store_line_items(@store.id).count}"
                         = link_to order.try(:number), edit_merchant_order_path(order)
-                      td= order.completed_at.strftime("%y-%m-%d")
+                      td rowspan="#{order.get_store_line_items(@store.id).count}"
+                        = order.completed_at.strftime("%y-%m-%d")
                       - order.get_store_line_items(@store.id).each_with_index do |line_item, index|
                         - if index == 0
                           td= line_item.product.try(:name)
