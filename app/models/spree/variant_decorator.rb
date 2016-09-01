@@ -13,6 +13,10 @@ module Spree
       total_on_hand > 0 ? 1 : 0
     end
 
+    def available?
+      !discontinued? && product.try(:available?)
+    end
+
     def product_images
       img_arr = []
       if images.present?

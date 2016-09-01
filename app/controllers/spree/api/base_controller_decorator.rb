@@ -3,6 +3,22 @@ module Spree
 
 		include Spree::Api::SessionsHelper
 
+		def to_stringify_json obj, values = []
+	    obj.each do |c_obj|
+	  		main_hash = Hash.new
+	  		c_obj.attributes.each do |k, v|
+	  			main_hash[k.to_sym] = v.to_s
+	  		end
+	  		values.push(main_hash)
+	  		if c_obj.children.present?
+	  			main_hash["sub_category".to_sym] = to_stringify_json(c_obj.children, children_array = [])
+	  		else
+	  			main_hash["sub_category".to_sym] = []
+	  		end
+	  	end
+	    return values
+	  end
+
 		def generate_api_key(params, user_id)
 			Spree::ApiToken.create({
 		    token: (Digest::SHA1.hexdigest "#{Time.now.to_i}#{1}"),
