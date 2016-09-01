@@ -51,8 +51,8 @@ module Spree
 
 
 		def destroy
-			@token=ApiToken.where(token: params[:token], expire: nil).last
-			if @token.present?
+			@token=ApiToken.where(token: params[:id], expire: nil).last
+			if @token
 				if @token.update_attributes(expire: Time.zone.now)
 					render json: {code: 1, message: "Log Out successfully"}
 				else

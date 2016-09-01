@@ -8,11 +8,11 @@ Spree::CheckoutController.class_eval do
       @order.attributes = {is_existing: params[:is_existing]}
     end
 	else
-		  @order.ship_address ||= current_spree_user.address
-		  @order.bill_address ||= current_spree_user.address
-	    if params[:is_existing]
-	      @order.attributes = {is_existing: params[:is_existing]}
-	    end
+	  @order.ship_address ||= current_spree_user.address
+	  @order.bill_address ||= current_spree_user.address
+    if params[:is_existing]
+      @order.attributes = {is_existing: params[:is_existing]}
+    end
 	end
 	end
 end
