@@ -52,14 +52,10 @@ class Merchant::ProductsController < Merchant::ApplicationController
   def update
     redirect_path = params[:redirect_path].present? ? params[:redirect_path] : edit_merchant_product_path(@product)
     if params[:product][:taxon_ids].present?
-      p "***********************************************************"
       params[:product][:taxon_ids] = params[:product][:taxon_ids].split(",")
-      p product_params
     end
     if params[:product][:option_type_ids].present?
-      p "***************************123********************************"
       params[:product][:option_type_ids] = params[:product][:option_type_ids].split(",")
-      p params[:product][:option_type_ids]
     end
     if @product.update_attributes(product_params)
       redirect_to redirect_path, notice: "Product updated successfully"
