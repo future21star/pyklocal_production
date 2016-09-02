@@ -40,7 +40,6 @@
               - unless order_just_completed?(@order)
                 - if try_spree_current_user && respond_to?(:spree_account_path)
                   = link_to Spree.t(:my_account), spree_account_path, class: "button"
-      strong= Spree.t(:thank_you_for_your_order)
 
     - else
       h3.panel-title data-hook="checkout_title"

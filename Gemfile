@@ -28,8 +28,6 @@ gem 'progress_bar'
 gem 'noty-rails'
 
 gem 'active_model_serializers', '~> 0.10.0'
-
-gem 'spree_braintree_vzero', github: 'spree-contrib/spree_braintree_vzero', branch: '3-1-stable'
 # Use geokit gem to calculate distance
 # gem 'geokit-rails', '2.0.1'
 # gem 'geokit', '1.8.5'
@@ -87,6 +85,7 @@ gem 'spree_gateway', '~> 3.1.0'
 
 gem 'spree_print_invoice', github: 'spree-contrib/spree_print_invoice', branch: 'master'
 gem 'spree_static_content', github: 'spree-contrib/spree_static_content', branch: '3-1-stable'
+gem 'spree_braintree_vzero', github: 'spree-contrib/spree_braintree_vzero', branch: '3-1-stable'
 
 gem 'rvm-capistrano'
 

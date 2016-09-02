@@ -1,6 +1,28 @@
 Spree::OrdersController.class_eval do 
-
+  before_filter :process_paypal_express, only: :update
   before_filter :load_order, only: [:cancel, :ready_to_pick]
+
+
+  def process_paypal_express
+    if params[:paypal].blank? || params[:paypal][:payment_method_nonce].blank?
+      # when user goes back from checkout, paypal express payments should be invalidated  to ensure standard checkout flow
+      current_order.invalidate_paypal_express_payments
+      return true
+    end
+    payment_method = Spree::PaymentMethod.find_by_id(params[:paypal][:payment_method_id])
+    return true unless payment_method
+
+    email = params[:order][:email]
+    # when user goes back from checkout, order's state should be resetted to ensure paypal checkout flow
+    current_order.state = 'cart'
+    current_order.save_paypal_payment(payment_params)
+
+    manage_paypal_addresses
+    payment_method.push_order_to_state(current_order, 'address', email)
+    current_order.remove_phone_number_placeholder
+
+    redirect_to checkout_state_path("complete", paypal_email: email)
+  end
 
   def order_placed
     @order = current_spree_user.orders.includes(line_items: [variant: [:option_values, :images, :product]], bill_address: :state, ship_address: :state).find_by_number!(params[:id])

@@ -1,29 +1,28 @@
--states = @order.checkout_steps
--states = states.push("confirm") if !states.include?("confirm")
+- states = @order.checkout_steps
+- states = states.push("confirm") if !states.include?("confirm")
 #container.checkout  
     - content_for :google_analytics do
       = render partial: 'spree/shared/google_checkout.js', locals: { order: @order, step_number: (@order.checkout_steps.index(@order.state) + 1) }
     #checkout data-hook="" 
       = render partial: 'spree/shared/error_messages', locals: { target: @order }
       .row data-hook="checkout_content" 
-        .col-sm-9 data-hook="checkout_header"
+        div class=(@order.state == 'confirm' ? 'col-sm-12' : 'col-sm-9') data-hook="checkout_header"
           = form_for @order, url: update_checkout_path(@order.state), html: { id: "checkout_form_#{@order.state}" } do |form|
             = form.hidden_field :state_lock_version
-            - states.map do |state|
-              - if state != 'confirm' 
-                #accordion.panel-group
-                  .panel.panel-default style=("border-radius:0px;margin-bottom: -18px;")
-                    .panel-heading
-                      a href=checkout_state_path(state) 
-                        h4.panel-title data-hook="checkout_title"
-                          
-                            = state.titleize
-                            | &nbsp;
-                            i.fa.fa-caret-down
-                    - unless state == "complete"
-                      - if state == @order.state
-                        .panel-body id=(state) data-order_state=(state) 
-                          = render state, form: form
+            - states.map do |state| 
+              #accordion.panel-group
+                .panel.panel-default style=("border-radius:0px;margin-bottom: -18px;")
+                  .panel-heading
+                    a href=checkout_state_path(state) 
+                      h4.panel-title data-hook="checkout_title"
+                        
+                          = state.titleize
+                          | &nbsp;
+                          i.fa.fa-caret-down
+                  - unless state == "complete"
+                    - if state == @order.state
+                      .panel-body id=(state) data-order_state=(state) 
+                        = render state, form: form
 
         - if @order.state != 'confirm'
           #checkout-summary.col-md-3 data-hook="checkout_summary_box" 

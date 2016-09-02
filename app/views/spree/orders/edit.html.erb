@@ -3,8 +3,8 @@
   <ul class="breadcrumb">
     <li>
       <a href="/">
-        i.fa.fa-home
-        | Home
+        <i class='fa.fa-home'></i>
+        Home
       </a>
     </li>
     <li>
@@ -17,7 +17,7 @@
     <% if @order.line_items.empty? %>
       <div data-hook="empty_cart">
         <div class="alert alert-info"><%= Spree.t(:your_cart_is_empty) %></div>
-        <p><%= link_to Spree.t(:continue_shopping), products_path, class: 'btn btn-default' %></p>
+        <p><%= link_to Spree.t(:continue_shopping), shop_index_path, class: 'btn btn-primary' %></p>
       </div>
     <% else %>
       <div data-hook="outside_cart_form">
