@@ -6,7 +6,7 @@
           i.fa.fa-home
           | Home
       li
-        a href=shop_path Shop  
+        a href=shop_index_path Shop  
       li
         span  Categories
     .row
@@ -58,7 +58,7 @@
               a#compare-total href=shop_path(params[:id]) data-no-turbolink=true
                 |&nbsp;All Products 
             .col-sm-3.col-xs-12
-              = form_tag "/shop/#{params[:id]}", method: :get, id: "rFilter" do
+              = form_tag "", method: :get, id: "rFilter" do
                 - if params[:q]
                   = render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]}
                 input id="lat" type="hidden" name="q[lat]"
@@ -72,7 +72,7 @@
                   option selected=(location == "50") value="50" More than 10 KM
             .col-sm-3.text-right
               - selected = params[:q] && params[:q][:sort_by] ? params[:q][:sort_by] : nil
-              = form_tag "/shop/#{params[:id]}", method: :get, id: "sortFilter" do
+              = form_tag "", method: :get, id: "sortFilter" do
                 - if params[:q]
                   = render partial: "spree/shared/filter_form", locals: {filters: [:lat, :lng, :radius, :search, :price, :per_page]}
                 = select_tag "q[sort_by]", options_for_select(["Sort By", "Highest Price", "Lowest Price"], selected: selected), class: "form-control col-sm-3", id: "input-sort"
@@ -88,9 +88,12 @@
         .row.products-category
           .product-layout.product-list.col-xs-12
             .product-thumb
-              - @products.each do |product|
-                .col-sm-3.product-grid
-                  = render :partial => 'spree/shared/product', locals: {product: product}
+              - unless @products.blank?
+                - @products.each do |product|
+                  .col-sm-3.product-grid
+                    = render :partial => 'spree/shared/product', locals: {product: product}
+              - else
+                | No product(s) available
             
     
         .row
