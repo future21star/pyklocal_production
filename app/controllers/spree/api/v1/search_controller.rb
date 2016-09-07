@@ -17,7 +17,7 @@ module Spree
         		only: [:sku, :name, :price, :id, :description],
        			methods: [:price, :stock_status, :total_on_hand, :average_ratings, :taxon_ids, :product_images],
        			include: [variants: {only: :id, methods: [:price, :option_name, :stock_status, :total_on_hand, :product_images]}]
-     		 })
+     		  })
   			}
   		end
 		end
@@ -29,9 +29,9 @@ module Spree
 				facet(:store_name)
 			end
 
-		price_facet = Array.new
-		brand_facet = Array.new
-		store_facet = Array.new
+  		price_facet = Array.new
+  		brand_facet = Array.new
+  		store_facet = Array.new
 
 			@all_facets.facet(:price).rows.each do |price|
 			 	price_facet.push(price.value.to_s)
@@ -44,8 +44,7 @@ module Spree
 			@all_facets.facet(:brand_name).rows.each do |brand|
 			 	brand_facet.push(brand.value.to_s)
 		  end
-		  
-			
+      
 			render json: {
 				status: 1,
 				message: "Attribute List",

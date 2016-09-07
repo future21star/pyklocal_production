@@ -11,7 +11,6 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 				@amazon_products = AMAZON_CLIENT.browse_node(params[:node])
 			end
 		else
-			
 			URI.parse(params[:url])
 		end
 		# render json: @amazon_products

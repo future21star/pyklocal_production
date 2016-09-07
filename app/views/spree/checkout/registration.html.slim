@@ -1,8 +1,8 @@
 #container
   ul.breadcrumb
     li
-      a href=spree.root_path
-        i.fa.fa-home
+        a href="#{root_path}"
+          i.fa.fa-home
     li
       a href="#"  Shopping Cart
     li
@@ -41,18 +41,7 @@
                 #login 
                   h2 Returning Customer
                   p I am a returning customer
-                  = form_for Spree::User.new, :as => :spree_user, :url => spree.create_new_session_path do |f|
-                    fieldset#password-credentials
-                      .form-group
-                        = f.email_field :email, :class => 'form-control', :tabindex => 1, :placeholder => Spree.t(:email)
-                      .form-group
-                        = f.password_field :password, :class => 'form-control', :tabindex => 2, :placeholder => Spree.t(:password)
-                      .checkbox
-                        label
-                          = f.check_box :remember_me
-                          = f.label :remember_me, Spree.t(:remember_me)
-                      .form-group
-                        = f.submit Spree.t(:login), :class => 'btn btn-lg btn-primary btn-block', :tabindex => 3
+                  = render partial: 'spree/checkout/login'
                 #registration style=("display:none") 
                   =render :partial => 'spree/checkout/registration'
                 #guest style=("display:none") 
