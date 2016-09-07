@@ -8,5 +8,4 @@
  *= require_self
  *= require_tree .
  *= require spree/frontend/spree_static_content
- *= require spree/frontend/spree_braintree_vzero
 */

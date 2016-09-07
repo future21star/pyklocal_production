@@ -16,6 +16,7 @@
 //= require twitter/bootstrap
 //= require_tree .
 //= stub merchant.js
+//= stub chatbox.min.js
 //= require noty/jquery.noty
 //= require noty/layouts/topCenter
 //= require noty/themes/default

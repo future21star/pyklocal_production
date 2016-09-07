@@ -85,7 +85,7 @@ gem 'spree_gateway', '~> 3.1.0'
 
 gem 'spree_print_invoice', github: 'spree-contrib/spree_print_invoice', branch: 'master'
 gem 'spree_static_content', github: 'spree-contrib/spree_static_content', branch: '3-1-stable'
-gem 'spree_braintree_vzero', github: 'spree-contrib/spree_braintree_vzero', branch: '3-1-stable'
+gem 'spree_braintree_vzero', github: 'spree-contrib/spree_braintree_vzero', branch: 'master'
 
 gem 'rvm-capistrano'
 

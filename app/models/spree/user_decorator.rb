@@ -139,11 +139,12 @@ Spree::User.class_eval do
     end
 
     def notify_user
-      if self.spree_role_ids.include?(Spree::Role.where(name: "merchant").first.try(:id)) && stores.present? && !stores.first.try(:active)
+      p self.changes
+      if self.has_spree_role?('merchant') && stores.present? && !stores.first.try(:active)
         stores.first.update_attributes(active: true)
-        UserMailer.notify_store_approval(self).deliver
-      elsif self.spree_role_ids.include?(Spree::Role.where(name: "driver").first.try(:id))
-        UserMailer.notify_driver_approval(self).deliver
+        UserMailer.notify_store_approval(self).deliver_now
+      # elsif self.has_spree_role?('driver')
+      #   UserMailer.notify_driver_approval(self).deliver_now
       end
     end
 
