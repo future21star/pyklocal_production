@@ -58,7 +58,7 @@ Pyklocal::Application.routes.draw do
     get "order_placed/:id", to: "orders#order_placed", as: "order_placed"
     resources :addresses 
     resources :payment_histories
-    resources :wishlists
+    resources :wishlists 
     #Applications routes
     resources :shop , :only => [:index,:show]
     resources :orders do 
@@ -77,6 +77,7 @@ Pyklocal::Application.routes.draw do
       namespace :v1 do
 
         resources :home
+        resources :wishlists , :only => [:index,:destroy,:create]
 
         resources :search do 
           get :filters, on: :collection
