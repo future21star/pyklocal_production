@@ -1,27 +1,24 @@
-   .row
-      .col-sm-12
-        #accordion.panel-group
-          .panel
-            #collapse-checkout-option.panel-collapse.collapse
-            .row 
-              #login-section
-                .col-md-12
-                  h2.login-title
-                    |Registration as New Customer
-                  = form_for Spree::User.new, html: {class: "custom-form"}, :as => :spree_user, :url => spree.registration_path do |f|
-                    .form-group
-                      
-                      = f.email_field :email, class: "form-control ", id: "email",:placeholder => Spree.t(:email)
-                    .form-group
+.row
+  .col-sm-12
+    #accordion.panel-group
+      .panel
+        #collapse-checkout-option.panel-collapse.collapse
+        .row 
+          #login-section
+            .col-md-12
+              h2.login-title
+                |Registration as New Customer
+              = form_for Spree::User.new, html: {class: "custom-form"}, :as => :spree_user, :url => spree.registration_path do |f|
+                .form-group
                   
-                      = f.password_field :password, class: "form-control", id: "pwd",:placeholder => Spree.t(:password)
-                    .form-group.required
-                  
-                      = f.password_field :password, :class => 'form-control', :tabindex => 2,:placeholder => Spree.t(:password)
-  
-                    .form-footer
-                      = f.submit Spree.t(:continue), :class => 'btn btn-lg btn-primary btn-block', :tabindex => 3
-                        |Create
-                      
+                  = f.email_field :email, class: "form-control ", id: "email",:placeholder => Spree.t(:email)
+                .form-group
+              
+                  = f.password_field :password, class: "form-control", id: "pwd",:placeholder => Spree.t(:password)
+                .form-group.required
+              
+                  = f.password_field :password, :class => 'form-control', :tabindex => 2,:placeholder => Spree.t(:password)
 
-  
+                .form-footer
+                  = f.submit Spree.t(:continue), :class => 'btn btn-lg btn-primary btn-block', :tabindex => 3
+                    |Create
