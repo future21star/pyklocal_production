@@ -5,18 +5,28 @@ module Spree
 	    @categories = Spree::Taxon.all
       @product = Spree::Product.all
       render json: {
-        status: 1,
+        status: "1",
         message: "Home Screen",
-        details:[{index: 0, title: "Top Banner",parent_category_id: 0,
-          item_list: @categories.as_json({only: [:id]}) },
-          {index: 1, title: "Today's Deal",
-          item_list: @product.as_json({
-            only: [:sku, :name, :price, :id, :description],
-            methods: [:price, :stock_status, :total_on_hand, :average_ratings, :taxon_ids, :product_images],
-            include: [variants: {only: :id, methods: [:price, :option_name, :stock_status, :total_on_hand, :product_images]}]
-          })}
+        details:[{index: "0", title: "Top Banner",
+          item_list: to_strigify_categories(@categories ,[]) },
+          {
+            index: "1", 
+            title: "Today's Deal",
+            item_list: to_stringify_product_json(@product , [])
+          }
         ]
       }
+    end
+
+    private
+
+    def to_strigify_categories obj , values = []
+      obj.each do |category|
+        category_hash = Hash.new
+        category_hash["id".to_sym] = category.id.to_s
+        values.push(category_hash)
+      end
+      return values
     end
   end
 end

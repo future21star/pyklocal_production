@@ -7,43 +7,54 @@ module Spree
 
     def index
       if params[:category_id]
-        @taxon = Spree::Taxon.where(id: params[:id]).first
-        @products = @taxon.products
-        render json: {
-          status: 1,
-          message: "Home Screen",
-          category_id: @taxon.id,
-          total_count: @products.count,
-          details: @products.as_json({
-            only: [:sku, :name, :price, :id, :description],
-            methods: [:price, :stock_status, :total_on_hand, :average_ratings, :taxon_ids, :product_images],
-            include: [variants: {only: :id, methods: [:price, :option_name, :stock_status, :total_on_hand, :product_images]}]
-          })
-        }
+        @taxon = Spree::Taxon.where(id: params[:category_id]).first
+        if @taxon
+          @products = @taxon.products
+          if @products
+            render json: {
+              status: "1",
+              message: "Home Screen",
+              category_id: @taxon.id.to_s,
+              total_count: @products.count.to_s,
+              details: to_stringify_product_json(@products ,[])
+            }
+          else
+            render json: {
+              status: "0",
+              message: "No product founud in this category"
+            }
+          end
+        else
+          render json: {
+            status: "0",
+            message: "Invalid Category Id"
+          }
+        end
       else
         @products = Spree::Product.all
         render json: {
-          status: 1,
+          status: "1",
           message: "Home Screen",
-          total_count: @products.count,
-          details: @products.as_json({
-            only: [:sku, :name, :price, :id, :description],
-            methods: [:price, :stock_status, :total_on_hand, :average_ratings, :taxon_ids, :product_images],
-            include: [variants: {only: :id, methods: [:price, :option_name, :stock_status, :total_on_hand, :product_images]}]
-          })
+          total_count: @products.count.to_s,
+          details: to_stringify_product_json(@products, [])
         }
       end
     end
 
     def show
-      @product = Spree::Product.where(id: params[:id]).first
-      render json: {
-        status: @product.present? ? 1 : 0,
-        message: "Product Detail",
-        details: @product.as_json({ only: [:sku, :name, :price, :id, :description],
-            methods: [:price, :stock_status, :total_on_hand, :average_ratings, :taxon_ids, :product_images],
-            include: [variants: {only: :id, methods: [:price, :option_name, :stock_status, :total_on_hand, :product_images]}]})
-      }
+      @product = Spree::Product.where(id: params[:id])
+      if @product
+        render json: {
+          status: "1" ,
+          message: "Product Detail",
+          details: to_stringify_product_json(@product ,[])
+        }
+      else
+        render json: {
+          status: "0",
+          message: "Invalid Product Id"
+        }
+      end
     end
       
 
@@ -72,6 +83,8 @@ module Spree
     end
 
     private
+
+    
 
       def get_product
         @product = Spree::Product.find_by_slug(params[:product_id])
