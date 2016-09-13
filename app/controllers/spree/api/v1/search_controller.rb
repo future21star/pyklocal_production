@@ -6,16 +6,15 @@ module Spree
   		@products = @search.results
 
   		if @products.blank?
-  			render json: {code: 0, message: "No Result Found "}
+  			render json: {
+          code: "0", 
+          message: "No Result Found "
+        }
   		else
   			render json: {
-  				status: 1, 
+  				status: "1", 
   				message: "Search Result",
-  				details: @products.as_json({
-        		only: [:sku, :name, :price, :id, :description],
-       			methods: [:price, :stock_status, :total_on_hand, :average_ratings, :taxon_ids, :product_images],
-       			include: [variants: {only: :id, methods: [:price, :option_name, :stock_status, :total_on_hand, :product_images]}]
-     		  })
+  				details:  to_stringify_product_json(@products ,[])
   			}
   		end
 		end
@@ -44,7 +43,7 @@ module Spree
 		  end
       
 			render json: {
-				status: 1,
+				status: "1",
 				message: "Attribute List",
 				attribute: [
 					{

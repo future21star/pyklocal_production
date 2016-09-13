@@ -76,7 +76,7 @@ module Spree
 
     def average_ratings
       if ratings.present?
-        (ratings.sum(rating) / ratings.count).to_f.round(2)
+        (ratings.sum(rating) / ratings.count).to_f.round(2).to_s
       else
         0
       end

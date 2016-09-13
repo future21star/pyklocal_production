@@ -11,19 +11,17 @@ module Spree
       if @user.present? && @user.wishlists.present?
         @user.wishlists.each do |wish|
           @products.push(wish.variant.try(:product))
-          @wishlist.push(wish.id)
+          @wishlist.push(wish.id.to_s)
         end
         render json: {
-          status: 1 ,
+          status: "1" ,
           message: "Wishlist Retrieve Successfully" ,
           id: @wishlist.as_json(),
-          details: @products.as_json({ only: [:sku, :name, :price, :id, :description],
-            methods: [:price, :stock_status, :total_on_hand, :average_ratings, :taxon_ids, :product_images],
-            include: [variants: {only: :id, methods: [:price, :option_name, :stock_status, :total_on_hand, :product_images]}]})
+          details: to_stringify_product_json(@products, [])
         }
       else
         render json: {
-          status: 0,
+          status: "0",
           message: "No item in whislist"
         }
       end
@@ -69,8 +67,13 @@ module Spree
 
     private
 
-      def wishlist_params
-        params.require(:wishlist).permit(:variant_id, :user_id)
-      end
+      
+  
+
+
+    def wishlist_params
+      params.require(:wishlist).permit(:variant_id, :user_id)
+    end
+  
   end
 end
