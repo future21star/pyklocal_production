@@ -19,12 +19,12 @@
           table.table.table-hover
             thead
               tr
-                th.text-center.strong Order ID
-                th.text-center Order Status
-                th.text-center Date Added
+                th.text-center.strong= sort_link @search, :number, "Number"
+                th.text-center= sort_link @search, :state, "State"
+                th.text-center= sort_link @search, :completed_at, "Completed At"
                 th.text-center Total Item
                 th.text-center Customer
-                th.text-center Total
+                th.text-center= sort_link @search, :total, "Total"
                 th.text-center Detail
                
             tbody

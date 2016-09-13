@@ -55,7 +55,7 @@ module Spree
     end
 
     def total_after_commission
-      commission = Spree::Commission.first.percentage.to_f || 0
+      commission = Spree::Commission.first.try(:percentage).try(:to_f) || 0
       price = (total.to_f - total.to_f * commission / 100).round(2)
     end
 
