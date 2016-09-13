@@ -1,8 +1,8 @@
 module Spree
-  class UserMailer < BaseMailer  
+  class UserMailer < BaseMailer
     def notify_driver_approval(user)
       @user = user
-      mail(to: user.email, subject: "#{@user.full_name} is now approved as a driver")
+      mail(to: user.email, from: from_address, subject: "#{@user.full_name} is now approved as a driver")
     end
 
     def reset_password_instructions(user, token, *args)
@@ -16,6 +16,6 @@ module Spree
 
       mail to: user.email, from: from_address, subject: Spree::Store.current.name + ' ' + I18n.t(:subject, :scope => [:devise, :mailer, :confirmation_instructions])
     end
-    
+
   end
 end
