@@ -4,9 +4,7 @@ html lang="#{I18n.locale}"
     = yield :meta_tags 
     = render :partial => 'spree/shared/head'
     / link[rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"]
-    link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
     = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => false
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
   body
     .container-fluid style = ("padding-left: 0;padding-right: 0;")
       = render :partial => 'spree/shared/header'
@@ -22,7 +20,7 @@ html lang="#{I18n.locale}"
     = javascript_include_tag 'jquery.raty'
     script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5799d7abbbb1ae8a"
     script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.3.8/packaged/jquery.noty.packaged.min.js"
-    script src="http://staging.simmpli.com/dist/chatbox.min.js" id="chatboxInit" data-key="1fad50443e7dfcb98f61fcc37386e5af728727daaff1c565"
+    
     script type="text/javascript"
       | var noty_option = 
       = flash_message.to_json.html_safe

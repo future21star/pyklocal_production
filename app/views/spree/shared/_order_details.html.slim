@@ -10,7 +10,8 @@ table.table.table-bordered.table-hover
             div
               i.fa.fa-truck
               |&nbsp;
-              = Spree.t(:shipment_details, stock_location: shipment.stock_location.name, shipping_method: shipment.selected_shipping_rate.name)
+              = "Delivery within 6 - 8 woking hours with cost #{number_to_currency(shipment.selected_shipping_rate.cost.to_f)}"
+              / = Spree.t(:shipment_details, stock_location: shipment.stock_location.name, shipping_method: shipment.selected_shipping_rate.name)
         = render 'spree/shared/shipment_tracking', order: order if order.shipped?
       - if order.has_step?("payment")
         td data-hook="order-payment" 
@@ -41,7 +42,7 @@ table.table.table-bordered.table-hover
         td data-hook="order-ship-address" 
           h4
             = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
-          = render 'spree/shared/address', address: order.ship_address
+          = render 'spree/shared/address', address: order.bill_address
 - if order.pickable_line_items.present?
   table.table.table-bordered.table-hover style="width: 50%;"
     thead

@@ -25,6 +25,7 @@ Spree::User.class_eval do
   after_create :assign_api_key 
   after_create :notify_admin
   after_update :notify_user
+  before_update :send_changed_password_notification
   attr_accessor :role_name
 
   accepts_nested_attributes_for :parse_links, :reject_if => lambda { |a| a[:url].blank? }
@@ -139,21 +140,17 @@ Spree::User.class_eval do
     end
 
     def notify_user
-      p self.changes
       if self.has_spree_role?('merchant') && stores.present? && !stores.first.try(:active)
         stores.first.update_attributes(active: true)
         UserMailer.notify_store_approval(self).deliver_now
-      # elsif self.has_spree_role?('driver')
-      #   UserMailer.notify_driver_approval(self).deliver_now
       end
     end
 
-    # def notify_user
-    #   if self.spree_role_ids.include?(Spree::Role.where(name: "merchant").first.try(:id)) && !stores.first.active
-    #     stores.first.update_attributes(active: true)
-    #     UserMailer.notify_store_approval(self).deliver
-    #   end
-    # end
+    def send_changed_password_notification
+      if self.changes.include?(:password_salt)
+        UserMailer.password_changed_notification(self).deliver_now
+      end
+    end
 
     
 

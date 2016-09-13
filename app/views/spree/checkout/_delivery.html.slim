@@ -3,8 +3,9 @@
       = form.fields_for :shipments do |ship_form|
         .shipment
           h4.stock-location data-hook="stock-location" 
-            = Spree.t(:package_from)
-            strong.stock-location-name data-hook="stock-location-name" = ship_form.object.stock_location.name
+            / = Spree.t(:package_from)
+            / |  
+            / strong.stock-location-name data-hook="stock-location-name"= ship_form.object.stock_location.name
           table.table.stock-contents data-hook="stock-contents" 
             colgroup
               col style=("width: 10%;") 
