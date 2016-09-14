@@ -34,12 +34,12 @@
                 = f.label :reason, Spree.t(:reason)
                 = f.select :return_authorization_reason_id, Spree::ReturnAuthorizationReason.all.collect{|r|[r.name, r.id]}, {include_blank: true}, {class: 'form-control select2', "data-placeholder" => Spree.t(:select_a_return_authorization_reason)}
                 = f.error_message_on :reason
-
+              .form-actions data-hook="buttons" 
+                = button Spree.t(:create), 'submit'
+                '
+                = button_link_to Spree.t('actions.cancel'), spree.customer_returns_path, icon: 'delete'
 
             - else
               .alert.alert-info.no-objects-found
                 | This Item is not authorized to return 
-        .form-actions data-hook="buttons" 
-          = button Spree.t(:create), 'submit'
-          span.or= Spree.t(:or)
-          = button_link_to Spree.t('actions.cancel'), spree.customer_returns_path, icon: 'delete'
+        

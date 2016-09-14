@@ -51,7 +51,11 @@ Spree::OrdersController.class_eval do
       redirect_back_or_default(spree.root_path)
     else
       respond_with(order) do |format|
-        format.html { redirect_to cart_path }
+        if params[:bunch_cart]
+          format.html { redirect_to :back, notice: "Successfully added into cart" }
+        else
+          format.html { redirect_to cart_path }
+        end
       end
     end
   end

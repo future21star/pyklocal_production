@@ -8,9 +8,9 @@ module Spree
       if taxonomy
         @taxons = taxonomy.root.children
       else
-        if current_spree_user.has_spree_role?('merchant')
+        if current_spree_user.has_spree_role?('merchant') && current_spree_user.stores.present?
           if params[:ids]
-            @taxons = current_spree_user.stores.first.spree_taxons.where(id: params[:ids].split(', ')) 
+            @taxons = current_spree_user.stores.first.spree_taxons.where(id: params[:ids].split(', '))
           else
             @taxons = current_spree_user.stores.first.spree_taxons.order(:taxonomy_id, :lft).ransack(params[:q]).result 
           end
