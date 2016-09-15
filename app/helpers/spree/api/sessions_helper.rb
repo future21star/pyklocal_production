@@ -1,7 +1,7 @@
 module Spree::Api::SessionsHelper
 	def get_response(user)
 		{
-  		code: 1,
+  		code: "1",
   		message: "Registered successfully!",
   		user: user.as_json({
   			only: [:first_name, :last_name, :spree_api_key]
@@ -11,7 +11,7 @@ module Spree::Api::SessionsHelper
 
 	def error_response
 		{
-			code: 0,
+			code: "0",
 			message: ""
 		}
 	end
