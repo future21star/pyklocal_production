@@ -86,6 +86,18 @@ module Spree
 			}
 		end
 
+		def apply_coupon_code
+      find_order
+      authorize! :update, @order, order_token
+      @order.coupon_code = params[:coupon_code]
+      @handler = PromotionHandler::Coupon.new(@order).apply
+      status = @handler.successful? ? 200 : 422
+      render json: {
+      	success: @handler.successful?,
+      	message: @handler.successful? ? "Coupon code successfully applied" : @handler.error
+      }
+    end
+
 		private
 
 			def order_params
