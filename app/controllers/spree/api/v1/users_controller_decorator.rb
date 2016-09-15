@@ -214,7 +214,7 @@ module Spree
 			def find_user
 				id = params[:id] || params[:user_id]
 				@user = Spree::ApiToken.where(token: id).first.try(:user)
-				render json: {code: 0, message: "User not found"} unless @user.present?
+				render json: {status: 0, message: "User not found"} unless @user.present?
 			end
 	end
 end

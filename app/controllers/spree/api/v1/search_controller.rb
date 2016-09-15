@@ -7,7 +7,7 @@ module Spree
 
   		if @products.blank?
   			render json: {
-          code: "0", 
+          status: "0", 
           message: "No Result Found "
         }
   		else

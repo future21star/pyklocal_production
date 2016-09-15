@@ -14,9 +14,6 @@ Spree::CheckoutsController.class_eval do
   # rescue StateMachines::InvalidTransition
   #   respond_with(@order, default_template: 'spree/api/v1/orders/could_not_transition', status: 422)
   # end
-
-  private 
-
  	# def to_stringify_checkout_json obj ,values = []
  	# 	order_hash=Hash.new
  	# 	skip_order_attributes = ["last_ip_address","created_by_id","approver_id","approved_at","confirmation_delivered","guest_token","canceled_at","store_id"]

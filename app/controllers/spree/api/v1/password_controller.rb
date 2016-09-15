@@ -6,12 +6,12 @@ module Spree
 			unless user.blank?
 				begin
 					user.send_reset_password_instructions
-					render json: {code: "1", message: "Link send successfully"}
+					render json: {status: "1", message: "Link send successfully"}
 				rescue Exception => e
-					render json: { code: "0" ,message: "Something went wrong" , Error: e.message }
+					render json: { status: "0" ,message: "Something went wrong" , Error: e.message.to_s }
 				end
 			else
-				render json: {code: "0", message: "Invalid email"}
+				render json: {status: "0", message: "Invalid email"}
 			end
 		end
 	end

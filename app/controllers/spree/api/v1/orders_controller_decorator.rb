@@ -120,12 +120,12 @@ module Spree
 
 			def find_store
 				@store = Merchant::Store.find_by_name(params[:store_name])
-				render json: {code: 0, message: "Store not found, invalid store name"} unless @store.present?
+				render json: {status: 0, message: "Store not found, invalid store name"} unless @store.present?
 			end 
 
 			def find_driver
 				@user = Spree::ApiToken.where(token: params[:token]).first.try(:user)
-				render json: {code: 0, message: "Driver not found"} unless @user.present?
+				render json: {status: 0, message: "Driver not found"} unless @user.present?
 			end
 
 	end

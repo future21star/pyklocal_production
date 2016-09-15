@@ -54,12 +54,12 @@ module Spree
 			@token=ApiToken.where(token: params[:id], expire: nil).last
 			if @token
 				if @token.update_attributes(expire: Time.zone.now)
-					render json: {code: "1", message: "Log Out successfully"}
+					render json: {status: "1", message: "Log Out successfully"}
 				else
-					render json: {code: "0", message: "Something went wrong"}
+					render json: {status: "0", message: "Something went wrong"}
 				end
 			else
-				render json: {code: "0", message: "Already Logged out"}
+				render json: {status: "0", message: "Already Logged out"}
 			end
 
 		end
