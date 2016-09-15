@@ -8,12 +8,12 @@ class Spree::CustomerReturnsController < Spree::StoreController
 
   def new
    if params[:order_number].blank?
-     redirect_to :back, :params => @params 
+    redirect_to :back, :params => @params 
    else
-     @customer_return = Spree::CustomerReturn.new
-     @order = Spree::Order.where(number: params[:order_number]).first
-     @request_auth = @order.return_authorizations.last
-     @inventoryunit = @order.inventory_units.last
+    @customer_return = Spree::CustomerReturn.new
+    @order = Spree::Order.where(number: params[:order_number]).first
+    @request_auth = @order.return_authorizations.last
+    @inventoryunit = @order.inventory_units.last
    end
 
   end
@@ -32,7 +32,7 @@ class Spree::CustomerReturnsController < Spree::StoreController
   private
 
    def customer_returns_param
-     params.require(:customer_return).permit( customer_return: [:number, :stock_location_id, :return_authorization_reason_id, return_items_attributes: [id: [:inventory_unit_id, :return_authorization_id, :pre_tax_amount, :returned, :resellable, ]]])
+    params.require(:customer_return).permit( customer_return: [:number, :stock_location_id, :return_authorization_reason_id, return_items_attributes: [id: [:inventory_unit_id, :return_authorization_id, :pre_tax_amount, :returned, :resellable, ]]])
      
    end
 

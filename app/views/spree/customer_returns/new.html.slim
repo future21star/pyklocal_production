@@ -14,16 +14,16 @@
                     th.text-center= Spree.t(:exchange_for)
                     th.text-center= Spree.t(:resellable)
                 tbody
-                    tr
-                      td.text-center
-                        .variant-name= @inventoryunit.variant.name
-                        .variant-options= @inventoryunit.variant.options_text
-                      td.text-center
-                        = @inventoryunit.variant.sku
-                      td.text-center
-                        =@request_auth.return_items.first.pre_tax_amount
-                      td.text-center
-                      td 
+                  tr
+                    td.text-center
+                      .variant-name= @inventoryunit.variant.name
+                      .variant-options= @inventoryunit.variant.options_text
+                    td.text-center
+                      = @inventoryunit.variant.sku
+                    td.text-center
+                      =@request_auth.return_items.first.pre_tax_amount
+                    td.text-center
+                    td 
               = hidden_field_tag "[customer_return][number]", @order.number
               = f.field_container :stock_location, class: ['form-group'] do
                 = f.label :stock_location, Spree.t(:stock_location)
