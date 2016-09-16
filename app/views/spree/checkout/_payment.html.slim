@@ -36,9 +36,12 @@
             = render :partial => "spree/checkout/payment/#{method.method_type}", :locals => { :payment_method => method }
     p.field data-hook="coupon_code" 
       = form.label :coupon_code
-      = form.text_field :coupon_code, :class => 'form-control'
+      input#coupon-code.form-control type='text'
+      / = form.text_field :coupon_code, :class => 'form-control'
+      #coupon-response
+      a#apply-coupon-code.pay-btn.btn-success.btn data-order_id=(@order.number) data-order_token=(@order.guest_token) Apply
 .text-right.form-buttons data-hook="buttons" 
-  = submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary'
+  = submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary', id: 'continue-btn'
 - content_for :js
   javascript:
     Spree.disableSaveOnClick();

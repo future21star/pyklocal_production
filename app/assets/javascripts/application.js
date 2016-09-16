@@ -23,6 +23,12 @@
 //= require spree/frontend/spree_braintree_vzero
 //= require spree/frontend/spree_auth
 
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+  }
+});
+
 var pyklocal = {
 
 	init: function() {
@@ -32,6 +38,7 @@ var pyklocal = {
 		this.filterProducts();
     this.sortProduct();
     this.changeNoOfProductShow();
+    this.applyCoupon();
 	},
 
 	showNoty: function() {
@@ -98,6 +105,26 @@ var pyklocal = {
   changeNoOfProductShow: function() {
     $('#noOfItem').change(function() {
       $('#itemShow').submit();
+    });
+  },
+
+  applyCoupon: function() {
+    $('#apply-coupon-code').click(function () {
+      var couponStatus = $("#coupon-response");
+      couponStatus.removeClass();
+      $.ajax({
+        url: "/api/v1/orders/"+$(this).data('order_id')+"/apply_coupon_code",
+        method: 'put',
+        headers: {"X-Spree-Order-Token": $(this).data('order_token')},
+        data: {coupon_code: $('#coupon-code').val(), order_token: $(this).data('order_token')},
+        success: function(data) {
+          if(data.success) {
+            couponStatus.addClass('alert-success').text(data.message);
+          } else {
+            couponStatus.addClass('alert-error').text(data.message);
+          }
+        }
+      });
     });
   }
 
