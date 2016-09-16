@@ -31,7 +31,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 			image_u = raw_product.large_image.try(:url)
 			sku = raw_product.item_attributes.title[0..2].upcase+SecureRandom.hex(5).upcase
 			asin_no = raw_product.asin
-			@product = Spree::Product.where(asin: raw_product.asin, sku: sku, store_id: current_spree_user.stores.first.try(:id)).first
+			@product = Spree::Product.where(asin: raw_product.asin, store_id: current_spree_user.stores.first.try(:id)).first
 			if @product.blank?
 				@product = Spree::Product.create({name: raw_product.item_attributes.title,description: description, price: offer_price, available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url),store_id: current_spree_user.stores.first.try(:id),asin:asin_no}) 
 				raw_product.item_attributes.each do |amazon_products_properties|
