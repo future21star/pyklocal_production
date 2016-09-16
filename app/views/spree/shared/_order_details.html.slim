@@ -6,11 +6,12 @@ table.table.table-bordered.table-hover
           = Spree.t(:shipments)
           = link_to "(#{Spree.t(:edit)})", checkout_state_path(:delivery) unless order.completed?
         .delivery
-          - order.shipments.each do |shipment|
-            div
-              i.fa.fa-truck
-              |&nbsp;
-              = "Delivery within 6 - 8 woking hours with cost #{number_to_currency(shipment.selected_shipping_rate.cost.to_f)}"
+          - shipment = order.shipments.last
+          / - order.shipments.uniq.each do |shipment|
+          div
+            i.fa.fa-truck
+            |&nbsp;
+            = "Delivery within 6 - 8 woking hours with cost #{number_to_currency(shipment.selected_shipping_rate.cost.to_f)}"
               / = Spree.t(:shipment_details, stock_location: shipment.stock_location.name, shipping_method: shipment.selected_shipping_rate.name)
         = render 'spree/shared/shipment_tracking', order: order if order.shipped?
       - if order.has_step?("payment")

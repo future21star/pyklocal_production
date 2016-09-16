@@ -33,11 +33,12 @@ table#listing_users.table data-hook=""
       th.actions data-hook="admin_users_index_header_actions" 
   tbody
     - @collection.each do |merchant|
-      tr data-hook="admin_users_index_rows" id=("#{spree_dom_id merchant}") 
-        td.user_email= link_to merchant.email, edit_admin_seller_url(merchant)
-        td.user_email= merchant.first_name
-        td.user_email= merchant.stores.try(:first).try(:store_orders).try(:collect, &:total_after_commission).try(:sum).try(:to_f)
-        td.actions.actions-2.text-right data-hook="admin_users_index_row_actions" 
-          = link_to_edit merchant, :no_text => true
-          = link_to_delete merchant, :no_text => true
+      - if merchant.stores.present?
+        tr data-hook="admin_users_index_rows" id=("#{spree_dom_id merchant}") 
+          td.user_email= link_to merchant.email, edit_admin_seller_url(merchant)
+          td.user_email= merchant.first_name
+          td.user_email= merchant.stores.first.try(:orders).try(:collect, &:total_after_commission).try(:sum).to_f
+          td.actions.actions-2.text-right data-hook="admin_users_index_row_actions" 
+            = link_to_edit merchant, :no_text => true
+            = link_to_delete merchant, :no_text => true
 = paginate @collection

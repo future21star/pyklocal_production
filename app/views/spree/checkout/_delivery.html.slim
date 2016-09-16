@@ -37,7 +37,7 @@
             - else
               - rate = rates.where("cost <> ?", 0).first
               = ship_form.hidden_field :selected_shipping_rate_id, value: rate.try(:id)
-              span.rate-name= rate.try(:name)
+              span.rate-name Same day home Delivery Charge
               |&nbsp;
               span.badge.rate-cost= rate.try(:display_cost)
       - if @differentiator.try(:missing?)
