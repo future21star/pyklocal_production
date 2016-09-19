@@ -32,7 +32,7 @@
                           span.glyphicon.glyphicon-user.text-primary
                           | &nbsp; Store Name
                       td.text-primary
-                        = store.try(:name).titleize
+                        = link_to store.try(:name).titleize, main_app.merchant_store_url(store)
                     tr
                       td
                         strong
@@ -46,7 +46,7 @@
                           span.glyphicon.glyphicon-calendar.text-primary
                           | &nbsp;delivery Est.
                       td.text-primary
-                        | 5-6 days
+                        = store.try(:estimated_delivery_time)
                     tr
                       td
                         strong

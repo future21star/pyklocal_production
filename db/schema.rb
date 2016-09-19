@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160913125604) do
+ActiveRecord::Schema.define(version: 20160919121655) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(version: 20160913125604) do
     t.string   "certificate_content_type", limit: 255
     t.integer  "certificate_file_size",    limit: 4
     t.datetime "certificate_updated_at"
+    t.string   "estimated_delivery_time",  limit: 255,   default: "5 - 6 working hours"
   end
 
   create_table "pyklocal_stores_taxons", force: :cascade do |t|

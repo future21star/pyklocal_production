@@ -43,6 +43,11 @@
       = f.select :store_type , options_for_select([['Physical', 'Physical' ],['Online', 'Online' ],['Both', 'Both' ]], @store.store_type), {}, class: "form-control input-bg"
   .form-group
     .col-md-2.col-xs-12
+      = f.label :estimated_delivery_time, class: "control-label"
+    .col-md-4.col-xs-12
+      = f.text_field :estimated_delivery_time, class: "form-control input-bg", placeholder: "Enter full information like 2 - 5 business hours or 1 -3 working days"
+  .form-group
+    .col-md-2.col-xs-12
       = f.label :site_url, "Website(s)", class: "control-label"
     .col-md-4.col-xs-12
       span.input-icon.icon-right

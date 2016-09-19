@@ -39,7 +39,7 @@
                 .col-md-3.product-item 
                   .thumbnail style=("min-height:280px;")
                     .thumb-image-container.product-img.table-center
-                      a.aligner.img-center href=item.detail_page_url
+                      a.aligner.img-center href=new_merchant_amazon_product_path(asin: item.asin) target="_blank"
                         = image_tag item.medium_image.try(:url) ,class:"img-responsive  "
                     .product-details.trim-text
                       = link_to  "#{item.item_attributes.title} ", item.detail_page_url, target: "_blank"
