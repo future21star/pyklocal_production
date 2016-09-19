@@ -45,14 +45,16 @@ table.table.table-bordered.table-hover
             = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
           = render 'spree/shared/address', address: order.bill_address
 - if order.pickable_line_items.present?
-  table.table.table-bordered.table-hover style="width: 50%;"
+  table.table.table-bordered.table-hover
     thead
       tr
+        th Item
         th Store
         th Pickup Address
     tbody
       - order.pickable_line_items.each do |pickable_item|
         tr
+          td= pickable_item.product.name
           td= pickable_item.seller_name || "No store"
           td= pickable_item.pickup_address || "No address"
 
@@ -62,10 +64,12 @@ table.table.table-bordered.table-hover
       tr
         td.text-center Product Image
         td.text-center Product Name
+        td.text-center Delivery Type
         td.text-center Quantity
         td.text-center Price
         td.text-center Total
-        td style=("width: 20px;") 
+        - if order.completed?
+          td style=("width: 20px;") 
     tbody
       - order.line_items.each do |item|
         tr data-hook="order_details_line_item_row"
@@ -78,13 +82,15 @@ table.table.table-bordered.table-hover
             b= item.variant.product.name
             / = truncated_product_description(item.variant.product)
             = "(" + item.variant.options_text + ")" unless item.variant.option_values.empty?
+          td.text-center= item.delivery_type.humanize
           td.text-center data-hook="order_item_qty" = item.quantity
           td.text-center data-hook="order_item_price" 
             span= item.single_money.to_html
           td.text-center data-hook="order_item_total" 
             span= item.display_amount.to_html
-          td.text-text-right style=("white-space: nowrap;")
-            = link_to "<i class='fa fa-reply'></i>".html_safe, new_customer_return_path(order_number: order.number), class: "btn btn-primary"
+          - if order.completed?
+            td.text-text-right style=("white-space: nowrap;")
+              = link_to "<i class='fa fa-reply'></i>".html_safe, new_customer_return_path(order_number: order.number), class: "btn btn-primary"
     tfoot#order-total data-hook="order_details_total" 
       tr.warning.total
         td align="right" colspan="4" 
