@@ -8,6 +8,9 @@ module Spree
 	  		main_hash = Hash.new
 	  		c_obj.attributes.each do |k, v|
 	  			main_hash[k.to_sym] = v.to_s
+          if k == "depth"
+            main_hash[:level] = v.to_s
+          end
 	  		end
 	  		values.push(main_hash)
 	  		if c_obj.children.present?
@@ -97,10 +100,12 @@ module Spree
 		end
 
 		def required_params_present?(params, * parameters)
+      @errors = []
 	    parameters.each do |param|
-	      if params[param].blank?
-	        @response[:code] = 0
-	        @errors << "#{param.to_s} cannot be left blank"
+        if params[param].blank?
+	        @response = error_response
+          @errors << "#{param.to_s} cannot be left blank"
+          @response[:message] = @errors.join(", ")	        
 	      end
 	    end
 	    @errors.blank? ? true : false
