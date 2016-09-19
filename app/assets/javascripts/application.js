@@ -39,6 +39,7 @@ var pyklocal = {
     this.sortProduct();
     this.changeNoOfProductShow();
     this.applyCoupon();
+    this.configurePhoneField();
 	},
 
 	showNoty: function() {
@@ -125,6 +126,19 @@ var pyklocal = {
           }
         }
       });
+    });
+  }, 
+
+  configurePhoneField: function() {
+    $('.number-only').keypress(function(e){
+      if($(this).val().length <= 9) {
+        if((e.which >= 48 && e.which <= 57) || (e.which == 46)){
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
     });
   }
 
