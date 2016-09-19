@@ -34,7 +34,7 @@
                       td.align-middle rowspan="#{order.get_store_line_items(@store.id).count}"
                         = link_to order.try(:number), edit_merchant_order_path(order)
                       td rowspan="#{order.get_store_line_items(@store.id).count}"
-                        = order.completed_at.strftime("%m-%d-%Y")
+                        = order.completed_at.strftime("%d-%m-%Y")
                       - order.get_store_line_items(@store.id).each_with_index do |line_item, index|
                         - if index == 0
                           td= line_item.product.try(:name)

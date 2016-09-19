@@ -1,0 +1,92 @@
+<table class="row header">
+  <tr>
+    <td>
+      <p class="lede">
+        <%= Spree.t('order_mailer.confirm_email.dear_customer') %>
+      </p>
+      <p>
+        <%= Spree.t('order_mailer.confirm_email.instructions') %>
+      </p>
+      <p>
+        <%= Spree.t('order_mailer.confirm_email.order_summary', number: @order.number) %>
+      </p>
+      <table class="container">
+        <tr>
+          <td class="wrapper last">
+            <table class="twelve columns">
+              <%= render collection: @order.line_items, partial: 'spree/shared/mailer_line_item', as: :line_item %>
+              <%= render 'spree/order_mailer/subtotal', order: @order %>
+              <% if @order.line_item_adjustments.exists? %>
+                <% if @order.all_adjustments.promotion.eligible.exists? %>
+                  <% @order.all_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
+                    <tr>
+                      <td class="six sub-columns">
+                        <%= Spree.t(:promotion) %> <%= label %>:
+                      </td>
+                      <td class="six sub-columns last right">
+                        <%= Spree::Money.new(adjustments.sum(&:amount), currency: @order.currency) %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <% @order.shipments.group_by { |s| s.selected_shipping_rate.try(:name) }.each do |name, shipments| %>
+                <tr>
+                  <td class="six sub-columns">
+                    <%= Spree.t(:shipping) %> <%= name %>:
+                  </td>
+                  <td class="six sub-columns last right">
+                    <%= Spree::Money.new(shipments.sum(&:discounted_cost), currency: @order.currency) %>
+                  </td>
+                </tr>
+              <% end %>
+              <% if @order.all_adjustments.eligible.tax.exists? %>
+                <% @order.all_adjustments.eligible.tax.group_by(&:label).each do |label, adjustments| %>
+                  <tr>
+                    <td class="six sub-columns">
+                      <%= Spree.t(:tax) %> <%= label %>:
+                    </td>
+                    <td class="six sub-columns last right">
+                      <%= Spree::Money.new(adjustments.sum(&:amount), currency: @order.currency) %>
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+              <% @order.adjustments.eligible.each do |adjustment| %>
+                <% next if (adjustment.source_type == 'Spree::TaxRate') || (adjustment.amount == 0) %>
+                <%= render 'spree/order_mailer/adjustment', adjustment: adjustment %>
+              <% end %>
+              <%= render 'spree/order_mailer/total', order: @order %>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <% if @order.pickable_line_items.present? %>
+        <table class="table table-bordered table-hover" style="width: 100%;">
+          <thead>
+            <tr style="border-bottom: 2px solid #eee;">
+              <th style="width: 40%;"> Item </th>
+              <th style="width: 20%;"> Store </th>
+              <th style="width: 39%;"> Pickup Address </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @order.pickable_line_items.each do |pickable_item| %>
+              <tr style="border-bottom: 2px solid #eee;">
+                <td><%= pickable_item.product.name %></td>
+                <td><%= pickable_item.seller_name || "No store" %></td>
+                <td><%= pickable_item.pickup_address || "No address" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+      <br>
+      <br>
+      <p>
+        <%= Spree.t('order_mailer.confirm_email.thanks') %>
+      </p>
+    </td>
+    <td class="expander"></td>
+  </tr>
+</table>

@@ -13,7 +13,10 @@ Spree.config do |config|
   # Example:
   # Uncomment to stop tracking inventory levels in the application
   # config.track_inventory_levels = false
+  config.logo = "/images/pyc-logo.png"
 end
+
+Spree::Store.current.name = "Pyklocal"
 
 Spree::PrintInvoice::Config.set(logo_path: "pyc_logo.png")
 Spree::PrintInvoice::Config.set(next_number: 1|1234)
