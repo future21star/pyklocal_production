@@ -6,8 +6,8 @@ module Spree
 		include Spree::Api::SessionsHelper
 
 		def create
-			if params[:is_guest]
-				@api_token = ApiToken.where(user_device_id: params[:device_token],expire: nil).last
+			if eval(params[:is_guest])
+				@api_token = ApiToken.where(user_device_id: params[:device_id],expire: nil).last
 				if !@api_token
 					email = SecureRandom.hex(4)+"@pyklocal.com"
 					password = SecureRandom.hex(4)
@@ -44,6 +44,7 @@ module Spree
 				end
 			end
 		rescue Exception => e
+			p "exe"
 			api_exception_handler(e)
 		ensure 
 			render json: @response
