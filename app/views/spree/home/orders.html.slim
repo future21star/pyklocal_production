@@ -33,7 +33,7 @@
                   tr
                     td.text-center= link_to order.number,spree.order_path(order)
                     td.text-center= order.state.try(:titleize)
-                    td.text-center= order.created_at.strftime("%d-%m-%y")
+                    td.text-center= order.created_at.strftime("%m-%d-%Y")
                     td.text-center= order.quantity
                     td.text-center= order.email
                     td.text-center= order.total

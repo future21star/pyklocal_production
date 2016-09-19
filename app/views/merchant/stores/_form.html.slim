@@ -3,6 +3,7 @@
   .form-group
     .col-md-2.col-xs-12
       = f.label :name, "Store Name", class: "control-label"
+      span.required *
     .col-md-4.col-xs-12
       span.input-icon.icon-right
         = f.text_field :name, class: "form-control input-bg" 
@@ -15,6 +16,7 @@
   .form-group
     .col-md-2.col-xs-12
       = f.label :certificate_of_authority, class: "control-label"
+      span.required *
     .col-md-4.col-xs-12
       span
         = f.file_field :certificate, class: "form-control" 
@@ -30,6 +32,7 @@
   .form-group
     .col-md-2.col-xs-12
       = f.label :phone_number, class: "control-label"
+      span.required *
     .col-md-4.col-xs-12
       span.input-icon.icon-right
         = f.text_field :phone_number, class: "form-control input-bg" 
@@ -47,6 +50,7 @@
   .form-group
     .col-md-2.col-xs-12
       = f.label :street_number, "Address", class: "control-label"
+      span.required *
     .col-md-8.col-xs-12
       span.input-icon.icon-right
         = f.text_field :street_number, class: "form-control input-bg", placeholder: "Street Address" 
@@ -68,6 +72,7 @@
   .form-group
     .col-md-2.col-xs-12
       = f.label :catogories, class: "control-label" 
+      span.required *
     - store_taxon_ids = @store.store_taxons.collect(&:taxon_id)
     - @taxons.each do |taxon|
       .col-md-2.col-xs-6

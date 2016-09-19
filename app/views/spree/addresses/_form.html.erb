@@ -77,12 +77,12 @@
         <%= form.label :phone do %>
           <%= Spree.t(:phone) %><% if @address.require_phone? %><abbr class="required" title="required">*</abbr><% end %>
         <% end %>
-        <%= form.phone_field :phone, :class => "form-control #{'required' if @address.require_phone?}" %>
+        <%= form.phone_field :phone, :class => "form-control number-only #{'required' if @address.require_phone?}" %>
       </p>
       <% if Spree::Config[:alternative_shipping_phone] %>
         <p class="form-group" id=<%="#{@address}altphone" %>>
           <%= form.label :alternative_phone, Spree.t(:alternative_phone) %>
-          <%= form.phone_field :alternative_phone, :class => 'form-control' %>
+          <%= form.phone_field :alternative_phone, :class => 'form-control number-only' %>
         </p>
       <% end %>
       <%= form.submit nil, class: "btn btn-primary" %>

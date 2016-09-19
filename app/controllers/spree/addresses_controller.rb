@@ -23,7 +23,7 @@ class Spree::AddressesController < Spree::StoreController
 	end
 
 	def update
-		if @addresses.update_attributes(addresses_params)
+		if @address.update_attributes(addresses_params)
 			redirect_to spree.addresses_path, notice: "Successfully updated."
 		else
 			render action: 'edit'
@@ -31,7 +31,7 @@ class Spree::AddressesController < Spree::StoreController
 	end
 
 	def destroy
-		@addresses_params.destroy
+		@address.destroy
 		redirect_to spree.new_address_path, notice: "Successfully deleted."
 	end
 
@@ -42,7 +42,7 @@ class Spree::AddressesController < Spree::StoreController
 			end
 
 			def find_address
-				@addresses = Spree::Address.where(id: params[:id]).first
+				@address = Spree::Address.where(id: params[:id]).first
 			end
 
 end

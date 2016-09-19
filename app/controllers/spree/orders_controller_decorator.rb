@@ -36,7 +36,7 @@ Spree::OrdersController.class_eval do
     delivery_type = params[:delivery_type] || "home_delivery"
 
     # 2,147,483,647 is crazy. See issue #2695.
-    if quantity.between?(1, 2_147_483_647)
+    if quantity.between?(1, 500)
       begin
         order.contents.add(variant, quantity, options, delivery_type)
       rescue ActiveRecord::RecordInvalid => e

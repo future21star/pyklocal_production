@@ -4,6 +4,7 @@ module Spree
 		belongs_to :driver, foreign_key: :driver_id, class_name: "Spree::User"
 
 		after_update :notify_driver
+		validate :ensure_for_valid_quantity
 
 		def product_name
 			product.try(:name)
@@ -62,6 +63,14 @@ module Spree
 					REDIS_CLIENT.PUBLISH("listUpdate", {order_number: order.number, store_name: product.try(:store).try(:name)}.to_json)
 				end
 			end
+
+      def ensure_for_valid_quantity
+      	if self.changes.include?(:quantity)
+        	if quantity > 500
+        		self.errors.add(:base, "Please enter reasonable quantity")
+        	end
+        end
+      end
 
 	end
 end
