@@ -23,6 +23,18 @@ $(document).ready(function() {
       this.bindAddLocation();
       this.previewMap();
       this.saveLocation();
+      this.selectAll();
+    },
+
+    selectAll: function() {
+      $('#select-all').click(function() 
+      {
+        if ($(this).prop('checked')) {
+         $('.asin-holder').prop('checked', true); 
+        } else {
+          $('.asin-holder').prop('checked', false); 
+        }
+      });
     },
 
     showNoty: function() {
