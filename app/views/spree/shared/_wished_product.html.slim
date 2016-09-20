@@ -17,8 +17,9 @@
           p.price
             = number_to_currency(product.price)
         
-          button.btn.btn-default type="submit" 
-            span Add to Cart
+          - button_text = product.master.can_supply? ? "Add To Cart" : "Out Of Stock"
+          button.custom-button type="submit" disabled=(button_text == "Out Of Stock")
+            span= button_text
   .wish-list-section
     = link_to wishlist_path(wish), class: "btn btn-danger wish-btn", method: :delete, title: "Remove from wish list" do 
       span.fa.fa-trash
