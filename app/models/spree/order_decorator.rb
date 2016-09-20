@@ -14,6 +14,10 @@ module Spree
       stores.first
     end
 
+    def full_name
+      [bill_address.first_name, bill_address.last_name].compact.join(" ")
+    end
+
 		def is_home_delivery_product_available?(item_ids)
 			line_items.where(id: item_ids).collect(&:delivery_type).include?("home_delivery")
 		end

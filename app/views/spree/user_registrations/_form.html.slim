@@ -1,4 +1,4 @@
-= form_for Spree::User.new, html: {class: "custom-form"}, :as => :spree_user, url: spree.registration_path do |f|   
+= form_for @user, html: {class: "custom-form"}, :as => :spree_user, url: spree.registration_path do |f|   
   fieldset#password-credentials
     legend Your Personal Details
     .form-group.required style=("display: none;") 
@@ -30,11 +30,25 @@
         = f.password_field :password, :class => 'form-control', :tabindex => 2, :placeholder => Spree.t(:password)
   .buttons
     .form-group
-      label
-        = f.check_box :t_and_c_accepted
+      label.t_and_c
+        = f.check_box :t_and_c_accepted, class: "t_and_c"
         |  I have read and agree to the 
         = link_to "Privacy Policy", "#", class: "agree"
       br
       br
-      = f.submit Spree.t(:continue), :class => 'btn btn-lg btn-primary', :tabindex => 3
+      = f.submit Spree.t(:continue), :class => 'btn btn-lg btn-primary', :tabindex => 3, id: "continue-btn", disabled: true
+
+- content_for :js do 
+  javascript:
+    $(document).ready(function() {
+      $('#continue-btn').prop('disabled', true);
+      $('.t_and_c').click(function() {
+        var checked = $('#spree_user_t_and_c_accepted').prop('checked');
+        if(checked){
+          $('#continue-btn').prop('disabled', false);
+        } else {
+          $('#continue-btn').prop('disabled', true);
+        }
+      })
+    })
 

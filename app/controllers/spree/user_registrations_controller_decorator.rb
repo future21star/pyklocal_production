@@ -1,5 +1,9 @@
 module Spree
   UserRegistrationsController.class_eval do 
+
+    def new
+      @user = Spree::User.new
+    end
     
     def create
       @user = build_resource(spree_user_params)
@@ -18,11 +22,11 @@ module Spree
         end
       else
         if spree_user_params["stores_attributes"].present?
-          set_flash_message :notice, :"#{resource.errors.full_messages.join(', ')}"
+          set_flash_message :error, :"#{resource.errors.full_messages.join(', ')}"
           redirect_to new_store_application_url
         else
-          clean_up_passwords(resource)
-          render :new
+          set_flash_message :error, :"#{resource.errors.full_messages.join(', ')}"
+          render action: :new
         end
       end
     end

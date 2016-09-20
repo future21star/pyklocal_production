@@ -22,7 +22,7 @@ Spree::User.class_eval do
   has_many :customer_returns, class_name: 'Spree::CustomerReturn'
 
   # ----------------------Validations----------------------------
-  validate :t_and_c_accepted, on: :create
+  validate :t_and_c, on: :create
   
   #---------------------Callbacks--------------------------
   after_create :assign_api_key 
@@ -150,14 +150,14 @@ Spree::User.class_eval do
     end
 
     def send_changed_password_notification
-      if self.changes.include?(:password_salt)
+      if self.changes.include?(:password_salt) && !self.changes.include?(:created_at)
         UserMailer.password_changed_notification(self).deliver_now
       end
     end
 
     def t_and_c
       if self.t_and_c_accepted.blank?
-        self.errors.add(:base, "Please accept privacy policy before continue")
+        self.errors.add(:base, "accept_privacy_policy")#"Please accept privacy policy before continue")
       end
     end
 

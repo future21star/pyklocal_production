@@ -11,7 +11,7 @@ module Spree
 				if !@api_token
 					email = SecureRandom.hex(4)+"@pyklocal.com"
 					password = SecureRandom.hex(4)
-					@user = Spree::User.new(email: email, password: password, password_confirmation: password, is_guest: true)
+					@user = Spree::User.new(email: email, password: password, password_confirmation: password, is_guest: true, t_and_c_accepted: true)
 					if @user.save
 						@response = get_response(@user)
 						@response[:message] = "Login successfull"
