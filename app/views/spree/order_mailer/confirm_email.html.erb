@@ -14,6 +14,17 @@
         <tr>
           <td class="wrapper last">
             <table class="twelve columns">
+              <tr>
+                <td class="four sub-columns">
+                  Item(s)
+                </td>
+                <td class="four sub-columns">
+                  Delivery Type
+                </td>
+                <td class="four sub-columns">
+                  Price
+                </td>
+              </tr>
               <%= render collection: @order.line_items, partial: 'spree/shared/mailer_line_item', as: :line_item %>
               <%= render 'spree/order_mailer/subtotal', order: @order %>
               <% if @order.line_item_adjustments.exists? %>

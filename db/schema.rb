@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160919121655) do
+ActiveRecord::Schema.define(version: 20160920080356) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -1276,6 +1276,7 @@ ActiveRecord::Schema.define(version: 20160919121655) do
     t.string   "last_name",              limit: 255, default: ""
     t.string   "mobile_number",          limit: 255
     t.boolean  "is_guest",                           default: false
+    t.boolean  "t_and_c_accepted",                   default: false
   end
 
   add_index "spree_users", ["bill_address_id"], name: "index_spree_users_on_bill_address_id", using: :btree

@@ -1,1 +1,27 @@
-= render partial: 'form'
+#container
+  .container
+    ul.breadcrumb
+      li
+        = link_to spree.root_path , "data-no-turbolink" => true do
+          i.fa.fa-home
+      li
+        = link_to "Home", root_path 
+      li.active Authentication
+    .row
+      #content.col-sm-9
+        h1 Register Account
+        p
+          | If you already have an account with us, please login at the
+          | &nbsp;
+          = link_to "Login page" ,spree.login_path
+        = render partial: 'form'
+      column#column-right.col-sm-3.hidden-xs
+        h3 Account
+        .list-group
+          ul.list-item
+            li
+              a href=spree.login_path  Login
+            li
+              a href=spree.signup_path  Register
+            li
+              a href=spree.recover_password_path  Forgotten Password
