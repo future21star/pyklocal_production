@@ -41,6 +41,10 @@ module Spree
         product_properties.where(property_id: properties.where(name: "Brand").first.try(:id)).collect { |p| p.value }.flatten
       end
 
+      string :taxon_name, references: Spree::Taxon, multiple: true do
+        taxons.where.not(name: "categories").collect(&:name).flatten
+      end
+
       integer :taxon_ids, references: Spree::Taxon, multiple: true do
         taxons.collect { |t| t.self_and_ancestors.map(&:id) }.flatten
       end

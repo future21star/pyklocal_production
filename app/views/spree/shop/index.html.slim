@@ -43,6 +43,16 @@
                     label.filter-field.checkbox-inline 
                       = check_box_tag "q[store][]", store_row.value, selected, class: "filters"
                       = "#{store_row.value} (#{store_row.try(:count).to_i})"
+            .filter-block style="margin-top: 10px;"
+              .filter-heading Category
+              ul.filter-body
+                - @all_facets.facet(:taxon_name).rows.each do |taxon_row|
+                  - filter_found = true
+                  - selected = (params[:q][:categories].include?(taxon_row.value.to_s)) rescue false 
+                  li
+                    label.filter-field.checkbox-inline 
+                      = check_box_tag "q[categories][]", taxon_row.value, selected, class: "filters"
+                      = "#{taxon_row.value} (#{taxon_row.try(:count).to_i})"
       #content.col-sm-9
         h1 Products
         h3

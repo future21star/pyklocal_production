@@ -6,7 +6,7 @@ class Spree::ShopController < Spree::StoreController
   def index 
     @price_array = params[:q][:price].to_s if params[:q] && params[:q][:price]
     @products = @search.results
-    @taxons = Spree::Taxon.where.not(name:"categories") 
+    @taxons = Spree::Taxon.where.not(name: "categories") 
     @taxonomies = Spree::Taxonomy.includes(root: :children) 
     @store = Merchant::Store.all
   end
@@ -21,11 +21,40 @@ class Spree::ShopController < Spree::StoreController
     def load_all_facets
       @all_facets = Sunspot.search(Spree::Product) do 
         fulltext params[:q][:search] if params[:q] && params[:q][:search]
+        if params[:q] && params[:q][:categories]
+          any_of do 
+            params[:q][:categories].each do |category|
+              with(:taxon_name, category)
+            end
+          end
+        end
+        if params[:q] && params[:q][:brand]
+          any_of do 
+            params[:q][:brand].each do |brand|
+              with(:brand_name, brand)
+            end
+          end
+        end
+        if params[:q] && params[:q][:store]
+          any_of do 
+            params[:q][:store].each do |store|
+              with(:store_name, store)
+            end
+          end
+        end
+        if params[:q] && params[:q][:price]
+          any_of do 
+            params[:q][:price].each do |price|
+              with(:price, Range.new(*price.split("..").map(&:to_i)))
+            end
+          end
+        end
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
         with(:taxon_ids, Spree::Taxon.where(permalink: params[:id]).collect(&:id)) if params[:id].present?
         facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
         facet(:brand_name)
         facet(:store_name)
+        facet(:taxon_name)
         if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Highest Price")
           order_by(:price, :desc)
         end
@@ -45,6 +74,15 @@ class Spree::ShopController < Spree::StoreController
         facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
         facet(:brand_name)
         facet(:store_name)
+        facet(:taxon_name)
+
+        if params[:q] && params[:q][:categories]
+          any_of do 
+            params[:q][:categories].each do |category|
+              with(:taxon_name, category)
+            end
+          end
+        end
         if params[:q] && params[:q][:brand]
           any_of do 
             params[:q][:brand].each do |brand|

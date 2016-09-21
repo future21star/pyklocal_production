@@ -93,7 +93,7 @@ table.table.table-bordered.table-hover
               = link_to "<i class='fa fa-reply'></i>".html_safe, new_customer_return_path(order_number: order.number), class: "btn btn-primary"
     tfoot#order-total data-hook="order_details_total" 
       tr.warning.total
-        td align="right" colspan="4" 
+        td align="right" colspan="5" 
           b
             = Spree.t(:order_total)
             | :
@@ -101,7 +101,7 @@ table.table.table-bordered.table-hover
           span#order_total.lead.text-primary= order.display_total.to_html
     tfoot#subtotal data-hook="order_details_subtotal" 
       tr#subtotal-row.total
-        td align="right"colspan="4" 
+        td align="right"colspan="5" 
           b
             = Spree.t(:subtotal)
             | :
@@ -112,7 +112,7 @@ table.table.table-bordered.table-hover
         tfoot#price-adjustments data-hook="order_details_price_adjustments" 
           - order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments|
             tr.total
-              td colspan="4" 
+              td colspan="5" 
                 = Spree.t(:promotion)
                 | :
                 strong= label
@@ -121,7 +121,7 @@ table.table.table-bordered.table-hover
     tfoot#shipment-total
       - order.shipments.group_by { |s| s.selected_shipping_rate.name }.each do |name, shipments|
         tr.total data-hook="shipment-row" 
-          td.text-muted align="right" colspan="4" 
+          td.text-muted align="right" colspan="5" 
             = Spree.t(:shipping)
             | :
             strong= name
@@ -131,7 +131,7 @@ table.table.table-bordered.table-hover
       tfoot#tax-adjustments data-hook="order_details_tax_adjustments" 
         - order.all_adjustments.tax.group_by(&:label).each do |label, adjustments|
           tr.total
-            td.text-muted align="right" colspan="4" 
+            td.text-muted align="right" colspan="5" 
               = Spree.t(:tax)
               | :
               strong= label
@@ -141,7 +141,7 @@ table.table.table-bordered.table-hover
       - order.adjustments.eligible.each do |adjustment|
         - next if (adjustment.source_type == 'Spree::TaxRate') and (adjustment.amount == 0)
         tr.total
-          td align="right" colspan="4" 
+          td align="right" colspan="5" 
             strong= adjustment.label
           td.total colspan="2"
             span= adjustment.display_amount.to_html
