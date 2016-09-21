@@ -15,13 +15,14 @@ module Spree
     accepts_nested_attributes_for :product_properties, allow_destroy: true
     accepts_nested_attributes_for :variant_images
 
-    self.whitelisted_ransackable_associations = %w[stores variants_including_master master variants store orders line_items price]
-    self.whitelisted_ransackable_attributes = %w[description name slug]
+    self.whitelisted_ransackable_associations = %w[stores variants_including_master master variants store orders line_items price impressions]
+    self.whitelisted_ransackable_attributes = %w[description name slug view_count]
 
     searchable do
       text :name 
       text :store_name
       text :upc_code
+      text :meta_keywords
       latlon(:location) { Sunspot::Util::Coordinates.new(store.try(:latitude), store.try(:longitude)) }
 
       float :price
