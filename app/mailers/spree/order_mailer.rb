@@ -1,5 +1,7 @@
 module Spree
   class OrderMailer < BaseMailer
+    default from: 'admin@pyklocal.com'
+    
     def confirm_email(order, resend = false)
       @order = order.respond_to?(:id) ? order : Spree::Order.find(order)
       filename = "Invoice_#{@order.number}_#{Time.now.strftime('%Y%m%d')}.pdf"
@@ -14,7 +16,7 @@ module Spree
 
       subject = (resend ? "[#{Spree.t(:resend).upcase}] " : '')
       subject += "#{Spree::Store.current.name} #{Spree.t('order_mailer.confirm_email.subject')} ##{@order.number}"
-      mail(to: @order.email, from: from_address, subject: subject)
+      mail(to: @order.email, from: "admin@pyklocal.com", subject: subject)
     end
 
     def cancel_email(order, resend = false)
