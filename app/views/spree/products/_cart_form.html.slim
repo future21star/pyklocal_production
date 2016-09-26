@@ -73,7 +73,7 @@
         div
           .qty
             label.control-label for="input-quantity"  Qty
-            = number_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
+            = text_field_tag :quantity, 1, :class => 'numberOnly form-control', :min => 1, :id =>'input-quantity'
             a.qtyBtn.plus.text-center href="javascript:void(0);" 
               span.fa.fa-plus
             br
@@ -88,4 +88,9 @@
 span.wish-section
   = render partial: 'spree/shared/wish_form', locals: {product: @product}
       
-    
+  
+-content_for :js 
+  javascript:
+    jQuery('.numberOnly').keyup(function () { 
+      this.value = this.value.replace(/[^0-9\.]/g,'');
+    }); 
