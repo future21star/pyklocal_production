@@ -21,7 +21,7 @@
         .form-group
           = f.label :cost_price, class: "control-label"
           span.input-icon.icon-right
-           = f.text_field :cost_price, class: "form-control input-bg"
+           = f.number_field :cost_price, class: "numbersOnly form-control input-bg"
            i.fa &#xf0d6;
         .form-group
           = f.label :tax_category_id, class: "control-label"
@@ -33,22 +33,22 @@
         .form-group
           = f.label :weight, class: "control-label"
           span.input-icon.icon-right
-           = f.text_field :weight, class: "form-control input-bg"
+           = f.number_field :weight, class: "numbersOnly form-control input-bg"
            i.fa &#xf24e;
         .form-group
           = f.label :height, class: "control-label"
           span.input-icon.icon-right
-            = f.text_field :height, class: "form-control input-bg"
+            = f.number_field :height, class: "numbersOnly form-control input-bg"
             i.fa &#xf07d;
         .form-group
           = f.label :width, class: "control-label"
           span.input-icon.icon-right
-            = f.text_field :width, class: "form-control input-bg"
+            = f.number_field :width, class: "numbersOnly form-control input-bg"
             i.fa &#xf07e;
         .form-group
           = f.label :depth, class: "control-label"
           span.input-icon.icon-right
-            = f.text_field :depth, class: "form-control input-bg"
+            = f.number_field :depth, class: "form-control input-bg numbersOnly"
             i.fa &#xf01c;
     .col-md-12.top-margin-row
       .col-md-6.update-btn

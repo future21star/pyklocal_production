@@ -35,7 +35,7 @@
       span.required *
     .col-md-4.col-xs-12
       span.input-icon.icon-right
-        = f.number_field_tag :phone_number, class: "form-control input-bg special_input", disabled: true 
+        = f.number_field :phone_number, class: "form-control input-bg numbersOnly"
   .form-group
     .col-md-2.col-xs-12
       = f.label :store_type, class: "control-label"
