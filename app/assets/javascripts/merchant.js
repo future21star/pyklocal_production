@@ -237,23 +237,34 @@ $(document).ready(function() {
         if(this.lastMarker) {
           noty({text: "Please select the location", type: "error"});
         } else {
-          $.ajax({
-            url: "/api/v1/merchant_stores/"+$this.data("store_id")+"/update_location",
-            method: "put",
-            data: { "merchant_store[latitude]": myCompany.lastMarker.position.lat(), "merchant_store[longitude]": myCompany.lastMarker.position.lng()},
-            success: function(data, status) {
-              if(data.success) {
-                $("#map-preview").data("latitude", myCompany.lastMarker.position.lat());
-                $("#map-preview").data("longitude", myCompany.lastMarker.position.lng());
-                $("#map-preview").data("is_located", true);
-                myCompany.previewMap();
-                noty({text: "Location updated successfully", type: "information"});
-                $('.modal').modal('hide');
-              } else {
-                noty({text: data.message, type: "error"});
+          var lat = myCompany.lastMarker.position.lat()
+          var lng = myCompany.lastMarker.position.lng()
+          var latlng = new google.maps.LatLng(lat, lng);
+          var geocoder = geocoder = new google.maps.Geocoder();
+          geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                  if (results[1]) {
+                    var array = console.log(results[1].formatted_address.split(","));
+                    $.ajax({
+                      url: "/api/v1/merchant_stores/"+$this.data("store_id")+"/update_location",
+                      method: "put",
+                      data: { "merchant_store[latitude]": myCompany.lastMarker.position.lat(), "merchant_store[longitude]": myCompany.lastMarker.position.lng(), "merchant_store[city]": results[1].formatted_address},
+                      success: function(data, status) {
+                        if(data.success) {
+                          $("#map-preview").data("latitude", myCompany.lastMarker.position.lat());
+                          $("#map-preview").data("longitude", myCompany.lastMarker.position.lng());
+                          $("#map-preview").data("is_located", true);
+                          myCompany.previewMap();
+                          noty({text: "Location updated successfully", type: "information"});
+                          $('.modal').modal('hide');
+                        } else {
+                          noty({text: data.message, type: "error"});
+                        }
+                      }
+                    }); 
+                  }
               }
-            }
-          });  
+          }); 
         }
         return(false);
       });
