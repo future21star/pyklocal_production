@@ -11,7 +11,8 @@ Rails.application.configure do
     address:              'smtp.gmail.com',
     port:                 587,
     domain:               'gmail.com',
-    user_name:            'admin@pyklocal.com',
+    user_name:            'prashant.mishra@w3villa.com',
+    password:             'karbonn@13',
     authentication:       'plain',
     enable_starttls_auto: true  }
 
