@@ -54,9 +54,8 @@
         div
           span.price.selling itemprop="price" = Spree.t('product_not_available_in_this_currency')
     - if @product.price.to_f >= 35
-      .free-shipping
-        br
-          span This product qualifies for FREE Shipping
+      .free-shipping class="alert alert-success" role="alert"
+          span  This product qualifies for FREE Shipping
     .delivery_item.cart.rating
       h4 Delivery Option :
       label.control-label.delivery-li data-value="home_delivery"
