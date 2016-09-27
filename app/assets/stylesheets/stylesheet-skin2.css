@@ -2164,7 +2164,7 @@ div.required .control-label:before {
 .qty #input-quantity {
   float: left;
   font-size: 15px;
-  max-width: 50px;
+  max-width: 100px;
   height: 40px;
   text-align: center;
 }

@@ -7,5 +7,7 @@
         = hidden_field_tag "q[brand][]", params[:q][:brand]
       - if "#{filter}" == "store"
         = hidden_field_tag "q[store][]", params[:q][:store]
+      - if "#{filter}" == "categories"
+        = hidden_field_tag "q[categories][]", params[:q][:categories]
       - else
         = hidden_field_tag "q[#{filter}]", params[:q][:"#{filter}"]

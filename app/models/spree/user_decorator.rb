@@ -20,12 +20,15 @@ Spree::User.class_eval do
   has_many :ratings, foreign_key: :user_id
   has_many :comments, foreign_key: :user_id
   has_many :customer_returns, class_name: 'Spree::CustomerReturn'
+
+  # ----------------------Validations----------------------------
+  validate :t_and_c, on: :create
   
   #---------------------Callbacks--------------------------
   after_create :assign_api_key 
   after_create :notify_admin
   after_update :notify_user
-  before_update :send_changed_password_notification
+  after_update :send_changed_password_notification
   attr_accessor :role_name
 
   accepts_nested_attributes_for :parse_links, :reject_if => lambda { |a| a[:url].blank? }
@@ -147,11 +150,15 @@ Spree::User.class_eval do
     end
 
     def send_changed_password_notification
-      if self.changes.include?(:password_salt)
+      if self.changes.include?(:password_salt) && !self.changes.include?(:created_at)
         UserMailer.password_changed_notification(self).deliver_now
       end
     end
 
-    
+    def t_and_c
+      if self.t_and_c_accepted.blank?
+        self.errors.add(:base, "accept_privacy_policy")
+      end
+    end
 
 end

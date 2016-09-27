@@ -19,9 +19,9 @@
     td.text-center data-hook="cart_item_total"
       = line_item.try(:name) 
     td.text-center data-hook="cart_item_quantity"
-      .input-group.btn-block style=("max-width: 200px;") 
+      .input-group.btn-block style=("max-width: 100px;") 
         = item_form.number_field :quantity, min: 0, class: "form-control text-center line_item_quantity", size: 5
-    td.text-center
+    td.text-center style="min-width: 200px;"
       = item_form.select :delivery_type, DELIVERY_TYPE.invert, {}, class: 'form-control'
       / = line_item.delivery_type.try(:humanize)
     td.text-center data-hook="cart_item_price" 

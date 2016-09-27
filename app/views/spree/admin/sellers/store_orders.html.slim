@@ -11,11 +11,11 @@ table.table.table-striped
 	tbody
 		- unless @store_order.blank?
 			- @store_order.each do |order|
-				tr
-
-					th= link_to order.number, spree.edit_admin_order_path(order)
-					th= order.quantity
-					th= order.total_after_commission
+				- if order.present?
+					tr
+						th= link_to order.number, spree.edit_admin_order_path(order)
+						th= order.quantity
+						th= order.total_after_commission
 			end
 		- else
 			tr

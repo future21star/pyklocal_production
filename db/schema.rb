@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160913125604) do
+ActiveRecord::Schema.define(version: 20160920080356) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(version: 20160913125604) do
     t.string   "certificate_content_type", limit: 255
     t.integer  "certificate_file_size",    limit: 4
     t.datetime "certificate_updated_at"
+    t.string   "estimated_delivery_time",  limit: 255,   default: "5 - 6 working hours"
   end
 
   create_table "pyklocal_stores_taxons", force: :cascade do |t|
@@ -1275,6 +1276,7 @@ ActiveRecord::Schema.define(version: 20160913125604) do
     t.string   "last_name",              limit: 255, default: ""
     t.string   "mobile_number",          limit: 255
     t.boolean  "is_guest",                           default: false
+    t.boolean  "t_and_c_accepted",                   default: false
   end
 
   add_index "spree_users", ["bill_address_id"], name: "index_spree_users_on_bill_address_id", using: :btree

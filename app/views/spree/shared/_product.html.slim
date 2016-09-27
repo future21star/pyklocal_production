@@ -16,15 +16,8 @@
             	= truncate(product.name, :length =>16)
           p.price
             = number_to_currency(product.price)
-        
-          button.btn.btn-default type="submit" 
-            span Add to Cart
+          - button_text = product.master.can_supply? ? "Add To Cart" : "Out Of Stock"
+          button.custom-button type="submit" disabled=(button_text == "Out Of Stock")
+            span= button_text
   .wish-list-section
-    = form_for Spree::Wishlist.new, url: wishlists_path, method: :post do |f|
-      = f.hidden_field :variant_id, value: product.master.id
-      button.btn.btn-success.wish-btn type="submit"
-        span.fa.fa-heart
-       
-
-	
-
+    = render partial: 'spree/shared/wish_form', locals: {product: product}

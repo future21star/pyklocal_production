@@ -1,0 +1,78 @@
+.table-responsive
+  table.table.table-bordered.table-hover
+    thead
+      tr style="border-bottom: 1px solid #eee; background: #eee;"
+        td.text-center style="padding: 10px 0; min-width: 80px;" Item Image
+        td.text-center style="padding: 10px 0; min-width: 280px;" Name
+        td.text-center style="padding: 10px 0; min-width: 105px;" Delivery Type
+        td.text-center style="padding: 10px 0; min-width: 60px;" Quantity
+        td.text-center style="padding: 10px 0; width: 75px; text-align: right;" Total 
+    tbody
+      - order.line_items.each do |item|
+        tr data-hook="order_details_line_item_row" style="border-bottom: 1px solid #eee;"
+          td.text-center style="padding: 10px 0;" data-hook="order_item_image"
+            - if item.variant.images.length == 0
+              = link_to mini_image(item.variant.product), item.variant.product
+            - else
+              = link_to image_tag(item.variant.images.first.attachment.url(:mini)), item.variant.product
+          td.text-center style="padding: 10px 0;" data-hook="order_item_description"
+            b= item.variant.product.name
+          td.text-center style="padding: 10px 0;"= item.delivery_type.humanize
+          td.text-center style="padding: 10px 0;" data-hook="order_item_qty" = item.quantity
+            span= item.single_money.to_html
+          td.text-center style="padding: 10px 0; text-align: right;" data-hook="order_item_total" 
+            span= item.display_amount.to_html
+    tfoot#order-total data-hook="order_details_total" 
+      tr.warning.total
+        td style="padding: 10px 0;" colspan="3" 
+          b
+            = Spree.t(:order_total)
+            | :
+        td.total style="padding: 10px 0; text-align: right;" colspan="2"
+          span#order_total.lead.text-primary= order.display_total.to_html
+    tfoot#subtotal data-hook="order_details_subtotal" 
+      tr#subtotal-row.total
+        td style="padding: 10px 0;" colspan="3" 
+          b
+            = Spree.t(:subtotal)
+            | :
+        td.total style="padding: 10px 0; text-align: right;" colspan="2"
+          span= order.display_item_total.to_html
+    - if order.line_item_adjustments.exists?
+      - if order.line_item_adjustments.promotion.eligible.exists?
+        tfoot#price-adjustments data-hook="order_details_price_adjustments" 
+          - order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments|
+            tr.total
+              td style="padding: 10px 0;" colspan="3" 
+                = Spree.t(:promotion)
+                | :
+                strong= label
+              td.total style="padding: 10px 0; text-align: right;" colspan="2"
+                span= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency)
+    tfoot#shipment-total
+      - order.shipments.group_by { |s| s.selected_shipping_rate.name }.each do |name, shipments|
+        tr.total data-hook="shipment-row" 
+          td.text-muted style="padding: 10px 0;" colspan="3" 
+            = Spree.t(:shipping)
+            | :
+            strong= name
+          td.total style="padding: 10px 0; text-align: right;" colspan="2"
+            span= Spree::Money.new(shipments.sum(&:discounted_cost), currency: order.currency).to_html
+    - if order.all_adjustments.tax.exists?
+      tfoot#tax-adjustments data-hook="order_details_tax_adjustments" 
+        - order.all_adjustments.tax.group_by(&:label).each do |label, adjustments|
+          tr.total
+            td.text-muted style="padding: 10px 0;" colspan="3" 
+              = Spree.t(:tax)
+              | :
+              strong= label
+            td.total style="padding: 10px 0; text-align: right;" colspan="2"
+              span= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency)
+    tfoot#order-charges data-hook="order_details_adjustments" 
+      - order.adjustments.eligible.each do |adjustment|
+        - next if (adjustment.source_type == 'Spree::TaxRate') and (adjustment.amount == 0)
+        tr.total
+          td style="padding: 10px 0;" colspan="3" 
+            strong= adjustment.label
+          td.total style="padding: 10px 0; text-align: right;" colspan="2"
+            span= adjustment.display_amount.to_html

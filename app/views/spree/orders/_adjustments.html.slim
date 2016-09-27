@@ -1,6 +1,6 @@
 thead
   tr data-hook="cart_adjustments_headers" 
-    th.cart-adjustment-header colspan="6" = Spree.t(:order_adjustments)
+    th.cart-adjustment-header colspan="6" = Spree.t(:estimated_total)
 tbody#cart_adjustments data-hook="" 
   - if @order.line_item_adjustments.exists?
     - @order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments|

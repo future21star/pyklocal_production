@@ -1,0 +1,4 @@
+= form_for Spree::Wishlist.new, url: wishlists_path, method: :post do |f|
+  = f.hidden_field :variant_id, value: product.master.id
+  button.btn.btn-success.wish-btn type="submit"
+    span.fa.fa-heart

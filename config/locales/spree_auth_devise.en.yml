@@ -3,3 +3,4 @@ en:
     registrations:
       spree_user:
         inactive_store: PYKLOCAL is currently reviewing the registration request and will approve in next 24-48 hours
+        accept_privacy_policy: Please accept privecy policy before continue

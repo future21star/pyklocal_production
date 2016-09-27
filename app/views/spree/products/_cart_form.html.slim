@@ -15,9 +15,6 @@
         span itemprop="mpn"  
           |&nbsp;
           = @product.try(:asin)
-      / li
-      /   b Availability:
-      /   span style=("color:#53af2e; font-weight:bold;")  In Stock
     .addthis_sharing_toolbox
     ul.price-box
       li.price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" 
@@ -25,7 +22,7 @@
           = number_to_currency(@product.price.to_s)
         span content=("In Stock") itemprop="availability" 
       li
-      li Ex Tax: $00.00
+      / li Ex Tax: $00.00
 
     - if @product.variants_and_option_values(current_currency).any?
       .cart
@@ -56,6 +53,10 @@
         br 
         div
           span.price.selling itemprop="price" = Spree.t('product_not_available_in_this_currency')
+    - if @product.price.to_f >= 35
+      .free-shipping
+        br
+          span This product qualifies for FREE Shipping
     .delivery_item.cart.rating
       h4 Delivery Option :
       label.control-label.delivery-li data-value="home_delivery"
@@ -84,5 +85,7 @@
           - button_text = @product.master.can_supply? ? "Add To Cart" : "Out Of Stock"
           = button_tag :class => 'btn btn-primary', :id => 'add-to-cart-button', :type => :submit, disabled: !@product.master.can_supply? do
               = button_text
+span.wish-section
+  = render partial: 'spree/shared/wish_form', locals: {product: @product}
       
     

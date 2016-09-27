@@ -18,7 +18,7 @@ shipping << "\n#{ship_address.address2}" unless ship_address.address2.blank?
 shipping << "\n#{ship_address.city}, #{ship_address.state_text} #{ship_address.zipcode}"
 shipping << "\n#{ship_address.country.name}"
 shipping << "\n#{ship_address.phone}"
-shipping << "\n\n#{Spree.t(:via, scope: :print_invoice)} #{printable.shipments.first.shipping_method.name}"
+shipping << "\n\n#{Spree.t(:via, scope: :print_invoice)} #{printable.shipments.first.shipping_method.admin_name}"
 
 data = [[address_cell_billing, address_cell_shipping], [billing, shipping]]
 
