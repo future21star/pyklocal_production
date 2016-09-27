@@ -49,7 +49,7 @@ br
               |&nbsp; Address:
               '
             span.text-primary style="margin-left: 36px;"
-              = @store.try(:city).titleize
+              = @store.try(:street_number).titleize
 
   - if @is_owner
     - title_text = current_spree_user.has_spree_role?("merchant") ? "" : "Approval pending"

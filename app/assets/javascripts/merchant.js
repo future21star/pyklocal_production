@@ -248,7 +248,7 @@ $(document).ready(function() {
                     $.ajax({
                       url: "/api/v1/merchant_stores/"+$this.data("store_id")+"/update_location",
                       method: "put",
-                      data: { "merchant_store[latitude]": myCompany.lastMarker.position.lat(), "merchant_store[longitude]": myCompany.lastMarker.position.lng(), "merchant_store[city]": results[1].formatted_address},
+                      data: { "merchant_store[latitude]": myCompany.lastMarker.position.lat(), "merchant_store[longitude]": myCompany.lastMarker.position.lng(), "merchant_store[street_number]": results[1].formatted_address},
                       success: function(data, status) {
                         if(data.success) {
                           $("#map-preview").data("latitude", myCompany.lastMarker.position.lat());
