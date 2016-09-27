@@ -80,6 +80,7 @@ Spree::User.class_eval do
     stores.present?
   end
 
+
   def active_store
     if stores.present?
       stores.first.active
