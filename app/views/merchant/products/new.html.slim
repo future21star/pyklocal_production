@@ -43,7 +43,7 @@
                           = f.field_container :price do
                             = f.label :price, Spree.t(:master_price) + " (USD) *", class: "control-label lable-margin-top"
                             span.input-icon.icon-right
-                              = f.number_field_tag :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'form-control input-bg'
+                              = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'form-control input-bg'
                             = f.error_message_on :price
 
                         .form-group.col-md-6

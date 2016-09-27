@@ -33,6 +33,7 @@ var pyklocal = {
 
 	init: function() {
     this.retrictNumber();
+    this.retrictChar();
 		this.showNoty();
 		this.setDeliveryType();
 		this.filterByRadius();
@@ -46,6 +47,12 @@ var pyklocal = {
   retrictNumber: function() {
     jQuery('.numbersOnly').keyup(function () { 
       this.value = this.value.replace(/[^0-9\.]/g,'');
+    });
+  }
+
+  retrictChar: function() {
+    jQuery('.charOnly').keyup(function () { 
+      this.value = this.value.replace(/[^a-z]/, '');
     });
   }
 
