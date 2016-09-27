@@ -123,6 +123,9 @@ module Spree
 	   							variant_hash[k.to_sym] = v.to_s
 	   					end
 	   					
+	   					variant_hash["stock_status"] = line_item.variant.stock_status.to_s
+	   					variant_hash["option_name"] = line_item.variant.option_name
+
 	   					if line_item.variant.images
 	   						variant_hash["images".to_sym] = line_item.variant.product_images
 	   					else
@@ -212,6 +215,46 @@ module Spree
 	   				order_hash["payment"] = []
 	   			end
 	   		#end
+
+	   		if c_obj.try(:payments)
+	   			payment_arr = []
+	   			payment_attr = ["id" , "source_type" , "source_id", "amount", "payment_method_id", "response_code", "state", "avs_response"]
+	   			c_obj.payments.each do |payment|
+	   				payment_hash = Hash.new
+	   				payment.attributes.each do |k1,v1|
+	   					if payment_attr.include?k1
+	   						payment_hash[k1.to_sym] = v1.to_s
+	   					end
+	   				end
+	   				payment_method_hash = Hash.new
+	   				payment_method_hash["id".to_sym] = payment.payment_method_id.to_s
+	   				payment_method_hash["name".to_sym] = payment.payment_method.name.to_s
+	   				payment_hash["payment_method".to_sym] = payment_method_hash
+
+	   				payment_source_hash = Hash.new
+	   				payment_source["id".to_sym] = payment.source_id.to_s
+
+	   				if payment.payment_method_id == 2
+	   					payment_source_hash["month".to_sym] = payment.source.month.to_s
+	   					payment_source_hash["year".to_sym] = payment.source.year.to_s
+	   					payment_source_hash["cc_type".to_sym] = payment.source.cc_type.to_s
+	   					payment_source_hash["last_digits".to_sym] = payment.source.last_digits.to_s
+	   					payment_source_hash["name".to_sym] = payment.source.name.to_s
+	   				elsif payment.payment_id == 3
+	   					payment_source_hash["type".to_sym] = "pay_by_check"
+	   				elsif payment.payment_method_id == 4
+	   					payment_source_hash["paypal_email"] = payment.source.paypal_email.to_s
+	   					payment_source_hash["braintree_last_digits"] = payment.source.braintree_last_digits.to_s
+	   				else
+	   					payment_source["message"] = "Invalid Source Id"
+	   				end
+	   				payment_hash["source".to_sym] = payment_source_hash
+	   				payment_arr.push(payment_hash)
+	   			end
+	   			order_hash["payments".to_sym] = payment_arr
+	   		else
+	   			order_hash["payments".to_sym] = []
+	   		end
 
 	   	
 	   		values.push(order_hash)
