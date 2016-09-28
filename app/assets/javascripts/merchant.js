@@ -11,9 +11,6 @@ $.ajaxSetup({
 
 
 $(document).ready(function() {
-  jQuery('.numberOnly').keyup(function () { 
-    this.value = this.value.replace(/[^0-9\.]/g,'');
-  }); 
   var Store = function(){
     this.init();
   }
