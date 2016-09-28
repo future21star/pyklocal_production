@@ -6,22 +6,27 @@ module Spree
 		include Spree::Api::SessionsHelper
 
 		def create
-			if eval(params[:is_guest])
-				@api_token = ApiToken.where(user_device_id: params[:device_id],expire: nil).last
-				if !@api_token
-					email = SecureRandom.hex(4)+"@pyklocal.com"
-					password = SecureRandom.hex(4)
-					@user = Spree::User.new(email: email, password: password, password_confirmation: password, is_guest: true, t_and_c_accepted: true)
-					if @user.save
-						@response = get_response(@user)
-						@response[:message] = "Login successfull"
+			if params[:is_guest].eql?"true" 
+				if params[:device_id]
+					@api_token = ApiToken.where(user_device_id: params[:device_id], expire: nil).last
+					if !@api_token
+						email = SecureRandom.hex(4)+"@pyklocal.com"
+						password = SecureRandom.hex(4)
+						@user = Spree::User.new(email: email, password: password, password_confirmation: password, is_guest: true)
+						if @user.save
+							@response = get_response(@user)
+							@response[:message] = "Login successfull"
+						else
+							@response = error_response
+							@response[:message] = @user.errors.full_messages.join(", ")
+						end
 					else
-						@response = error_response
-						@response[:message] = @user.errors.full_messages.join(", ")
+						@response =get_response(@api_token.user)
+						@response[:message] = "User Already logged in"
 					end
 				else
-					@response =get_response(@api_token.user)
-					@response[:message] = "User Already logged in"
+					@response = error_response
+					@response[:message] = "Device id can not be blank"
 				end
 			elsif required_params_present? params, 'email', 'password'
 				user = Spree::User.find_by_email(params[:email])
