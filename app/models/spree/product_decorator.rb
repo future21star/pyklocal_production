@@ -63,13 +63,7 @@ module Spree
       img_arr = []
       if images.present?
         images.each do |image|
-          img = {"#{image.attachment_file_name}" => {
-                  mini_image: image.attachment.url(:mini),
-                  small_url: image.attachment.url(:small),
-                  thumb_url: image.attachment.url(:thumb),
-                  original_url: image.attachment.url(:original)
-                }}
-          img_arr << img
+          img_arr.push(image.attachment.url(:thumb))
         end
       end
       return img_arr

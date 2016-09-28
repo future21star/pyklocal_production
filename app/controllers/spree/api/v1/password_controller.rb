@@ -1,6 +1,7 @@
 module Spree
 	class Api::V1::PasswordController < Api::BaseController
 
+		skip_before_filter :authenticate_user
 		def create
 			user = Spree::User.find_by_email(params[:email])
 			unless user.blank?
