@@ -8,11 +8,12 @@ $.ajaxSetup({
     'X-Spree-Token': $('meta[name="csrf-token"]').attr('content')
   }
 });
-$(document).ready(function(){
-  
-});
+
 
 $(document).ready(function() {
+  jQuery('.numberOnly').keyup(function () { 
+    this.value = this.value.replace(/[^0-9\.]/g,'');
+  }); 
   var Store = function(){
     this.init();
   }

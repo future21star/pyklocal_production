@@ -87,9 +87,3 @@
 span.wish-section
   = render partial: 'spree/shared/wish_form', locals: {product: @product}
       
-  
--content_for :js 
-  javascript:
-    jQuery('.numberOnly').keyup(function () { 
-      this.value = this.value.replace(/[^0-9\.]/g,'');
-    }); 
