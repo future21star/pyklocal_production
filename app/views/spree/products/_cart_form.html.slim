@@ -15,6 +15,16 @@
         span itemprop="mpn"  
           |&nbsp;
           = @product.try(:asin)
+      li
+        b Availability:
+        - if @product.master.can_supply?
+          span style="color:#53af2e; font-weight:bold;" 
+            '
+            |In Stock
+        - else
+          span style="color:#F50C0C; font-weight:bold;" 
+            '
+            |Out Of Stock
     .addthis_sharing_toolbox
     ul.price-box
       li.price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" 
@@ -54,9 +64,8 @@
         div
           span.price.selling itemprop="price" = Spree.t('product_not_available_in_this_currency')
     - if @product.price.to_f >= 35
-      .free-shipping
-        br
-          span This product qualifies for FREE Shipping
+      .free-shipping class="alert alert-success" role="alert"
+          span  This product qualifies for FREE Shipping
     .delivery_item.cart.rating
       h4 Delivery Option :
       label.control-label.delivery-li data-value="home_delivery"
@@ -73,7 +82,7 @@
         div
           .qty
             label.control-label for="input-quantity"  Qty
-            = number_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
+            = text_field_tag :quantity, 1, :class => 'numberOnly form-control', :min => 1, :id =>'input-quantity'
             a.qtyBtn.plus.text-center href="javascript:void(0);" 
               span.fa.fa-plus
             br
@@ -82,10 +91,17 @@
             input name="product_id" type="hidden" value="41" 
             .clear
         div
-          - button_text = @product.master.can_supply? ? "Add To Cart" : "Out Of Stock"
-          = button_tag :class => 'btn btn-primary', :id => 'add-to-cart-button', :type => :submit, disabled: !@product.master.can_supply? do
-              = button_text
+          - button_text =  @product.master.can_supply? ? "Add To Cart" : "Out Of Stock"
+          -if @product.can_supply?
+            = button_tag"#{button_text}" , :id => 'add-to-cart-button', :type => :submit, disabled: !@product.master.can_supply? , class: "button-primary" , data: { disable_with: "Please wait..." }
 span.wish-section
   = render partial: 'spree/shared/wish_form', locals: {product: @product}
       
-    
+-content_for :js
+  javascript:
+    $(document).ready(function() {
+      jQuery('.numberOnly').keyup(function () { 
+        this.value = this.value.replace(/[^0-9\.]/g,'');
+      });
+    });
+

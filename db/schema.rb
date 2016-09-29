@@ -296,13 +296,14 @@ ActiveRecord::Schema.define(version: 20160920080356) do
   add_index "spree_calculators", ["id", "type"], name: "index_spree_calculators_on_id_and_type", using: :btree
 
   create_table "spree_countries", force: :cascade do |t|
-    t.string   "iso_name",        limit: 255
-    t.string   "iso",             limit: 255
-    t.string   "iso3",            limit: 255
-    t.string   "name",            limit: 255
-    t.integer  "numcode",         limit: 4
-    t.boolean  "states_required",             default: false
+    t.string   "iso_name",         limit: 255
+    t.string   "iso",              limit: 255
+    t.string   "iso3",             limit: 255
+    t.string   "name",             limit: 255
+    t.integer  "numcode",          limit: 4
+    t.boolean  "states_required",              default: false
     t.datetime "updated_at"
+    t.boolean  "zipcode_required",             default: true
   end
 
   create_table "spree_credit_cards", force: :cascade do |t|

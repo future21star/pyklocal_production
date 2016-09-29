@@ -38,19 +38,18 @@ br
         tr
           td
             strong
-              span.fa.fa-map-marker.text-primary
-              |&nbsp; Address:
-          td.text-primary
-            = @store.try(:city).titleize
-            |,
-            = @store.try(:country).titleize
-        tr
-          td
-            strong
               span.fa.fa-globe.text-primary
               | &nbsp;Website:
           td.text-primary
             = @store.try(:site_url)
+        tr
+          td colspan=2
+            strong
+              span.fa.fa-map-marker.text-primary
+              |&nbsp; Address:
+              '
+            span.text-primary style="margin-left: 36px;"
+              = @store.try(:street_number).titleize
 
   - if @is_owner
     - title_text = current_spree_user.has_spree_role?("merchant") ? "" : "Approval pending"

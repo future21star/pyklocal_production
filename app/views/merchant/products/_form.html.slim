@@ -36,7 +36,7 @@
           = f.field_container :price do 
             = f.label :price, raw(Spree.t(:master_price) + ' (USD)' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
             span.input-icon.icon-right
-              = f.text_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'fullwidth form-control input-bg'
+              = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'numbersOnly fullwidth form-control input-bg'
               .fa &#xf0d6;
             = f.error_message_on :price
         .form-group
@@ -54,7 +54,7 @@
             = f.field_container :cost_price do 
               = f.label :cost_price, class: "control-label"
               span.input-icon.icon-right
-                = f.text_field :cost_price, class: "form-control input-bg"
+                = f.number_field :cost_price, class: "numbersOnly form-control input-bg"
                 .fa &#xf0d6;
           .col-md-6.top-margin-row.child-div1
             = f.field_container :cost_currency do
@@ -91,23 +91,23 @@
             .col-md-6.top-margin-row.child-div
               = f.label :weight, class: "control-label"
               span.input-icon.icon-right
-                = f.text_field :weight, class: "form-control input-bg"
+                = f.number_field :weight, class: "numbersOnly form-control input-bg"
                 .fa &#xf24e;
             .col-md-6.top-margin-row.child-div1
               = f.label :height, class: "control-label"
               span.input-icon.icon-right
-                = f.text_field :height, class: "form-control input-bg"
+                = f.number_field :height, class: "numbersOnly form-control input-bg"
                 .fa &#xf07d;
           .form-group
             .col-md-6.top-margin-row.child-div
               = f.label :width, class: "control-label"
               span.input-icon.icon-right
-                = f.text_field :width, class: "form-control input-bg"
+                = f.number_field :width, class: "numbersOnly form-control input-bg"
                 .fa &#xf07e;
             .col-md-6.top-margin-row.child-div1
               = f.label :depth, class: "control-label"
               span.input-icon.icon-right
-                = f.text_field :depth, class: "form-control input-bg"
+                = f.number_field :depth, class: "numbersOnly form-control input-bg"
                 .fa &#xf01c; 
     .row.top-margin-row
       .col-md-12

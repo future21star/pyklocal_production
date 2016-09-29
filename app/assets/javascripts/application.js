@@ -32,6 +32,7 @@ $.ajaxSetup({
 var pyklocal = {
 
 	init: function() {
+    this.retrictNumber();
 		this.showNoty();
 		this.setDeliveryType();
 		this.filterByRadius();
@@ -41,6 +42,12 @@ var pyklocal = {
     this.applyCoupon();
     this.configurePhoneField();
 	},
+
+  retrictNumber: function() {
+    jQuery('.numbersOnly').keyup(function () { 
+      this.value = this.value.replace(/[^0-9\.]/g,'');
+    });
+  },
 
 	showNoty: function() {
 		$.noty.defaults = {

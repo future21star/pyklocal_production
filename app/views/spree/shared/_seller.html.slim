@@ -55,14 +55,12 @@
                       td.text-primary
                         = store.try(:phone_number)
                     tr
-                      td
+                      td colspan=2
                         strong
                           span.glyphicon.glyphicon-home.text-primary
                           |&nbsp; Address
-                      td.text-primary
-                        = store.try(:city).titleize
-                        |,  
-                        = store.try(:country)
+                        span.text-primary style="margin-left: 36px;"
+                          = store.try(:street_number).titleize
 
     #rating.modal.fade role="dialog" style=("margin-top: 45px;") 
       .modal-dialog

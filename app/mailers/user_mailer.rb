@@ -1,17 +1,17 @@
 class UserMailer < ActionMailer::Base
 
-  default from: 'prashant.mishra@w3villa.com'
+  default from: 'admin@pyklocal.com'
  
  	def edit_store(user, store, token)
  		@store = store
  		@token = token
  		@user = user
- 		mail(to: user.email, subject: 'Edit store instruction')
+ 		mail(to: user.email,from: 'admin@pyklocal.com', subject: 'Edit store instruction')
  	end
 
  	def notify_store_save(store)
  		@store = store
- 		mail(to: "prashant.mishra@w3villa.com", subject: "#{store.name} is created/updated")
+ 		mail(to: "gopal.sharma@w3villa.com", subject: "#{store.name} is created/updated")
  	end
 
   def password_changed_notification(user)
