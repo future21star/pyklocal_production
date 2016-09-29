@@ -2951,3 +2951,16 @@ form#adv_ajaxfilter {
   min-height: 39px;
   margin-bottom: 20px;
 }
+
+.button-primary{
+  background-color: #c30505;
+  border: 0;
+  color: #fff;
+  max-height: 42px;
+  margin-top: 0px;
+  font-size: 14px;
+  min-height: 42px;
+}
+button:hover{
+  background-color: #555;
+}
