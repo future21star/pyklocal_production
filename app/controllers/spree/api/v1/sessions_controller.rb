@@ -12,10 +12,12 @@ module Spree
 					if !@api_token
 						email = SecureRandom.hex(4)+"@pyklocal.com"
 						password = SecureRandom.hex(4)
-						@user = Spree::User.new(email: email, password: password, password_confirmation: password, is_guest: true)
+						@user = Spree::User.new(email: email, password: password, password_confirmation: password, is_guest: true, t_and_c_accepted: true)
 						if @user.save
 							@response = get_response(@user)
 							@response[:message] = "Login successfull"
+							@api_token1 = @user.api_tokens.last
+							@api_token1.update_attributes(user_device_id: params[:device_id])
 						else
 							@response = error_response
 							@response[:message] = @user.errors.full_messages.join(", ")
@@ -29,16 +31,12 @@ module Spree
 					@response[:message] = "Device id can not be blank"
 				end
 			elsif required_params_present? params, 'email', 'password'
+				# TODO:  Add condition for driver approcval
 				user = Spree::User.find_by_email(params[:email])
 				unless user.blank?
 					if user.valid_password?(params[:password])
-						if user.has_spree_role?("driver")
-							@response = get_response(user)
-							@response[:message] = "Login successfull"
-						else
-							@response = error_response
-							@response[:message] = "Your account has not actived by admin"
-						end
+						@response = get_response(user)
+						@response[:message] = "Login successfull"
 					else
 						@response = error_response
 						@response[:message] = "Invalid password"
@@ -65,7 +63,7 @@ module Spree
 					render json: {status: "0", message: "Something went wrong"}
 				end
 			else
-				render json: {status: "0", message: "Already Logged out"}
+				render json: {status: "0", message: "Already Logged out/ Invalid token"}
 			end
 
 		end

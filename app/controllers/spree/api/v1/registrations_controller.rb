@@ -6,13 +6,24 @@ module Spree
     include Spree::Api::SessionsHelper
 
 		def create
-			@user = Spree.user_class.new(user_params)
-			if @user.save
-      	@response = get_response(@user)
-      else
-      	@response = error_response
-        @response[:message] = @user.errors.full_messages.join(", ")
-      end
+			@api_token = ApiToken.where(user_device_id: params[:user][:device_id]).last
+			if @api_token
+				@user = @api_token.user
+				if @user.update_attributes(email: params[:user][:email], password: params[:user][:password], is_guest: false)
+					@response = get_response(@user)
+				else
+					@response = error_response
+	        @response[:message] = @user.errors.full_messages.join(", ")
+				end
+			else
+				@user = Spree.user_class.new(user_params)
+				if @user.save
+	      	@response = get_response(@user)
+	      else
+	      	@response = error_response
+	        @response[:message] = @user.errors.full_messages.join(", ")
+	      end
+	    end
     rescue Exception => e
 			api_exception_handler(e)
 		ensure
