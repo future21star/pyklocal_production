@@ -1,5 +1,7 @@
 class Spree::Admin::CarouselImagesController < Spree::Admin::ResourceController
 
+  before_filter :find_carousel_image, only: [:edit, :update, :destroy]
+
   def index
     @carousel_images = Spree::CarouselImage.all
   end

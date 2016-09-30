@@ -71,6 +71,11 @@ en:
     messages:
       already_confirmed: was already confirmed
       email_is_invalid: Email address cannot be blank
+      stores_name_is_invalid: Store name cannot be blank
+      stores_manager_first_name_is_invalid: Store managers first name cannot be blank
+      stores_manager_last_name_is_invalid: Store managers last name cannot be blank
+      stores__phone_is_invalid: Store phone number cannot be blank
+      stores_spree_taxons_is_invalid: Taxons cannot be blank
       not_found: not found
       not_locked: was not locked
       not_saved:
