@@ -39,7 +39,7 @@
         .col-table-cell.col-lg-4.col-md-4.col-sm-12.col-xs-12.inner
           = link_to spree.root_path ,class: 'pyklocal-logo' , "data-no-turbolink" => true do
             = image_tag "/images/pyc-logo.png", class: "img-responsive"
-        .col-table-cell.col-lg-5.col-md-5.col-md-push-0.col-sm-6.col-sm-push-6.col-xs-12
+        .col-table-cell.col-lg-4.col-md-4.col-sm-12.col-xs-12.inner
           #search.input-group
             = form_tag '/shop', :method => 'get', id: "search-box" do 
               - if params[:q] && params[:q][:lat]
@@ -51,7 +51,7 @@
               input id="discover" class="form-control" autocomplete="off" name="q[search]" placeholder="Search for..." value=(params[:q][:search] rescue "")
               button.button-search type="submit" 
                 i.fa.fa-search
-        .col-table-cell.col-lg-3.col-md-3.col-md-pull-0.col-sm-6.col-sm-pull-6.col-xs-12.inner
+        .col-table-cell.col-lg-3.col-md-3.col-sm-6.col-xs-12.inner
           #cart
             = link_to spree.cart_path, "data-no-turbolink" => true do 
               span#cart-total 

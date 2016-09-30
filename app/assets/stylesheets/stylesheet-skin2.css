@@ -532,9 +532,9 @@ div.required .control-label:before {
   right: auto;
 }
 
-// #header.style3 #cart {
-//   text-align: right;
-// }
+#header.style3 #cart {
+  text-align: right;
+}
 
 #menu .navbar-collapse {
   padding-left: 0;
@@ -715,7 +715,7 @@ div.required .control-label:before {
 }
 
 #menu .nav > li.categories > div > .column a span,
-#menu .nav > li.categories_hor > div > .column a span,
+/*#menu .nav > li.categories_hor > div > .column a span,*/
 #menu .nav > li > div > ul li a span {
   float: right;
   font-size: 18px;
