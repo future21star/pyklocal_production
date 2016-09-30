@@ -3,7 +3,7 @@ module Merchant
 
     self.table_name = "pyklocal_stores" 
 
-    validates :name, :manager_first_name, :manager_last_name,:phone_number, :spree_taxons, presence: true
+    validates :name, :manager_first_name, :manager_last_name, :phone_number, :spree_taxons, presence: true
     # validates :phone_number, numericality: { only_integer: true }
     # validates :terms_and_condition, acceptance: { accept: true }
     

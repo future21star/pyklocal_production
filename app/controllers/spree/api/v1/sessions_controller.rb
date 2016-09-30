@@ -31,7 +31,7 @@ module Spree
 					@response[:message] = "Device id can not be blank"
 				end
 			elsif required_params_present? params, 'email', 'password'
-				# TODO:  Add condition for driver approcval
+				# TODO:  Add condition for driver approval
 				user = Spree::User.find_by_email(params[:email])
 				unless user.blank?
 					if user.valid_password?(params[:password])
@@ -47,7 +47,6 @@ module Spree
 				end
 			end
 		rescue Exception => e
-			p "exe"
 			api_exception_handler(e)
 		ensure 
 			render json: @response
