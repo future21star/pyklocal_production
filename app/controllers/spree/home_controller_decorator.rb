@@ -16,8 +16,8 @@ Spree::HomeController.class_eval do
     end
     @most_viewed_products = @view_search.results
     @new_arrival = Spree::Product.all.limit(30).order('created_at DESC')
-		@bag_categories = Spree::Taxon.where(name: "Bags").first.products
-		@clothing_categories = Spree::Taxon.where(name: "Mugs").first.products
+		@bag_categories = Spree::Taxon.where(name: "Bags").first.try(:products)
+		@clothing_categories = Spree::Taxon.where(name: "Mugs").first.try(:products)
     @carousel_images = Spree::CarouselImage.where(is_static: false).active
     @static_images = Spree::StaticImage.where(is_static: true).active.limit(2)
 	end

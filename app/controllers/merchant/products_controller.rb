@@ -106,6 +106,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   end
 
   def find_product
+    # @product = current_spree_user.stores.first.spree_products.where(slug: params[:id]).first
     @product = Spree::Product.where(slug: params[:id]).first || Spree::Product.where(slug: params[:product_id]).first
   end
 
