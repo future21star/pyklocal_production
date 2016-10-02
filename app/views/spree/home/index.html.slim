@@ -26,19 +26,22 @@
         .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
           a href="#" 
             = image_tag "sample-banner-2-360x360.jpg", class: "img-responsive" 
-    .category-module style=("max-height:450px; overflow:hidden;")
-      h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Bags
-      .category-module-content 
-        .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
-            - @bag_categories.each do |product|
-              = render :partial => 'spree/shared/product', locals: {product: product}
-
-    .category-module style=("max-height:450px; overflow:hidden;")
-      h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Mugs
-      .category-module-content 
-        .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
-            - @clothing_categories.each do |product|
-              = render :partial => 'spree/shared/product', locals: {product: product}
+    - unless @bag_categories.blank?
+      .category-module style=("max-height:450px; overflow:hidden;")
+        h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;")
+          = @bag_categories.try(:first).try(:taxons).try(:first).try(:name)
+        .category-module-content 
+          .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
+              - @bag_categories.each do |product|
+                = render :partial => 'spree/shared/product', locals: {product: product}
+    - unless @clothing_categories.blank?
+      .category-module style=("max-height:450px; overflow:hidden;")
+        h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;")
+          = @clothing_categories.try(:first).try(:taxons).try(:first).try(:name)
+        .category-module-content 
+          .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
+              - @clothing_categories.each do |product|
+                = render :partial => 'spree/shared/product', locals: {product: product}
 
     #marketshop-banner2.marketshop-banner
       .row
