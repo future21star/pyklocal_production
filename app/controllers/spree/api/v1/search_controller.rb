@@ -94,10 +94,10 @@ module Spree
             end
           end
         end
-        if (params[:q] && params[:q][:sort_type]) && (params[:q][:sort_type] == 1)
+        if (params[:q] && params[:q][:sort_type]) && (params[:q][:sort_type] == "1")
           order_by(:price, :desc)
         end
-        if (params[:q] && params[:q][:sort_type]) && (params[:q][:sort_type] == 0)
+        if (params[:q] && params[:q][:sort_type]) && (params[:q][:sort_type] == "2")
           order_by(:price, :asc) if params[:q] && params[:q][:sort_type]
         end
       end
