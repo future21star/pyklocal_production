@@ -23,6 +23,7 @@ module Spree
       text :store_name
       text :upc_code
       text :meta_keywords
+      text :sku
       latlon(:location) { Sunspot::Util::Coordinates.new(store.try(:latitude), store.try(:longitude)) }
 
       float :price
