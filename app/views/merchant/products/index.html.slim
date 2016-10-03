@@ -19,6 +19,7 @@
         =render :partial=>"merchant/shared/seller"
       .col-sm-9
         = render partial: "merchant/shared/product_header", locals: {text: "Products Listing", product_name: @product.try(:name), store_id: @collection.first.try(:store).try(:friendly_id)}
+        = render partial: "filter"
         - content_for :page_title do
    
         .form-section 

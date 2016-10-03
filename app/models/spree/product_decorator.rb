@@ -29,6 +29,8 @@ module Spree
       integer :sell_count
       integer :view_count
 
+      time :created_at
+
       dynamic_string :product_property_ids, :multiple => true do
         product_properties.inject(Hash.new { |h, k| h[k] = [] }) do |map, product_property| 
           map[product_property.property_id] << product_property.value
@@ -37,6 +39,8 @@ module Spree
       end
 
       string :store_name
+
+      integer :store_id
 
       string :brand_name, references: Spree::ProductProperty, multiple: true do
         product_properties.where(property_id: properties.where(name: "Brand").first.try(:id)).collect { |p| p.value }.flatten

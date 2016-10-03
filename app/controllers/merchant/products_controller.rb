@@ -8,7 +8,13 @@ class Merchant::ProductsController < Merchant::ApplicationController
   layout 'merchant'
 
 	def index
-    @collection =  Spree::Product.where(store_id: current_spree_user.stores.first.id).order("created_at desc").page(params[:page]).per(15)
+    @search = Sunspot.search(Spree::Product) do
+      fulltext params[:q][:s] if params[:q] && params[:q][:s]
+      with(:store_id, current_spree_user.stores.first.try(:id))
+      paginate(:page => params[:page], :per_page => 15)
+      order_by(:created_at, :desc)
+    end
+    @collection =  @search.results
     @is_owner = is_owner?(current_spree_user.stores.first)
   end
 
@@ -109,5 +115,31 @@ class Merchant::ProductsController < Merchant::ApplicationController
     # @product = current_spree_user.stores.first.spree_products.where(slug: params[:id]).first
     @product = Spree::Product.where(slug: params[:id]).first || Spree::Product.where(slug: params[:product_id]).first
   end
+
+  protected
+
+    def collection
+      return @collection if @collection.present?
+      params[:q] ||= {}
+      params[:q][:deleted_at_null] ||= "1"
+
+      params[:q][:s] ||= "name asc"
+      @collection = super
+      # Don't delete params[:q][:deleted_at_null] here because it is used in view to check the
+      # checkbox for 'q[deleted_at_null]'. This also messed with pagination when deleted_at_null is checked.
+      if params[:q][:deleted_at_null] == '0'
+        @collection = @collection.with_deleted
+      end
+      # @search needs to be defined as this is passed to search_form_for
+      # Temporarily remove params[:q][:deleted_at_null] from params[:q] to ransack products.
+      # This is to include all products and not just deleted products.
+      @search = @collection.ransack(params[:q].reject { |k, _v| k.to_s == 'deleted_at_null' })
+      @collection = @search.result.
+            distinct_by_product_ids(params[:q][:s]).
+            includes(product_includes).
+            page(params[:page]).
+            per(params[:per_page] || Spree::Config[:admin_products_per_page])
+      @collection
+    end
 
 end
