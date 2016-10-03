@@ -22,10 +22,10 @@
               .fa &#xf022;
             = f.error_message_on :description
         .form-group
-          = f.field_container :taxons do 
-            = f.label :taxon_ids, Spree.t(:taxons) 
+          = f.field_container :categories do 
+            = f.label :categories, Spree.t(:categories) 
             br
-            = f.hidden_field :taxon_ids, :value => @product.taxon_ids.join(',')
+            = f.hidden_field :taxon_ids, :value => @product.taxon_ids.join(','), placeholder: "Add a category"
         .form-group
           = f.field_container :option_types do 
             = f.label :option_type_ids, Spree.t(:option_types) 

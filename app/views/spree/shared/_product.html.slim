@@ -13,7 +13,7 @@
         .caption
           h4
             a href=product_path(product) data-no-turbolink=true 
-            	= truncate(product.name, :length =>16)
+            	= truncate(product.name, :length =>10)
           p.price
             = number_to_currency(product.price)
           - button_text = product.master.can_supply? ? "Add To Cart" : "Out Of Stock"

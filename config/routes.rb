@@ -149,6 +149,7 @@ Pyklocal::Application.routes.draw do
     namespace :admin do 
       resources :commissions
       resources :carousel_images
+      resources :static_images
       resources :sellers do 
         resources :payment_preferences
         get :stores

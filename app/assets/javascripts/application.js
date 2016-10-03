@@ -32,7 +32,7 @@ $.ajaxSetup({
 var pyklocal = {
 
 	init: function() {
-    this.retrictNumber();
+    this.restrictNumber();
 		this.showNoty();
 		this.setDeliveryType();
 		this.filterByRadius();
@@ -43,7 +43,7 @@ var pyklocal = {
     this.configurePhoneField();
 	},
 
-  retrictNumber: function() {
+  restrictNumber: function() {
     jQuery('.numbersOnly').keyup(function () { 
       this.value = this.value.replace(/[^0-9\.]/g,'');
     });

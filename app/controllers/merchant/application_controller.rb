@@ -57,8 +57,8 @@ class Merchant::ApplicationController < ActionController::Base
   end
 
   def authenticate_user!
-    unless current_spree_user
-      redirect_to spree.login_path, notice: "You need to login before continue"
+    unless current_spree_user && current_spree_user.has_spree_role?("merchant")
+      redirect_to spree.login_path, notice: "You are not authorized to access this page."
     end
   end
 

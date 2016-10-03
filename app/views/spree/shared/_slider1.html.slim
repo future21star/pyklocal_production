@@ -15,10 +15,22 @@
   .col-sm-4.pull-right.flip
     #marketshop-banner0.marketshop-banner
       .row
-        .col-lg-12.col-md-12.col-sm-12.col-xs-12.moderns
-          a href="#" 
-            = image_tag "sp-small-banner-360x185.jpg", class: "img-responsive" 
-        .col-lg-12.col-md-12.col-sm-12.col-xs-12.moderns
-          a href="#" 
-            = image_tag "sp-small-banner1-360x185.jpg", class: "img-responsive"
-
+        - unless @static_images.blank?
+          - if @static_images.count < 2
+            .col-xs-12.moderns
+              a href="#"
+                = image_tag @static_images.first.image.url, class: "img-responsive"
+            .col-xs-12.moderns
+              a href="#" 
+                = image_tag "sp-small-banner1-360x185.jpg", class: "img-responsive"
+          - else
+            - @static_images.each do |static_image|
+              .col-xs-12.moderns
+                = image_tag static_image.image.url, class: "img-responsive"
+        - else
+          .col-lg-12.col-md-12.col-sm-12.col-xs-12.moderns
+            a href="#" 
+              = image_tag "sp-small-banner-360x185.jpg", class: "img-responsive" 
+          .col-lg-12.col-md-12.col-sm-12.col-xs-12.moderns
+            a href="#" 
+              = image_tag "sp-small-banner1-360x185.jpg", class: "img-responsive"

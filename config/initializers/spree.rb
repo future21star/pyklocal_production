@@ -34,4 +34,5 @@ Spree::BackendConfiguration.class_eval do
 	SELLER_TAB			||= [:merchants]
   COMMISSION_TAB      ||= [:commission]
   CAROUSEL_IMAGE_TAB  ||= [:carousel_image]
+  STATIC_IMAGE_TAB  ||= [:static_image]
 end

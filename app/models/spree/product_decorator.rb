@@ -23,11 +23,14 @@ module Spree
       text :store_name
       text :upc_code
       text :meta_keywords
+      text :sku
       latlon(:location) { Sunspot::Util::Coordinates.new(store.try(:latitude), store.try(:longitude)) }
 
       float :price
       integer :sell_count
       integer :view_count
+
+      time :created_at
 
       dynamic_string :product_property_ids, :multiple => true do
         product_properties.inject(Hash.new { |h, k| h[k] = [] }) do |map, product_property| 
@@ -37,6 +40,8 @@ module Spree
       end
 
       string :store_name
+
+      integer :store_id
 
       string :brand_name, references: Spree::ProductProperty, multiple: true do
         product_properties.where(property_id: properties.where(name: "Brand").first.try(:id)).collect { |p| p.value }.flatten

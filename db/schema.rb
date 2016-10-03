@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160920080356) do
+ActiveRecord::Schema.define(version: 20160930070818) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 20160920080356) do
     t.boolean  "active"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_static",                        default: false
+    t.text     "story",              limit: 65535
   end
 
   create_table "comments", force: :cascade do |t|
@@ -296,14 +298,13 @@ ActiveRecord::Schema.define(version: 20160920080356) do
   add_index "spree_calculators", ["id", "type"], name: "index_spree_calculators_on_id_and_type", using: :btree
 
   create_table "spree_countries", force: :cascade do |t|
-    t.string   "iso_name",         limit: 255
-    t.string   "iso",              limit: 255
-    t.string   "iso3",             limit: 255
-    t.string   "name",             limit: 255
-    t.integer  "numcode",          limit: 4
-    t.boolean  "states_required",              default: false
+    t.string   "iso_name",        limit: 255
+    t.string   "iso",             limit: 255
+    t.string   "iso3",            limit: 255
+    t.string   "name",            limit: 255
+    t.integer  "numcode",         limit: 4
+    t.boolean  "states_required",             default: false
     t.datetime "updated_at"
-    t.boolean  "zipcode_required",             default: true
   end
 
   create_table "spree_credit_cards", force: :cascade do |t|
