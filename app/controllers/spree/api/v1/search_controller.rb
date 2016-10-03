@@ -65,7 +65,7 @@ module Spree
 		private
 
 		def perform_search
-			 per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12
+			per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12
       @search = Sunspot.search(Spree::Product) do 
         fulltext params[:q][:search] if params[:q] && params[:q][:search]
         paginate(:page => params[:page], :per_page => per_page)
@@ -94,11 +94,11 @@ module Spree
             end
           end
         end
-        if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Highest Price")
+        if (params[:q] && params[:q][:sort_type]) && (params[:q][:sort_type] == 1)
           order_by(:price, :desc)
         end
-        if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Lowest Price")
-          order_by(:price, :asc) if params[:q] && params[:q][:sort_by]
+        if (params[:q] && params[:q][:sort_type]) && (params[:q][:sort_type] == 0)
+          order_by(:price, :asc) if params[:q] && params[:q][:sort_type]
         end
       end
     end

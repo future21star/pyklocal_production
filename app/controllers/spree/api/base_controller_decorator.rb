@@ -33,12 +33,12 @@ module Spree
             main_hash["total_on_hand".to_sym] = p_obj.total_on_hand.to_s
             main_hash["stock_status".to_sym] = "1"
           else
-            main_hash["total_on_hand".to_sym] = []
+            main_hash["total_on_hand".to_sym] = ""
             main_hash["stock_status".to_sym] = "0"
           end
 
           main_hash["average_ratings".to_sym] = p_obj.average_ratings.to_s
-          
+     
          
           main_hash["price".to_sym] = p_obj.price.to_s
           values.push(main_hash)
@@ -80,9 +80,9 @@ module Spree
             end
 
             unless taxon_arr.empty?
-              main_hash["taxon_ids".to_sym] = [taxon_arr.join(", ")]
+              main_hash["category_ids".to_sym] = [taxon_arr.join(", ")]
             else
-              main_hash["taxon_ids".to_sym] = []
+              main_hash["category_ids".to_sym] = []
             end
           end
         end
