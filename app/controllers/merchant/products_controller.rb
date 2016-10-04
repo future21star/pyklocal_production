@@ -76,7 +76,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
     if @product.destroy
       redirect_to merchant_products_path, notice: "Product deleted successfully"
     else
-      redirect_to merchant_products_path, notice: "Something went wrong"
+      redirect_to merchant_products_path, notice: @product.errors.full_messages.join(", ")
     end
   end
 
@@ -113,7 +113,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
 
   def find_product
     @product = current_spree_user.stores.first.spree_products.where(slug: params[:id]).first
-    @product = Spree::Product.where(slug: params[:id]).first || Spree::Product.where(slug: params[:product_id]).first
+    #@product = Spree::Product.where(slug: params[:id]).first || Spree::Product.where(slug: params[:product_id]).first
   end
 
   protected

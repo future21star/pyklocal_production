@@ -4,7 +4,7 @@ class Merchant::OrdersController < Merchant::ApplicationController
   before_filter :find_order, only: [:edit, :update, :validate_actions, :customer, :adjustments, :payments, :returns, :approve, :cancel]
 
 	def index
-    @store = Merchant::Store.find_by_slug(params[:store_id])
+    @store = current_spree_user.stores.first
     if @store.present?
       params[:q] = {} unless params[:q]
       if params[:q][:orders_completed_at_gt].blank?

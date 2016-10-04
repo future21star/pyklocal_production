@@ -1,15 +1,18 @@
-#container
-	.container
-		ul.breadcrumb
-			li
-				a href="/" 
-					i.fa.fa-home
-					| Home
-			li
-				span  Update Product Information
+-if @product
+	#container
+		.container
+			ul.breadcrumb
+				li
+					a href="/" 
+						i.fa.fa-home
+						| Home
+				li
+					span  Update Product Information
 		= render partial: "merchant/shared/product_header", locals: {text: "Edit Product ", product_name: @product.name}
-	.container
-		.row
-			.col-md-12
-				.form-section
-					= render partial: "form"
+		.container
+			.row
+				.col-md-12
+					.form-section
+						= render partial: "form"
+-else
+	-controller.redirect_to merchant_store_url 

@@ -70,6 +70,7 @@ module Spree
         fulltext params[:q][:search] if params[:q] && params[:q][:search]
         paginate(:page => params[:page], :per_page => per_page)
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
+        with(:taxon_ids, params[:q][:category_id]) if params[:q] && params[:q][:category_id]
         facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
         facet(:brand_name)
         facet(:store_name)
