@@ -16,8 +16,8 @@ module Spree
 						if @user.save
 							@response = get_response(@user)
 							@response[:message] = "Login successfull"
-							@api_token1 = @user.api_tokens.last
-							@api_token1.update_attributes(user_device_id: params[:device_id])
+							@api_token_guest = @user.api_tokens.last
+							@api_token_guest.update_attributes(user_device_id: params[:device_id])
 						else
 							@response = error_response
 							@response[:message] = @user.errors.full_messages.join(", ")
@@ -62,7 +62,7 @@ module Spree
 					render json: {status: "0", message: "Something went wrong"}
 				end
 			else
-				render json: {status: "0", message: "Already Logged out/ Invalid token"}
+				render json: {status: "0", message: "Already Logged out/Invalid token"}
 			end
 
 		end

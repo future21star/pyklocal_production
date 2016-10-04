@@ -9,8 +9,8 @@ module Spree
       if params[:category_id]
         @taxon = Spree::Taxon.where(id: params[:category_id]).first
         if @taxon
-          @products = @taxon.products
-          if @products
+          @products = is_pagination_require ? @taxon.products.paginate(:page => params[:page], :per_page => @per_page ): @taxon.products
+          unless @products.blank?
             render json: {
               status: "1",
               message: "Home Screen",
@@ -21,7 +21,7 @@ module Spree
           else
             render json: {
               status: "0",
-              message: "No product founud in this category"
+              message: "No product found in this category"
             }
           end
         else
@@ -31,7 +31,7 @@ module Spree
           }
         end
       else
-        @products = Spree::Product.all
+        @products = is_pagination_require ? Spree::Product.all.paginate(:page => params[:page], :per_page => @per_page) : Spree::Product.all
         render json: {
           status: "1",
           message: "Home Screen",
@@ -84,7 +84,13 @@ module Spree
 
     private
 
-    
+      def is_pagination_require
+        if params[:page]
+          @per_page = params[:per_page] ? params[:per_page] : 12
+        else
+         false
+        end
+      end
 
       def get_product
         @product = Spree::Product.find_by_slug(params[:product_id])

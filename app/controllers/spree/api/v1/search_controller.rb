@@ -70,6 +70,7 @@ module Spree
         fulltext params[:q][:search] if params[:q] && params[:q][:search]
         paginate(:page => params[:page], :per_page => per_page)
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
+        with(:taxon_ids, params[:q][:category_id]) if params[:q] && params[:q][:category_id]
         facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
         facet(:brand_name)
         facet(:store_name)
@@ -94,11 +95,11 @@ module Spree
             end
           end
         end
-        if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Highest Price")
+        if (params[:q] && params[:q][:sort_type]) && (params[:q][:sort_type] == "1")
           order_by(:price, :desc)
         end
-        if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Lowest Price")
-          order_by(:price, :asc) if params[:q] && params[:q][:sort_by]
+        if (params[:q] && params[:q][:sort_type]) && (params[:q][:sort_type] == "2")
+          order_by(:price, :asc) if params[:q] && params[:q][:sort_type]
         end
       end
     end
