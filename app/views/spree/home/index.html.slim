@@ -17,15 +17,40 @@
 
     #marketshop-banner1.marketshop-banner.margin-top
       .row
-        .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
-          a href="#" 
-            = image_tag "sample-banner-3-360x360.jpg", class: "img-responsive" 
-        .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
-          a href="#" 
-            = image_tag "sample-banner-1-360x360.jpg", class: "img-responsive" 
-        .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
-          a href="#" 
-            = image_tag "sample-banner-2-360x360.jpg", class: "img-responsive" 
+        - unless @middle_static_images.blank?
+          - if @middle_static_images.count == 3
+            - @middle_static_images.each do |middle_static_image|
+              .col-md-4.col-sm-6.col-xs-12.moderns
+                a href="#"
+                  = image_tag middle_static_image.image.try(:url, :thumb), class: 'img-responsive'
+          - elsif @middle_static_images.count < 2
+            .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
+              a href="#" 
+                = image_tag @middle_static_images.first.image.try(:url), class: "img-responsive" 
+            .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
+              a href="#" 
+                = image_tag "sample-banner-1-360x360.jpg", class: "img-responsive" 
+            .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
+              a href="#" 
+                = image_tag "sample-banner-2-360x360.jpg", class: "img-responsive"
+          - elsif @middle_static_images.count < 3
+            - @middle_static_images.each do |middle_static_image|
+              .col-md-4.col-sm-6.col-xs-12.moderns
+                a href="#"
+                  = image_tag middle_static_image.image.try(:url, :thumb), class: 'img-responsive'
+            .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
+              a href="#" 
+                = image_tag "sample-banner-2-360x360.jpg", class: "img-responsive"
+        - else
+          .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
+            a href="#" 
+              = image_tag "sample-banner-3-360x360.jpg", class: "img-responsive" 
+          .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
+            a href="#" 
+              = image_tag "sample-banner-1-360x360.jpg", class: "img-responsive" 
+          .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
+            a href="#" 
+              = image_tag "sample-banner-2-360x360.jpg", class: "img-responsive" 
     - unless @bag_categories.blank?
       .category-module style=("max-height:450px; overflow:hidden;")
         h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;")
@@ -47,7 +72,8 @@
       .row
         .col-lg-12.col-md-12.col-sm-12.col-xs-12.moderns
           a href="#" 
-            = image_tag "1blockbanner-1140x75.jpg", class: "img-responsive"
+            - image_url = @bottom_static_image.blank? ? "1blockbanner-1140x75.jpg" : @bottom_static_image.image.try(:url, :landscape)
+            = image_tag image_url, class: "img-responsive"
 
     .category-module style=("max-height:450px; overflow:hidden;")
       h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Most Viewed Products

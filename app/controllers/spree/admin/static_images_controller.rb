@@ -42,7 +42,7 @@ class Spree::Admin::StaticImagesController < Spree::Admin::ResourceController
   private
 
     def static_image_params
-      params.require(:static_image).permit(:image, :active, :is_static, :story)
+      params.require(:static_image).permit(:image, :active, :is_static, :story, :position, :url)
     end
 
     def find_static_image

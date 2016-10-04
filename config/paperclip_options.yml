@@ -51,6 +51,8 @@ production: &production
         :mini: '50x50>'
         :large: '350x350>'
         :banner: '750x400#'
+        :thumb: '360x360#'
+        :landscape: '1140x75#'
       :url: '/carousel_images/:id/:style/:basename.:extension'
       :path: '/carousel_images/:id/:style/:basename.:extension'
       :default_style: :banner

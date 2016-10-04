@@ -14,7 +14,7 @@ class Merchant::StoresController < Merchant::ApplicationController
 	end
 
 	def show
-    @products = @store.spree_products.page(params[:page]).per(8).order("created_at desc")
+    @products = @store.spree_products.page(params[:page]).per(12).order("created_at desc")
     @is_owner = is_owner?(@store)
   end
 

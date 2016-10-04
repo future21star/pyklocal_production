@@ -8,6 +8,8 @@ table.table.table-stripped
     tr
       td Image
       td Text
+      td Url
+      td Position
       td Active
       td Actions
   tbody
@@ -16,6 +18,8 @@ table.table.table-stripped
         tr
           td= image_tag static_image.image.url(:mini), class: 'img-responsive'
           td= static_image.story.try(:limit, 20)
+          td= static_image.url
+          td= static_image.position.try(:humanize)
           td= static_image.active
           td
             = button_link_to "", edit_admin_static_image_url(static_image), class: "btn-default", icon: 'edit'
