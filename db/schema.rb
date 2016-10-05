@@ -13,6 +13,7 @@
 
 ActiveRecord::Schema.define(version: 20161004131848) do
 
+
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
     t.integer  "user_id",        limit: 4
@@ -34,6 +35,8 @@ ActiveRecord::Schema.define(version: 20161004131848) do
     t.datetime "updated_at"
     t.boolean  "is_static",                        default: false
     t.text     "story",              limit: 65535
+    t.string   "url",                limit: 255
+    t.string   "position",           limit: 255
   end
 
   create_table "comments", force: :cascade do |t|

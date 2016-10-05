@@ -21,6 +21,16 @@ GIT
       whenever
 
 GIT
+  remote: git://github.com/spree-contrib/spree_editor.git
+  revision: 702db404e959d6c4fa42fc7c7ea48a28f6bd2d1e
+  branch: 3-1-stable
+  specs:
+    spree_editor (3.1.0)
+      ckeditor (~> 4.1.2)
+      spree_backend (~> 3.1.0.beta)
+      tinymce-rails (~> 4.2.5)
+
+GIT
   remote: git://github.com/spree-contrib/spree_print_invoice.git
   revision: fa7502f6af6e315d788d4ecd9ba3ad6d3e5ad441
   branch: master
@@ -139,6 +149,9 @@ GEM
       ffi (~> 1.0, >= 1.0.11)
     choice (0.2.0)
     chronic (0.10.2)
+    ckeditor (4.1.6)
+      cocaine
+      orm_adapter (~> 0.5.0)
     cldr-plurals-runtime-rb (1.0.1)
     climate_control (0.0.3)
       activesupport (>= 3.0)
@@ -530,6 +543,8 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
+    tinymce-rails (4.2.8)
+      railties (>= 3.1.1)
     truncate_html (0.9.3)
     ttfunk (1.4.0)
     turbolinks (5.0.1)
@@ -558,7 +573,6 @@ GEM
     websocket (1.2.3)
     whenever (0.9.7)
       chronic (>= 0.6.3)
-    will_paginate (3.1.3)
     xpath (2.0.0)
       nokogiri (~> 1.3)
     zip-zip (0.3)
@@ -605,6 +619,7 @@ DEPENDENCIES
   spree (~> 3.1.0)
   spree_auth_devise (~> 3.1.0)
   spree_braintree_vzero!
+  spree_editor!
   spree_gateway (~> 3.1.0)
   spree_print_invoice!
   spree_static_content!
@@ -617,7 +632,6 @@ DEPENDENCIES
   twitter-bootstrap-rails!
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
-  will_paginate
   zip-zip
 
 BUNDLED WITH

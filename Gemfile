@@ -27,8 +27,7 @@ gem 'sunspot_solr'
 gem 'progress_bar'
 gem 'noty-rails'
 
-#for pagination
-gem 'will_paginate'
+gem 'spree_editor', github: 'spree-contrib/spree_editor', branch: '3-1-stable'
 
 
 
