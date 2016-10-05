@@ -29,6 +29,7 @@ class Merchant::StoresController < Merchant::ApplicationController
 
   # GET /stores/1/edit
   def edit
+    p "edit called"
     if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
       raise CanCan::AccessDenied.new
     end
@@ -61,6 +62,7 @@ class Merchant::StoresController < Merchant::ApplicationController
     respond_to do |format|
       if @store.update_attributes(store_params)
         format.html { redirect_to @store, notice: 'Store was successfully updated.'  }
+        @store.email_tokens.last.update_attributes(is_valid: false)
       else
         format.html { render action: 'edit' }
       end

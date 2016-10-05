@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160930070818) do
+ActiveRecord::Schema.define(version: 20161004131848) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -161,7 +161,10 @@ ActiveRecord::Schema.define(version: 20160930070818) do
     t.integer  "certificate_file_size",    limit: 4
     t.datetime "certificate_updated_at"
     t.string   "estimated_delivery_time",  limit: 255,   default: "5 - 6 working hours"
+    t.datetime "deleted_at"
   end
+
+  add_index "pyklocal_stores", ["deleted_at"], name: "index_pyklocal_stores_on_deleted_at", using: :btree
 
   create_table "pyklocal_stores_taxons", force: :cascade do |t|
     t.integer  "store_id",   limit: 4

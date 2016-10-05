@@ -2,6 +2,7 @@ module Merchant
   class Store < ActiveRecord::Base
 
     self.table_name = "pyklocal_stores" 
+    acts_as_paranoid
 
     validates :name, :manager_first_name, :manager_last_name, :phone_number, :spree_taxons, presence: true
     # validates :phone_number, numericality: { only_integer: true }
