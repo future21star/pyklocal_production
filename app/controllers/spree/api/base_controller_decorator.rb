@@ -22,13 +22,16 @@ module Spree
 	    return values
 	  end
 
-	  def to_stringify_product_json obj, values = []
+	  def to_stringify_product_json obj, user ,values = []
         obj.each do |p_obj|
           main_hash = Hash.new
           main_hash["id".to_sym] = p_obj.id.to_s
           main_hash["name".to_sym] = p_obj.name
           main_hash["description".to_sym] = p_obj.description.to_s
-
+          main_hash["in_wishlist".to_sym] = p_obj.in_wishlist(user)
+          main_hash["price".to_sym] = p_obj.cost_price.to_f.to_s
+          main_hash["special price".to_sym] = p_obj.price.to_f.to_s
+          main_hash["discount".to_sym] = p_obj.discount.to_s
           if p_obj.total_on_hand > 0
             main_hash["total_on_hand".to_sym] = p_obj.total_on_hand.to_s
             main_hash["stock_status".to_sym] = "1"
@@ -38,9 +41,7 @@ module Spree
           end
 
           main_hash["average_ratings".to_sym] = p_obj.average_ratings.to_s
-     
-         
-          main_hash["price".to_sym] = p_obj.price.to_s
+
           values.push(main_hash)
 
         
@@ -48,8 +49,10 @@ module Spree
             variants_hash_final = []
             p_obj.variants.each do |variant|
               variants_hash = Hash.new
-              variants_hash["id"] = variant.id.to_s
-              variants_hash["price"] = variant.price.to_s
+              variants_hash["id".to_sym] = variant.id.to_s
+              variants_hash["price".to_sym] = variant.cost_price.to_s
+              variants_hash["cost_price".to_sym] = variant.price.to_s
+              variants_hash["discount".to_sym] = variant.discount.to_s
               variants_hash["total_on hand"] = variant.total_on_hand.to_s
               variants_hash["stock_status"] = variant.stock_status.to_s 
 
@@ -57,7 +60,7 @@ module Spree
               variants_hash["option_name"] = variant.option_name
 
               if variant.images
-                variants_hash["product_images"] = variant.product_images
+                variants_hash["product_images".to_sym] = variant.product_images
                 variants_hash_final.push(variants_hash)
 
               end

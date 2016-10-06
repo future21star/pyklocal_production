@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161004131848) do
-
+ActiveRecord::Schema.define(version: 20161005081735) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -1258,8 +1257,8 @@ ActiveRecord::Schema.define(version: 20161004131848) do
     t.string   "persistence_token",      limit: 255
     t.string   "reset_password_token",   limit: 255
     t.string   "perishable_token",       limit: 255
-    t.integer  "sign_in_count",          limit: 4,   default: 0,     null: false
-    t.integer  "failed_attempts",        limit: 4,   default: 0,     null: false
+    t.integer  "sign_in_count",          limit: 4,                  default: 0,     null: false
+    t.integer  "failed_attempts",        limit: 4,                  default: 0,     null: false
     t.datetime "last_request_at"
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -1272,19 +1271,20 @@ ActiveRecord::Schema.define(version: 20161004131848) do
     t.string   "unlock_token",           limit: 255
     t.datetime "locked_at"
     t.datetime "reset_password_sent_at"
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.datetime "created_at",                                                        null: false
+    t.datetime "updated_at",                                                        null: false
     t.string   "spree_api_key",          limit: 48
     t.datetime "remember_created_at"
     t.datetime "deleted_at"
     t.string   "confirmation_token",     limit: 255
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.string   "first_name",             limit: 255, default: ""
-    t.string   "last_name",              limit: 255, default: ""
+    t.string   "first_name",             limit: 255,                default: ""
+    t.string   "last_name",              limit: 255,                default: ""
     t.string   "mobile_number",          limit: 255
-    t.boolean  "is_guest",                           default: false
-    t.boolean  "t_and_c_accepted",                   default: false
+    t.boolean  "is_guest",                                          default: false
+    t.boolean  "t_and_c_accepted",                                  default: false
+    t.decimal  "amount_due",                         precision: 10
   end
 
   add_index "spree_users", ["bill_address_id"], name: "index_spree_users_on_bill_address_id", using: :btree

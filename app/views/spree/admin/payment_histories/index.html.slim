@@ -2,6 +2,19 @@
 - content_for :page_title do
   |  
   = @seller.full_name
+table.table.table-bordered
+  tbody
+    tr
+      td Total Amount Paid
+      td= number_to_currency(@seller.payment_histories.collect(&:amount).sum.to_f)
+    tr
+      td Total Amount Due
+      td= number_to_currency(@seller.amount_due.to_f)
+    
+    tr
+      td Total Sold Amount
+      td= number_to_currency(@seller.stores.first.try(:orders).try(:collect, &:total_after_commission).try(:sum).to_f)
+      
 table.table.table-striped
   thead
     tr
@@ -15,7 +28,7 @@ table.table.table-striped
         tr
           td= link_to payment_history.transaction_number, spree.edit_admin_seller_payment_history_path(@seller, payment_history)
           td= number_to_currency(payment_history.amount)
-          td= number_to_currency(payment_history.amount_due)
+          td= number_to_currency(payment_history.amount_due.to_f)
           td= payment_history.created_at.strftime("%d-%m-%Y")
     - else
       tr
@@ -23,3 +36,8 @@ table.table.table-striped
           span 
             |No payment made for this merchant.  
             = link_to "Add one", spree.new_admin_seller_payment_history_path
+    - if @seller.amount_due.to_f > 0
+      tr
+        td colspan="4"
+          span
+            = link_to "Add one", spree.new_admin_seller_payment_history_path, class: "btn btn-primary"

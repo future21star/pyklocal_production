@@ -8,7 +8,7 @@ module Spree
 
     # ---------------------------------------- Associations -----------------------------------------------------
 
-    after_update :notify_driver
+    after_update :notify_driver, :add_commission
 
     def store
       stores.first
@@ -73,6 +73,21 @@ module Spree
 
       def full_street_address
         [ship_address.address1, ship_address.address2, ship_address.city, ship_address.state, ship_address.country, ship_address.zipcode].compact.join(", ")
+      end
+
+      def add_commission
+        if self.changes.include?(:state) && self.state == "complete"
+          commission = Spree::Commission.try(:first).try(:percentage).try(:to_f) || 0
+          p line_items.count
+          line_items.each do |line_item|
+            line_item_price = (line_item.price.to_f - line_item.price.to_f * commission / 100).round(2)
+            user = line_item.product.store.try(:spree_users).try(:first)
+            unless user.blank?
+              user.update_attributes(amount_due: user.amount_due.to_f + line_item_price.to_f)
+            end
+          end
+        end
+
       end
 
 	end

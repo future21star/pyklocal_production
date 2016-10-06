@@ -64,6 +64,26 @@ module Spree
       product_properties.where(property_id: properties.find_by_name("UPC Code").try(:id)).try(:first).try(:value)
     end
 
+    def in_wishlist(user)
+      variant_id_arr = variants.collect(&:id)
+      variant_id_arr.push(master.id)
+      variant_id_arr.each do |variant|
+        @wish = user.wishlists.where(variant_id: variant)
+        unless @wish.blank?
+          return "1"
+        end
+      end
+      return "0"
+    end
+
+    def discount
+      if cost_price.to_f == 0
+        return 0
+      else
+        return (((cost_price.to_f - price.to_f) / cost_price.to_f) * 100).round(2)
+      end
+    end
+
     def product_images
       img_arr = []
       if images.present?

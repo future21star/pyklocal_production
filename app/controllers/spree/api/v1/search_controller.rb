@@ -3,20 +3,29 @@ module Spree
 		before_filter :perform_search, only: [:index]
 		
 		def index
-  		@products = @search.results
+      @api_token = ApiToken.where(token: params[:q][:token]).last
+      if @api_token
+        @user = @api_token.user
+    		@products = @search.results
 
-  		if @products.blank?
-  			render json: {
-          status: "0", 
-          message: "No Result Found "
-        }
-  		else
-  			render json: {
-  				status: "1", 
-  				message: "Search Result",
-  				details:  to_stringify_product_json(@products ,[])
-  			}
-  		end
+    		if @products.blank?
+    			render json: {
+            status: "0", 
+            message: "No Result Found "
+          }
+    		else
+    			render json: {
+    				status: "1", 
+    				message: "Search Result",
+    				details:  to_stringify_product_json(@products , @user ,[])
+    			}
+    		end
+      else
+        render json: {
+            status: "0", 
+            message: "Invalid Token"
+          }  
+      end
 		end
 
 		def filters

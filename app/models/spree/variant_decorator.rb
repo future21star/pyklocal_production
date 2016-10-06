@@ -9,6 +9,14 @@ module Spree
       return option_type_value.join(", ")
     end
 
+    def discount
+      if cost_price.to_f == 0
+        return 0
+      else
+        return (((cost_price.to_f - price.to_f) / cost_price.to_f) * 100).round(2)
+      end
+    end
+
     def stock_status
       total_on_hand > 0 ? 1 : 0
     end
