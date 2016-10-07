@@ -3,7 +3,7 @@ module Spree
 		before_filter :perform_search, only: [:index]
 		
 		def index
-      @api_token = ApiToken.where(token: params[:q][:token]).last
+      @api_token = ApiToken.where(token: params[:q][:token]).last 
       if @api_token
         @user = @api_token.user
     		@products = @search.results
@@ -17,6 +17,7 @@ module Spree
     			render json: {
     				status: "1", 
     				message: "Search Result",
+            cart:     @user.cart_count.to_s,
     				details:  to_stringify_product_json(@products , @user ,[])
     			}
     		end

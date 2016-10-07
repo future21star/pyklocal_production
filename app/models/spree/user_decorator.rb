@@ -17,6 +17,7 @@ Spree::User.class_eval do
   has_many :cart_orders, through: :driver_orders, class_name: "Spree::Order"
   has_one :address, class_name: 'Spree::Address'
   has_many :wishlists
+  has_many :authentications
   has_many :ratings, foreign_key: :user_id
   has_many :comments, foreign_key: :user_id
   has_many :customer_returns, class_name: 'Spree::CustomerReturn'
@@ -54,6 +55,18 @@ Spree::User.class_eval do
       end
     end
     return orders.uniq
+  end
+
+  def cart_count
+    cart_count_sum = 0
+    @order = orders.where.not(state: "complete").last
+    unless @order.blank?
+      @order.line_items.each do |line_item|
+        cart_count_sum = cart_count_sum + line_item.quantity
+      end
+      return cart_count_sum
+    end
+    return 0
   end
 
   def drivers_cart

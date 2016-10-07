@@ -32,6 +32,7 @@ module Spree
           main_hash["price".to_sym] = p_obj.cost_price.to_f.to_s
           main_hash["special price".to_sym] = p_obj.price.to_f.to_s
           main_hash["discount".to_sym] = p_obj.discount.to_s
+          main_hash["review".to_sym] = p_obj.comments.count.to_s
           if p_obj.total_on_hand > 0
             main_hash["total_on_hand".to_sym] = p_obj.total_on_hand.to_s
             main_hash["stock_status".to_sym] = "1"
@@ -41,7 +42,8 @@ module Spree
           end
 
           main_hash["average_ratings".to_sym] = p_obj.average_ratings.to_s
-
+          main_hash["total_rating".to_sym] =  p_obj.ratings.count.to_s
+          main_hash["minimum_quantity".to_sym] = "1"
           values.push(main_hash)
 
         

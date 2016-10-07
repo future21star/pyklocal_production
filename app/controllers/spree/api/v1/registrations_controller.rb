@@ -6,14 +6,24 @@ module Spree
     include Spree::Api::SessionsHelper
 
 		def create
-			@api_token = ApiToken.where(user_device_id: params[:user][:device_id]).last
-			if @api_token
-				@user = @api_token.user
-				if @user.update_attributes(email: params[:user][:email], password: params[:user][:password], is_guest: false)
-					@response = get_response(@user)
+			if params[:is_guest].eql?"true" 
+				if params[:user][:device_id]
+					@api_token = ApiToken.where(user_device_id: params[:user][:device_id]).last
+					if @api_token
+						@user = @api_token.user
+						if @user.update_attributes(email: params[:user][:email], password: params[:user][:password], is_guest: false)
+							@response = get_response(@user)
+						else
+							@response = error_response
+			        @response[:message] = @user.errors.full_messages.join(", ")
+						end
+					else
+						@response = error_response
+			      @response[:message] = "Invalid Device Id"
+					end
 				else
 					@response = error_response
-	        @response[:message] = @user.errors.full_messages.join(", ")
+					@response[:message] = "Device id can not be blank"
 				end
 			else
 				@user = Spree.user_class.new(user_params)

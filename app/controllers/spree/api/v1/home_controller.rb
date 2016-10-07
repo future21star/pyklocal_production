@@ -2,24 +2,36 @@ module Spree
 	class Api::V1::HomeController < Spree::Api::BaseController
 		
 		def index
-	    @banner_images = Spree::CarouselImage.where(active: true)
-      @product = Spree::Product.all
-      render json: {
-        status: "1",
-        message: "Home Screen",
-        details:[
-          {
-            index: "0", 
-            title: "Top Banner",
-            item_list: to_stringify_banner_image(@banner_images ,[]) 
-          },
-          {
-            index: "1", 
-            title: "Today's Deal",
-            item_list: to_stringify_product_json(get_random_product , [])
-          }
-        ]
-      }
+      if params[:token]
+        per_page = params[:per_page] ? params[:per_page] : 12
+        page = params[:page] ? params[:page] : 1
+        @api_token = ApiToken.where(token: params[:token]).last
+        @user = @api_token.user
+  	    @banner_images = Spree::CarouselImage.where(active: true)
+        @product = Spree::Product.all.page(page).per(per_page)
+        render json: {
+          status: "1",
+          message: "Home Screen",
+          details:[
+            {
+              index: "1", 
+              title: "Top Banner",
+              item_list: to_stringify_banner_image(@banner_images ,[]) 
+            },
+            {
+              index: "2", 
+              title: "Today's Deal",
+              cart:   @user.cart_count.to_s,
+              item_list: to_stringify_product_json(@product, @user, [])
+            }
+          ]
+        }
+      else
+        reder json:{
+          status: "0",
+          message: "Token Missing"
+        }
+      end
     end
 
     private
