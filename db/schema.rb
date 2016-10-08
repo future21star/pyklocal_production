@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161007104124) do
+ActiveRecord::Schema.define(version: 20161008104744) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(version: 20161007104124) do
     t.text     "story",              limit: 65535
     t.string   "url",                limit: 255
     t.string   "position",           limit: 255
+    t.string   "resource_type",      limit: 255
+    t.string   "resource_id",        limit: 255
   end
 
   create_table "comments", force: :cascade do |t|
