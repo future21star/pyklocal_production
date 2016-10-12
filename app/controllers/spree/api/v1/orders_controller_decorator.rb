@@ -52,7 +52,10 @@ module Spree
 			    order_params
 			  end
 			  @order = Spree::Core::Importer::Order.import(order_user, import_params)
-			  respond_with(@order, default_template: :show, status: 201)
+			 render json: {
+	      				status: "1",
+	      				order_detail: to_stringify_checkout_json(@order, [])
+	      		}
 			  p @order
 			rescue Exception => e
 				render json: {
