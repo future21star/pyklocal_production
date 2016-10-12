@@ -49,6 +49,7 @@ module Spree
 	   		ship_address_hash = Hash.new
 	   		skip_order_attributes = ["last_ip_address","created_by_id","approver_id","approved_at","confirmation_delivered","guest_token","canceled_at","store_id"]
 	   		#obj.each do |c_obj|
+	   		checkout_step_arr = ["address" ,"delivery", "payment", "complete"]
 	   			c_obj.attributes.each do |k,v|
 	   					unless skip_order_attributes.include? k
 	   						if k.eql?"bill_address_id"  
@@ -98,7 +99,7 @@ module Spree
 	   						order_hash[k.to_sym] = v.to_s
 	   					end 
 	   			end
-
+	   			order_hash["checkout_steps".to_sym] = checkout_step_arr
 	   			if bill_address_hash
 	   				order_hash["bill_address".to_sym] = bill_address_hash
 	   			else
@@ -212,7 +213,7 @@ module Spree
 	   				end
 	   				order_hash["payment_methods".to_sym] = payment_method_arr
 	   			else
-	   				order_hash["payment"] = []
+	   				order_hash["payment_method".to_sym] = []
 	   			end
 	   		#end
 
@@ -232,7 +233,7 @@ module Spree
 	   				payment_hash["payment_method".to_sym] = payment_method_hash
 
 	   				payment_source_hash = Hash.new
-	   				payment_source["id".to_sym] = payment.source_id.to_s
+	   				payment_source_hash["id".to_sym] = payment.source_id.to_s
 
 	   				if payment.payment_method_id == 2
 	   					payment_source_hash["month".to_sym] = payment.source.month.to_s
@@ -240,7 +241,7 @@ module Spree
 	   					payment_source_hash["cc_type".to_sym] = payment.source.cc_type.to_s
 	   					payment_source_hash["last_digits".to_sym] = payment.source.last_digits.to_s
 	   					payment_source_hash["name".to_sym] = payment.source.name.to_s
-	   				elsif payment.payment_id == 3
+	   				elsif payment.payment_method_id == 3
 	   					payment_source_hash["type".to_sym] = "pay_by_check"
 	   				elsif payment.payment_method_id == 4
 	   					payment_source_hash["paypal_email"] = payment.source.paypal_email.to_s

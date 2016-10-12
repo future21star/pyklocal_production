@@ -32,26 +32,36 @@ module Spree
 				end
 			elsif params[:provider]
 				authentication = Authentication.where(:provider => params['provider'], :uid => params['uid']).first 
-				if authentication
+				unless authentication.blank?
 					@response = get_response(authentication.user)
 					@response[:message] = "Social Login successfull"
 				else
-					password = SecureRandom.hex(4)
-					email = params[:email] || SecureRandom.hex(4)+"@pyklocal.com"
-					@user = Spree::User.new(email: email, password: password, password_confirmation: password, t_and_c_accepted: true)
-					if @user.save
-						@auth = Authentication.new(provider: params[:provider], uid: params[:uid] ,user_id: @user.id)
-						if @auth.save
-							@response = get_response(@user)
-							@response[:message] = "Social Sign up successfull"
+					if required_params_present? params, 'email'
+						@already_user = Spree::User.find_by_email(params[:email]) 
+						if @already_user.blank?
+							password = SecureRandom.hex(4)
+							@user = Spree::User.new(email: params[:email], password: password, password_confirmation: password, t_and_c_accepted: true)
+							if @user.save
+								@auth = Authentication.new(provider: params[:provider], uid: params[:uid] ,user_id: @user.id)
+								if @auth.save
+									@response = get_response(@user)
+									@response[:message] = "Social Sign up successfull"
+								else
+									@response = error_response
+									@response[:message] = @auth.errors.full_messages.join(", ")
+								end
+							else
+								@response = error_response
+								@response[:message] = @user.errors.full_messages.join(", ")
+							end
 						else
-							@response = error_response
-							@response[:message] = @auth.errors.full_messages.join(", ")
+							@response = get_response(@already_user)
+							@response[:message] = "User Already Sign up With this email"
 						end
 					else
-						@response = error_response
-						@response[:message] = @user.errors.full_messages.join(", ")
-					end
+						@respone = error_response
+						@response[:message] = "email can not be blank"
+					end 
 				end
 			elsif required_params_present? params, 'email', 'password'
 				# TODO:  Add condition for driver approval

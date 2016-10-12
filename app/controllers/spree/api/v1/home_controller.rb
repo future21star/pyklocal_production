@@ -17,12 +17,13 @@ module Spree
             cart:   @user.cart_count.to_s,
             details:[
               {
-                index: "1", 
+                index: "0", 
                 title: "Top Banner",
+                parent_category_id:"",
                 item_list: to_stringify_banner_image(@banner_images ,[]) 
               },
               {
-                index: "2", 
+                index: "1", 
                 title: "Today's Deal",
                 item_list: to_stringify_product_json(@product, @user, [])
               }

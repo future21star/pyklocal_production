@@ -30,7 +30,7 @@ module Spree
           main_hash["description".to_sym] = p_obj.description.to_s
           main_hash["in_wishlist".to_sym] = p_obj.in_wishlist(user)
           main_hash["price".to_sym] = p_obj.cost_price.to_f.to_s
-          main_hash["special price".to_sym] = p_obj.price.to_f.to_s
+          main_hash["special_price".to_sym] = p_obj.price.to_f.to_s
           main_hash["discount".to_sym] = p_obj.discount.to_s
           main_hash["review".to_sym] = p_obj.comments.count.to_s
           if p_obj.total_on_hand > 0
