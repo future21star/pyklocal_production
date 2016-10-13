@@ -68,8 +68,31 @@ module Spree
 				user = Spree::User.find_by_email(params[:email])
 				unless user.blank?
 					if user.valid_password?(params[:password])
-						@response = get_response(user)
-						@response[:message] = "Login successfull"
+						if params[:token]
+							@is_guest_user = ApiToken.where(token: params[:token]).last.try(:user)
+							if @is_guest_user.is_guest == true 
+								unless @is_guest_user.orders.where.not(state: "complete").blank?
+									unless user.orders.where.not(state: "complete").blank?
+										@is_guest_user.orders.where.not(state: "complete").last.line_items.each do |line_item|
+									 	 user.orders.last.contents.add(line_item.variant, line_item.quantity, {}, line_item.delivery_type)
+									 	end
+									else
+									 	@is_guest_user.orders.last.update_attributes(user_id: user.id)
+									end
+									@response = get_response(user)
+								  @response[:message] = "Login successfull"
+								else
+								  @response = get_response(user)
+								  @response[:message] = "Login successfull"
+								end
+							else
+								@respone = error_response
+								@response[:message] = "User was not logged in as a guest user"
+							end
+						else
+							@response = get_response(user)
+							@response[:message] = "Login successfull"
+						end
 					else
 						@response = error_response
 						@response[:message] = "Invalid password"

@@ -56,7 +56,6 @@ module Spree
 	      				status: "1",
 	      				order_detail: to_stringify_checkout_json(@order, [])
 	      		}
-			  p @order
 			rescue Exception => e
 				render json: {
 					status: 0,
