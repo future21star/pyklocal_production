@@ -67,8 +67,6 @@ module Spree
     def in_wishlist(user)
       variant_id_arr = variants.collect(&:id)
       variant_id_arr.push(master.id)
-      p "******************8"
-      p variant_id_arr
       unless user.wishlists.blank?
         variant_id_arr.each do |variant|
           @wish = user.wishlists.where(variant_id: variant)

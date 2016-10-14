@@ -142,45 +142,51 @@ module Spree
               unless skip_order_attributes.include? k
                 if k.eql?"bill_address_id"  
                   if v
-                    bill_country_hash = Hash.new
-                    bill_state_hash = Hash.new
-                    c_obj.bill_address.attributes.each do |k1,v1|
-                      if k1.eql?"state_id"
-                        c_obj.bill_address.state.attributes.each do |k2,v2|
-                          if k2.eql?"country_id"
-                            c_obj.bill_address.state.country.attributes.each do |k3,v3|
-                              bill_country_hash[k3.to_sym] = v3.to_s
-                            end
-                            bill_address_hash["country".to_sym] = bill_country_hash
-                          end
-                          bill_state_hash[k2.to_sym] = v2.to_s
-                        end
-                        bill_address_hash["state".to_sym] = bill_state_hash
-                      end
-                      bill_address_hash[k1.to_sym] = v1.to_s
-                    end
-                  end
+                  #   bill_country_hash = Hash.new
+                  #   bill_state_hash = Hash.new
+                  #   c_obj.bill_address.attributes.each do |k1,v1|
+                  #     if k1.eql?"state_id"
+                  #       c_obj.bill_address.state.attributes.each do |k2,v2|
+                  #         if k2.eql?"country_id"
+                  #           c_obj.bill_address.state.country.attributes.each do |k3,v3|
+                  #             bill_country_hash[k3.to_sym] = v3.to_s
+                  #           end
+                  #           bill_address_hash["country".to_sym] = bill_country_hash
+                  #         end
+                  #         bill_state_hash[k2.to_sym] = v2.to_s
+                  #       end
+                  #       bill_address_hash["state".to_sym] = bill_state_hash
+                  #     end
+                  #     bill_address_hash[k1.to_sym] = v1.to_s
+                  #   end
+                    order_hash["bill_address".to_sym] = c_obj.bill_address.get_address
+                  else
+                    order_hash["bill_address".to_sym] = []
+                   end
                 end
 
                 if k.eql?"ship_address_id"  
                   if v
-                    ship_country_hash = Hash.new
-                    ship_state_hash = Hash.new
-                    c_obj.bill_address.attributes.each do |k1,v1|
-                      if k1.eql?"state_id"
-                        c_obj.bill_address.state.attributes.each do |k2,v2|
-                          if k2.eql?"country_id"
-                            c_obj.bill_address.state.country.attributes.each do |k3,v3|
-                              ship_country_hash[k3.to_sym] = v3.to_s
-                            end
-                            ship_address_hash["country".to_sym] = ship_country_hash
-                          end
-                          ship_state_hash[k2.to_sym] = v2.to_s
-                        end
-                        ship_address_hash["state".to_sym] =ship_state_hash
-                      end
-                      ship_address_hash[k1.to_sym] = v1.to_s
-                    end
+                    # ship_country_hash = Hash.new
+                    # ship_state_hash = Hash.new
+                    # c_obj.bill_address.attributes.each do |k1,v1|
+                    #   if k1.eql?"state_id"
+                    #     c_obj.bill_address.state.attributes.each do |k2,v2|
+                    #       if k2.eql?"country_id"
+                    #         c_obj.bill_address.state.country.attributes.each do |k3,v3|
+                    #           ship_country_hash[k3.to_sym] = v3.to_s
+                    #         end
+                    #         ship_address_hash["country".to_sym] = ship_country_hash
+                    #       end
+                    #       ship_state_hash[k2.to_sym] = v2.to_s
+                    #     end
+                    #     ship_address_hash["state".to_sym] =ship_state_hash
+                    #   end
+                    #   ship_address_hash[k1.to_sym] = v1.to_s
+                    # end
+                    order_hash["ship_address".to_sym] = c_obj.ship_address.get_address
+                  else
+                    order_hash["ship_address".to_sym] = []
                   end
                 end
 
@@ -188,18 +194,19 @@ module Spree
               end 
           end
           order_hash["checkout_steps".to_sym] = checkout_step_arr
-          order_hash["token".to_sym] = c_obj.user.api_tokens.last.token.to_s
-          if bill_address_hash
-            order_hash["bill_address".to_sym] = bill_address_hash
-          else
-            order_hash["bill_address".to_sym] = []
-          end
-
-          if ship_address_hash
-            order_hash["ship_address".to_sym] = ship_address_hash
-          else
-            order_hash["ship_address".to_sym] = []
-          end
+          #order_hash["token".to_sym] = c_obj.user.api_tokens.last.token.to_s
+          # if bill_address_hash
+          #   order_hash["bill_address".to_sym] = bill_address_hash
+          # else
+          #   order_hash["bill_address".to_sym] = []
+          # end
+          
+          #order_hash["new_bill_address".to_sym] = c_obj.bill_address.get_address
+          # if ship_address_hash
+          #   order_hash["ship_address".to_sym] = ship_address_hash
+          # else
+          #   order_hash["ship_address".to_sym] = []
+          # end
           if c_obj.try(:line_items)
             line_item_arr = []
             c_obj.line_items.each do|line_item|
@@ -207,7 +214,7 @@ module Spree
               line_items_hash["id".to_sym] = line_item.id.to_s
               line_items_hash["quantity".to_sym] = line_item.quantity.to_s
               line_items_hash["price".to_sym] = line_item.price.to_s
-              line_items_hash["variant_id".to_sym] = line_item.variant.to_s
+              line_items_hash["variant_id".to_sym] = line_item.variant_id.to_s
               variant_hash = Hash.new
               line_item.variant.attributes.each do|k,v|
                   variant_hash[k.to_sym] = v.to_s

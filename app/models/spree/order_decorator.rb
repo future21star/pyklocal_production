@@ -63,6 +63,7 @@ module Spree
       price = (total.to_f - total.to_f * commission / 100).round(2)
     end
 
+
     private
 
       def notify_driver

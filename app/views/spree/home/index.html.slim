@@ -11,7 +11,8 @@
     .category-module style=("max-height:450px; overflow:hidden;")
       h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") New Arrivals
       .category-module-content 
-        .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
+        .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")
+          - unless @new_arrival.blank?
             - @new_arrival.each do |product|
               = render :partial => 'spree/shared/product', locals: {product: product}
 
