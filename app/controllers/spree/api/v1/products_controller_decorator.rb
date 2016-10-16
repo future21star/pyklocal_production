@@ -36,23 +36,39 @@ module Spree
           status: "1",
           message: "Home Screen",
           total_count: @products.count.to_s,
-          details: to_stringify_product_json(@products, [])
+          details: to_stringify_product_json(@products,  [])
         }
       end
     end
 
     def show
-      @product = Spree::Product.where(id: params[:id])
-      if @product
-        render json: {
-          status: "1" ,
-          message: "Product Detail",
-          details: to_stringify_product_json(@product ,[])
-        }
+      if params[:token]
+        @api_token = ApiToken.where(token: params[:token],expire: nil).last
+        unless @api_token.blank?
+          @user = @api_token.user
+          @product = Spree::Product.where(id: params[:id])
+          if @product
+            render json: {
+              status: "1" ,
+              message: "Product Detail",
+              details: to_stringify_product_json(@product, @user, [])
+            }
+          else
+            render json: {
+              status: "0",
+              message: "Invalid Product Id"
+            }
+          end
+        else
+          render json:{
+            status: "0",
+            message: "Invalid Token Or User Already Logout"
+          }
+        end
       else
-        render json: {
+        render json:{
           status: "0",
-          message: "Invalid Product Id"
+          message: "Token Missing"
         }
       end
     end

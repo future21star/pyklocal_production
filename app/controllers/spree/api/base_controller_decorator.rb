@@ -130,6 +130,37 @@ module Spree
 	    @response[:message] = exception.message
 	  end
 
+    def to_stringify_user user , values = []
+        user_hash = Hash.new
+        user_hash["first_name".to_sym] = user.first_name.to_s
+        user_hash["last_name".to_sym] = user.last_name.to_s
+        user_hash["mobile_number".to_sym] = user.mobile_number.to_s
+        user_hash["email".to_sym] = user.email.to_s
+        unless user.address.blank?
+          user_hash["address1".to_sym] = user.address.address1.to_s
+          user_hash["address2".to_sym] = user.address.address2.to_s
+          user_hash["city_name".to_sym] = user.address.city.to_s
+          user_hash["state_name".to_sym] = user.bill_address.state.name.to_s
+          user_hash["state_id".to_sym] = user.address.state_id.to_s
+          user_hash["country_name".to_sym] =  user.address.country.name.to_s
+          user_hash["country_id".to_sym] =  user.address.country_id.to_s
+          user_hash["zip".to_sym] =  user.address.zipcode.to_s
+        else
+          user_hash["address1".to_sym] = ""
+          user_hash["address2".to_sym] = ""
+          user_hash["city_name".to_sym] = ""
+          user_hash["state_name".to_sym] = ""
+          user_hash["state_id".to_sym] = ""
+          user_hash["country_name".to_sym] = ""
+          user_hash["country_id".to_sym] = ""
+          user_hash["zip".to_sym] = ""
+        end
+        user_hash["is_active".to_sym] = user.deleted_at ? "0" : "1"
+        values.push(user_hash)
+
+        return values
+    end
+
 
       def to_stringify_checkout_json c_obj ,values = []
         order_hash=Hash.new

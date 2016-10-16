@@ -77,6 +77,7 @@ Pyklocal::Application.routes.draw do
       namespace :v1 do
 
         resources :home
+        resources :user_addresses, only: [:show, :update, :create, :destroy]
         resources :wishlists , :only => [:index,:destroy,:create]
 
         resources :search do 
@@ -128,7 +129,9 @@ Pyklocal::Application.routes.draw do
         end
         resources :registrations 
         resources :sessions
-        resources :password
+        resources :password do
+          post :change_password, on: :collection
+        end
         resources :users do
           post :user_devices
           get :my_pickup_list
@@ -139,6 +142,7 @@ Pyklocal::Application.routes.draw do
           put :remove_from_cart
           put :mark_as_deliver
           get :my_delivery_list
+          get :profile
         end
         resources :orders, concerns: :order_routes
 

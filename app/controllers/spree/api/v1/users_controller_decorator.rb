@@ -34,12 +34,18 @@ module Spree
 		end
 
 		def profile
-		rescue Exception => e
-			api_exception_handler(e)
-		ensure
-			render json: @user.as_json({
-				only: [:first_name, :last_name, :email]
-			})
+			if @user
+				render json:{
+					status: "1",
+					message: "User Details",
+					details: to_stringify_user(@user , [])
+				}
+			else
+				render json: {
+					status: "0",
+					message: "user does not exist"
+				}
+			end
 		end
 
 		# add_cart_cart a order if order is ready_to_pick
@@ -170,6 +176,7 @@ module Spree
 		def update
       if @user.update_attributes(user_params)
         @response = get_response
+        p "********************************************************"
       else
         @response = error_response
         @response[:message] = @user.errors.full_messages.join(", ")
