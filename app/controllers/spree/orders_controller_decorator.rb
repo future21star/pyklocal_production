@@ -70,10 +70,15 @@ Spree::OrdersController.class_eval do
     end
   end
 
-  def cancel
-    @order.canceled_by(try_spree_current_user)
-    redirect_to :back, notice: "Order canceled"
-  end
+    def cancel
+      authorize! :update, @order, params[:token]
+      @order.canceled_by(current_api_user)
+      #respond_with(@order, default_template: :show)
+      render json:{
+        status: "1",
+        message: "order canceled succesfully"
+      }
+    end
 
   private
 

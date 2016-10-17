@@ -4,10 +4,11 @@ module Spree
 		include Spree::Api::ApiHelpers
 		include Spree::Core::ControllerHelpers::Order
 
-		before_action :load_order, only: [:show]
+		before_action :load_order, only: [:show, :cancel]
 		before_action :find_store, only: [:show]
 		before_action :find_driver, only: [:index, :show]
 		skip_before_filter :authenticate_user, only: [:apply_coupon_code]
+		before_action :find_user, only: [:cancel, :update]
 
 		def index
 			@orders_list = []
@@ -64,6 +65,39 @@ module Spree
 		  end
 		end    
 
+
+		def update
+          find_order(true)
+          authorize! :update, @order, order_token
+
+          if @order.contents.update_cart(order_params)
+            user_id = params[:order][:user_id]
+            if current_api_user.has_spree_role?('admin') && user_id
+              @order.associate_user!(Spree.user_class.find(user_id))
+            end
+            #respond_with(@order, default_template: :show)
+            unless @order.line_item_ids.blank?
+	            render json:{
+	            	status: "1",
+	            	message: "Updated Successfully",
+	            	cart_count: @user.cart_count.to_s,
+	            	details: @order.as_json()
+	            }
+	          else
+	          	render json:{
+	          		status: "0",
+	          		message: "Cart is empty"
+	          	}
+	          end
+          else
+            #invalid_resource!(@order)
+            render json:{
+            	status: "0",
+            	message: @order.errors.full_messages.join(', ')
+            }
+          end
+        end
+
 		def show
 			# @user = Spree::ApiToken.where(token: params[:token]).try(:first).try(:user)
 			line_items = @order.line_items.joins(:product).where(spree_line_items: {delivery_type: "home_delivery"}, spree_products: {store_id: @store.id})
@@ -87,6 +121,28 @@ module Spree
 				pick_up_and_delivery: pick_up_and_delivery
 			}
 		end
+
+		 def cancel
+		 	authorize! :update, @order, params[:token]
+		 	if @order.state == "complete"
+	    	if	@order.canceled_by(current_api_user)
+	    		render json: {
+	    			status: "1",
+	    			message: "order cancelled successfully"
+	    		}
+	    	else
+	    		render json: {
+	    			status: "0",
+	    			message: "order could not be cancelled"
+	    		}
+	    	end
+	    else
+	    	render json: {
+	    		status: "0",
+	    		message: "order is not complete"
+	    	}
+	    end
+  	end
 
 		def apply_coupon_code
       find_order
@@ -140,6 +196,10 @@ module Spree
 			def find_driver
 				@user = Spree::ApiToken.where(token: params[:token]).first.try(:user)
 				render json: {status: 0, message: "Driver not found"} unless @user.present?
+			end
+
+			def find_user
+				@user = Spree::ApiToken.where(token: params[:token]).first.try(:user)
 			end
 
 	end

@@ -8,7 +8,7 @@
         td.text-center style="padding: 10px 0; min-width: 60px;" Quantity
         td.text-center style="padding: 10px 0; width: 75px; text-align: right;" Total 
     tbody
-      - order.line_items.each do |item|
+      - @order.line_items.each do |item|
         tr data-hook="order_details_line_item_row" style="border-bottom: 1px solid #eee;"
           td.text-center style="padding: 10px 0;" data-hook="order_item_image"
             - if item.variant.images.length == 0
@@ -29,7 +29,7 @@
             = Spree.t(:order_total)
             | :
         td.total style="padding: 10px 0; text-align: right;" colspan="2"
-          span#order_total.lead.text-primary= order.display_total.to_html
+          span#order_total.lead.text-primary= @order.display_total.to_html
     tfoot#subtotal data-hook="order_details_subtotal" 
       tr#subtotal-row.total
         td style="padding: 10px 0;" colspan="3" 
@@ -37,11 +37,11 @@
             = Spree.t(:subtotal)
             | :
         td.total style="padding: 10px 0; text-align: right;" colspan="2"
-          span= order.display_item_total.to_html
-    - if order.line_item_adjustments.exists?
-      - if order.line_item_adjustments.promotion.eligible.exists?
+          span= @order.display_item_total.to_html
+    - if @order.line_item_adjustments.exists?
+      - if @order.line_item_adjustments.promotion.eligible.exists?
         tfoot#price-adjustments data-hook="order_details_price_adjustments" 
-          - order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments|
+          - @order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments|
             tr.total
               td style="padding: 10px 0;" colspan="3" 
                 = Spree.t(:promotion)
@@ -50,26 +50,26 @@
               td.total style="padding: 10px 0; text-align: right;" colspan="2"
                 span= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency)
     tfoot#shipment-total
-      - order.shipments.group_by { |s| s.selected_shipping_rate.name }.each do |name, shipments|
+      - @order.shipments.group_by { |s| s.selected_shipping_rate.name }.each do |name, shipments|
         tr.total data-hook="shipment-row" 
           td.text-muted style="padding: 10px 0;" colspan="3" 
             = Spree.t(:shipping)
             | :
             strong= name
           td.total style="padding: 10px 0; text-align: right;" colspan="2"
-            span= Spree::Money.new(shipments.sum(&:discounted_cost), currency: order.currency).to_html
-    - if order.all_adjustments.tax.exists?
+            span= Spree::Money.new(shipments.sum(&:discounted_cost), currency: @order.currency).to_html
+    - if @order.all_adjustments.tax.exists?
       tfoot#tax-adjustments data-hook="order_details_tax_adjustments" 
-        - order.all_adjustments.tax.group_by(&:label).each do |label, adjustments|
+        - @order.all_adjustments.tax.group_by(&:label).each do |label, adjustments|
           tr.total
             td.text-muted style="padding: 10px 0;" colspan="3" 
               = Spree.t(:tax)
               | :
               strong= label
             td.total style="padding: 10px 0; text-align: right;" colspan="2"
-              span= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency)
+              span= Spree::Money.new(adjustments.sum(&:amount), currency: @order.currency)
     tfoot#order-charges data-hook="order_details_adjustments" 
-      - order.adjustments.eligible.each do |adjustment|
+      - @order.adjustments.eligible.each do |adjustment|
         - next if (adjustment.source_type == 'Spree::TaxRate') and (adjustment.amount == 0)
         tr.total
           td style="padding: 10px 0;" colspan="3" 

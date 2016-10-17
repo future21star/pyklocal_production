@@ -1,11 +1,10 @@
 module Spree
   class Api::V1::WishlistsController < Spree::Api::BaseController
 
-   # before_action :authenticate_spree_user!
-      skip_before_filter :authenticate_user!
+    before_filter :find_user , only: [:index, :create]
 
     def index
-      @user = Spree::ApiToken.where(token: params[:token]).first.try(:user)
+      
       @products = []
       @wishlist = []
       if @user.present? && @user.wishlists.present?
@@ -17,7 +16,7 @@ module Spree
           status: "1" ,
           message: "Wishlist Retrieve Successfully" ,
           id: @wishlist.as_json(),
-          details: to_stringify_product_json(@products, [])
+          details: to_stringify_product_json(@products, @user, [])
         }
       else
         render json: {
@@ -28,9 +27,9 @@ module Spree
     end
 
     def create
-      @user = Spree::ApiToken.where(token: params[:token]).first.try(:user)
       if @user.present?
-        @wishlist = Spree::Wishlist.create(user_id: @user.id , variant_id: params[:wishlist][:variant_id])
+       # @wishlist = Spree::Wishlist.create(user_id: @user.id , variant_id: params[:wishlist][:variant_id])
+        @wishlist  = Spree::Wishlist.new(wishlist_params.merge({user_id: @user.id}))
         if @wishlist.save
           render json: {
             status: 1 ,
@@ -67,7 +66,9 @@ module Spree
 
     private
 
-      
+    def find_user
+      @user = Spree::ApiToken.where(token: params[:token]).first.try(:user)
+    end    
   
 
 

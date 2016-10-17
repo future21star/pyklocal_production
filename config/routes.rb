@@ -78,7 +78,7 @@ Pyklocal::Application.routes.draw do
 
         resources :home
         resources :user_addresses, only: [:show, :update, :create, :destroy]
-        resources :wishlists , :only => [:index,:destroy,:create]
+        resources :wishlists , :only => [:index, :destroy, :create]
 
         resources :search do 
           get :filters, on: :collection
@@ -87,6 +87,8 @@ Pyklocal::Application.routes.draw do
         resources :categories
 
         resources :store_sessions
+
+        resources :ratings_reviews, only: [:index, :create]
 
         resources :products do 
           post :rate_and_comment
@@ -122,12 +124,17 @@ Pyklocal::Application.routes.draw do
           end
         end
 
+        resources :countries do 
+          member do
+            get :states
+          end
+        end
 
         resources :merchant_stores do 
           put :update_location
           post :rate
         end
-        resources :registrations 
+        resources :registrations, only: [:create]
         resources :sessions
         resources :password do
           post :change_password, on: :collection
