@@ -199,6 +199,7 @@ module Spree
 			end
 
 			def find_user
+				p "****************************************8"
 				@user = Spree::ApiToken.where(token: params[:token]).first.try(:user)
 			end
 

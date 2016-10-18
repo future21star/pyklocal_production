@@ -100,8 +100,10 @@ Pyklocal::Application.routes.draw do
             put :cancel
             put :empty
             put :apply_coupon_code
+            #get :get_cart
           end
 
+          
           resources :line_items
           resources :payments do
             member do
@@ -150,6 +152,8 @@ Pyklocal::Application.routes.draw do
           put :mark_as_deliver
           get :my_delivery_list
           get :profile
+          get :get_cart
+          get :get_orders
         end
         resources :orders, concerns: :order_routes
 

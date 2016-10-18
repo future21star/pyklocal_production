@@ -3,7 +3,7 @@ module Spree
 
 		include Spree::Api::ApiHelpers
 
-		before_filter :find_user, only: [:show, :profile, :my_pickup_list, :update_location, :update, :pickup, :my_cart, :add_to_cart, :remove_from_cart, :my_delivery_list, :mark_as_deliver]
+		before_filter :find_user, only: [:show, :profile, :get_cart, :get_orders, :my_pickup_list, :update_location, :update, :pickup, :my_cart, :add_to_cart, :remove_from_cart, :my_delivery_list, :mark_as_deliver]
 		skip_before_filter :authenticate_user, only: [:profile, :my_pickup_list, :update_location, :pickup, :update, :my_cart, :add_to_cart, :remove_from_cart, :my_delivery_list, :mark_as_deliver]
 
 		# Adding user_devices data regarding a driver
@@ -176,7 +176,6 @@ module Spree
 		def update
       if @user.update_attributes(user_params)
         @response = get_response
-        p "********************************************************"
       else
         @response = error_response
         @response[:message] = @user.errors.full_messages.join(", ")
@@ -186,6 +185,41 @@ module Spree
     ensure
     	render json: @response
     end
+
+    def get_cart
+			product_arr = []
+			@user.orders.where.not(state: "complete").last.line_items.each do |line_item|
+				product_arr.push(line_item.variant.product)
+			end
+			unless product_arr.blank?
+				render json: {
+					status: "1",
+					message: "Cart",
+					details: to_stringify_product_json(product_arr, @user, [])
+				}
+			else
+				render json: {
+					status: "0",
+					message: "Cart is empty"
+				}
+			end
+		end
+
+		def get_orders
+			@orders = @user.orders.where("state != ? AND state != ? AND state != ?","cart", "address", "shipment")
+			unless @orders.blank?
+				render json:{
+					status: "1",
+					message: "Order Detail",
+					detail: to_stringify_order(@orders, [])
+				}
+			else
+				render json:{
+					status: "0",
+					message: "No Order Found"
+				}
+			end
+		end
 
     #Update drivers location
 		def update_location
@@ -208,6 +242,69 @@ module Spree
 		end
 
 		private
+
+		def to_stringify_order obj , values = []
+			obj.each do |c_obj|
+				order_hash = Hash.new
+				skip_order_attributes = ["last_ip_address","created_by_id","approver_id","approved_at","confirmation_delivered","canceled_at","store_id"]
+        #obj.each do |c_obj|
+        checkout_step_arr = ["address" ,"delivery", "payment", "complete"]
+          c_obj.attributes.each do |k,v|
+              unless skip_order_attributes.include? k
+                if k.eql?"bill_address_id"  
+                  if v
+                    order_hash["bill_address".to_sym] = c_obj.bill_address.get_address
+                  else
+                    order_hash["bill_address".to_sym] = []
+                   end
+                end
+
+                if k.eql?"ship_address_id"  
+                  if v
+                    order_hash["ship_address".to_sym] = c_obj.ship_address.get_address
+                  else
+                    order_hash["ship_address".to_sym] = []
+                  end
+                end
+
+                order_hash[k.to_sym] = v.to_s
+              end 
+          end
+          
+          if c_obj.try(:line_items)
+            line_item_arr = []
+            c_obj.line_items.each do|line_item|
+              line_items_hash = Hash.new
+              line_items_hash["id".to_sym] = line_item.id.to_s
+              line_items_hash["quantity".to_sym] = line_item.quantity.to_s
+              line_items_hash["price".to_sym] = line_item.price.to_s
+              line_items_hash["variant_id".to_sym] = line_item.variant_id.to_s
+              variant_hash = Hash.new
+              line_item.variant.attributes.each do|k,v|
+                  variant_hash[k.to_sym] = v.to_s
+              end
+              
+              variant_hash["stock_status"] = line_item.variant.stock_status.to_s
+              variant_hash["option_name"] = line_item.variant.option_name
+
+              if line_item.variant.images
+                variant_hash["images".to_sym] = line_item.variant.product_images
+              else
+                variant_hash["images".to_sym] = []
+              end
+
+              line_items_hash["variants"] = variant_hash
+              line_item_arr.push(line_items_hash)
+            end
+            order_hash["line_items"] = line_item_arr
+          else
+            order_hash["line_items"] = []
+          end
+          
+          values.push(order_hash)
+			end
+			return values
+		end
 
 			def user
         @user = Spree::ApiToken.where(token: params[:user_id]).first.try(:user)

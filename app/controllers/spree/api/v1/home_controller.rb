@@ -18,11 +18,14 @@ module Spree
             paginate page: 1, per_page: 5
           end
           @most_viewed_products = @view_search.results
+          #@top_images = Spree::CarouselImage.where("active = ? AND position != ? AND position != ?", true, "bottom", "middle" )
           @new_arrival = Spree::Product.all.limit(5).order('created_at DESC')
           @carousel_images = Spree::CarouselImage.where(is_static: false).active
           @top_static_images = Spree::StaticImage.where(is_static: true, position: "top").active.limit(2)
           @middle_static_images = Spree::StaticImage.where(is_static: true, position: "middle").active.limit(3)
           @bottom_static_image = Spree::StaticImage.where(is_static: true, position: "bottom").active.limit(1)
+          @top_images = @carousel_images + @top_static_images
+          @middle = Spree::StaticImage.where.not(position: "top").active
           render json: {
             status: "1",
             message: "Home Screen",
@@ -32,36 +35,35 @@ module Spree
                 index: "0", 
                 title: "Top Banner",
                 parent_category_id:"",
-                item_list: {
-                    carousel_image: to_stringify_image(@carousel_images ,[]) ,
-                    static_images:  to_stringify_image(@top_static_images ,[])
-                  }
+                view_type: "0",
+                item_list:to_stringify_image(@top_images, [])
               },
               {
                 index: "1", 
                 title: "Best Seller",
                 parent_category_id: "1",
+                view_type: "1",
                 item_list: to_stringify_product_json(@products, @user, [])
               } ,
               {
                 index: "2", 
                 title: "New Arrival",
                 parent_category_id: "2",
+                view_type: "1",
                 item_list: to_stringify_product_json(@new_arrival, @user, [])
               },
               {
                 index: "3", 
                 title: "Banner",
-                parent_category_id: "3",
-                item_list: {
-                  middle_banner: to_stringify_image(@middle_static_images),
-                  bottom_banner: to_stringify_image(@bottom_static_image)
-                }
+                parent_category_id: "",
+                view_type: "0",
+                item_list: to_stringify_image(@middle , [])
               },
               {
                 index: "4", 
                 title: "Most Viewed",
-                parent_category_id: "4",
+                parent_category_id: "3",
+                view_type: "1",
                 item_list: to_stringify_product_json(@most_viewed_products, @user, [])
               }
             ]
@@ -106,7 +108,7 @@ module Spree
                 message: "New Arrival",
                 item_list: to_stringify_product_json(@new_arrival, @user, [])
               }
-            elsif params[:id] == "4"
+            elsif params[:id] == "3"
               @view_search = Sunspot.search(Spree::Product) do 
                 order_by(:view_count, :desc)
                 paginate(:page => page, :per_page => per_page)
@@ -144,6 +146,10 @@ module Spree
           banner_image_hash = Hash.new
           banner_image_hash["id".to_sym] = banner_image.id.to_s
           banner_image_hash["image".to_sym] = banner_image.image.url.to_s
+          banner_image_hash["static".to_sym] = banner_image.is_static.to_s
+          unless banner_image.is_static == true
+             banner_image_hash["category_id".to_sym] = banner_image.resource_id.to_s
+          end
           values.push(banner_image_hash)
         end
         return values

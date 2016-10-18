@@ -52,8 +52,8 @@ module Spree
             p_obj.variants.each do |variant|
               variants_hash = Hash.new
               variants_hash["id".to_sym] = variant.id.to_s
-              variants_hash["price".to_sym] = variant.cost_price.to_s
-              variants_hash["cost_price".to_sym] = variant.price.to_s
+              variants_hash["price".to_sym] = variant.cost_price.to_f.to_s
+              variants_hash["special_price".to_sym] = variant.price.to_f.to_s
               variants_hash["discount".to_sym] = variant.discount.to_s
               variants_hash["total_on hand"] = variant.total_on_hand.to_s
               variants_hash["stock_status"] = variant.stock_status.to_s 
