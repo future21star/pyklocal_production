@@ -35,7 +35,7 @@
                       td= @address.address1.titleize
                     tr
                       td Address2
-                      td= @address.address2.titleize
+                      td= @address.address2.blank? ? "" : @address.address2.titleize
                     tr
                       td City
                       td= @address.city.titleize

@@ -131,8 +131,8 @@ module Spree
 			@user = Spree::ApiToken.where(token: params[:token]).first.try(:user)
 		end
 
-		def address_params
-			params.require(:address).permit(permitted_address_attributes)
+		def addresses_params
+			params.require(:address).permit(:firstname, :lastname, :address1, :address2, :city, :state_name, :zipcode, :phone, :aleternative_phone, :company, :state_id, :country_id, :user_id)
 		end
 
 		def to_stringify_address add_obj , values = []
@@ -143,7 +143,7 @@ module Spree
 				 	add_hash[k.to_sym] = v.to_s
 				 end
 			end
-			add_hash["state_name".to_sym] = add_obj.state.name
+			#add_hash["state_name".to_sym] = add_obj.state.name
 			add_hash["country_name".to_sym] = add_obj.country.name
 
 			values.push(add_hash)

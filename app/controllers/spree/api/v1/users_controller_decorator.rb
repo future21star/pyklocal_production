@@ -188,19 +188,21 @@ module Spree
 
     def get_cart
 			product_arr = []
-			@user.orders.where.not(state: "complete").last.line_items.each do |line_item|
-				product_arr.push(line_item.variant.product)
-			end
-			unless product_arr.blank?
+			@order = @user.orders.where.not(state: "complete")
+			unless @order.blank?
+				@order.last.line_items.each do |line_item|
+					product_arr.push(line_item.variant.product)
+				end
 				render json: {
 					status: "1",
 					message: "Cart",
+					order_number: @order.last.number,
 					details: to_stringify_product_json(product_arr, @user, [])
 				}
 			else
 				render json: {
 					status: "0",
-					message: "Cart is empty"
+					message: "Cart is empty",
 				}
 			end
 		end

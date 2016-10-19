@@ -100,7 +100,7 @@ Pyklocal::Application.routes.draw do
             put :cancel
             put :empty
             put :apply_coupon_code
-            #get :get_cart
+            post :add_to_cart
           end
 
           

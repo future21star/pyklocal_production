@@ -149,10 +149,12 @@ module Spree
       authorize! :update, @order, order_token
       @order.coupon_code = params[:coupon_code]
       @handler = PromotionHandler::Coupon.new(@order).apply
-      status = @handler.successful? ? 200 : 422
+      #status = @handler.successful? ? 200 : 422
+      status =  @handler.successful? ? "1" : "0"
       render json: {
-      	success: @handler.successful?,
-      	message: @handler.successful? ? "Coupon code successfully applied" : @handler.error
+      	#success: @handler.successful?,
+      	status: status ,
+      	message: @handler.successful? ? "Coupon code successfully applied" : @handler.error.to_s
       }
     end
 
@@ -199,7 +201,6 @@ module Spree
 			end
 
 			def find_user
-				p "****************************************8"
 				@user = Spree::ApiToken.where(token: params[:token]).first.try(:user)
 			end
 
