@@ -1,7 +1,10 @@
 Spree::OrdersController.class_eval do 
   before_filter :process_paypal_express, only: :update
   before_filter :load_order, only: [:cancel, :ready_to_pick]
+  skip_before_filter :authenticate_user, only: [:apply_coupon_code]
 
+  include Spree::Api::ApiHelpers
+  include Spree::Core::ControllerHelpers::Order
 
   def process_paypal_express
     if params[:paypal].blank? || params[:paypal][:payment_method_nonce].blank?
@@ -60,6 +63,20 @@ Spree::OrdersController.class_eval do
     end
   end
 
+  # def apply_coupon_code
+  #     find_order
+  #     authorize! :update, @order, order_token
+  #     @order.coupon_code = params[:coupon_code]
+  #     @handler = PromotionHandler::Coupon.new(@order).apply
+  #     status = @handler.successful? ? 200 : 422
+  #     #status =  @handler.successful? ? "1" : "0"
+  #     render json: {
+  #       success: @handler.successful?,
+  #       #status: status ,
+  #       message: @handler.successful? ? "Coupon code successfully applied" : @handler.error.blank? ? "Please enter a coupon code" : @handler.error
+  #     }
+  # end
+
   def ready_to_pick
     if @order.present?
       @line_items = @order.line_items.where(id: params[:item_ids])
@@ -72,12 +89,9 @@ Spree::OrdersController.class_eval do
 
     def cancel
       authorize! :update, @order, params[:token]
-      @order.canceled_by(current_api_user)
+      @order.canceled_by(try_spree_current_user)
       #respond_with(@order, default_template: :show)
-      render json:{
-        status: "1",
-        message: "order canceled succesfully"
-      }
+      redirect_to :back
     end
 
   private

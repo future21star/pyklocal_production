@@ -12,7 +12,7 @@
         tr data-hook="order_details_line_item_row" style="border-bottom: 1px solid #eee;"
           td.text-center style="padding: 10px 0;" data-hook="order_item_image"
             - if item.variant.images.length == 0
-              = link_to image_tag(item.variant.product.images.first.attachment.url(:mini)), item.variant.product
+              = link_to image_tag(item.variant.product.images.first.try(:attachment).try(:url, :mini)), item.variant.product
             - else
               = link_to image_tag(item.variant.images.first.attachment.url(:mini)), item.variant.product
           td.text-center style="padding: 10px 0;" data-hook="order_item_description"

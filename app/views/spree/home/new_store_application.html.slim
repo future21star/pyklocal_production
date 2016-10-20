@@ -126,6 +126,15 @@
             .col-md-8.col-xs-12
               span.input-icon.icon-right
                 = text_area_tag "spree_user[stores_attributes][][description]", "", class: "form-control input-bg", placeholder: "Few lines about your store...", rows: 5 
+
+          .form-group
+            .col-md-3.col-xs-12
+              label.t_and_c
+                = user_form.check_box :t_and_c_accepted, class: "t_and_c"
+                |  I have read and agree to the 
+                = link_to "Privacy Policy", "#", class: "agree"
+              br
+              br
           .form-group
             .col-xs-offset-2.col-xs-10
               button.btn.btn-primary type="submit"

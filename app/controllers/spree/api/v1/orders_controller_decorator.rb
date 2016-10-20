@@ -122,7 +122,7 @@ module Spree
 			}
 		end
 
-		 def cancel
+		def cancel
 		 	authorize! :update, @order, params[:token]
 		 	if @order.state == "complete"
 	    	if	@order.canceled_by(current_api_user)
@@ -147,15 +147,19 @@ module Spree
 		def apply_coupon_code
       find_order
       authorize! :update, @order, order_token
-      @order.coupon_code = params[:coupon_code]
-      @handler = PromotionHandler::Coupon.new(@order).apply
-      #status = @handler.successful? ? 200 : 422
-      status =  @handler.successful? ? "1" : "0"
-      render json: {
-      	#success: @handler.successful?,
-      	status: status ,
-      	message: @handler.successful? ? "Coupon code successfully applied" : @handler.error.to_s
-      }
+      if params[:coupon_code]
+	      @order.coupon_code = params[:coupon_code]
+	      @handler = PromotionHandler::Coupon.new(@order).apply
+	      render json: {
+	      	status: @handler.successful? ? "1" : "0" ,
+	      	message: @handler.successful? ? "Coupon code successfully applied" : @handler.error.to_s
+	      }
+	    else
+	    	render json:{
+	    		status: "0",
+	    		message: "Please enter a coupon code"
+	    	}
+	    end
     end
 
 		private

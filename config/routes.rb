@@ -64,6 +64,7 @@ Pyklocal::Application.routes.draw do
     resources :orders do 
       put :ready_to_pick
       put :cancel
+      put :apply_coupon_code
     end
     resources :payment_preferences
     resources :customer_returns, only: [:index, :new, :edit, :create, :update] do

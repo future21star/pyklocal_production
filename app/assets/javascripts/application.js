@@ -126,7 +126,7 @@ var pyklocal = {
         headers: {"X-Spree-Order-Token": $(this).data('order_token')},
         data: {coupon_code: $('#coupon-code').val(), order_token: $(this).data('order_token')},
         success: function(data) {
-          if(data.success) {
+          if(data.status == "1") {
             couponStatus.addClass('alert-success').text(data.message);
           } else {
             couponStatus.addClass('alert-error').text(data.message);

@@ -188,7 +188,7 @@ module Spree
 
     def get_cart
 			product_arr = []
-			@order = @user.orders.where.not(state: "complete")
+			@order = @user.orders.where("state = ? OR state = ? OR state = ?", "cart", "address", "shipment")
 			unless @order.blank?
 				@order.last.line_items.each do |line_item|
 					product_arr.push(line_item.variant.product)
