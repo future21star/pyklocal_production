@@ -147,6 +147,7 @@ module Spree
           user_hash["country_id".to_sym] =  user.address.country_id.to_s
           user_hash["zip".to_sym] =  user.address.zipcode.to_s
         else
+          user_hash["address_id".to_sym] = user.address.id.to_s
           user_hash["address1".to_sym] = ""
           user_hash["address2".to_sym] = ""
           user_hash["city_name".to_sym] = ""
