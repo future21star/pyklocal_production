@@ -136,7 +136,7 @@ module Spree
 		end
 
 		def to_stringify_address add_obj , values = []
-			skip_address_attributes = ["created_at", "updated_at", "braintree_id" , "company"]
+			skip_address_attributes = ["created_at", "updated_at", "braintree_id" , "company","state_name"]
 			add_hash = Hash.new
 			add_obj.attributes.each do |k,v|
 				 unless skip_address_attributes.include? k
