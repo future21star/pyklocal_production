@@ -137,10 +137,11 @@ module Spree
         user_hash["mobile_number".to_sym] = user.mobile_number.to_s
         user_hash["email".to_sym] = user.email.to_s
         unless user.address.blank?
+          user_hash["address_id".to_sym] = user.address.id.to_s
           user_hash["address1".to_sym] = user.address.address1.to_s
           user_hash["address2".to_sym] = user.address.address2.to_s
           user_hash["city_name".to_sym] = user.address.city.to_s
-          user_hash["state_name".to_sym] = user.bill_address.state.name.to_s
+          user_hash["state_name".to_sym] = user.address.state.name.to_s
           user_hash["state_id".to_sym] = user.address.state_id.to_s
           user_hash["country_name".to_sym] =  user.address.country.name.to_s
           user_hash["country_id".to_sym] =  user.address.country_id.to_s

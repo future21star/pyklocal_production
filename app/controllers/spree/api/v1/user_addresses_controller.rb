@@ -67,7 +67,7 @@ module Spree
 						else
 							render json:{
 							status: "0",
-							message: "Something went wrong"
+							message: @user.address.errors.full_messages.join(", ")
 						}
 						end
 					else
@@ -136,14 +136,14 @@ module Spree
 		end
 
 		def to_stringify_address add_obj , values = []
-			skip_address_attributes = ["created_at", "updated_at", "braintree_id" , "company","state_name"]
+			skip_address_attributes = ["created_at", "updated_at", "braintree_id" , "company"]
 			add_hash = Hash.new
 			add_obj.attributes.each do |k,v|
 				 unless skip_address_attributes.include? k
 				 	add_hash[k.to_sym] = v.to_s
 				 end
 			end
-			#add_hash["state_name".to_sym] = add_obj.state.name
+			add_hash["state_name".to_sym] = add_obj.state.name
 			add_hash["country_name".to_sym] = add_obj.country.name
 
 			values.push(add_hash)
