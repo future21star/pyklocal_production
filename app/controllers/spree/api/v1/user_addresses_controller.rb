@@ -6,7 +6,7 @@ module Spree
 
 		def create 
 			unless @user.blank?
-				@address = Spree::Address.new(address_params.merge({user_id: @user.id}))
+				@address = Spree::Address.new(addresses_params.merge({user_id: @user.id}))
 				if @address.save
 					render json:{
 						status: "1",
@@ -58,8 +58,8 @@ module Spree
 		def update
 			unless @user.blank?
 				unless @user.address.blank?
-					if @user.address.id == params[:address_id].to_i
-						if @user.address.update_attributes(address_params)
+					if @user.address.id == params[:id].to_i
+						if @user.address.update_attributes(addresses_params)
 							render json: {
 								status: "1",
 								message: "Address updated successfully"
