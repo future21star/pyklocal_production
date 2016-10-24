@@ -449,6 +449,9 @@ GEM
       slim (~> 3.0)
     snake_case_hash (1.0.4)
       hashie (~> 3.0)
+    social-share-button (0.8.0)
+      coffee-rails
+      sass-rails
     socksify (1.7.0)
     spree (3.1.0)
       spree_api (= 3.1.0)
@@ -616,6 +619,7 @@ DEPENDENCIES
   simplecov
   slim
   slim-rails
+  social-share-button
   spree (~> 3.1.0)
   spree_auth_devise (~> 3.1.0)
   spree_braintree_vzero!

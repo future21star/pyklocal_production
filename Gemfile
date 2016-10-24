@@ -13,7 +13,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-
+gem 'social-share-button'
 gem 'exception_notification'
 gem 'aws-sdk', '< 2.0'
 gem 'slim'

@@ -36,7 +36,7 @@ module Spree
    private
    
     def after_sign_in_path_for_merchant(resource)
-        return "/merchant/stores/#{resource}"
+        return "/merchant/stores/#{resource}/orders"
     end
   
   end

@@ -25,7 +25,8 @@
           span style="color:#F50C0C; font-weight:bold;" 
             '
             |Out Of Stock
-    .addthis_sharing_toolbox
+    = social_share_button_tag(@product.name, 'data-twitter-title' => 'TheTitleForTwitter', :url => request.url)
+    / .addthis_sharing_toolbox
     ul.price-box
       li.price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" 
         span itemprop="price"  

@@ -65,10 +65,16 @@
         h4 Sold by :
         = render :partial => 'spree/shared/seller'
       
-    h3 Related Products
-    .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")
-      - @product.similar.each do |similar_product|
-        = render :partial => 'spree/shared/product', locals: {product: similar_product}
+    -if !@product.taxons.first.blank?
+      h3 Related Products
+      .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")
+        - @product.taxons.first.products.each do |similar_product|
+          = render :partial => 'spree/shared/product', locals: {product: similar_product}
+    -else
+      h3 Related Products
+      .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")
+        - @product.similar.each do |similar_product|
+          = render :partial => 'spree/shared/product', locals: {product: similar_product}
 - content_for :js do        
   javascript:
    //initiate the plugin and pass the id of the div containing gallery images
