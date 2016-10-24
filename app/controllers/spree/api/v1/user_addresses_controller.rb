@@ -6,16 +6,24 @@ module Spree
 
 		def create 
 			unless @user.blank?
-				@address = Spree::Address.new(addresses_params.merge({user_id: @user.id}))
-				if @address.save
-					render json:{
-						status: "1",
-						message: "Address saved successfully"
-					}
+				if @user.address.blank?
+					@address = Spree::Address.new(addresses_params.merge({user_id: @user.id}))
+					if @address.save
+						render json:{
+							status: "1",
+							message: "Address saved successfully"
+						}
+					else
+						render json:{
+							status: "0",
+							message: @address.errors.full_messages.join(", ")
+						}
+					end
 				else
 					render json:{
 						status: "0",
-						message: "Something went wrong"
+						message: "User address already exist",
+						address_id: @user.address.id.to_s
 					}
 				end
 			else
@@ -29,18 +37,11 @@ module Spree
 		def show
 			unless @user.blank? 
 				unless @user.address.blank?
-					if @user.address.id == params[:id].to_i
 						render json:{
 							status: "1",
 							message: "user address",
 							details: to_stringify_address(@user.address)
 						}
-					else
-						render json:{
-							status: "0",
-							message: "Invalid Address id"
-						}
-					end
 				else
 					render json:{
 							status: "0",
@@ -58,23 +59,16 @@ module Spree
 		def update
 			unless @user.blank?
 				unless @user.address.blank?
-					if @user.address.id == params[:id].to_i
-						if @user.address.update_attributes(addresses_params)
-							render json: {
-								status: "1",
-								message: "Address updated successfully"
-							}
-						else
-							render json:{
-							status: "0",
-							message: @user.address.errors.full_messages.join(", ")
+					if @user.address.update_attributes(addresses_params)
+						render json: {
+							status: "1",
+							message: "Address updated successfully"
 						}
-						end
 					else
 						render json:{
-							status: "0",
-							message: "Invalid Address id"
-						}
+						status: "0",
+						message: @user.address.errors.full_messages.join(", ")
+					}
 					end
 				else
 					render json:{
@@ -93,22 +87,15 @@ module Spree
 		def destroy
 			unless @user.blank?
 				unless @user.address.blank?
-					if @user.address.id == params[:id].to_i
-						if @user.address.destroy
-							render json: {
+					if @user.address.destroy
+						render json: {
 								status: "1",
-							 	message: "Address Deleted Sucessfully"
-							}
-						else
-							render json:{
-							status: "0",
-							message: "Something went wrong"
+								message: "Address Deleted Sucessfully"
 						}
-						end
 					else
 						render json:{
 							status: "0",
-							message: "Invalid Address id"
+				 			message: @user.address.errors.full_messages.join(", ")
 						}
 					end
 				else
@@ -128,7 +115,8 @@ module Spree
 		private
 
 		def find_user
-			@user = Spree::ApiToken.where(token: params[:token]).first.try(:user)
+			api_token = params[:token] || params[:id]
+			@user = Spree::ApiToken.where(token: api_token).first.try(:user) 
 		end
 
 		def addresses_params

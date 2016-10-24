@@ -5,19 +5,24 @@ module Spree
 		def index
       @api_token = ApiToken.where(token: params[:q][:token]).last 
       if @api_token
+        per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12
+        page = params[:page] ? params[:page] : 1
         @user = @api_token.user
-    		@products = @search.results
-
-    		if @products.blank?
+    		@search_result = @search.results
+    		if @search_result.blank?
     			render json: {
             status: "0", 
-            message: "No Result Found "
+            message: "No Result Found"
           }
     		else
+          #@products = @search_result.page(page).per(per_page)
+          @products = Spree::Product.where(id: @search.results.map(&:id)).page(page).per(per_page)
     			render json: {
     				status: "1", 
     				message: "Search Result",
             cart:     @user.cart_count.to_s,
+            number_of_pages: (@search_result.count / per_page.to_f).ceil().to_s,
+            total_product: @search_result.count.to_s,
     				details:  to_stringify_product_json(@products , @user ,[])
     			}
     		end
@@ -78,7 +83,7 @@ module Spree
 			per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12
       @search = Sunspot.search(Spree::Product) do 
         fulltext params[:q][:search] if params[:q] && params[:q][:search]
-        paginate(:page => params[:page], :per_page => per_page)
+        #paginate(:page => params[:page], :per_page => per_page)
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
         with(:taxon_ids, params[:q][:category_id]) if params[:q] && params[:q][:category_id]
         facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)

@@ -249,30 +249,29 @@ module Spree
 			obj.each do |c_obj|
 				order_hash = Hash.new
 				skip_order_attributes = ["last_ip_address","created_by_id","approver_id","approved_at","confirmation_delivered","canceled_at","store_id"]
-        #obj.each do |c_obj|
         checkout_step_arr = ["address" ,"delivery", "payment", "complete"]
-          c_obj.attributes.each do |k,v|
-              unless skip_order_attributes.include? k
-                if k.eql?"bill_address_id"  
-                  if v
-                    order_hash["bill_address".to_sym] = c_obj.bill_address.get_address
-                  else
-                    order_hash["bill_address".to_sym] = []
-                   end
-                end
+          # c_obj.attributes.each do |k,v|
+          #     unless skip_order_attributes.include? k
+          #       if k.eql?"bill_address_id"  
+          #         if v
+          #           order_hash["bill_address".to_sym] = c_obj.bill_address.get_address
+          #         else
+          #           order_hash["bill_address".to_sym] = []
+          #          end
+          #       end
 
-                if k.eql?"ship_address_id"  
-                  if v
-                    order_hash["ship_address".to_sym] = c_obj.ship_address.get_address
-                  else
-                    order_hash["ship_address".to_sym] = []
-                  end
-                end
+          #       if k.eql?"ship_address_id"  
+          #         if v
+          #           order_hash["ship_address".to_sym] = c_obj.ship_address.get_address
+          #         else
+          #           order_hash["ship_address".to_sym] = []
+          #         end
+          #       end
 
-                order_hash[k.to_sym] = v.to_s
-              end 
-          end
-          
+          #       order_hash[k.to_sym] = v.to_s
+          #     end 
+          # end
+          order_hash[""]
           if c_obj.try(:line_items)
             line_item_arr = []
             c_obj.line_items.each do|line_item|
