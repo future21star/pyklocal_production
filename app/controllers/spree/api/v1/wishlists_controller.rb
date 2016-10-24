@@ -15,7 +15,7 @@ module Spree
         render json: {
           status: "1" ,
           message: "Wishlist Retrieve Successfully" ,
-          id: @wishlist.as_json(),
+          wishlist_id: @wishlist.as_json(),
           details: to_stringify_product_json(@products, @user, [])
         }
       else

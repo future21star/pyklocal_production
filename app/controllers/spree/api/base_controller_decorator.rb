@@ -26,6 +26,7 @@ module Spree
         obj.each do |p_obj|
           main_hash = Hash.new
           main_hash["id".to_sym] = p_obj.id.to_s
+          main_hash["master_variant_id"] = p_obj.master.id.to_s
           main_hash["name".to_sym] = p_obj.name
           main_hash["description".to_sym] = p_obj.description.to_s
           main_hash["in_wishlist".to_sym] = p_obj.in_wishlist(user)
@@ -46,16 +47,32 @@ module Spree
           main_hash["minimum_quantity".to_sym] = "1"
           values.push(main_hash)
 
-        
+          variants_hash_final = []
+           # variants_hash = Hash.new
+           #    variants_hash["id".to_sym] = p_obj.master.id.to_s
+           #    variants_hash["price".to_sym] = p_obj.master.cost_price.to_f.to_s
+           #    variants_hash["special_price".to_sym] = p_obj.master.price.to_f.to_s
+           #    variants_hash["discount".to_sym] = p_obj.master.discount.to_s
+           #    variants_hash["total_on_hand"] = p_obj.master.total_on_hand.to_s
+           #    variants_hash["stock_status"] = p_obj.master.stock_status.to_s 
+
+             
+           #    variants_hash["option_name"] = p_obj.master.option_name
+
+           #    if p_obj.master.images
+           #      variants_hash["product_images".to_sym] = p_obj.master.product_images
+           #      variants_hash_final.push(variants_hash)
+           #    end
+
+    
           if p_obj.try(:variants) 
-            variants_hash_final = []
             p_obj.variants.each do |variant|
               variants_hash = Hash.new
               variants_hash["id".to_sym] = variant.id.to_s
               variants_hash["price".to_sym] = variant.cost_price.to_f.to_s
               variants_hash["special_price".to_sym] = variant.price.to_f.to_s
               variants_hash["discount".to_sym] = variant.discount.to_s
-              variants_hash["total_on hand"] = variant.total_on_hand.to_s
+              variants_hash["total_on_hand"] = variant.total_on_hand.to_s
               variants_hash["stock_status"] = variant.stock_status.to_s 
 
              
@@ -69,7 +86,7 @@ module Spree
             end
             main_hash["variants".to_sym] = variants_hash_final
           else
-            main_hash["variant".to_sym] = []
+            main_hash["variants".to_sym] = variants_hash_final
           end
 
           if p_obj.try(:images)
@@ -137,15 +154,17 @@ module Spree
         user_hash["mobile_number".to_sym] = user.mobile_number.to_s
         user_hash["email".to_sym] = user.email.to_s
         unless user.address.blank?
+          user_hash["address_id".to_sym] = user.address.id.to_s
           user_hash["address1".to_sym] = user.address.address1.to_s
           user_hash["address2".to_sym] = user.address.address2.to_s
           user_hash["city_name".to_sym] = user.address.city.to_s
-          user_hash["state_name".to_sym] = user.bill_address.state.name.to_s
+          user_hash["state_name".to_sym] = user.address.state.name.to_s
           user_hash["state_id".to_sym] = user.address.state_id.to_s
           user_hash["country_name".to_sym] =  user.address.country.name.to_s
           user_hash["country_id".to_sym] =  user.address.country_id.to_s
           user_hash["zip".to_sym] =  user.address.zipcode.to_s
         else
+          user_hash["address_id".to_sym] = ""
           user_hash["address1".to_sym] = ""
           user_hash["address2".to_sym] = ""
           user_hash["city_name".to_sym] = ""

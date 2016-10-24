@@ -4,7 +4,7 @@ Spree::HomeController.class_eval do
 
 	def index
     @search = Sunspot.search(Spree::Product) do
-     # with(:location).in_radius(session[:lat], session[:lng], 30.to_i, bbox: true) if session[:lat].present? && session[:lng].present?
+     with(:location).in_radius(session[:lat], session[:lng], 30.to_i, bbox: true) if session[:lat].present? && session[:lng].present?
       order_by(:sell_count, :desc)
     end 
 		# @searcher = build_searcher(params.merge(include_images: true))
