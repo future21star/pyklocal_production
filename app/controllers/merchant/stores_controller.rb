@@ -24,9 +24,11 @@ class Merchant::StoresController < Merchant::ApplicationController
   def new
     if current_spree_user && current_spree_user.stores.present?
       redirect_to current_spree_user.stores.first
+    elsif current_spree_user.registration_type == "vender"
+      @store = Merchant::Store.new
+      @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
     end
-    @store = Merchant::Store.new()
-    @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
+      redirect_to merchant_stores_path
   end
 
   # GET /stores/1/edit
