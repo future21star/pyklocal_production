@@ -52,15 +52,29 @@
               button.button-search type="submit" 
                 i.fa.fa-search
         .col-table-cell.col-lg-3.col-md-3.col-sm-6.col-xs-12.inner
-          #cart
-            = link_to spree.cart_path, "data-no-turbolink" => true do 
-              span#cart-total 
-                i.fa.fa-shopping-cart
-                |  CART(
-                = simple_current_order.item_count
-                |&nbsp;
-                = "Item".pluralize(simple_current_order.item_count) 
-                |)
+          -if spree_user_signed_in?
+            -if current_spree_user.registration_type == "customer"
+              #cart
+                = link_to spree.cart_path, "data-no-turbolink" => true do 
+                  span#cart-total 
+                    i.fa.fa-shopping-cart
+                    |  CART(
+                    = simple_current_order.item_count
+                    |&nbsp;
+                    = "Item".pluralize(simple_current_order.item_count) 
+                    |)
+            -else
+              #cart
+          -else
+            #cart
+                = link_to spree.cart_path, "data-no-turbolink" => true do 
+                  span#cart-total 
+                    i.fa.fa-shopping-cart
+                    |  CART(
+                    = simple_current_order.item_count
+                    |&nbsp;
+                    = "Item".pluralize(simple_current_order.item_count) 
+                    |)
   nav#menu.navbar
     .navbar-header
       span.visible-xs.visible-sm

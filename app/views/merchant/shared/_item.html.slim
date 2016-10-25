@@ -2,7 +2,7 @@
 .col-md-3.product-item id= "product_#{product.id}"
   .thumbnail.store-product-item
     .thumb-image-container.product-img.center style="margin: 0 auto;"
-      a.aligner.img-center href=spree.product_path(product)
+      a.aligner.img-center href=edit_merchant_product_path(product.slug)
         = product_image(product, :itemprop => "image",:class=>"product-img-height")
     .product-details
       = link_to truncate(product.name, :length => 20), spree.product_path(product), :class => 'product-title', :itemprop => "name", :title => product.name, "data-no-turbolink" => true
