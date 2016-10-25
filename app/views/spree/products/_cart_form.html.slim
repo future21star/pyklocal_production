@@ -101,7 +101,7 @@
             .clear
         div
           - button_text =  @product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"
-          = button_tag"#{button_text}" , :id => 'add-to-cart-button', :type => :submit, disabled: @product.total_on_hand < 0 , class: "button-primary" , data: { disable_with: "Please wait..." }
+          = button_tag"#{button_text}" , :id => 'add-to-cart-button', :type => :submit, disabled: @product.total_on_hand <= 0 , class: "button-primary" , data: { disable_with: "Please wait..." }
 span.wish-section
   = render partial: 'spree/shared/wish_form', locals: {product: @product}
       
