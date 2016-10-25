@@ -17,7 +17,7 @@
           = @product.try(:asin)
       li
         b Availability:
-        - if @product.master.can_supply?
+        - if @product.total_on_hand > 0
           span style="color:#53af2e; font-weight:bold;" 
             '
             |In Stock
@@ -25,6 +25,13 @@
           span style="color:#F50C0C; font-weight:bold;" 
             '
             |Out Of Stock
+          /= @product.try(:asin)
+      li
+        - if @product.available_on && @product.available_on > Date.today
+          b Available From:
+          span style="color:#53af2e; font-weight:bold;" 
+            '
+            = @product.available_on.to_date.to_formatted_s(:rfc822) 
     = social_share_button_tag(@product.name, 'data-twitter-title' => 'TheTitleForTwitter', :url => request.url)
     / .addthis_sharing_toolbox
     ul.price-box
@@ -39,14 +46,15 @@
       .cart
         ul.list-group
           - @product.variants_and_option_values(current_currency).each_with_index do |variant, index|
-            .btn.btn.default
-              = radio_button_tag "variant_id", variant.id, index == 0, 'data-price' => variant.price_in(current_currency).money
-              | &nbsp;&nbsp;
-              = label_tag "variant_id_#{ variant.id }" do
-                span.variant-description
-                  = variant_options variant
-                - if variant_price variant
-                  span.price.diff= variant_price variant
+            -if variant.total_on_hand > 0
+                .btn.btn.default
+                  = radio_button_tag "variant_id", variant.id, index == 0, 'data-price' => variant.price_in(current_currency).money
+                  | &nbsp;&nbsp;
+                  = label_tag "variant_id_#{ variant.id }" do
+                    span.variant-description
+                      = variant_options variant
+                    - if variant_price variant
+                      span.price.diff= variant_price variant
     - else
       = hidden_field_tag "variant_id", @product.master.id
 
@@ -92,8 +100,8 @@
             input name="product_id" type="hidden" value="41" 
             .clear
         div
-          - button_text =  @product.master.can_supply? ? "Add To Cart" : "Out Of Stock"
-          = button_tag"#{button_text}" , :id => 'add-to-cart-button', :type => :submit, disabled: !@product.master.can_supply? , class: "button-primary" , data: { disable_with: "Please wait..." }
+          - button_text =  @product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"
+          = button_tag"#{button_text}" , :id => 'add-to-cart-button', :type => :submit, disabled: @product.total_on_hand < 0 , class: "button-primary" , data: { disable_with: "Please wait..." }
 span.wish-section
   = render partial: 'spree/shared/wish_form', locals: {product: @product}
       
