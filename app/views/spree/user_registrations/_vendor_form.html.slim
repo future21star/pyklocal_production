@@ -36,7 +36,7 @@
   .buttons
     .form-group
       label.t_and_c
-        = f.check_box :t_and_c_accepted, class: "t_and_c"
+        = f.check_box :t_and_c_accepted, class: "t_and_c_ven"
         |  I have read and agree to the 
         = link_to "Privacy Policy", "#", class: "agree"
       br
@@ -47,7 +47,7 @@
   javascript:
     $(document).ready(function() {
       $('#continue-btn').prop('disabled', true);
-      $('.t_and_c').click(function() {
+      $('.t_and_c_ven').click(function() {
         var checked = $('#spree_user_t_and_c_accepted').prop('checked');
         if(checked){
           $('#continue-btn').prop('disabled', false);
