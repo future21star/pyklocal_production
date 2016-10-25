@@ -16,7 +16,8 @@
         p 
           b Note:  
           span All the fields with * is compulsory
-        = form_for Spree::User.new, html: {class: "form-horizontal form-body", multipart: true}, :as => :spree_user, url: spree.registration_path do |user_form|
+        = form_for @user, html: {class: "form-horizontal form-body", multipart: true}, :as => :spree_user, url: spree.registration_path do |user_form|
+          = hidden_field_tag :registration_type, "vender"
           .form-group
             .col-md-2.col-xs-12
               = user_form.label :email, class: "control-label"

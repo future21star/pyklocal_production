@@ -67,6 +67,7 @@ Spree::HomeController.class_eval do
 	end
 
   def new_store_application
+    @user = Spree::User.new
     @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
   end
 
