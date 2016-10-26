@@ -89,6 +89,14 @@ module Spree
 								@respone = error_response
 								@response[:message] = "User was not logged in as a guest user"
 							end
+						elsif params[:is_driver] && params[:is_driver] == "true"
+							if user.has_spree_role?('driver')
+								@response = get_response(user)
+								@response[:message] = "Driver Login successfull"
+							else
+								@response = error_response
+								@response[:message] = "User is not a driver"
+							end
 						else
 							@response = get_response(user)
 							@response[:message] = "Login successfull"
