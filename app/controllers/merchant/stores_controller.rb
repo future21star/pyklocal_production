@@ -1,6 +1,6 @@
 class Merchant::StoresController < Merchant::ApplicationController
 
-	before_filter :authenticate_user!, except: [:show]
+	before_filter :authenticate_user!, except: [:show, :new, :create]
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   before_action :validate_token, only: [:edit, :update] 
   before_action :perform_search, only: [:show]
@@ -24,11 +24,12 @@ class Merchant::StoresController < Merchant::ApplicationController
   def new
     if current_spree_user && current_spree_user.stores.present?
       redirect_to current_spree_user.stores.first
-    elsif current_spree_user.registration_type == "vender"
+    elsif current_spree_user.registration_type == "vendor"
       @store = Merchant::Store.new
       @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
-    end
+    else
       redirect_to merchant_stores_path
+    end
   end
 
   # GET /stores/1/edit

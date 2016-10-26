@@ -172,7 +172,7 @@ Spree::User.class_eval do
     def t_and_c
        p self.t_and_c_accepted.blank?
       if self.t_and_c_accepted.blank?
-        self.errors.add(:base, "accept_privacy_policy")
+        self.errors.add(:base, "Privacy policy should be accepted")
       end
     end
 
