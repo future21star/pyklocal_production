@@ -4,7 +4,7 @@ module Merchant
     self.table_name = "pyklocal_stores" 
     acts_as_paranoid
 
-    validates :name, :manager_first_name, :manager_last_name, :phone_number, :spree_taxons, presence: true
+    validates :name, :manager_first_name, :manager_last_name, :phone_number, presence: true
     # validates :phone_number, numericality: { only_integer: true }
     # validates :terms_and_condition, acceptance: { accept: true }
     
@@ -17,6 +17,9 @@ module Merchant
     has_many :email_tokens, as: :resource
     has_many :ratings, as: :rateable
     has_many :comments, as: :commentable 
+
+    validate :category, on: :create
+    
 
     accepts_nested_attributes_for :store_users, allow_destroy: true 
     attr_accessor :taxon_ids
@@ -128,6 +131,12 @@ module Merchant
         p self.spree_users
         # UserMailer.notify_user_store_save(self).deliver
       end
+
+      def category
+      if self.spree_taxons.blank?
+        self.errors.add(:base, "At least one category should be selected")
+      end
+    end
 
   end
 end

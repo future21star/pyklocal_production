@@ -54,6 +54,7 @@ class Merchant::StoresController < Merchant::ApplicationController
         @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
         format.html { render action: 'new' }
         format.json { render json: @store.errors, status: :unprocessable_entity }
+        flash[:error] = @store.errors.full_messages.join(", ")
       end
     end
   end

@@ -14,7 +14,9 @@ html lang="#{I18n.locale}"
           #content[data-hook]
             = yield
           = yield :templates
-    = render :partial => 'spree/shared/custome_feature' 
+    .container
+      .custom-feature-box.row
+        = render :partial => 'spree/shared/custome_feature' 
     = render :partial => 'spree/shared/footer'
     = javascript_include_tag 'application'
     = javascript_include_tag 'jquery.raty'
