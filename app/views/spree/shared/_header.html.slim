@@ -93,6 +93,6 @@
                 i.fa.fa-caret-down
               .dropdown-menu style=("display: none;") 
                 = render :partial => "spree/shared/taxonomies" 
-          -if !spree_user_signed_in?    
-            li.custom-link-right
-              = goto_merchant_path
+          / -if !spree_user_signed_in?    
+          /   li.custom-link-right
+          /     = goto_merchant_path

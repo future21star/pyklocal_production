@@ -1,14 +1,44 @@
-.container
-  .custom-feature-box.row
+- unless @promotion_text.blank?
+  - if @promotion_text.count == 3
+    - @promotion_text.each do |promotion_text|
+      .col-sm-4.col-xs-12
+        .feature-box.fbox_1
+          .title =promotion_text.title
+          p =promotion_text.description
+  - elsif @promotion_text.count == 1
     .col-sm-4.col-xs-12
       .feature-box.fbox_1
-        .title Free Shipping
-        p Free shipping on order over $1000
+        .title =@promotion_text.first.title
+        p =@promotion_text.first.description
     .col-sm-4.col-xs-12
-      .feature-box.fbox_3
+      .feature-box.fbox_1 
         .title Gift Cards
         p Give the special perfect gift
     .col-sm-4.col-xs-12
-      .feature-box.fbox_4
+      .feature-box.fbox_1" 
         .title Reward Points
         p Earn and spend with ease
+  - elsif @promotion_text.count == 2
+    - @promotion_text.each do |promotion_text|
+      .col-sm-4.col-xs-12
+        .feature-box.fbox_1
+          .title =promotion_text.title
+          p =promotion_text.description
+    .col-sm-4.col-xs-12
+      .feature-box.fbox_1 
+        .title Reward Points
+        p Earn and spend with ease
+- else
+  .col-sm-4.col-xs-12
+    .feature-box.fbox_1
+      .title Free Shipping
+      p Free shipping on order over $1000
+  .col-sm-4.col-xs-12
+    .feature-box.fbox_3
+      .title Gift Cards
+      p Give the special perfect gift
+  .col-sm-4.col-xs-12
+    .feature-box.fbox_4
+      .title Reward Points
+      p Earn and spend with ease
+ 

@@ -17,6 +17,8 @@ module Spree
     else
       if @user.has_store
         respond_with @user.stores.first.slug, :location => after_sign_in_path_for_merchant(@user.stores.first.slug)
+      elsif @user.registration_type == "vendor"
+        respond_with @user , :location => after_sign_in_path
       else
         respond_with resource, :location => after_sign_in_path_for(resource)
       end
@@ -38,7 +40,11 @@ module Spree
     def after_sign_in_path_for_merchant(resource)
         return "/merchant/stores/#{resource}/orders"
     end
-  
+    
+    def after_sign_in_path
+      return "/merchant/stores/new"
+    end
+
   end
 
 end
