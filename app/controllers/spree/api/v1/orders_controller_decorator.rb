@@ -12,24 +12,31 @@ module Spree
 
 		def index
 			@orders_list = []
-			params[:lat] = @user.api_tokens.last.try(:latitude)
-			params[:lng] = @user.api_tokens.last.try(:longitude)
-			@search = Sunspot.search(Merchant::Store) do
-				order_by_geodist(:loctn, params[:lat], params[:lng])
-			end
-			@stores = @search.results
-			unless @stores.blank?
-				@stores.each do |store|
-					unless store.pickable_store_orders.blank?
-						store.pickable_store_orders.each do |s_o|
-							line_items = s_o.line_items.joins(:product).where(spree_line_items: {delivery_type: "home_delivery"}, spree_products: {store_id: store.id})
-							line_item_ids = line_items.collect(&:id)
-							@orders_list.push({order_number: s_o.number, store_name: store.name, line_item_ids: line_item_ids, state: line_items.collect(&:delivery_state).uniq.join, location: {lat: store.try(:latitude), long: store.try(:longitude)}})
-						end						
+			if params[:lat] && params[:lng]
+				params[:lat] = @user.api_tokens.last.try(:latitude)
+				params[:lng] = @user.api_tokens.last.try(:longitude)
+				@search = Sunspot.search(Merchant::Store) do
+					order_by_geodist(:loctn, params[:lat], params[:lng])
+				end
+				@stores = @search.results
+				unless @stores.blank?
+					@stores.each do |store|
+						unless store.pickable_store_orders.blank?
+							store.pickable_store_orders.each do |s_o|
+								line_items = s_o.line_items.joins(:product).where(spree_line_items: {delivery_type: "home_delivery"}, spree_products: {store_id: store.id})
+								line_item_ids = line_items.collect(&:id)
+								@orders_list.push({order_number: s_o.number, store_name: store.name, line_item_ids: line_item_ids, state: line_items.collect(&:delivery_state).uniq.join, location: {lat: store.try(:latitude), long: store.try(:longitude)}})
+							end						
+						end
 					end
 				end
+				render json: @orders_list.as_json()
+			else
+				render json:{
+					status: 0,
+					message: "latitude and longitude not found in params"
+				}
 			end
-			render json: @orders_list.as_json()
 		# rescue Exception => e
 		# 	api_exception_handler(e)
 		# ensure
