@@ -12,9 +12,9 @@ module Spree
 
 		def index
 			@orders_list = []
+			params[:lat] = @user.api_tokens.last.try(:latitude)
+			params[:lng] = @user.api_tokens.last.try(:longitude)
 			if params[:lat] && params[:lng]
-				params[:lat] = @user.api_tokens.last.try(:latitude)
-				params[:lng] = @user.api_tokens.last.try(:longitude)
 				@search = Sunspot.search(Merchant::Store) do
 					order_by_geodist(:loctn, params[:lat], params[:lng])
 				end
@@ -30,11 +30,14 @@ module Spree
 						end
 					end
 				end
-				render json: @orders_list.as_json()
+				render json: {
+					status: 1,
+					details: @orders_list.as_json()
+				}
 			else
 				render json:{
 					status: 0,
-					message: "latitude and longitude not found in params"
+					message: "Location not found. Turn on your location services."
 				}
 			end
 		# rescue Exception => e
