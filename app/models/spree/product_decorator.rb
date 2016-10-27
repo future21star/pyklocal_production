@@ -16,7 +16,7 @@ module Spree
     accepts_nested_attributes_for :variant_images
 
     self.whitelisted_ransackable_associations = %w[stores variants_including_master master variants store orders line_items price impressions]
-    self.whitelisted_ransackable_attributes = %w[description name slug view_count]
+    self.whitelisted_ransackable_attributes = %w[description name slug view_counter]
 
     searchable do
       text :name 
@@ -130,6 +130,10 @@ module Spree
 
     def view_count
       impressionist_count(:filter=>:session_hash)
+    end
+
+    def increment_counter
+      update_attributes(view_counter: impressionist_count(:filter=>:session_hash))
     end
 
     def similar
