@@ -15,7 +15,7 @@
           |  Use our platform to sell your products.
         p 
           b Note:  
-          span All the fields with * is compulsory
+          span All the fields with * are Required
         = form_for @user, html: {class: "form-horizontal form-body", multipart: true}, :as => :spree_user, url: spree.registration_path do |user_form|
           = hidden_field_tag :registration_type, "vender"
           .form-group
