@@ -256,7 +256,8 @@ $(document).ready(function() {
                           myCompany.previewMap();
                           noty({text: "Location updated successfully", type: "information"});
                           $('.modal').modal('hide');
-                          location.reload();
+                          var x = location.pathname;
+                          location.assign(x);
                         } else {
                           noty({text: data.message, type: "error"});
                         }
