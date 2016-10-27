@@ -8,6 +8,7 @@ module Spree
                            active(current_currency).
                            includes([:option_values, :images])
       @product_properties = @product.product_properties.includes(:property)
+      @product.increment_counter
       @taxon = params[:taxon_id].present? ? Spree::Taxon.find(params[:taxon_id]) : @product.taxons.first
       impressionist(@product, "Products count increase by 1")
       redirect_if_legacy_path
