@@ -22,7 +22,7 @@
           </thead>
           <tbody>
             <% @order.pickable_line_items.each do |pickable_item| %>
-              <tr style="border-bottom: 2px solid #eee;">
+              <tr style="border-bottom: 2px solid #eee; background: #ffe2e2;">
                 <td><%= pickable_item.product.name %></td>
                 <td><%= pickable_item.seller_name || "No store" %></td>
                 <td><%= pickable_item.pickup_address || "No address" %></td>

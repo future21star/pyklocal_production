@@ -9,7 +9,8 @@
         td.text-center style="padding: 10px 0; width: 75px; text-align: right;" Total 
     tbody
       - @order.line_items.each do |item|
-        tr data-hook="order_details_line_item_row" style="border-bottom: 1px solid #eee;"
+        - bg_color = item.delivery_type == "pickup" ? '#ffe2e2' : '#fff'
+        tr data-hook="order_details_line_item_row" style="border-bottom: 1px solid #eee; background: #{bg_color};"
           td.text-center style="padding: 10px 0;" data-hook="order_item_image"
             - if item.variant.images.length == 0
               = link_to image_tag(item.variant.product.images.first.try(:attachment).try(:url, :mini)), item.variant.product

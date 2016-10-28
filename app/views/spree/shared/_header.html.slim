@@ -2,15 +2,6 @@
   nav#top.htop
     .container
       .row
-        / span.drop-icon.visible-sm.visible-xs
-        /   i.fa.fa-align-justify
-        / .pull-left.flip.left-top
-        /   .links
-        /     ul
-        /       li
-        /         a#wishlist-total href="#"  Wish List (Add Product)
-        /     input name="code" type="hidden" value="" 
-        /     input name="redirect" type="hidden" value="" 
         #top-links.nav.pull-right.flip
           ul
             -if spree_user_signed_in?
@@ -53,29 +44,16 @@
               button.button-search type="submit" 
                 i.fa.fa-search
         .col-table-cell.col-lg-3.col-md-3.col-sm-6.col-xs-12.inner
-          -if spree_user_signed_in?
-            -if current_spree_user.registration_type == "customer"
-              #cart
-                = link_to spree.cart_path, "data-no-turbolink" => true do 
-                  span#cart-total 
-                    i.fa.fa-shopping-cart
-                    |  CART(
-                    = simple_current_order.item_count
-                    |&nbsp;
-                    = "Item".pluralize(simple_current_order.item_count) 
-                    |)
-            -else
-              #cart
-          -else
+          - unless spree_user_signed_in? && (current_spree_user.has_spree_role?("merchant") || current_spree_user.registration_type == "customer")
             #cart
-                = link_to spree.cart_path, "data-no-turbolink" => true do 
-                  span#cart-total 
-                    i.fa.fa-shopping-cart
-                    |  CART(
-                    = simple_current_order.item_count
-                    |&nbsp;
-                    = "Item".pluralize(simple_current_order.item_count) 
-                    |)
+              = link_to spree.cart_path, "data-no-turbolink" => true do 
+                span#cart-total 
+                  i.fa.fa-shopping-cart
+                  |  CART(
+                  = simple_current_order.item_count
+                  |&nbsp;
+                  = "Item".pluralize(simple_current_order.item_count) 
+                  |)
   nav#menu.navbar
     .navbar-header
       span.visible-xs.visible-sm
