@@ -13,8 +13,16 @@ module Spree
 
     def confirmation_instructions(user, token, opts={})
       @confirmation_url = spree.spree_user_confirmation_url(:confirmation_token => token, :host => Spree::Store.current.url)
-
       mail to: user.email, from: from_address, subject: Spree::Store.current.name + ' ' + I18n.t(:subject, :scope => [:devise, :mailer, :confirmation_instructions])
+    end
+
+    def notify_out_of_stock_product(variant)
+      @variant = variant
+      @product = variant.product
+      @seller = @product.store.try(:spree_users).try(:first)
+      if @seller
+        mail(to: @seller.email, subject: "Product Out Of Stock")
+      end
     end
 
   end

@@ -1,5 +1,6 @@
 Spree::User.class_eval do
 
+  devise :registerable, :confirmable
   #------------------------ Associations------------------------------
   has_many :store_users, foreign_key: :spree_user_id, class_name: 'Merchant::StoreUser'
   has_many :stores, dependent: :delete_all, through: :store_users, class_name: 'Merchant::Store' 

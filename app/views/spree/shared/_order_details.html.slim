@@ -53,7 +53,7 @@ table.table.table-bordered.table-hover
         th Pickup Address
     tbody
       - order.pickable_line_items.each do |pickable_item|
-        tr
+        tr style="background: #ffe2e2;"
           td= pickable_item.product.name
           td= pickable_item.seller_name || "No store"
           td= pickable_item.pickup_address || "No address"
@@ -72,7 +72,8 @@ table.table.table-bordered.table-hover
         /   td style=("width: 20px;") 
     tbody
       - order.line_items.each do |item|
-        tr data-hook="order_details_line_item_row"
+        - bg_color = item.delivery_type == "pickup" ? '#ffe2e2' : '#fff'
+        tr data-hook="order_details_line_item_row" style="background: #{bg_color};"
           td.text-center data-hook="order_item_image"
             - if item.variant.images.length == 0
               = link_to small_image(item.variant.product), item.variant.product
