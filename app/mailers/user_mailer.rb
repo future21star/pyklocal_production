@@ -51,4 +51,5 @@ class UserMailer < ActionMailer::Base
     @seller = @store.try(:spree_users).try(:first)
     mail(to: @seller.try(:email), subject: "Delivery Confirmation")
   end
+
 end
