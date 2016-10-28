@@ -2,7 +2,7 @@ Spree::User.class_eval do
 
   #------------------------ Associations------------------------------
   has_many :store_users, foreign_key: :spree_user_id, class_name: 'Merchant::StoreUser'
-  has_many :stores, through: :store_users, class_name: 'Merchant::Store' 
+  has_many :stores, dependent: :delete_all, through: :store_users, class_name: 'Merchant::Store' 
   has_many :ordered_line_items, through: :orders, :source => :line_items, class_name: 'Spree::LineItem'
   has_many :raitings, foreign_key: :spree_user_id
   has_many :parse_links, foreign_key: :user_id, class_name: 'Spree::ParseLink'

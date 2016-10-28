@@ -2964,3 +2964,16 @@ form#adv_ajaxfilter {
 button:hover{
   background-color: #555;
 }
+
+#order #continue:hover{
+  background:green !important;
+}
+
+#order #continue{
+  margin: 2px;
+}
+
+#order #cancel_order{
+  margin: 2px;
+  background-color: red;
+}

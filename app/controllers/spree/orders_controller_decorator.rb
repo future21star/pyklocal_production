@@ -40,10 +40,14 @@ Spree::OrdersController.class_eval do
 
     # 2,147,483,647 is crazy. See issue #2695.
     if quantity.between?(1, 500)
-      begin
-        order.contents.add(variant, quantity, options, delivery_type)
-      rescue ActiveRecord::RecordInvalid => e
-        error = e.record.errors.full_messages.join(", ")
+      if quantity <= variant.total_on_hand
+        begin
+          order.contents.add(variant, quantity, options, delivery_type)
+        rescue ActiveRecord::RecordInvalid => e
+          error = e.record.errors.full_messages.join(", ")
+        end
+      else
+        error = Spree.t(:This_Store_does_not_have_sufficient_stock_to_take_your_order)
       end
     else
       error = Spree.t(:please_enter_reasonable_quantity)
@@ -91,7 +95,7 @@ Spree::OrdersController.class_eval do
       authorize! :update, @order, params[:token]
       @order.canceled_by(try_spree_current_user)
       #respond_with(@order, default_template: :show)
-      redirect_to :back
+      redirect_to :back, notice: "Order canceled successfully."
     end
 
   private

@@ -58,6 +58,7 @@
         <th><%= Spree.t(:status) %></th>
 
         <th colspan="2"><%= sort_link @search,:name, Spree.t(:name), { default_order: "desc" }, {title: 'admin_products_listing_name_title'} %></th>
+        <th><%= Spree.t(:store)%></th>
         <th>
           <%= sort_link @search,:view_counter, Spree.t(:view_count), {} %>
         </th>
@@ -74,6 +75,7 @@
             <td class="status"><%= available_status(product) %> </td>
             <td class="image"><%= mini_image product %></td>
             <td><%= link_to product.try(:name), edit_admin_product_path(product) %></td>
+            <td><%= product.try(:store).try(:name)%></td>
             <td><%= product.try(:view_counter)%></td>
             <td class="text-center"><%= product.display_price.to_html rescue '' %></td>
             <td class="actions actions-3 text-right" data-hook="admin_products_index_row_actions">

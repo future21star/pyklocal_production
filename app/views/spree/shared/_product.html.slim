@@ -16,7 +16,7 @@
             	= truncate(product.name, :length =>10)
           p.price
             = number_to_currency(product.price)
-          - button_text = product.master.can_supply? ? "Add To Cart" : "Out Of Stock"
+          - button_text = product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"
           button.custom-button type="submit" disabled=(button_text == "Out Of Stock")
             span= button_text
   .wish-list-section
