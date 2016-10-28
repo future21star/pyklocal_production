@@ -68,8 +68,8 @@ table.table.table-bordered.table-hover
         td.text-center Quantity
         td.text-center Price
         td.text-center Total
-        - if order.completed?
-          td style=("width: 20px;") 
+        / - if order.completed?
+        /   td style=("width: 20px;") 
     tbody
       - order.line_items.each do |item|
         - bg_color = item.delivery_type == "pickup" ? '#ffe2e2' : '#fff'
@@ -90,8 +90,8 @@ table.table.table-bordered.table-hover
           td.text-center data-hook="order_item_total" 
             span= item.display_amount.to_html
           - if order.completed?
-            td.text-text-right style=("white-space: nowrap;")
-              = link_to "<i class='fa fa-reply'></i>".html_safe, new_customer_return_path(order_number: order.number), class: "btn btn-primary"
+            / td.text-text-right style=("white-space: nowrap;")
+            /   = link_to "<i class='fa fa-reply'></i>".html_safe, new_customer_return_path(order_number: order.number), class: "btn btn-primary"
     tfoot#order-total data-hook="order_details_total" 
       tr.warning.total
         td align="right" colspan="5" 
