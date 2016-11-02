@@ -44,7 +44,7 @@
               button.button-search type="submit" 
                 i.fa.fa-search
         .col-table-cell.col-lg-3.col-md-3.col-sm-6.col-xs-12.inner
-          - unless spree_user_signed_in? && (current_spree_user.has_spree_role?("merchant") || current_spree_user.registration_type == "customer")
+          - unless spree_user_signed_in? && (current_spree_user.has_spree_role?("merchant") ||current_spree_user.registration_type == "customer")
             #cart
               = link_to spree.cart_path, "data-no-turbolink" => true do 
                 span#cart-total 
