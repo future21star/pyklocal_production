@@ -8,9 +8,11 @@ class Merchant::StoresController < Merchant::ApplicationController
 	def index
 		@stores = current_spree_user.try(:stores)
     if @stores.present?
+      p "00000000000000000000000000000000000000000000"
       redirect_to @stores.first
     else
-      redirect_to new_merchant_store_path
+      p "111111111111111111111111111111111111111111111"
+      redirect_to spree.root_path
     end     
 	end
 
@@ -23,11 +25,18 @@ class Merchant::StoresController < Merchant::ApplicationController
   # GET /stores/new
   def new
     if current_spree_user && current_spree_user.stores.present?
+      p "2222222222222222222222222222222222222222222222"
       redirect_to current_spree_user.stores.first
     elsif current_spree_user.registration_type == "vendor"
+      p "3333333333333333333333333333333333333333"
       @store = Merchant::Store.new
       @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
-    else
+    elsif current_spree_user.registration_type == "customer"
+      redirect_to spree.root_path
+    elsif current_spree_user.registration_type == nil
+      redirect_to spree.root_path
+    else 
+      p "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
       redirect_to merchant_stores_path
     end
   end
