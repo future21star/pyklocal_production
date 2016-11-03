@@ -16,10 +16,8 @@ module Spree
      session[:return_to] = nil
     else
       if @user.has_store
-        p "*********************************55555555555*******************************8"
         respond_with @user.stores.first.slug, :location => after_sign_in_path_for_merchant(@user.stores.first.slug)
       elsif @user.registration_type == "vendor"
-                p "^^^^^^^^^^^^^^^^^^^^^^^0000000000^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
         respond_with @user , :location => after_sign_in_path
       else
         respond_with resource, :location => after_sign_in_path_for(resource)

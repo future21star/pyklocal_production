@@ -1,6 +1,6 @@
 class Merchant::StoresController < Merchant::ApplicationController
 
-	before_filter :authenticate_user!, except: [:show, :new, :create]
+	before_filter :authenticate_user!, except: [:show, :new, :create, :index]
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   before_action :validate_token, only: [:edit, :update] 
   before_action :perform_search, only: [:show]
@@ -8,11 +8,9 @@ class Merchant::StoresController < Merchant::ApplicationController
 	def index
 		@stores = current_spree_user.try(:stores)
     if @stores.present?
-      p "00000000000000000000000000000000000000000000"
       redirect_to @stores.first
     else
-      p "111111111111111111111111111111111111111111111"
-      redirect_to spree.root_path
+      redirect_to new_merchant_store_path
     end     
 	end
 
@@ -25,18 +23,11 @@ class Merchant::StoresController < Merchant::ApplicationController
   # GET /stores/new
   def new
     if current_spree_user && current_spree_user.stores.present?
-      p "2222222222222222222222222222222222222222222222"
       redirect_to current_spree_user.stores.first
     elsif current_spree_user.registration_type == "vendor"
-      p "3333333333333333333333333333333333333333"
       @store = Merchant::Store.new
       @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
-    elsif current_spree_user.registration_type == "customer"
-      redirect_to spree.root_path
-    elsif current_spree_user.registration_type == nil
-      redirect_to spree.root_path
     else 
-      p "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
       redirect_to merchant_stores_path
     end
   end
