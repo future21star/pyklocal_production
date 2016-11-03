@@ -129,6 +129,7 @@ var pyklocal = {
         success: function(data) {
           if(data.status == "1") {
             couponStatus.addClass('alert-success').text(data.message);
+            // refreshOrdeSummary();
           } else {
             couponStatus.addClass('alert-error').text(data.message);
           }
@@ -167,3 +168,10 @@ window.onload = function() {
   };
   navigator.geolocation.getCurrentPosition(geoSuccess);
 };
+
+
+// function refreshOrdeSummary(){
+//   $.ajax({
+//     url:
+//   })
+// }
