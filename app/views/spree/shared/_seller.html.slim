@@ -61,10 +61,8 @@
                           |&nbsp; Address
                         span.text-primary style="margin-left: 36px;"
                           = store.try(:street_number).titleize
-                    tr
-                      td colspan=2
-                        button#shopping-same-store.btn-primary  
-                          = link_to "Continue Shopping at Same Store", main_app.merchant_store_url(store)
+                
+              = link_to "Continue Shopping at #{store.name}",  main_app.merchant_store_url(store), class: "btn btn-success"
 
     #rating.modal.fade role="dialog" style=("margin-top: 45px;") 
       .modal-dialog

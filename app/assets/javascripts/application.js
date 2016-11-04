@@ -131,7 +131,8 @@ var pyklocal = {
         success: function(data) {
           if(data.status == "1") {
             couponStatus.addClass('alert-success').text(data.message);
-            refreshOrderSummary(order_id, order_token);
+            location.reload();
+            // refreshOrderSummary(order_id, order_token);
           } else {
             couponStatus.addClass('alert-error').text(data.message);
           }
