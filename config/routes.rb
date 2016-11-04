@@ -102,6 +102,8 @@ Pyklocal::Application.routes.draw do
             put :empty
             put :apply_coupon_code
             post :add_to_cart
+            get :refresh_order_summary
+            put :cancel_coupon
           end
 
           

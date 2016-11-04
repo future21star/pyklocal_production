@@ -41,7 +41,10 @@ table.table data-hook="order_summary"
           td
             = adjustment.label
             | :
-          td= adjustment.display_amount.to_html
+          td
+            = adjustment.display_amount.to_html
+            = link_to cancel_coupon_api_v1_order_path(order), class: "btn btn-danger", title: "Cancel Coupon", style: "width: 25px;height: 25px;padding: 3px;margin: -1px 5px;", method: :put do 
+              i.fa.fa-close
   tr data-hook="order_total" 
     td
       strong
@@ -50,3 +53,11 @@ table.table data-hook="order_summary"
     td
       strong
         span#summary-order-total.lead.text-primary= order.display_total.to_html
+
+  / -if order.passed_checkout_step?("delivery")
+  /   p.field data-hook="coupon_code" 
+  /     = form.label :coupon_code
+  /       input#coupon-code.form-control type='text'
+  /       / = form.text_field :coupon_code, :class => 'form-control'
+  /       #coupon-response
+  /       a#apply-coupon-code.pay-btn.btn-success.btn data-order_id=(order.number) data-order_token=(order.guest_token) Apply

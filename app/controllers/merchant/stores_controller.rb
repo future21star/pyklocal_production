@@ -1,6 +1,6 @@
 class Merchant::StoresController < Merchant::ApplicationController
 
-	before_filter :authenticate_user!, except: [:show, :new, :create]
+	before_filter :authenticate_user!, except: [:show, :new, :create, :index]
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   before_action :validate_token, only: [:edit, :update] 
   before_action :perform_search, only: [:show]
@@ -10,7 +10,7 @@ class Merchant::StoresController < Merchant::ApplicationController
     if @stores.present?
       redirect_to @stores.first
     else
-      redirect_to spree.root_path
+      redirect_to new_merchant_store_path
     end     
 	end
 

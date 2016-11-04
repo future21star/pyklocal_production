@@ -4,10 +4,10 @@ module Spree
 		include Spree::Api::ApiHelpers
 		include Spree::Core::ControllerHelpers::Order
 
-		before_action :load_order, only: [:show, :cancel]
+		before_action :load_order, only: [:show, :cancel, :refresh_order_summary, :cancel_coupon]
 		before_action :find_store, only: [:show]
 		before_action :find_driver, only: [:index, :show]
-		skip_before_filter :authenticate_user, only: [:apply_coupon_code]
+		skip_before_filter :authenticate_user, only: [:apply_coupon_code, :refresh_order_summary, :cancel_coupon]
 		before_action :find_user, only: [:cancel, :update]
 
 		def index
@@ -170,6 +170,17 @@ module Spree
 	    		message: "Please enter a coupon code"
 	    	}
 	    end
+    end
+
+    def cancel_coupon
+    	@order.adjustments.delete_all
+    	@order.promotions.destroy
+    	@order.update_totals
+			@order.persist_totals
+    	redirect_to :back
+    end
+
+    def refresh_order_summary
     end
 
 		private

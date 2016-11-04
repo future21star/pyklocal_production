@@ -119,6 +119,8 @@ var pyklocal = {
 
   applyCoupon: function() {
     $('#apply-coupon-code').click(function () {
+      var order_id = $(this).data('order_id');
+      var order_token = $(this).data('order_token');
       var couponStatus = $("#coupon-response");
       couponStatus.removeClass();
       $.ajax({
@@ -129,7 +131,7 @@ var pyklocal = {
         success: function(data) {
           if(data.status == "1") {
             couponStatus.addClass('alert-success').text(data.message);
-            // refreshOrdeSummary();
+            refreshOrderSummary(order_id, order_token);
           } else {
             couponStatus.addClass('alert-error').text(data.message);
           }
@@ -170,8 +172,19 @@ window.onload = function() {
 };
 
 
-// function refreshOrdeSummary(){
-//   $.ajax({
-//     url:
-//   })
-// }
+function refreshOrderSummary(order_id, order_token){
+ // $.get("/api/v1/orders/"+order_id+"/refresh_order_summary", order_token, function(data){});4
+ console.log(order_id)
+  $.ajax({
+    url: "/api/v1/orders/"+order_id+"/refresh_order_summary.js",
+    method: 'get',
+    success: function(data) {
+      console.log(data);
+      data = data.toString().replace(/\\\//g,"");
+      console.log(data)
+      $("#checkout-summary").html(data);
+    }
+    //headers: {"X-Spree-Order-Token": order_token},
+    // data: {order_token: order_token},
+  })
+}

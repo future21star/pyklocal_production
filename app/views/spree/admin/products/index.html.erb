@@ -62,7 +62,7 @@
         <th colspan="2"><%= sort_link @search,:name, Spree.t(:name), { default_order: "desc" }, {title: 'admin_products_listing_name_title'} %></th>
         <th><%= Spree.t(:store)%></th>
         <th>
-          Store Name
+         <%= Spree.t(:store_name)%>
         </th>
         <th>
           <%= sort_link @search,:view_counter, Spree.t(:view_count), {} %>
