@@ -32,6 +32,10 @@ module Spree
       end
     end
 
+    def total_amount
+      self.quantity * self.price.to_f
+    end
+    
 		def order_number
 			order.number
 		end
