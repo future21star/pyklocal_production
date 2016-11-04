@@ -16,7 +16,7 @@
                     th Total
                 tbody
                   - unless @order.line_items.blank?
-                    - @order.line_items.each do |line_item|
+                    - @order.get_store_line_items(@store.id).each do |line_item|
                       tr
                         td= image_tag line_item.product.try(:images).try(:first).try(:attachment).try(:url, :mini)
                         td= line_item.product.try(:name)
@@ -45,4 +45,4 @@
               .final-bill
                 span= number_to_currency(@order.total)
         .col-md-3
-          = render partial: "merchant/shared/edit_order_sidebar", locals: {order: @order}
+          = render partial: "merchant/shared/edit_order_sidebar", locals: {order: @order, store: @store}

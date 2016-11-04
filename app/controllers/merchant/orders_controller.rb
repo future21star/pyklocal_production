@@ -45,6 +45,7 @@ class Merchant::OrdersController < Merchant::ApplicationController
     unless @order.complete?
       @order.refresh_shipment_rates
     end
+    @store = current_spree_user.stores.first
   end
 
   def update

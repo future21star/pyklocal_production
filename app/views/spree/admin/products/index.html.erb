@@ -60,7 +60,6 @@
           Product Image
         </th>
         <th colspan="2"><%= sort_link @search,:name, Spree.t(:name), { default_order: "desc" }, {title: 'admin_products_listing_name_title'} %></th>
-        <th><%= Spree.t(:store)%></th>
         <th>
           Store Name
         </th>
@@ -80,7 +79,8 @@
             <td class="sku"><%= product.sku rescue '' %></td>
             <td class="status"><%= available_status(product) %> </td>
             <td class="image"><%= mini_image product %></td>
-            <td><%= link_to product.try(:name), edit_admin_product_path(product) %></td>
+            <td><%= link_to truncate(product.name, :length =>40), edit_admin_product_path(product) %></td>
+            <td></td>
             <td><%= product.try(:store).try(:name)%></td>
             <td><%= product.try(:view_counter)%></td>
             <td class="text-center"><%= product.display_price.to_html rescue '' %></td>
