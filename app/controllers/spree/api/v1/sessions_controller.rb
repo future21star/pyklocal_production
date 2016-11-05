@@ -40,7 +40,7 @@ module Spree
 						@already_user = Spree::User.find_by_email(params[:email]) 
 						if @already_user.blank?
 							password = SecureRandom.hex(4)
-							@user = Spree::User.new(email: params[:email], password: password, password_confirmation: password, t_and_c_accepted: true)
+							@user = Spree::User.new(email: params[:email],first_name: params[:first_name], last_name: params[:last_name], password: password, password_confirmation: password, t_and_c_accepted: true)
 							if @user.save
 								@auth = Authentication.new(provider: params[:provider], uid: params[:uid] ,user_id: @user.id)
 								if @auth.save

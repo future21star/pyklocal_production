@@ -1,7 +1,7 @@
 module Spree
   class Api::V1::WishlistsController < Spree::Api::BaseController
 
-    before_filter :find_user , only: [:index, :create]
+    before_filter :find_user
 
     def index
       
@@ -50,7 +50,7 @@ module Spree
     end
 
     def destroy
-      if  Spree::Wishlist.where(id: params[:id]).first.try(:destroy)
+      if @user.wishlists.where(variant_id: params[:id]).last.destroy
         render json: {
             status: 1 ,
             message: "Item deleted successfully"
