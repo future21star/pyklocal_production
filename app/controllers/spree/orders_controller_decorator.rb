@@ -40,7 +40,7 @@ Spree::OrdersController.class_eval do
 
     # 2,147,483,647 is crazy. See issue #2695.
     if quantity.between?(1, 500)
-      if quantity <= variant.total_on_hand || variant.is_master == true
+      if quantity <= variant.total_on_hand
         begin
           order.contents.add(variant, quantity, options, delivery_type)
         rescue ActiveRecord::RecordInvalid => e

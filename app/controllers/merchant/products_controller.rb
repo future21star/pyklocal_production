@@ -90,7 +90,11 @@ class Merchant::ProductsController < Merchant::ApplicationController
     @is_owner = is_owner?(current_spree_user.stores.first)
     @stock = Spree::StockItem.new
     @stock_locations = Spree::StockLocation.all
-    @variants = @product.variants
+    unless @product.variants.blank?
+      @variants = @product.variants
+    else
+      @variants = [@product.master]
+    end
     if !@current_spree_user.has_spree_role?('admin')
       if @product.store_id != @current_spree_user.stores.first.try(:id)
         raise CanCan::AccessDenied.new
