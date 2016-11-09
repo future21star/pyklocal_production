@@ -27,7 +27,7 @@ module Spree
           main_hash = Hash.new
           main_hash["id".to_sym] = p_obj.id.to_s
           main_hash["master_variant_id"] = p_obj.master.id.to_s
-          main_hash["master_variant_total_on_hand"] = p_obj.master.total_on_hand.to_s
+          #main_hash["master_variant_total_on_hand"] = p_obj.master.total_on_hand.to_s
           main_hash["name".to_sym] = p_obj.name
           main_hash["description".to_sym] = p_obj.description.to_s
           main_hash["in_wishlist".to_sym] = p_obj.in_wishlist(user)

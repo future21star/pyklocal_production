@@ -10,18 +10,18 @@ module Spree
       if @user.present? && @user.wishlists.present?
         @user.wishlists.each do |wish|
           @products.push(wish.variant.try(:product))
-          @wishlist.push(wish.id.to_s)
+         # @wishlist.push(wish.id.to_s)
         end
         render json: {
           status: "1" ,
           message: "Wishlist Retrieve Successfully" ,
-          wishlist_id: @wishlist.as_json(),
+          #wishlist_id: @wishlist.as_json(),
           details: to_stringify_product_json(@products, @user, [])
         }
       else
         render json: {
           status: "0",
-          message: "No item in whislist"
+          message: "No item in wishlist"
         }
       end
     end
@@ -53,12 +53,12 @@ module Spree
       if @user.wishlists.where(variant_id: params[:id]).last.destroy
         render json: {
             status: 1 ,
-            message: "Item deleted successfully"
+            message: "Item deleted successfully from wishlist"
         } 
       else
          render json: {
             status: 0 ,
-            message: "Item not deleted successfully"
+            message: "Item not deleted successfully from wishlist"
         }
       end
 

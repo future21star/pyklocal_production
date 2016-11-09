@@ -12,7 +12,7 @@ module Spree
     		if @search_result.blank?
     			render json: {
             status: "0", 
-            message: "No Result Found"
+            message: "No Product Found"
           }
     		else
           #@products = @search_result.page(page).per(per_page)
