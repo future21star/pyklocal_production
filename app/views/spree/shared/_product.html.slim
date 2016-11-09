@@ -19,7 +19,16 @@
         .caption
           h4
             a href=product_path(product) data-no-turbolink=true 
-            	= truncate(product.name, :length =>10)
+            	= truncate(product.name, :length =>20)
+          h4 
+            a href=main_app.merchant_store_url(product.store) data-no-turbolink=true style="color:#00f;"
+              = truncate(product.store.name, :length =>20)
+
+          p.cost_price
+            -if product.cost_price.nil?
+              = number_to_currency(100)
+            -else
+              = number_to_currency(product.cost_price)
           p.price
             = number_to_currency(product.price)
           - button_text = product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"

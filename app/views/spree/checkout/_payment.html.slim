@@ -37,7 +37,7 @@
           fieldset
             = render :partial => "spree/checkout/payment/#{method.method_type}", :locals => { :payment_method => method }
 .text-right.form-buttons data-hook="buttons" 
-  = submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary', id: 'continue-btn'
+  = submit_tag Spree.t(:confirm), class: 'btn btn-lg btn-success primary', id: 'continue-btn'
 - content_for :js
   javascript:
     Spree.disableSaveOnClick();

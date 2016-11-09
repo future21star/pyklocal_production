@@ -1774,12 +1774,19 @@ div.required .control-label:before {
 }
 
 .product-thumb .price {
-  margin: 10px 0;
+  margin: 5px 0;
   color: #3e7cb4;
   font-size: 13px;
   font-weight: 700;
 }
 
+.product-thumb .cost_price {
+  margin: 5px 0;
+  color: #999;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: line-through;
+}
 .product-thumb .price-new {
   font-weight: 700;
 }
