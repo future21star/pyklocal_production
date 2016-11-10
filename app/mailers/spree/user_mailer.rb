@@ -25,5 +25,10 @@ module Spree
       end
     end
 
+    def notify_user_store_destroy(user)
+      @user = user
+      mail(to: @user.email, subject: "Store Remove Notification")
+    end
+
   end
 end

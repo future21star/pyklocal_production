@@ -9,17 +9,19 @@ module Spree
           @user = @api_token.user
           @search = Sunspot.search(Spree::Product) do
             with(:location).in_radius(session[:lat], session[:lng], 30.to_i, bbox: true) if session[:lat].present? && session[:lng].present?
+            with(:buyable, :true)
             paginate(:page => 1, :per_page => 5)
             order_by(:sell_count, :desc)
           end 
           @products = @search.results
           @view_search = Sunspot.search(Spree::Product) do 
             order_by(:view_count, :desc)
+            with(:buyable, :true)
             paginate page: 1, per_page: 5
           end
           @most_viewed_products = @view_search.results
           #@top_images = Spree::CarouselImage.where("active = ? AND position != ? AND position != ?", true, "bottom", "middle" )
-          @new_arrival = Spree::Product.all.limit(5).order('created_at DESC')
+          @new_arrival = Spree::Product.all.where(buyable: true).limit(5).order('created_at DESC')
           @carousel_images = Spree::CarouselImage.where(is_static: false).active
           @top_static_images = Spree::StaticImage.where(is_static: true, position: "top").active.limit(2)
           @middle_static_images = Spree::StaticImage.where(is_static: true, position: "middle").active.limit(3)
@@ -92,6 +94,7 @@ module Spree
             if params[:id] == "1"
               @search = Sunspot.search(Spree::Product) do
                 with(:location).in_radius(session[:lat], session[:lng], 30.to_i, bbox: true) if session[:lat].present? && session[:lng].present?
+                with(:buyable, :true)
                 paginate(:page => page, :per_page => per_page)
                 order_by(:sell_count, :desc)
               end 
@@ -102,7 +105,7 @@ module Spree
                 item_list: to_stringify_product_json(@products, @user, [])
               }
             elsif params[:id] == "2"
-             @new_arrival = Spree::Product.all.order('created_at DESC').page(page).per(per_page)
+             @new_arrival = Spree::Product.all.where(buyable: true).order('created_at DESC').page(page).per(per_page)
               render json: {
                 status: "1",
                 message: "New Arrival",
@@ -111,6 +114,7 @@ module Spree
             elsif params[:id] == "3"
               @view_search = Sunspot.search(Spree::Product) do 
                 order_by(:view_count, :desc)
+                with(:buyable, :true)
                 paginate(:page => page, :per_page => per_page)
               end
               @most_viewed_products = @view_search.results

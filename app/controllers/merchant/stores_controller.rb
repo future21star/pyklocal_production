@@ -116,6 +116,7 @@ class Merchant::StoresController < Merchant::ApplicationController
         fulltext params[:q][:search] if params[:q] && params[:q][:search]
         paginate(:page => params[:page], :per_page => 12)
         with(:store_id, store_id) 
+        with(:buyable, :true)
       end
     end
 

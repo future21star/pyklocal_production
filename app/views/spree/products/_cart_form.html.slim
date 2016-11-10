@@ -100,10 +100,12 @@
             input name="product_id" type="hidden" value="41" 
             .clear
         div
-          - button_text =  @product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"
-          = button_tag"#{button_text}" , :id => 'add-to-cart-button', :type => :submit, disabled: @product.total_on_hand <= 0 , class: "button-primary" , data: { disable_with: "Please wait..." }
-span.wish-section
-  = render partial: 'spree/shared/wish_form', locals: {product: @product}
+          -unless @product.store.blank?
+            - button_text =  @product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"
+            = button_tag"#{button_text}" , :id => 'add-to-cart-button', :type => :submit, disabled: @product.total_on_hand <= 0 , class: "button-primary" , data: { disable_with: "Please wait..." }
+-unless  @product.store.blank?
+  span.wish-section
+    = render partial: 'spree/shared/wish_form', locals: {product: @product}
       
 -content_for :js
   javascript:

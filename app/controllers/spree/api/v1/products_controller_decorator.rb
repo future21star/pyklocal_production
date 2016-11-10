@@ -31,7 +31,7 @@ module Spree
           }
         end
       else
-        @products = is_pagination_require ? Spree::Product.all.paginate(:page => params[:page], :per_page => @per_page) : Spree::Product.all
+        @products = is_pagination_require ? Spree::Product.all.where(buyable: true).paginate(:page => params[:page], :per_page => @per_page) : Spree::Product.all
         render json: {
           status: "1",
           message: "Home Screen",

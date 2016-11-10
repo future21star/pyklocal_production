@@ -24,6 +24,11 @@ class UserMailer < ActionMailer::Base
     mail(to: @store.spree_users.first.email, subject: "#{store.name} Is Created")
   end  
 
+  def notify_user_store_destroy(user)
+    @user = user
+    mail(to: @user.email, subject: "Store Remove Notification")
+  end
+
  	def notify_store_approval(user)
  		@store = user.stores.first
  		mail(to: user.email, subject: "#{@store.name} is now approved")

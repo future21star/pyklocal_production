@@ -29,6 +29,7 @@ module Spree
       float :price
       integer :sell_count
       integer :view_count
+      boolean :buyable
 
       time :created_at
 

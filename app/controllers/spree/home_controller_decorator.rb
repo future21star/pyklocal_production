@@ -4,7 +4,8 @@ Spree::HomeController.class_eval do
 
 	def index
     @search = Sunspot.search(Spree::Product) do
-     with(:location).in_radius(session[:lat], session[:lng], 30.to_i, bbox: true) if session[:lat].present? && session[:lng].present?
+      with(:location).in_radius(session[:lat], session[:lng], 30.to_i, bbox: true) if session[:lat].present? && session[:lng].present?
+      with(:buyable, :true)
       order_by(:sell_count, :desc)
     end 
 		# @searcher = build_searcher(params.merge(include_images: true))
@@ -12,10 +13,11 @@ Spree::HomeController.class_eval do
     @products = @search.results
     @view_search = Sunspot.search(Spree::Product) do 
       order_by(:view_count, :desc)
+      with(:buyable, :true)
       paginate page: 1, per_page: 20
     end
     @most_viewed_products = @view_search.results
-    @new_arrival = Spree::Product.all.limit(30).order('created_at DESC')
+    @new_arrival = Spree::Product.all.where(buyable: true).limit(30).order('created_at DESC')
 		@bag_categories = Spree::Taxon.root.children.first.try(:products)
 		@clothing_categories = Spree::Taxon.root.children.last.try(:products)
     @carousel_images = Spree::CarouselImage.where(is_static: false).active

@@ -1,9 +1,10 @@
 Spree::User.class_eval do
 
   devise :registerable, :confirmable
+  before_destroy :notify_store_destroy, :destroy_store
   #------------------------ Associations------------------------------
   has_many :store_users, foreign_key: :spree_user_id, class_name: 'Merchant::StoreUser'
-  has_many :stores, through: :store_users, class_name: 'Merchant::Store' , :dependent => :delete_all
+  has_many :stores, through: :store_users, class_name: 'Merchant::Store'
   has_many :ordered_line_items, through: :orders, :source => :line_items, class_name: 'Spree::LineItem'
   has_many :raitings, foreign_key: :spree_user_id
   has_many :parse_links, foreign_key: :user_id, class_name: 'Spree::ParseLink'
@@ -95,6 +96,13 @@ Spree::User.class_eval do
     stores.present?
   end
 
+  def destroy_store
+    p "*********************************************************************88"
+    if stores.present?
+      p "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZz"
+      stores.first.destroy
+    end
+  end
 
   def active_store
     if stores.present?
@@ -158,6 +166,15 @@ Spree::User.class_eval do
       self.generate_spree_api_key!
     end
 
+
+    def notify_store_destroy
+      p "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPp"
+      if self.has_store
+        p "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+        UserMailer.notify_user_store_destroy(self).deliver_now
+      end
+    end
+
     def notify_user
       if self.has_spree_role?('merchant') && stores.present? && !stores.first.try(:active)
         stores.first.update_attributes(active: true)
@@ -167,7 +184,9 @@ Spree::User.class_eval do
 
     def send_changed_password_notification
       if self.changes.include?(:password_salt) && !self.changes.include?(:created_at)
-        UserMailer.password_changed_notification(self).deliver_now
+        unless self.changes.include?(:deleted_at)
+          UserMailer.password_changed_notification(self).deliver_now
+        end
       end
     end
 

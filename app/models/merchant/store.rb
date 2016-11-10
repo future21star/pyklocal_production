@@ -4,6 +4,8 @@ module Merchant
     self.table_name = "pyklocal_stores" 
     acts_as_paranoid
 
+    before_destroy :deactive_store_products
+
     validates :name, :manager_first_name, :manager_last_name, :phone_number, presence: true
     # validates :phone_number, numericality: { only_integer: true }
     # validates :terms_and_condition, acceptance: { accept: true }
@@ -12,7 +14,7 @@ module Merchant
     has_many :spree_users, through: :store_users
     has_many :store_taxons, dependent: :delete_all, foreign_key: :store_id, class_name: "Merchant::StoreTaxon"
     has_many :spree_taxons , through: :store_taxons
-    has_many :spree_products, foreign_key: :store_id, class_name: 'Spree::Product', :dependent => :delete_all
+    has_many :spree_products, foreign_key: :store_id, class_name: 'Spree::Product'
     has_many :orders, through: :spree_products
     has_many :email_tokens, as: :resource
     has_many :ratings, as: :rateable
@@ -37,6 +39,12 @@ module Merchant
 
     extend FriendlyId
     friendly_id :name, use: :slugged
+
+    def deactive_store_products
+      unless spree_products.blank?
+        spree_products.update_all(buyable: false)
+      end
+    end
 
 
     def average_raiting

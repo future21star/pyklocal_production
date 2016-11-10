@@ -20,14 +20,14 @@
           h4
             a href=product_path(product) data-no-turbolink=true 
             	= truncate(product.name, :length =>20)
-          / -unless product.store.blank?
-          /   h4 
-          /     a href=main_app.merchant_store_url(product.store) data-no-turbolink=true style="color:#00f;"
-          /       = truncate(product.store.name, :length =>20)
-          / -else
-          /   h4 
-          /     a href=# data-no-turbolink=true style="color:#00f;"
-          /       | No Store Available
+          -unless product.store.blank?
+            h4 
+              a href=main_app.merchant_store_url(product.store) data-no-turbolink=true style="color:#00f;"
+                = truncate(product.store.name, :length =>20)
+          -else
+            h4 
+              a href="#" data-no-turbolink=true style="color:#00f;"
+                | No Store Available
 
           p.cost_price
             -if product.cost_price.nil?
