@@ -26,8 +26,7 @@
         .form-group
           = f.label :tax_category_id, class: "control-label"
           span.input-icon.icon-right
-            = f.text_field :tax_category_id, class: "select2 fullwidth form-control input-bg"
-            i.fa &#xf0e3;
+            = f.collection_select(:tax_category_id, Spree::TaxCategory.all, :id, :name, { :include_blank => Spree.t('match_choices.none') }, { :class => 'select2 fullwidth form-control input-bg auto-select' })
     .col-md-6
       .form-content-right
         .form-group
