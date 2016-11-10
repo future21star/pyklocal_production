@@ -40,6 +40,12 @@ module Spree
 			order.number
 		end
 
+    def copy_tax_category
+      if variant
+        self.tax_category = product.tax_category
+      end
+    end
+
 		private
 
 			def notify_driver
