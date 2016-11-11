@@ -31,7 +31,7 @@
 
           p.cost_price
             -if product.cost_price.nil?
-              = number_to_currency(100)
+              = number_to_currency(product.price.to_f + 1)
             -else
               = number_to_currency(product.cost_price)
           p.price

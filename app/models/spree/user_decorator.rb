@@ -97,9 +97,7 @@ Spree::User.class_eval do
   end
 
   def destroy_store
-    p "*********************************************************************88"
     if stores.present?
-      p "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZz"
       stores.first.destroy
     end
   end
@@ -168,9 +166,7 @@ Spree::User.class_eval do
 
 
     def notify_store_destroy
-      p "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPp"
       if self.has_store
-        p "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
         UserMailer.notify_user_store_destroy(self).deliver_now
       end
     end

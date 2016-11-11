@@ -13,14 +13,12 @@ module Spree
 	  end
 
 	  def destroy_store
-	   # p "*********************************************************************88"
 	   # if stores.present?
 	      stores.first.destroy
     	#end
  		end
 
    def notify_store_destroy
-      #p "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPp"
       #if self.has_store
         UserMailer.notify_user_store_destroy(self).deliver_now
       #end
