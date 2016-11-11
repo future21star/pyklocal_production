@@ -25,12 +25,18 @@
                 td
                   = radio_button_tag "order[existing_card]", card.id, (card == @payment_sources.first), { class: "existing-cc-radio" }
     = render partial: 'spree/checkout/payment/storecredit'
-    ul#payment-method-fields.list-group data-hook="" 
+    - if @order.available_payment_methods.count > 1
+      ul#payment-method-fields.list-group data-hook="" 
+        - @order.available_payment_methods.each do |method|
+          li.list-group-item.payment-method
+            label
+              = radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, method == @order.available_payment_methods.first
+              = Spree.t(method.name, :scope => :payment_methods, :default => method.name)
+    - else
       - @order.available_payment_methods.each do |method|
-        li.list-group-item.payment-method
-          label
-            = radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, method == @order.available_payment_methods.first
-            = Spree.t(method.name, :scope => :payment_methods, :default => method.name)
+        label style="visibility: hidden;"
+          = radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, method == @order.available_payment_methods.first
+          = Spree.t(method.name, :scope => :payment_methods, :default => method.name)
     ul#payment-methods.nav data-hook="" 
       - @order.available_payment_methods.each do |method|
         li class=("#{'last' if method == @order.available_payment_methods.last}") data-hook="" id="payment_method_#{method.id}" 

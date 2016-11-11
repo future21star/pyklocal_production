@@ -1916,11 +1916,11 @@ div.required .control-label:before {
 }
 
 .product-list .product-thumb h4 {
-  margin-bottom: 8px;
+  margin-bottom: 0px;
 }
 
 .product-list .product-thumb h4 a {
-  font-weight: 700;
+  /* font-weight: 700; */
   font-size: 15px;
 }
 
