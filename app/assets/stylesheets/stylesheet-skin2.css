@@ -1920,8 +1920,8 @@ div.required .control-label:before {
 }
 
 .product-list .product-thumb h4 a {
-  /* font-weight: 700; */
-  font-size: 15px;
+  //  font-weight: 700; 
+  // font-size: 15px;
 }
 
 .product-list .product-thumb .description {
