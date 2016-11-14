@@ -1,5 +1,6 @@
 module Spree
   Variant.class_eval do 
+  #validates_presence_of :cost_price
 
     def option_name
       option_type_value = []

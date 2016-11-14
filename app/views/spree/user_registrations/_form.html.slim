@@ -11,23 +11,23 @@
     .form-group.required.clearfix
       label.col-sm-2.control-label for="input-email"  First Name
       .col-sm-10
-        = f.text_field :first_name, :class => 'form-control', :tabindex => 1, :placeholder => Spree.t(:first_name)
+        = f.text_field :first_name, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => Spree.t(:first_name)
     .form-group.required.clearfix
       label.col-sm-2.control-label for="input-email"  Last Name
       .col-sm-10
-        = f.text_field :last_name, :class => 'form-control', :tabindex => 1, :placeholder => Spree.t(:last_name)
+        = f.text_field :last_name, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => Spree.t(:last_name)
     .form-group.required.clearfix
       label.col-sm-2.control-label for="input-email"  E-Mail
       .col-sm-10
-        = f.email_field :email, :class => 'form-control', :tabindex => 1, :placeholder => Spree.t(:email)
+        = f.email_field :email, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => Spree.t(:email)
     .form-group.required.clearfix
       label.col-sm-2.control-label for="input-password"  Password
       .col-sm-10
-        = f.password_field :password, :class => 'form-control', :tabindex => 2, :placeholder => Spree.t(:password)
+        = f.password_field :password, :class => 'form-control', :required => "", :tabindex => 2, :placeholder => Spree.t(:password)
     .form-group.required.clearfix
       label.col-sm-2.control-label for="input-confirm"  Password Confirm
       .col-sm-10
-        = f.password_field :password, :class => 'form-control', :tabindex => 2, :placeholder => Spree.t(:password)
+        = f.password_field :password, :class => 'form-control', :required => "", :tabindex => 2, :placeholder => Spree.t(:password)
     .form-group.required.clearfix
       label.col-sm-2.control-label for="input-confirm"  Registration Type
       .col-sm-10

@@ -40,7 +40,7 @@ module Spree
     private
 
       def spree_user_params
-        params.require(:spree_user).permit(Spree::PermittedAttributes.user_attributes, :registration_type)
+        params.require(:spree_user).permit(Spree::PermittedAttributes.user_attributes, :registration_type,:first_name, :last_name)
       end
    
       def after_sign_up_path_for_merchant(resource)

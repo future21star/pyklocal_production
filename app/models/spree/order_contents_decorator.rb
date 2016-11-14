@@ -5,7 +5,7 @@ module Spree
       @order = order
     end
 
-		def add(variant, quantity = 1, options = {}, delivery_type)
+		def add(variant, quantity = 1, options = {}, delivery_type = "home_delivery")
       timestamp = Time.current
       line_item = add_to_line_item(variant, quantity, options, delivery_type)
       options[:line_item_created] = true if timestamp <= line_item.created_at

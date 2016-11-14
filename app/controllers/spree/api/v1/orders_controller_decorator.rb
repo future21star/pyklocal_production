@@ -56,15 +56,17 @@ module Spree
 			  else
 			    current_api_user
 			  end
-
 			  import_params = if @current_user_roles.include?("admin")
 			    params[:order].present? ? params[:order].permit! : {}
 			  else
 			    order_params
 			  end
+			  p "*************************************************************************8"
+			  p order_params
 			  @order = Spree::Core::Importer::Order.import(order_user, import_params)
 			 render json: {
 	      				status: "1",
+	      				cart: order_user.cart_count.to_s,
 	      				order_detail: to_stringify_checkout_json(@order, [])
 	      		}
 			rescue Exception => e

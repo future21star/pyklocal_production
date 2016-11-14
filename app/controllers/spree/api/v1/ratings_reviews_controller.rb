@@ -73,6 +73,7 @@ module Spree
 			rating_hash = Hash.new
 			rating_hash["id".to_sym] = rating_obj.id.to_s
 			rating_hash["product_id".to_sym] = rating_obj.rateable_id.to_s
+			rating_hash["date".to_sym] = rating_obj.created_at.to_s
 			rating_hash["rating".to_sym] = rating_obj.rating.to_s
 			rating_hash["first_name".to_sym] = rating_obj.user.first_name.to_s
 			rating_hash["Last_name".to_sym] = rating_obj.user.last_name.to_s

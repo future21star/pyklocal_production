@@ -26,7 +26,7 @@ Spree::User.class_eval do
 
   # ----------------------Validations----------------------------
   validate :t_and_c, on: :create
-  
+  #validates_presence_of :first_name, :last_name
   #---------------------Callbacks--------------------------
   after_create :assign_api_key 
   after_create :notify_admin

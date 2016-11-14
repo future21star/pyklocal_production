@@ -37,7 +37,7 @@
                     - if @product.empty_option_values?
                       span To add variants you must first define 
                       |  
-                      span= link_to "Option types", merchant_product_path(@product), "data-no-turbolink" => true
+                      span= link_to "Option types", edit_merchant_product_path(@product.slug), "data-no-turbolink" => true
                     - else
                       span No Variants found.   
                       span= link_to "Create One", merchant_stores_products_variants_new_path(product_id: @product.slug), "data-no-turbolink" => true

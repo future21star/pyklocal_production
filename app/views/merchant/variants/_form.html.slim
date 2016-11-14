@@ -16,12 +16,12 @@
         .form-group
           = f.label :Retail_Price, class: "control-label"
           span.input-icon.icon-right
-            = f.text_field :price, class: "form-control input-bg", value: @product.price
+            = f.text_field :price, class: "form-control input-bg", :required => "", value: @product.price
             i.fa &#xf0d6;
         .form-group
           = f.label :cost_price, class: "control-label"
           span.input-icon.icon-right
-           = f.number_field :cost_price, class: "numbersOnly form-control input-bg"
+           = f.number_field :cost_price, class: "numbersOnly form-control input-bg", :required => ""
            i.fa &#xf0d6;
         .form-group
           = f.label :tax_category_id, class: "control-label"
