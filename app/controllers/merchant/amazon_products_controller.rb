@@ -52,7 +52,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 					thumb_image = @product.images.build(attachment: product_images.try(:large_image).try(:url))
 					thumb_image.save
 				end
-				redirect_to edit_merchant_product_path(@product)
+				redirect_to edit_merchant_product_path(@product), notice: 'Product successfully added to store'
 			else
 				redirect_to merchant_stores_path,  notice: 'Could not be saved - this product is already exist!'
 					

@@ -19,7 +19,7 @@ class Merchant::OrdersController < Merchant::ApplicationController
 
       params[:q][:s] ||= "orders_completed_at desc"
 
-      @search = @store.orders.complete.ransack(params[:q])
+      @search = @store.orders.complete.uniq.ransack(params[:q])
 
       @orders = Kaminari.paginate_array(@search.result).page(params[:page]).per(10)
       @is_owner = is_owner?(@store)
