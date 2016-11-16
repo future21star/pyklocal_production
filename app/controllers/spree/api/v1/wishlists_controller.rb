@@ -6,7 +6,7 @@ module Spree
     def index
       
       @products = []
-      @wishlist = []
+      #@wishlist = []
       if @user.present? && @user.wishlists.present?
         @user.wishlists.each do |wish|
           @products.push(wish.variant.try(:product))

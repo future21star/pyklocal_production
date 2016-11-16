@@ -21,7 +21,7 @@
         .form-group
           = f.label :cost_price, class: "control-label"
           span.input-icon.icon-right
-           = f.number_field :cost_price, class: "numbersOnly form-control input-bg", :required => ""
+           = f.number_field :cost_price, class: "numbersOnly form-control input-bg", :required => "", :min => @product.price, :step => "0.01"
            i.fa &#xf0d6;
         .form-group
           = f.label :tax_category_id, class: "control-label"

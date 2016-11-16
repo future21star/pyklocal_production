@@ -5,8 +5,9 @@
         #top-links.nav.pull-right.flip
           ul
             -if spree_user_signed_in?
-              li
-                = link_to "Wish List",spree.wishlists_path 
+              -unless current_spree_user.has_spree_role?("merchant")
+                li
+                  = link_to "Wish List",spree.wishlists_path 
               li#my_account.dropdown
                 a href= spree.edit_account_path 
                   = current_spree_user.try(:full_name)

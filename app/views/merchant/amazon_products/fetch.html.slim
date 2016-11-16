@@ -45,7 +45,8 @@
                     -else 
                       .thumb-image-container.product-img.table-center
                         a.aligner.img-center href= new_merchant_amazon_product_path(asin: item.asin) target="_blank"
-                          = image_tag item.image_sets.image_set.first.medium_image.try(:url) ,class:"img-responsive  "
+                        -unless item.image_sets.blank?
+                          = image_tag item.image_sets.image_set.first.try(:medium_image).try(:url) ,class:"img-responsive  "
                     .product-details.trim-text
                       = link_to  "#{item.item_attributes.title} ", new_merchant_amazon_product_path(asin: item.asin), target: "_blank"
                     .text-center

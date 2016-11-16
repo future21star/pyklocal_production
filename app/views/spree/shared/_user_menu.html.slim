@@ -3,13 +3,14 @@
   ul.list-item
     li
       a class=(current == "account" ? 'active-link' : '') href=spree.edit_account_path Edit your account information
-    li
-      a class=(current == "address" ? 'active-link' : '') href=spree.addresses_path Address Book
-    li
-      a class=(current == "orders" ? 'active-link' : '') href=spree.orders_path View your order history
-    li
-      a class=(current == "payment_histories" ? 'active-link' : '') href=spree.payment_histories_path Payment History(Refunds)
-    / li
-    /   a class=(current == "payment_preferences" ? 'active-link' : '') href=spree.payment_preferences_path Payment Preferences
-    li
-      a class=(current == "wishlist" ? 'active-link' : '') href=spree.wishlists_url Wish List
+    -unless current_spree_user.has_spree_role?("merchant")
+      li
+        a class=(current == "address" ? 'active-link' : '') href=spree.addresses_path Address Book
+      li
+        a class=(current == "orders" ? 'active-link' : '') href=spree.orders_path View your order history
+      li
+        a class=(current == "payment_histories" ? 'active-link' : '') href=spree.payment_histories_path Payment History(Refunds)
+      / li
+      /   a class=(current == "payment_preferences" ? 'active-link' : '') href=spree.payment_preferences_path Payment Preferences
+      li
+        a class=(current == "wishlist" ? 'active-link' : '') href=spree.wishlists_url Wish List
