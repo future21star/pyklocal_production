@@ -25,7 +25,8 @@ module Spree
       text :meta_keywords
       text :sku
       latlon(:location) { Sunspot::Util::Coordinates.new(store.try(:latitude), store.try(:longitude)) }
-
+      text :asin
+      
       float :price
       integer :sell_count
       integer :view_count
@@ -62,7 +63,7 @@ module Spree
     end
 
     def upc_code
-      product_properties.where(property_id: properties.find_by_name("UPC Code").try(:id)).try(:first).try(:value)
+      product_properties.where(property_id: properties.find_by_name("UPC").try(:id)).try(:first).try(:value)
     end
 
     def in_wishlist(user)
@@ -138,13 +139,14 @@ module Spree
     end
 
     def similar
-      similar_products = Sunspot.search(Spree::Product) do
-        
-        any_of do
-          with(:taxon_ids, extracted_facets[:taxon_ids])
-          with(:product_property_name, extracted_facets[:product_property_name])
-        end
-      end.results - [self]
+      if extracted_facets[:taxon_ids] or extracted_facets[:product_property_name]
+        similar_products = Sunspot.search(Spree::Product) do
+          any_of do
+            with(:taxon_ids, extracted_facets[:taxon_ids])
+            with(:product_property_name, extracted_facets[:product_property_name])
+          end
+        end.results - [self]
+      end
     end
 
     def extracted_facets
@@ -168,7 +170,6 @@ module Spree
     end
 
     def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants, categories)
-      p "*************************************************************************************************************"
       p Spree::Product.where(name: name, store_id: store_id).present?
       unless Spree::Product.where(name: name, store_id: store_id).present?
         product = Spree::Product.new({name: name, price: master_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id})

@@ -9,7 +9,7 @@ Spree::HomeController.class_eval do
       order_by(:sell_count, :desc)
     end 
 		# @searcher = build_searcher(params.merge(include_images: true))
-    # @products = @searcher.retrieve_products.includes(:possible_promotions)
+  #   @products = @searcher.retrieve_products.includes(:possible_promotions)
     @products = @search.results
     @view_search = Sunspot.search(Spree::Product) do 
       order_by(:view_count, :desc)

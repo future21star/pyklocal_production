@@ -13,7 +13,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 		else
 			URI.parse(params[:url])
 		end
-		# render json: @amazon_products
+		#render json: @amazon_products
 	end
 
 	def new
@@ -34,6 +34,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 			@product = Spree::Product.where(asin: raw_product.asin, store_id: current_spree_user.stores.first.try(:id)).first
 			if @product.blank?
 				@product = Spree::Product.create({name: raw_product.item_attributes.title,description: description, price: offer_price, available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url),store_id: current_spree_user.stores.first.try(:id),asin:asin_no}) 
+				@product.sku = sku
 				raw_product.item_attributes.each do |amazon_products_properties|
 					if amazon_products_properties[1].class.to_s == "REXMLUtiliyNodeString"
 	          property = Spree::Property.where(name: amazon_products_properties[0], presentation: amazon_products_properties[0].titleize).first_or_create
@@ -88,6 +89,8 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 				image_u = raw_product.large_image.try(:url)
 				sku = raw_product.item_attributes.title[0..2].upcase+SecureRandom.hex(5).upcase
 				asin_no = raw_product.asin
+				p "*************************************************************************************8"
+				p sku
 				@product = Spree::Product.where(asin: raw_product.asin,store_id: current_spree_user.stores.first.try(:id)).first
 				if @product.blank?
 					@product = Spree::Product.create({name: raw_product.item_attributes.title, sku: sku, description: description, price: offer_price, available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url), store_id: current_spree_user.stores.first.try(:id), asin: asin_no}) 

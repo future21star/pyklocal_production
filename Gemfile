@@ -21,7 +21,7 @@ gem 'slim-rails'
 gem "less-rails"
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 gem "font-awesome-rails" 
-
+gem 'quiet_assets', group: :development
 gem 'sunspot_rails'
 gem 'sunspot_solr'
 gem 'progress_bar'

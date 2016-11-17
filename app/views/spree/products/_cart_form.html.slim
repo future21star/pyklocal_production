@@ -14,7 +14,7 @@
         b Product Code:
         span itemprop="mpn"  
           |&nbsp;
-          = @product.try(:asin)
+          = @product.upc_code
       li
         b Availability:
         - if @product.total_on_hand > 0
@@ -51,8 +51,12 @@
                   = radio_button_tag "variant_id", variant.id, index == 0, 'data-price' => variant.price_in(current_currency).money
                   | &nbsp;&nbsp;
                   = label_tag "variant_id_#{ variant.id }" do
-                    span.variant-description
+                    p.variant-description
                       = variant_options variant
+                      |&nbsp;(
+                      =variant.total_on_hand
+                      |) 
+
                     - if variant_price variant
                       span.price.diff= variant_price variant
     - else

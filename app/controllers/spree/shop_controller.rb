@@ -1,7 +1,7 @@
 class Spree::ShopController < Spree::StoreController
 
-  before_filter :load_all_facets, only: [:index, :show]
-  before_filter :perform_search, only: [:index, :show]
+    before_filter :load_all_facets, only: [:index, :show]
+    before_filter :perform_search, only: [:index, :show]
 
   def index 
     @price_array = params[:q][:price].to_s if params[:q] && params[:q][:price]

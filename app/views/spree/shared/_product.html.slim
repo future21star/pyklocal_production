@@ -29,13 +29,20 @@
               a href="#" data-no-turbolink=true style="color:#00f;"
                 | No Store Available
 
-          p.cost_price
-            -if product.cost_price.nil?
-              = number_to_currency(product.price.to_f + 1)
-            -else
+          - unless product.cost_price.nil? && product.price != product.cost_price
+            p.cost_price
+              / -if product.cost_price.nil?
+              /   = number_to_currency(product.price)
+              /-else
               = number_to_currency(product.cost_price)
+
           p.price
             = number_to_currency(product.price)
+
+          p.discount style="color: red;"
+            = product.discount 
+            |%
+
           - button_text = product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"
           button.custom-button type="submit" disabled=(button_text == "Out Of Stock")
             span= button_text

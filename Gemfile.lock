@@ -333,6 +333,8 @@ GEM
       highline (~> 1.6)
       options (~> 2.3.0)
     puma (3.6.0)
+    quiet_assets (1.1.0)
+      railties (>= 3.1, < 5.0)
     rabl (0.12.0)
       activesupport (>= 2.3.14)
     rack (1.6.4)
@@ -607,6 +609,7 @@ DEPENDENCIES
   noty-rails
   progress_bar
   puma
+  quiet_assets
   rails (= 4.2.6)
   rails-erd
   rspec-rails (~> 3.0)
