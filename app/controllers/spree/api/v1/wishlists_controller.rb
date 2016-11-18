@@ -9,7 +9,11 @@ module Spree
       #@wishlist = []
       if @user.present? && @user.wishlists.present?
         @user.wishlists.each do |wish|
-          @products.push(wish.variant.try(:product))
+          unless wish.variant.blank?
+            @products.push(wish.variant.try(:product))
+          else
+            wish.delete
+          end
          # @wishlist.push(wish.id.to_s)
         end
         render json: {
