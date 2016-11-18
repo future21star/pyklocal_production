@@ -60,6 +60,11 @@
                     - if variant_price variant
                       span.price.diff= variant_price variant
     - else
+      b Max Quantity Available:
+      span itemprop="master_variant_quantity"
+        |&nbsp;
+        =  @product.master.total_on_hand
+      br
       = hidden_field_tag "variant_id", @product.master.id
 
     - if @product.price_in(current_currency) and !@product.price.nil?

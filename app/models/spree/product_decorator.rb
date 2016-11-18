@@ -138,12 +138,21 @@ module Spree
       update_attributes(view_counter: impressionist_count(:filter=>:session_hash))
     end
 
+    def product_property_names
+      product_properties.collect(&:value)
+    end
+
     def similar
-      if extracted_facets[:taxon_ids] or extracted_facets[:product_property_name]
+      if taxon_ids.present?
         similar_products = Sunspot.search(Spree::Product) do
           any_of do
-            with(:taxon_ids, extracted_facets[:taxon_ids])
-            with(:product_property_name, extracted_facets[:product_property_name])
+            with(:taxon_ids, taxon_ids)
+          end
+        end.results - [self]
+      elsif taxon_ids.blank? && product_property_names.present?
+        similar_products = Sunspot.search(Spree::Product) do
+          any_of do
+            with(:product_property_name, product_property_names)
           end
         end.results - [self]
       end
@@ -152,9 +161,6 @@ module Spree
     def extracted_facets
       q = 'id: "Product '+self.id.to_s+'"'
       search = Sunspot.search(Spree::Product) do
-        adjust_solr_params do |params|
-          params[:q] = q
-        end
         dynamic(:product_property_ids) do
           Spree::Property.all.each do |property|
             facet(property.id)
@@ -166,6 +172,7 @@ module Spree
       Spree::Property.all.each do |property|
         dynamic_filters << search.facet("product_property_ids", property.id).rows
       end
+      p dynamic_filters
       {product_property_name: dynamic_filters.flatten.collect(&:value), taxon_ids: search.facet(:taxon_ids).rows.collect(&:value)}
     end
 

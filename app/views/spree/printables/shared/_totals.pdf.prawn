@@ -11,7 +11,9 @@ end
 
 # Shipments
 invoice.shipments.each do |shipment|
-  totals << [pdf.make_cell(content: shipment.shipping_method.name), shipment.display_cost.to_s]
+  unless shipment.shipping_method.name == "Free Delivery"
+    totals << [pdf.make_cell(content: shipment.shipping_method.name), shipment.display_cost.to_s]
+  end
 end
 
 # Totals

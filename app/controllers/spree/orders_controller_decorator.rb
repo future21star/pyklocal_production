@@ -47,7 +47,8 @@ Spree::OrdersController.class_eval do
           error = e.record.errors.full_messages.join(", ")
         end
       else
-        error = Spree.t(:This_Store_does_not_have_sufficient_stock_to_take_your_order)
+       # error = 'Max Available: "#{variant.total_on_hand}"'
+       error ="Max Quantity Available: " + variant.total_on_hand.to_s
       end
     else
       error = Spree.t(:please_enter_reasonable_quantity)

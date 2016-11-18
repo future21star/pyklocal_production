@@ -45,7 +45,7 @@
                           td= line_item.delivery_type.try(:humanize)
                           td= line_item.driver.try(:full_name) || "-"
                           td.align-middle rowspan="#{order.get_store_line_items(@store.id).count}"
-                            - if line_item_ids.present?
+                            - if line_item_ids.present? && order.state != "canceled"
                               - if order.items_state(line_item_ids) == "packaging"
                                 = link_to "Ready to pickup", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: "ready_to_pick"), class: "btn btn-success", method: :put
                               - elsif order.items_state(line_item_ids) == "ready_to_pick"
@@ -56,6 +56,8 @@
                                 = link_to "Waiting to deliver", "#", class: "btn btn-success", disabled: true
                               - else
                                 = link_to "Delivered", "#", class: "btn btn-success", disabled: true
+                            -else
+                              = link_to "Canceled", "#", class: "btn btn-danger"
                         - else
                           tr
                             td= line_item.product.try(:name)
