@@ -73,6 +73,28 @@ module Spree
       end
     end
       
+    def related_product
+      @user = Spree::ApiToken.where(token: params[:token]).last.user
+      if Spree::Product.exists?(params[:product_id])
+        similar_product = Spree::Product.find(params[:product_id]).similar
+        if similar_product.present?
+          render json:{
+            status: 1,
+            details: to_stringify_product_json(similar_product, @user, [])
+          }
+        else
+          render json:{
+          status: 0,
+          message: "No product found"
+          }
+        end
+      else
+        render json:{
+          status: 0,
+          message: "No product found with this product id"
+        }
+      end
+    end
 
     def rate_and_comment
       @rating = Rating.new(user_id: @user.id, rateable_id: @product.id, rateable_type: "Spree::Product", rating: params[:rating]) if params[:rating].present?

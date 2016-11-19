@@ -93,6 +93,7 @@ Pyklocal::Application.routes.draw do
 
         resources :products do 
           post :rate_and_comment
+          get :related_product
         end
 
         concern :order_routes do
