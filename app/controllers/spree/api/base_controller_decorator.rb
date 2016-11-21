@@ -412,6 +412,41 @@ module Spree
           order_hash["payments".to_sym] = []
         end
 
+        if c_obj.try(:all_adjustments)
+          adjustments_hash = Hash.new
+          unless c_obj.all_adjustments.where(source_type: "Spree::TaxRate").blank?
+            tax_adjustment_arr = []
+            c_obj.all_adjustments.where(source_type: "Spree::TaxRate").each do |tax|
+              tax_adjustment_hash = Hash.new
+              tax_adjustment_hash[tax.label.to_sym] = tax.amount.to_f.to_s
+              tax_adjustment_arr.push(tax_adjustment_hash)
+            end
+            adjustments_hash["tax_adjustment".to_sym] = tax_adjustment_arr
+          else
+             adjustments_hash["tax_adjustment".to_sym] = []
+          end
+
+          if c_obj.try(:adjustments)
+            promotion_adjustment_arr = []
+            c_obj.adjustments.each do |adjustment|
+              promotion_adjustment_hash = Hash.new
+               promotion_adjustment_hash[adjustment.label.to_sym] =  adjustment.amount.to_f.to_s
+               promotion_adjustment_arr.push( promotion_adjustment_hash)
+            end
+            adjustments_hash["promotion_adjustment".to_sym] = promotion_adjustment_arr
+          else
+            adjustments_hash["promotion_adjustment".to_sym] = []
+          end
+
+          unless c_obj.shipments.blank?
+            adjustments_hash["shipping_total".to_sym] = c_obj.shipments.to_a.sum(&:cost).to_f.to_s
+          else
+            adjustments_hash["shipping_total".to_sym] = ""
+          end
+          order_hash["adjustments".to_sym] = adjustments_hash
+        else
+          order_hash["adjustments".to_sym] = []
+        end
       
         values.push(order_hash)
         return values

@@ -36,7 +36,7 @@ module Spree
 
   	def index
   		unless @user.blank?
-  			@ratings = Rating.where(rateable_id: params[:product_id]).last
+  			@ratings = Rating.where(rateable_id: params[:product_id])
   			#@comments = Comment.where(commentable_id: params[:product_id]).last.comment
   			unless @ratings.blank? && @comments.blank?
   				render json:{
@@ -70,15 +70,17 @@ module Spree
 		end
 
 		def to_stringify_rating rating_obj , values = []
-			rating_hash = Hash.new
-			rating_hash["id".to_sym] = rating_obj.id.to_s
-			rating_hash["product_id".to_sym] = rating_obj.rateable_id.to_s
-			rating_hash["date".to_sym] = rating_obj.created_at.to_s
-			rating_hash["rating".to_sym] = rating_obj.rating.to_s
-			rating_hash["first_name".to_sym] = rating_obj.user.first_name.to_s
-			rating_hash["Last_name".to_sym] = rating_obj.user.last_name.to_s
-			rating_hash["comment".to_sym] = Comment.where(commentable_id: rating_obj.rateable_id).last.comment
-			values.push(rating_hash)
+			rating_obj.each do |rating|
+				rating_hash = Hash.new
+				rating_hash["id".to_sym] = rating.id.to_s
+				rating_hash["product_id".to_sym] = rating.rateable_id.to_s
+				rating_hash["date".to_sym] = rating.created_at.to_s
+				rating_hash["rating".to_sym] = rating.rating.to_s
+				rating_hash["first_name".to_sym] = rating.user.first_name.to_s
+				rating_hash["Last_name".to_sym] = rating.user.last_name.to_s
+				rating_hash["comment".to_sym] = Comment.find(rating.id).comment.to_s
+				values.push(rating_hash)
+			end
 
 			return values
 		end

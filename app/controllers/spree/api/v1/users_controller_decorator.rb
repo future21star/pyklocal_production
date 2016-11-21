@@ -187,17 +187,15 @@ module Spree
     end
 
     def get_cart
-			product_arr = []
-			@order = @user.orders.where("state = ? OR state = ? OR state = ?", "cart", "address", "shipment")
+			variant_arr = []
+			@order = @user.orders.where("state != ? AND state != ?","complete","canceled").last
 			unless @order.blank?
-				@order.last.line_items.each do |line_item|
-					product_arr.push(line_item.variant.product)
-				end
 				render json: {
 					status: "1",
 					message: "Cart",
-					order_number: @order.last.number,
-					details: to_stringify_product_json(product_arr, @user, [])
+					cart_count: @user.cart_count.to_s,
+					order_number: @order.number,
+					details: to_stringify_variant_json(@order, @user, [])
 				}
 			else
 				render json: {
@@ -314,6 +312,37 @@ module Spree
 
 			def user_device_param
 				params.require(:user_device).permit(:device_token, :device_type, :user_id, :notification)
+			end
+
+			def to_stringify_variant_json obj, user ,values = []
+				obj.line_items.each do |line_item|
+					variants_hash = Hash.new
+					variants_hash["quantity".to_sym] = line_item.quantity.to_s
+					variants_hash["delivery_type".to_sym] = line_item.delivery_type.to_s
+				
+					variant = line_item.variant
+          variants_hash["id".to_sym] = variant.id.to_s
+          variants_hash["price".to_sym] = variant.cost_price.to_f.to_s
+          variants_hash["special_price".to_sym] = variant.price.to_f.to_s
+          variants_hash["discount".to_sym] = variant.discount.to_s
+          variants_hash["total_on_hand"] = variant.total_on_hand.to_s
+          variants_hash["stock_status"] = variant.stock_status.to_s 
+          variants_hash["minimum_quantity".to_sym] = "1"
+
+					variants_hash["option_name"] = variant.option_name
+
+          if variant.images.present?
+          	p "888888888888888888888888888888888888888888888888888"
+            variants_hash["product_images".to_sym] = variant.product_images
+          elsif variant.product.images.present?
+          	p "********************************************************************"
+          	variants_hash["product_images".to_sym] = variant.product.product_images
+          else
+          	variants_hash["product_images".to_sym] = []
+				  end
+				  values.push(variants_hash)
+				end
+				return values
 			end
 
 			def find_user

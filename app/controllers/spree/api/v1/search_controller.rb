@@ -20,7 +20,7 @@ module Spree
     			render json: {
     				status: "1", 
     				message: "Search Result",
-            cart:     @user.cart_count.to_s,
+            cart_count: @user.cart_count.to_s,
             number_of_pages: (@search_result.count / per_page.to_f).ceil().to_s,
             total_product: @search_result.count.to_s,
     				details:  to_stringify_product_json(@products , @user ,[])
@@ -87,7 +87,7 @@ module Spree
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
         with(:buyable, :true)
         with(:store_id, params[:q][:store_id]) if params[:q] && params[:q][:store_id]
-        with(:taxon_ids, params[:q][:category_id]) if params[:q] && params[:q][:category_id]
+        with(:taxon_ids, params[:q][:id]) if params[:q] && params[:q][:id]
         facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
         facet(:brand_name)
         facet(:store_name)

@@ -31,7 +31,7 @@ module Spree
           render json: {
             status: "1",
             message: "Home Screen",
-            cart:   @user.cart_count.to_s,
+            cart_count:   @user.cart_count.to_s,
             details:[
               {
                 index: "0", 
