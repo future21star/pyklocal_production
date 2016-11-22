@@ -21,4 +21,7 @@
           = form_for :order, url: spree.populate_orders_path do |f|
             input type= 'hidden' name= 'quantity' value= 1
             input type= 'hidden' name= 'variant_id' value= product.order_variants.first.try(:id)
-            = submit_tag "Add To Cart", class: "btn btn-default btn-info", :type => :submit
+            - if product.total_on_hand > 0
+              = submit_tag "Add To Cart", class: "btn btn-default btn-info", :type => :submit
+            - else
+               = submit_tag "Out of Stock", class: "btn btn-default btn-info", :type => :submit , :disabled => :true
