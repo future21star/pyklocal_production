@@ -273,6 +273,7 @@ module Spree
               line_items_hash["id".to_sym] = line_item.id.to_s
               line_items_hash["quantity".to_sym] = line_item.quantity.to_s
               line_items_hash["price".to_sym] = line_item.price.to_s
+              line_items_hash["delivery_type".to_sym] = line_item.delivery_type.to_s
               line_items_hash["variant_id".to_sym] = line_item.variant_id.to_s
               variant_hash = Hash.new
               line_item.variant.attributes.each do|k,v|
@@ -296,7 +297,7 @@ module Spree
             order_hash["line_items"] = []
           end
 
-          if c_obj.try(:shipments)
+          if c_obj.try(:shipments).present?
             shipment_attr =["id","number","cost","shipped_at","state","order_id","adjustment_total"]
             shipment_hash = Hash.new
             c_obj.shipments.first.attributes.each do |k,v|

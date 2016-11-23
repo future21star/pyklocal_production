@@ -5,10 +5,11 @@ module Spree
 
   	def create
   		unless @user.blank?
-  			@product_already_rated_by_user = Rating.where(user_id: @user.id, rateable_id: params[:rating][:rateable_id])
+  			@product_already_rated_by_user = Rating.where(user_id: @user.id, rateable_id: params[:rating_review][:product_id])
   			if @product_already_rated_by_user.blank?
-  				@rating = Rating.new(rating_params.merge({user_id: @user.id}))
-  				@comment = Comment.new(review_params.merge({user_id: @user.id}))
+  				@rating = Rating.new(:rateable_id => params[:rating_review][:product_id], :rating => params[:rating_review][:rating], :user_id => @user.id)
+  				@comment = Comment.new(:commentable_id => params[:rating_review][:product_id], :comment => params[:rating_review][:comment], :user_id => @user.id)
+  				#@comment = Comment.new(review_params.merge({user_id: @user.id}))
   				if @rating.save && @comment.save
 	  				render json:{
 	  					status: "1",
@@ -96,8 +97,8 @@ module Spree
 			return values
 		end
 
-		def review_params
-			params.require(:review).permit(:user_id, :commentable_id, :comment)
+		def rating_review_params
+			params.require(:rating_review).permit(:user_id, :product_id, :comment, :rating)
 		end
 
   end

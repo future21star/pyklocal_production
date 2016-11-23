@@ -8,7 +8,7 @@ module Spree
 		before_action :find_store, only: [:show]
 		before_action :find_driver, only: [:index, :show]
 		skip_before_filter :authenticate_user, only: [:apply_coupon_code, :refresh_order_summary, :cancel_coupon]
-		before_action :find_user, only: [:cancel, :update]
+		before_action :find_user, only: [:cancel, :update, :create]
 
 		def index
 			@orders_list = []
@@ -63,12 +63,40 @@ module Spree
 			  end
 			  p "*************************************************************************8"
 			  p order_params
-			  @order = Spree::Core::Importer::Order.import(order_user, import_params)
-			 render json: {
+			  @incomplete_order = @user.orders.where("state != ? AND state != ?", "complete", "canceled").last
+			  if @incomplete_order.blank?
+			  	p "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+			 		@order = Spree::Core::Importer::Order.import(order_user, import_params)
+			 		render json: {
 	      				status: "1",
 	      				cart: order_user.cart_count.to_s,
 	      				order_detail: to_stringify_checkout_json(@order, [])
 	      		}
+			 	else
+			 		p "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+			 		p params[:order][:line_items_attributes]
+			 		params[:order][:line_items_attributes].each do |line_item|
+			 			p "_________________________________________________________________________-"
+			 			p line_item
+			 			p line_item["variant_id"]
+			 			p line_item["quantity"].to_i
+			 			p line_item["delivery_type"]
+				 		variant = Spree::Variant.find(line_item["variant_id"])
+				 		p variant
+				 		quantity = line_item["quantity"].to_i
+				 		#p variant
+				 		#p quantity
+				 		delivery_type = line_item["delivery_type"] || "home_delivery"
+				 		p delivery_type
+          	@incomplete_order.contents.add(variant, quantity, {}, delivery_type)
+          end
+
+          render json: {
+	      				status: "1",
+	      				cart: order_user.cart_count.to_s,
+	      				order_detail: to_stringify_checkout_json(@incomplete_order, [])
+	      		}
+			 	end
 			rescue Exception => e
 				render json: {
 					status: 0,
