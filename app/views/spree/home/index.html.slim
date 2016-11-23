@@ -1,14 +1,14 @@
 #container  
   .container  
     = render partial: "spree/shared/slider1"
-    .category-module style=("max-height:450px; overflow:hidden;")
+    .category-module style=("max-height:472px; overflow:hidden;")
       h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Bestsellers
       .category-module-content 
         .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
           - @products.each do |product|
             = render :partial => 'spree/shared/product', locals: {product: product}
 
-    .category-module style=("max-height:450px; overflow:hidden;")
+    .category-module style=("max-height:480px; overflow:hidden;")
       h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") New Arrivals
       .category-module-content 
         .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
@@ -40,13 +40,28 @@
     /         - @clothing_categories.each do |product|
     /           = render :partial => 'spree/shared/product', locals: {product: product}
 
+    / .category-module style=("max-height:472px; overflow:hidden;")
+    /   h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Bags
+    /   .category-module-content 
+    /     .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
+    /         - @bag_categories.each do |product|
+    /           = render :partial => 'spree/shared/product', locals: {product: product}
+
+    / .category-module style=("max-height:472px; overflow:hidden;")
+    /   h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Mugs
+    /   .category-module-content 
+    /     .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
+    /         - @clothing_categories.each do |product|
+    /           = render :partial => 'spree/shared/product', locals: {product: product}
+
+
     #marketshop-banner2.marketshop-banner
       .row
         .col-lg-12.col-md-12.col-sm-12.col-xs-12.moderns
           a href="#" 
             = image_tag "1blockbanner-1140x75.jpg", class: "img-responsive"
 
-    .category-module style=("max-height:450px; overflow:hidden;")
+    .category-module style=("max-height:472px; overflow:hidden;")
       h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Most Viewed Products
       .category-module-content 
         .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
