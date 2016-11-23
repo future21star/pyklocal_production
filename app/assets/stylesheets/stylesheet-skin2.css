@@ -1852,6 +1852,10 @@ div.required .control-label:before {
   
 }
 
+.min-height{
+  min-height: 380px;
+}
+
 .product-grid:hover {
   border-color: #eae9e9;
 }
@@ -2051,11 +2055,11 @@ div.required .control-label:before {
 }
 
 .product-info .price-box {
-  background: #F4F3F3;
-  border: 1px solid #eee;
+  /*background: #F4F3F3;
+  border: 1px solid #eee;*/
   overflow: auto;
   padding: 10px 5px;
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
 }
 
 .product-info .price {
@@ -2073,7 +2077,7 @@ div.required .control-label:before {
 
 .product-info .cart {
   border-bottom: 1px solid #eae9e9;
-  padding: 0 0 20px;
+  padding: 0 0 10px;
   margin-bottom: 15px;
   color: #4D4D4D;
   overflow: auto;

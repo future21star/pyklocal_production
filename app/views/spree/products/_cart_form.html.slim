@@ -32,8 +32,6 @@
           span style="color:#53af2e; font-weight:bold;" 
             '
             = @product.available_on.to_date.to_formatted_s(:rfc822) 
-    = social_share_button_tag(@product.name, 'data-twitter-title' => 'TheTitleForTwitter', :url => request.url)
-    / .addthis_sharing_toolbox
     ul.price-box
       li.price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" 
         span itemprop="price"  
@@ -41,6 +39,7 @@
         span content=("In Stock") itemprop="availability" 
       li
       / li Ex Tax: $00.00
+    = social_share_button_tag(@product.name, 'data-twitter-title' => 'TheTitleForTwitter', :url => request.url)
 
     - if @product.variants_and_option_values(current_currency).any?
       .cart

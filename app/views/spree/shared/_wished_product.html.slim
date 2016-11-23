@@ -1,6 +1,6 @@
 -unless wish.variant.blank?
   - product = wish.variant.product
-  .item style=("overflow:hidden; min-height:350px;")
+  .item style=("overflow:hidden; min-height:380px;")
     = form_for :order, :url => populate_orders_path do |f|
       = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
       = hidden_field_tag "variant_id", wish.variant_id
