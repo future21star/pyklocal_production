@@ -70,14 +70,46 @@ module Spree
 					if user.valid_password?(params[:password])
 						if params[:token]
 							@is_guest_user = ApiToken.where(token: params[:token]).last.try(:user)
+							p "((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((("
+							p @is_guest_user
 							if @is_guest_user.is_guest == true 
-								unless @is_guest_user.orders.where.not(state: "complete").blank?
-									unless user.orders.where.not(state: "complete").blank?
-										@is_guest_user.orders.where.not(state: "complete").last.line_items.each do |line_item|
-									 	 user.orders.last.contents.add(line_item.variant, line_item.quantity, {}, line_item.delivery_type)
-									 	end
-									else
-									 	@is_guest_user.orders.last.update_attributes(user_id: user.id)
+								if @is_guest_user.orders.where("state != ? AND state != ?","complete" ,"canceled").present? || @is_guest_user.wishlists.present?
+								# 	unless user.orders.where.not(state: "complete").blank?
+								# 		@is_guest_user.orders.where.not(state: "complete").last.line_items.each do |line_item|
+								# 	 	 user.orders.last.contents.add(line_item.variant, line_item.quantity, {}, line_item.delivery_type)
+								# 	 	end
+								# 	else
+								# 	 	@is_guest_user.orders.last.update_attributes(user_id: user.id)
+								# 	end
+								# 	@response = get_response(user)
+								#   @response[:message] = "Login successfull"
+									if @is_guest_user.orders.where("state != ? AND state != ?","complete" ,"canceled").present?
+										unless user.orders.where("state != ? AND state != ?", "complete", "canceled").blank?
+											@is_guest_user.orders.where.not(state: "complete").last.line_items.each do |line_item|
+												p "added"
+												p line_item
+												user.orders.where("state != ? AND state != ?", "complete", "canceled").last.contents.add(line_item.variant, line_item.quantity, {}, line_item.delivery_type)
+								 	 		end
+								 	 	else
+								 	 		@is_guest_user.orders.last.update_attributes(user_id: user.id)
+										end
+									end
+
+									if  @is_guest_user.wishlists.present?
+										# if user.wishlists.present?
+										# 	p "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+										# 	@is_guest_user.wishlists.each do |wishlist|
+										# 		@wishlist = Spree::Wishlist.new(variant_id: wishlist.variant_id, user_id: user.id)
+										# 		unless @wishlist.save
+										# 			render json:{
+										# 				status: "0",
+										# 				message: "something goes wrong while saving the wishlist"
+										# 			}
+										# 			return
+										# 		end
+										# 	end
+										# else
+											@is_guest_user.wishlists.update_all(user_id: user.id)
 									end
 									@response = get_response(user)
 								  @response[:message] = "Login successfull"
