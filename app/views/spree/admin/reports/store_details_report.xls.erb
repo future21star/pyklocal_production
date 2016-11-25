@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Store Name</Data></Cell>
+        <Cell><Data ss:Type="String">Total Sale Amount</Data></Cell>
+        <Cell><Data ss:Type="String">Total Adjustment Amount</Data></Cell>
+        <Cell><Data ss:Type="String">Total Promo Amount</Data></Cell>
+      </Row>
+    <%if params[:q][:orders_completed_at_lt] %>
+      <% @merchant.each do |merchant| %>
+        <% order = merchant.orders.where(spree_orders:{created_at: params[:q][:orders_completed_at_gt]..params[:q][:orders_completed_at_lt]}) %>
+        <Row>
+          <Cell><Data ss:Type="String"><%= merchant.name %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= order.sum(:total) %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= order.sum(:adjustment_total) %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= order.sum(:promo_total) %></Data></Cell>
+        </Row>
+      <% end %>
+    <%else%>
+      <% @merchant.each do |merchant| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%= merchant.name %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= merchant.orders_filter.sum(:Total) %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= merchant.orders_filter.sum(:adjustment_total) %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= merchant.orders_filter.sum(:promo_total) %></Data></Cell>
+        </Row>
+      <% end %>
+    <%end%>
+    </Table>
+  </Worksheet>
+</Workbook>

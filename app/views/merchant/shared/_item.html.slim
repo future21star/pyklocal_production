@@ -1,7 +1,7 @@
 - url = spree.product_url(product, :taxon_id => @taxon.try(:id))
 .col-md-3.product-item id= "product_#{product.id}"
   .thumbnail.store-product-item
-    .thumb-image-container.product-img.center style="margin: 0 auto;"
+    .thumb-image-container.product-img style="margin: 0 auto;"
       -if @is_owner
         a.aligner.img-center href=edit_merchant_product_path(product.slug)
           = product_image(product, :itemprop => "image",:class=>"product-img-height")

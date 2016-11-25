@@ -20,6 +20,7 @@ module Merchant
     has_many :ratings, as: :rateable
     has_many :comments, as: :commentable 
 
+
     validate :category, on: :create
     
 
@@ -64,6 +65,10 @@ module Merchant
 
     def location
       {lat: latitude, lng: longitude}
+    end
+
+    def orders_filter
+      orders.where(spree_orders:{created_at: Time.zone.now-20.days..Time.zone.now})
     end
 
     def address

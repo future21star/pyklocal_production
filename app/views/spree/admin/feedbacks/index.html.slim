@@ -1,0 +1,25 @@
+
+.content-header.page-header
+  .row
+    h1.col-sm-6
+      |User Shopping Experience
+table#listing_users.table data-hook="" 
+  thead
+    tr
+      th
+        |Name
+      th
+        |E-Mail
+      th
+        |Rating
+      th
+        |Comment
+  tbody
+    - if @feedback.present?
+      - @feedback.each do |feedback|
+        tr  
+          td= feedback.name
+          td= feedback.email
+          td= feedback.value
+          td= feedback.comment
+      
