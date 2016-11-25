@@ -34,6 +34,10 @@ module Spree
 			delivery_state
 		end
 
+    def line_item_store
+      product.store
+    end
+
 		def pickup_address
 			product.store.try(:address)
 		end

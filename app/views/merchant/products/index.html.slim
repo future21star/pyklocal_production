@@ -28,6 +28,7 @@
               tr
                 th SKU
                 th Name
+                th View
                 th Price
                 th Available From 
                 th Action
@@ -37,6 +38,7 @@
                   tr
                     td= product.sku
                     td= product.name
+                    td= product.view_count
                     td= product.price
                     td= product.available_on.try(:to_date) 
                     td.btn-fix

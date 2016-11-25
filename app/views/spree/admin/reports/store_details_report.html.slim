@@ -1,0 +1,55 @@
+- content_for :page_title do 
+  = link_to Spree.t(:reports), spree.admin_reports_url 
+  |/
+  = Spree.t(:store_details)
+  .pull-right
+    = link_to "Download As Excel", store_details_report_admin_reports_path(download_excel: true, :format => :xls, q: params[:q]), class: "btn btn-primary"
+
+.well
+  = render :partial => 'spree/admin/shared/report_store'
+
+table.table.table-bordered.admin-report data-hook="sales_total"
+  thead
+    tr
+      th= Spree.t(:store)
+      th= Spree.t(:total_sale_amount)
+      th= Spree.t(:total_adjustment_amount)
+      th= Spree.t(:promo_total)
+      / th= sort_link @search, :master_default_price_amount, Spree.t(:master_price), {}, {title: 'admin_products_listing_price_title'} 
+      / th= sort_link @search, :line_items_count, Spree.t(:sales_total), {}, {title: 'line_items_count'}
+      / th= Toal sales  tax
+      / th= Total Discount Earned
+      / th= Delivery charges Adjustments
+      / th= Total Net Pay
+
+
+      / Store Name, Total sales amount , Toal sales  tax,  total discount earned by PYKLOCAL , Delivery charges adjustments, and Total Net Pay to the store, Status of payment ( paid or to be paid) ( once paid cannot be changed to unpaid, log the user details )
+
+
+  tbody
+    - if params[:q][:orders_completed_at_lt]
+      - unless @merchant.blank?
+        - @merchant.each do |merchant|
+          - order = merchant.orders.where(spree_orders:{created_at: params[:q][:orders_completed_at_gt]..params[:q][:orders_completed_at_lt]})
+          tr
+            td= merchant.name
+            td= order.sum(:total)
+            td= order.sum(:adjustment_total)
+            td= order.sum(:promo_total)
+
+      - else
+        tr
+          td colspan="5" No sold merchant available.
+    -else
+      - unless @merchant.blank?
+        - @merchant.each do |merchant|
+          tr
+            / td= merchant.stores.first.try(:name)
+            td= merchant.name
+            td= merchant.orders_filter.sum(:total)
+            td= merchant.orders_filter.sum(:adjustment_total)
+            td= merchant.orders_filter.sum(:promo_total)
+            
+      - else
+        tr
+          td colspan="5" No sold merchant available.

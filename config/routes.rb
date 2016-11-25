@@ -59,6 +59,7 @@ Pyklocal::Application.routes.draw do
     resources :addresses 
     resources :payment_histories
     resources :wishlists 
+    resources :users_feedbacks
     #Applications routes
     resources :shop , :only => [:index,:show]
     resources :orders do 
@@ -88,6 +89,7 @@ Pyklocal::Application.routes.draw do
         resources :categories
 
         resources :store_sessions
+        resources :users_feedbacks
 
         resources :ratings_reviews, only: [:index, :create]
 
@@ -168,8 +170,10 @@ Pyklocal::Application.routes.draw do
     #Admin routes
     namespace :admin do 
       resources :commissions
+      resources :feedbacks
       resources :carousel_images
       resources :static_images
+
       resources :sellers do 
         resources :payment_preferences
         get :stores
@@ -181,6 +185,8 @@ Pyklocal::Application.routes.draw do
         collection do
           get :products_sale_report
           post :products_sale_report
+          get :store_details_report
+          post :store_details_report
         end
       end
     end

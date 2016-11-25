@@ -77,3 +77,6 @@
             strong= adjustment.label
           td.total style="padding: 10px 0; text-align: right;" colspan="2"
             span= adjustment.display_amount.to_html
+
+  / .well
+  /   = link_to 'Share your Shopping Experience', "users_feedbacks/new?#{@order.try(:full_name)}"
