@@ -28,7 +28,7 @@ gem 'progress_bar'
 gem 'noty-rails'
 
 gem 'spree_editor', github: 'spree-contrib/spree_editor', branch: '3-1-stable'
-
+#gem 'spree_promotion_tax', git: 'git://github.com/bluehandtalking/spree_promotion_tax.git', branch: '1-3-default_tax'
 
 
 gem 'active_model_serializers', '~> 0.10.0'

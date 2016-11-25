@@ -31,6 +31,11 @@ Spree::OrdersController.class_eval do
     @order = current_spree_user.orders.includes(line_items: [variant: [:option_values, :images, :product]], bill_address: :state, ship_address: :state).find_by_number!(params[:id])
   end
 
+    def promotions_total
+     (adjustments.eligible - adjustments.tax - adjustments.shipping).map(&:amount).sum
+    end
+
+    
 	def populate
     order    = current_order(create_order_if_necessary: true)
     variant  = Spree::Variant.find(params[:variant_id])

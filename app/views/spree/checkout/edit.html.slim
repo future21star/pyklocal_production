@@ -28,7 +28,7 @@
         - if @order.state != 'confirm'
           #checkout-summary.col-md-3 data-hook="checkout_summary_box" 
             = render partial: 'summary', locals: { order: @order }
-        -if @order.state == 'delivery' 
+        -if @order.state == 'address' 
           #checkout-summary.col-md-3 data-hook="checkout_summary_box" 
             = form_for @order, url: update_checkout_path(@order.state), html: { id: "checkout_form_#{@order.state}" } do |f|
               p.field data-hook="coupon_code" 
