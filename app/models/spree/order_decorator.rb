@@ -53,6 +53,10 @@ module Spree
     def eligible_for_free_delivery
       item_total.to_f >= 35
     end
+    
+     def promotion
+      adjustments.competing_promos.eligible.reorder("amount ASC, created_at DESC, id DESC").first
+    end
 
     def self_pickup
       !line_items.collect(&:delivery_type).include?("home_delivery")

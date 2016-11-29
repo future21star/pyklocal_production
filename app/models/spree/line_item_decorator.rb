@@ -14,6 +14,18 @@ module Spree
 			product.images.first.try(:attachment).try(:url)
 		end
 
+		def promo_amount
+	    promo = order.promotion
+	    return promo_total unless promo
+	    order_total = order.item_total
+	    return 0.0 unless order_total != 0.0
+	    (promo.amount * amount) / order_total
+  	end
+
+  	 def discounted_amount
+    	amount + promo_amount
+  	end
+
 		def seller_name
 			product.store.try(:name)
 		end

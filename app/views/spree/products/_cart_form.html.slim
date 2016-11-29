@@ -16,22 +16,20 @@
           |&nbsp;
           = @product.upc_code
       li
-        b Availability:
-        - if @product.total_on_hand > 0
-          span style="color:#53af2e; font-weight:bold;" 
-            '
-            |In Stock
-        - else
-          span style="color:#F50C0C; font-weight:bold;" 
-            '
+        b Available:
+        span itemprop="qty"  
+          |&nbsp;
+          = @product.total_on_hand
+        / - if @product.total_on_hand > 0
+        /   span style="color:#53af2e; font-weight:bold;" 
+        /     '
+        /     |In Stock
+        / - else
+        /   span style="color:#F50C0C; font-weight:bold;" 
+        /     '
             |Out Of Stock
           /= @product.try(:asin)
-      li
-        - if @product.available_on && @product.available_on > Date.today
-          b Available From:
-          span style="color:#53af2e; font-weight:bold;" 
-            '
-            = @product.available_on.to_date.to_formatted_s(:rfc822) 
+      
     ul.price-box
       li.price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" 
         span itemprop="price"  
@@ -52,18 +50,18 @@
                   = label_tag "variant_id_#{ variant.id }" do
                     p.variant-description
                       = variant_options variant
-                      |&nbsp;(
-                      =variant.total_on_hand
-                      |) 
+                      / |&nbsp;(
+                      / =variant.total_on_hand
+                      / |) 
 
                     - if variant_price variant
                       span.price.diff= variant_price variant
     - else
-      b Max Quantity Available:
-      span itemprop="master_variant_quantity"
-        |&nbsp;
-        =  @product.master.total_on_hand
-      br
+      / b Max Quantity Available:
+      / span itemprop="master_variant_quantity"
+      /   |&nbsp;
+      /   =  @product.master.total_on_hand
+      / br
       = hidden_field_tag "variant_id", @product.master.id
 
     - if @product.price_in(current_currency) and !@product.price.nil?
