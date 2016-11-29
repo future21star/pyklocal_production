@@ -35,4 +35,5 @@ Spree::BackendConfiguration.class_eval do
   COMMISSION_TAB      ||= [:commission]
   CAROUSEL_IMAGE_TAB  ||= [:carousel_image]
   FEEDBACK_TAB  ||= [:feedback]
+  STATIC_IMAGE_TAB  ||= [:static_image]
 end
