@@ -56,7 +56,7 @@
                                 = link_to "Waiting to deliver", "#", class: "btn btn-success", disabled: true
                               - else
                                 = link_to "Delivered", "#", class: "btn btn-success", disabled: true
-                            -else
+                            -elsif order.state == "canceled"
                               = link_to "Canceled", "#", class: "btn btn-danger"
                         - else
                           tr
