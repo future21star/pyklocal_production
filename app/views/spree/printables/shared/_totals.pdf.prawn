@@ -36,7 +36,18 @@ invoice.payments.each do |payment|
 end
 
 totals_table_width = [0.875, 0.125].map { |w| w * pdf.bounds.width }
-pdf.table(totals, column_widths: totals_table_width) do
+pdf.table(totals, position: :right) do
+  row(2).style background_color: "F0F0F0"
   row(0..6).style align: :right
-  column(0).style borders: [], font_style: :bold
+  cells.padding = 12
+  cells.borders = []
+  row(0).borders = [:bottom]
+  row(0).border_width = 1
+  row(0).font_style = :bold
+  row(0..10  ).columns(0..6).borders = [:bottom]
 end
+
+# pdf.grid([0,4], [4,0]).bounding_box do
+#   pdf.text "NOTES/MEMO", align: :left , :style => :bold
+#   pdf.text "*Keep this invoice and manufacturer box for warranty purposes.", align: :left 
+# end

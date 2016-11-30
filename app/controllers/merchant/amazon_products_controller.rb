@@ -13,7 +13,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 		else
 			URI.parse(params[:url])
 		end
-		#render json: @amazon_products
+		# render json: @amazon_products
 	end
 
 	def new
