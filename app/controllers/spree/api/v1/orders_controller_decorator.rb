@@ -63,13 +63,17 @@ module Spree
 			  end
 			  p "*************************************************************************8"
 			  p order_params
+			  @in_wishlist_variant = @user.wishlists.where(variant_id: params[:order][:line_items_attributes].first["variant_id"])
+			  unless @in_wishlist_variant.blank?
+			  	@in_wishlist_variant.delete_all
+			  end
 			  @incomplete_order = @user.orders.where("state != ? AND state != ?", "complete", "canceled").last
 			  if @incomplete_order.blank?
 			  	p "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
 			 		@order = Spree::Core::Importer::Order.import(order_user, import_params)
 			 		render json: {
 	      				status: "1",
-	      				cart: order_user.cart_count.to_s,
+	      				cart_count: order_user.cart_count.to_s,
 	      				order_detail: to_stringify_checkout_json(@order, [])
 	      		}
 			 	else
@@ -89,11 +93,14 @@ module Spree
 				 		delivery_type = line_item["delivery_type"] || "home_delivery"
 				 		p delivery_type
           	@incomplete_order.contents.add(variant, quantity, {}, delivery_type)
+          	if line_item["in_wishlist"] == "true"
+          		@user.wishlists.where(variant_id: line_item["variant_id"]).delete_all
+          	end
           end
 
           render json: {
 	      				status: "1",
-	      				cart: order_user.cart_count.to_s,
+	      				cart_count: order_user.cart_count.to_s,
 	      				order_detail: to_stringify_checkout_json(@incomplete_order, [])
 	      		}
 			 	end

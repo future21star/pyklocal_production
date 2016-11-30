@@ -15,7 +15,7 @@ module Spree
           end 
           @products = @search.results
           @view_search = Sunspot.search(Spree::Product) do 
-            order_by(:view_count, :desc)
+            order_by(:view_counter, :desc)
             with(:buyable, :true)
             paginate page: 1, per_page: 5
           end
@@ -113,7 +113,7 @@ module Spree
               }
             elsif params[:id] == "3"
               @view_search = Sunspot.search(Spree::Product) do 
-                order_by(:view_count, :desc)
+                order_by(:view_counter, :desc)
                 with(:buyable, :true)
                 paginate(:page => page, :per_page => per_page)
               end
