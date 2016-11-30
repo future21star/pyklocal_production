@@ -12,14 +12,14 @@
             - states.map do |state| 
               - unless state == "complete"
                 #accordion.panel-group
-                  .panel.panel-default style=("border-radius:0px;margin-bottom: -18px;")
+                  .panel.panel-default style=("border-radius:0px;margin-bottom: -18px;font-size:15px;")
                     .panel-heading
-                      a href=checkout_state_path(state) 
-                        h4.panel-title data-hook="checkout_title"
+                      / a href=checkout_state_path(state) 
+                      /   h4.panel-title data-hook="checkout_title"
                           
-                            = state.titleize
-                            | &nbsp;
-                            i.fa.fa-caret-down
+                      = state.titleize
+                      | &nbsp;
+                      i.fa.fa-caret-down
                     - unless state == "complete"
                       - if state == @order.state
                         .panel-body id=(state) data-order_state=(state) 

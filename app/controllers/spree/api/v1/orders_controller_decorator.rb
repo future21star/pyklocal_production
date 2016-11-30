@@ -121,7 +121,7 @@ module Spree
 	            	status: "1",
 	            	message: "Updated Successfully",
 	            	cart_count: @user.cart_count.to_s,
-	            	details: @order.as_json()
+	            	details: to_stringify_checkout_json(@order, [])
 	            }
 	          else
 	          	render json:{

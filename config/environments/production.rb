@@ -79,8 +79,8 @@ Rails.application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
-  config.action_mailer.asset_host = "http://54.186.114.27"
-  config.action_mailer.default_url_options = { :host => 'http://54.186.114.27' }
+  config.action_mailer.asset_host = "http://54.212.247.10"
+  config.action_mailer.default_url_options = { :host => 'http://54.212.247.10' }
   config.action_mailer.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
     :enable_starttls_auto => false,

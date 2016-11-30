@@ -27,18 +27,18 @@
     .form-group.required.clearfix
       label.col-sm-2.control-label for="input-confirm"  Password Confirm
       .col-sm-10
-        = f.password_field :password, :class => 'form-control', :required => "", :tabindex => 2, :placeholder => Spree.t(:password)
-    .form-group.required.clearfix
-      label.col-sm-2.control-label for="input-confirm"  Registration Type
-      .col-sm-10
-        span Vendor
-        = f.hidden_field :registration_type, :value => "vendor" 
+        = f.password_field :password_confirmation, :class => 'form-control', :required => "", :tabindex => 2, :placeholder => Spree.t(:password)
+    / .form-group.required.clearfix
+    /   label.col-sm-2.control-label for="input-confirm"  Registration Type
+    /   .col-sm-10
+    /     span Vendor
+    = f.hidden_field :registration_type, :value => "vendor" 
   .buttons
     .form-group
       label.t_and_c
         = f.check_box :t_and_c_accepted, class: "t_and_c_ven"
         |  I have read and agree to the 
-        = link_to "Privacy Policy", "#", class: "agree"
+        = link_to "Privacy Policy", "#", class: "agree", style:"color:red;"
       br
       br
       = f.submit Spree.t(:continue), :class => 'btn btn-lg btn-primary', :tabindex => 3, id: "continue-btn", disabled: true
@@ -54,6 +54,6 @@
         } else {
           $('#continue-btn').prop('disabled', true);
         }
-      })
+      });
     })
 
