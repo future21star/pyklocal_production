@@ -8,14 +8,10 @@ Rails.application.configure do
   # config.assets.quiet = true
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address:              'smtp.gmail.com',
-    port:                 587,
-    domain:               'gmail.com',
-    user_name:            'prashant.mishra@w3villa.com',
-    password:             'karbonn@13',
-    authentication:       'plain',
-    enable_starttls_auto: true  }
+  ActionMailer::Base.smtp_settings = {
+    :enable_starttls_auto => false,
+    :openssl_verify_mode => 'none'
+  }
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -26,6 +22,7 @@ Rails.application.configure do
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.delivery_method = :letter_opener
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
