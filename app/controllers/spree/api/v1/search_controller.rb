@@ -82,12 +82,19 @@ module Spree
 		def perform_search
 			per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12
       @search = Sunspot.search(Spree::Product) do 
-        fulltext params[:q][:search] if params[:q] && params[:q][:search]
+        p "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+        p  params[:q][:id].present?
+        p  params[:q][:id].blank?
+        p params[:q][:id].blank?
+        p params[:q][:id]
+        p params[:q][:id] == "\"\""
+        #p params[:q].present? && params[:q][:id].blank?
+        fulltext params[:q][:search] if params[:q] && params[:q][:search] != "\"\""
         #paginate(:page => params[:page], :per_page => per_page)
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
         with(:buyable, :true)
-        with(:store_id, params[:q][:store_id]) if params[:q] && params[:q][:store_id]
-        with(:taxon_ids, params[:q][:id]) if params[:q] && params[:q][:id]
+        with(:store_id, params[:q][:store_id]) if params[:q] && params[:q][:store_id] != "\"\""
+        with(:taxon_ids, params[:q][:id]) if params[:q] && params[:q][:id] != "\"\""
         facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
         facet(:brand_name)
         facet(:store_name)

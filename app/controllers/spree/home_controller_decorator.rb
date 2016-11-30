@@ -12,7 +12,7 @@ Spree::HomeController.class_eval do
   #   @products = @searcher.retrieve_products.includes(:possible_promotions)
     @products = @search.results
     @view_search = Sunspot.search(Spree::Product) do 
-      order_by(:view_count, :desc)
+      order_by(:view_counter, :desc)
       with(:buyable, :true)
       paginate page: 1, per_page: 20
     end

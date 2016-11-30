@@ -29,7 +29,7 @@ module Spree
       
       float :price
       integer :sell_count
-      integer :view_count
+      integer :view_counter
       boolean :buyable
 
       time :created_at
@@ -130,9 +130,9 @@ module Spree
       line_items.joins(:order).where(spree_orders: {state: "complete"}).count
     end
 
-    def view_count
-      impressionist_count(:filter=>:session_hash)
-    end
+    # def view_count
+    #   impressionist_count(:filter=>:session_hash)
+    # end
 
     def increment_counter
       update_attributes(view_counter: impressionist_count(:filter=>:session_hash))
