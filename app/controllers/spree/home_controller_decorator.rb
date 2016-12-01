@@ -16,7 +16,8 @@ Spree::HomeController.class_eval do
       with(:buyable, :true)
       paginate page: 1, per_page: 20
     end
-    @most_viewed_products = @view_search.results
+     @most_viewed_products = @view_search.results
+      #@most_viewed_products =  Spree::Product.all.where(buyable: true).limit(30).order('view_counter desc')
     @new_arrival = Spree::Product.all.where(buyable: true).limit(30).order('created_at DESC')
 		@bag_categories = Spree::Taxon.root.children.first.try(:products)
 		@clothing_categories = Spree::Taxon.root.children.last.try(:products)

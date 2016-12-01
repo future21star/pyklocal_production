@@ -86,7 +86,7 @@ module Spree
         p  params[:q][:id].present?
         p  params[:q][:id].blank?
         p params[:q][:id].blank?
-        p params[:q][:id]
+        p params[:q][:search]
         p params[:q][:id] == "\"\""
         #p params[:q].present? && params[:q][:id].blank?
         fulltext params[:q][:search] if params[:q] && params[:q][:search] != "\"\""
