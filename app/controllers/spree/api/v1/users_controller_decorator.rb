@@ -319,7 +319,9 @@ module Spree
 					variants_hash = Hash.new
 					variants_hash["quantity".to_sym] = line_item.quantity.to_s
 					variants_hash["delivery_type".to_sym] = line_item.delivery_type.to_s
-				
+					variant_hash["product_id".to_sym] = line_item.variant.product.id.to_s
+					variant_hash["product_name".to_sym] = line_item.variant.product.name.to_s
+
 					variant = line_item.variant
           variants_hash["id".to_sym] = variant.id.to_s
           variants_hash["price".to_sym] = variant.cost_price.to_f.to_s

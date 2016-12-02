@@ -74,7 +74,8 @@ module Spree
 			 		render json: {
 	      				status: "1",
 	      				cart_count: order_user.cart_count.to_s,
-	      				order_detail: to_stringify_checkout_json(@order, [])
+	      				message: "product added successfully"
+	      				# order_detail: to_stringify_checkout_json(@order, [])
 	      		}
 			 	else
 			 		p "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
@@ -101,7 +102,8 @@ module Spree
           render json: {
 	      				status: "1",
 	      				cart_count: order_user.cart_count.to_s,
-	      				order_detail: to_stringify_checkout_json(@incomplete_order, [])
+	      				message: "product added successfully"
+	      				# order_detail: to_stringify_checkout_json(@incomplete_order, [])
 	      		}
 			 	end
 			rescue Exception => e
