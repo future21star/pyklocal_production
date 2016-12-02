@@ -1,5 +1,5 @@
 - max_level = Spree::Config[:max_level_in_taxons_menu]
-- unless Spree::Taxonomy.where(name: "Categories").blank?
+- unless Spree::Taxon.where(parent_id: nil).blank?
   / - Spree::Taxonomy.where(name: "Categories").first.taxons.where(name: "Categories").first.children.each do |taxon| 
   - Spree::Taxon.where(parent_id: nil).each do|taxon|
     .column
