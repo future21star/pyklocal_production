@@ -19,5 +19,56 @@ module Spree
       end
 		end
 
+		def destroy
+			begin
+	      @line_item = find_line_item
+	      @order.contents.remove_line_item(@line_item)
+	      render json:{
+	      	status: "1",
+	      	message: "Line item deleted successfully"
+	      }
+	    rescue Exception => e
+	    	rendor json:{
+	    		status: "0",
+	    		message: e.message
+	    	}
+	    end
+    end
+
+
+    def update
+    	begin
+	      @line_item = find_line_item
+	      if @order.contents.update_cart(line_items_attributes)
+	        @line_item.reload
+	        render json:{
+	        	status: "1",
+	        	message: "Line item updated successfully"
+	        }
+	      else
+	        #invalid_resource!(@line_item)
+	        render json:{
+	        	status: "0",
+	        	message: "Something went wrong"
+	        }
+	      end
+	    rescue Exception => e
+	    	render json:{
+        	status: "0",
+        	message: e.message
+	      }
+	    end
+    end
+
+    private
+    	def line_items_attributes
+	      {line_items_attributes: {
+	          id: params[:id],
+	          quantity: params[:line_item][:quantity],
+	          options: line_item_params[:options] || {},
+	          delivery_type:  params[:line_item][:delivery_type]
+	      }}
+   		end
+
 	end
 end

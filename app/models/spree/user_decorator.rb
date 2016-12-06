@@ -64,10 +64,10 @@ Spree::User.class_eval do
     cart_count_sum = 0
     @order = orders.where("state != ? AND state != ?","complete","canceled").last
     unless @order.blank?
-      @order.line_items.each do |line_item|
-        cart_count_sum = cart_count_sum + line_item.quantity
-      end
-      return cart_count_sum
+      # @order.line_items.each do |line_item|
+      #   cart_count_sum = cart_count_sum + line_item.quantity
+      # end
+      return @order.line_items.count
     end
     return 0
   end
