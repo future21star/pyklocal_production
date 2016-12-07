@@ -49,7 +49,7 @@
                               - if order.items_state(line_item_ids) == "packaging"
                                 = link_to "In process", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: "ready_to_pick"), class: "btn btn-success", method: :put
                               - elsif order.items_state(line_item_ids) == "ready_to_pick"
-                                = link_to "Ready For Pick Up", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: "packaging"), class: "btn btn-sucess", method: :put
+                                = link_to "Ready For Pick Up", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: "packaging"), class: "btn btn-success", method: :put
                               - elsif order.items_state(line_item_ids) == "confirmed_pickup"
                                 = link_to "Waiting For Driver", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: "out_for_delivery"), class: "btn btn-info", method: :put
                               - elsif order.items_state(line_item_ids) == "out_for_delivery"
