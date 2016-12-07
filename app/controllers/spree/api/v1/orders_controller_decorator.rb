@@ -119,8 +119,12 @@ module Spree
           find_order(true)
           authorize! :update, @order, order_token
 
+          p "************************************************************************************"
+          p order_params
           if @order.contents.update_cart(order_params)
             user_id = params[:order][:user_id]
+            p "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=="
+            p user_id
             if current_api_user.has_spree_role?('admin') && user_id
               @order.associate_user!(Spree.user_class.find(user_id))
             end
@@ -240,6 +244,7 @@ module Spree
           {}
         end
     	end
+
 
     	def add_cart
         if params[:order]

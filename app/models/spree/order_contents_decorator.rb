@@ -38,6 +38,7 @@ module Spree
       line_item
     end
 
+
     def remove_from_line_item(variant, quantity, options = {}, delivery_type)
       line_item = grab_line_item_by_variant(variant, true, options)
       line_item.quantity -= quantity

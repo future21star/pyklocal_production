@@ -28,7 +28,7 @@ module Spree
 	      	message: "Line item deleted successfully"
 	      }
 	    rescue Exception => e
-	    	rendor json:{
+	    	render json:{
 	    		status: "0",
 	    		message: e.message
 	    	}
@@ -70,5 +70,10 @@ module Spree
 	      }}
    		end
 
+   		def find_line_item
+        id = params[:id].to_i
+        order.line_items.detect { |line_item| line_item.id == id } or
+            raise "Line Item does not exist"
+      end
 	end
 end
