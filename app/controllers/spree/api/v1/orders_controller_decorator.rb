@@ -118,9 +118,23 @@ module Spree
 		def update
           find_order(true)
           authorize! :update, @order, order_token
-
+          Hash line_items_attributes_hash = Hash.new
+          params_counter = 0
           p "************************************************************************************"
           p order_params
+          params[:order][:line_items_attributes].each do |line_item|
+          	p "___________________________________________________________________________________"
+          	line_items_attributes_hash[params_counter.to_s] = line_item
+          	params_counter = params_counter +1
+          	p line_item
+          end
+          p "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+          p line_items_attributes_hash
+          Hash order_params_hash = Hash.new
+          order_params_hash["line_items_attributes"] = line_items_attributes_hash
+          p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&77"
+          p order_params_hash
+          order_params_hash = order_params_hash
           if @order.contents.update_cart(order_params)
             user_id = params[:order][:user_id]
             p "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=="

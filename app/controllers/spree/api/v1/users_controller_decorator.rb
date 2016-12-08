@@ -175,6 +175,7 @@ module Spree
 		#Update Users information
 		def update
       if @user.update_attributes(user_params)
+      	p "***********************************************************************8"
         @response = get_response
       else
         @response = error_response
@@ -195,6 +196,7 @@ module Spree
 					message: "Cart",
 					cart_count: @user.cart_count.to_s,
 					order_number: @order.number,
+					order_token: @order.guest_token,
 					details: to_stringify_variant_json(@order, @user, [])
 				}
 			else

@@ -87,15 +87,16 @@ module Spree
         p  params[:q][:id].blank?
         p params[:q][:id].blank?
         p params[:q][:search]
-        p params[:q][:id] == "\"\""
+        p params[:q][:id] == ""
+        p params[:q][:store_id]
         #p params[:q].present? && params[:q][:id].blank?
         # fulltext params[:q][:search] if params[:q] && params[:q][:search] != "\"\""
-        fulltext params[:q][:search] if params[:q] && params[:q][:search]
+        fulltext params[:q][:search] if params[:q] && params[:q][:search] != ""
         #paginate(:page => params[:page], :per_page => per_page)
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
         with(:buyable, :true)
-        with(:store_id, params[:q][:store_id]) if params[:q] && params[:q][:store_id]
-        with(:taxon_ids, params[:q][:id]) if params[:q] && params[:q][:id]
+        with(:store_id, params[:q][:store_id]) if params[:q] && params[:q][:store_id] != ""
+        with(:taxon_ids, params[:q][:id]) if params[:q] && params[:q][:id] != ""
         facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
         facet(:brand_name)
         facet(:store_name)
