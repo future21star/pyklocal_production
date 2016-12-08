@@ -37,7 +37,7 @@ module Spree
 
   	def index
   		unless @user.blank?
-  			@ratings = Rating.where(rateable_id: params[:product_id])
+  			@ratings = Rating.where(rateable_id: params[:product_id]).order("created_at desc")
   			#@comments = Comment.where(commentable_id: params[:product_id]).last.comment
   			unless @ratings.blank? && @comments.blank?
   				render json:{
