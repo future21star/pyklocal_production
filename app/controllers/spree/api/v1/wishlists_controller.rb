@@ -7,7 +7,7 @@ module Spree
       @products = []
       begin
         if @user.present? && @user.wishlists.present?
-          @user.wishlists.each do |wish|
+          @user.wishlists.order("created_at desc").each do |wish|
             unless wish.variant.blank?
               @products.push(wish.variant.try(:product))
             else

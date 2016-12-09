@@ -1,6 +1,8 @@
 module Spree
 	Api::V1::LineItemsController.class_eval do 
 
+		attr_accessor :in_wishlist
+
 		def create
 			variant = Spree::Variant.find(params[:line_item][:variant_id])
       @line_item = order.contents.add(variant,params[:line_item][:quantity] || 1,line_item_params[:options] || {})

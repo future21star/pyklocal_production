@@ -4,6 +4,8 @@ module Spree
     has_many :pickable_line_items, -> {where(spree_line_items: {delivery_type: "pickup"})}, class_name: "Spree::LineItem"
     has_many :stores, through: :products
 
+    attr_accessor :in_wishlist
+
     self.whitelisted_ransackable_associations = %w[shipments user promotions bill_address ship_address line_items stores]
 
     # ---------------------------------------- Associations -----------------------------------------------------

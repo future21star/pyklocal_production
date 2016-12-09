@@ -128,16 +128,13 @@ module Spree
           	params_counter = params_counter +1
           	p line_item
           end
-          p "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
           p line_items_attributes_hash
           Hash order_params_hash = Hash.new
           order_params_hash["line_items_attributes"] = line_items_attributes_hash
-          p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&77"
           p order_params_hash
           order_params_hash = order_params_hash
           if @order.contents.update_cart(order_params)
             user_id = params[:order][:user_id]
-            p "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=="
             p user_id
             if current_api_user.has_spree_role?('admin') && user_id
               @order.associate_user!(Spree.user_class.find(user_id))
@@ -147,8 +144,8 @@ module Spree
 	            render json:{
 	            	status: "1",
 	            	message: "Updated Successfully",
-	            	cart_count: @user.cart_count.to_s,
-	            	details: to_stringify_checkout_json(@order, [])
+	            	cart_count: @user.cart_count.to_s
+	            	# details: to_stringify_checkout_json(@order, [])
 	            }
 	          else
 	          	render json:{
