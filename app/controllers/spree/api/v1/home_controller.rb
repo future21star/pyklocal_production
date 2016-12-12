@@ -102,6 +102,8 @@ module Spree
               render json: {
                 status: "1",
                 message: "Best Seller",
+                number_of_pages: (@search.total / per_page.to_f).ceil().to_s,
+                total_product: @search.total.to_s,
                 item_list: to_stringify_product_json(@products, @user, [])
               }
             elsif params[:id] == "2"
@@ -109,6 +111,8 @@ module Spree
               render json: {
                 status: "1",
                 message: "New Arrival",
+                number_of_pages: (@search.total / per_page.to_f).ceil().to_s,
+                total_product: @search.total.to_s,
                 item_list: to_stringify_product_json(@new_arrival, @user, [])
               }
             elsif params[:id] == "3"
@@ -121,6 +125,8 @@ module Spree
               render json: {
                 status: "1",
                 message: "Most Viewed",
+                number_of_pages: (@search.total / per_page.to_f).ceil().to_s,
+                total_product: @search.total.to_s,
                 item_list: to_stringify_product_json(@most_viewed_products, @user, [])
               }
             else

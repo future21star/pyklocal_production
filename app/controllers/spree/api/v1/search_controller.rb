@@ -16,13 +16,13 @@ module Spree
           }
     		else
           #@products = @search_result.page(page).per(per_page)
-          @products = Spree::Product.where(id: @search.results.map(&:id), buyable: true).page(page).per(per_page)
+          @products = @search.results
     			render json: {
     				status: "1", 
     				message: "Search Result",
             cart_count: @user.cart_count.to_s,
-            number_of_pages: (@search_result.count / per_page.to_f).ceil().to_s,
-            total_product: @search_result.count.to_s,
+            number_of_pages: (@search.total / per_page.to_f).ceil().to_s,
+            total_product: @search.total.to_s,
     				details:  to_stringify_product_json(@products , @user ,[])
     			}
     		end

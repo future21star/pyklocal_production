@@ -24,5 +24,13 @@
 
 / - max_level = Spree::Config[:max_level_in_taxons_menu]
 / - @taxon = Spree::Taxon.where(parent_id: nil)
-/ - @taxon.each do |taxon|
-/   = render partial: "spree/shared/taxon_line_item", locals: {category_child: taxon}
+/ ul
+/   - @taxon.each do |taxon|
+/     li
+/       a data-no-turbolink=true href= spree.shop_path(id: taxon.permalink)
+/         = taxon.name
+/         - unless taxon.children.blank?
+/           = render partial: "spree/shared/taxon_line_item", locals: {category_child: taxon}
+
+    
+  

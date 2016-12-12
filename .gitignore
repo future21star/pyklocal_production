@@ -23,4 +23,7 @@
 /public/system/*
 /public/spree/*
 /node/node_modules/*
+/app/views/spree/shared/_taxon_line_item.html.slim
+/app/views/spree/shared/_taxonomies.html.slim
+
 dump.rdb
