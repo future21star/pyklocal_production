@@ -26,8 +26,10 @@ module Spree
       text :sku
       latlon(:location) { Sunspot::Util::Coordinates.new(store.try(:latitude), store.try(:longitude)) }
       text :asin
+      boolean :visible
       
       float :price
+      float :cost_price
       integer :sell_count
       integer :view_counter
       boolean :buyable
@@ -64,6 +66,14 @@ module Spree
 
     def upc_code
       product_properties.where(property_id: properties.find_by_name("UPC").try(:id)).try(:first).try(:value)
+    end
+
+    def visible
+      if self.cost_price.present? && self.tax_category.present? && self.taxons.present? && self.price.present?
+       return true
+      else
+       return false
+     end
     end
 
     def in_wishlist(user)

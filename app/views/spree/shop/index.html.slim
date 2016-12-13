@@ -97,8 +97,8 @@
             .product-thumb
               - unless @products.blank?
                 - @products.each do |product|
-                  .col-sm-3.product-grid
-                    = render :partial => 'spree/shared/product', locals: {product: product}
+                    .col-sm-3.product-grid
+                      = render :partial => 'spree/shared/product', locals: {product: product}
               - else
                 | No product(s) available
             

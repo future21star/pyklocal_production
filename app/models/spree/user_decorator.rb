@@ -72,6 +72,10 @@ Spree::User.class_eval do
     return 0
   end
 
+  def wishlist_variant_ids
+    self.wishlists.collect(&:variant_id)
+  end
+
   def drivers_cart
     orders = []
     driver_orders.where(is_delivered: false).each do |d_order|
