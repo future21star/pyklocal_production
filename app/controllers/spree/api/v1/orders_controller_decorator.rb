@@ -67,7 +67,7 @@ module Spree
 			  unless @in_wishlist_variant.blank?
 			  	@in_wishlist_variant.delete_all
 			  end
-			  @incomplete_order = @user.orders.where("state != ? AND state != ?", "complete", "canceled").last
+			  @incomplete_order = @user.orders.where("state != ? AND state != ? AND state != ?", "complete", "canceled", "returned").last
 			  if @incomplete_order.blank?
 			  	p "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
 			 		@order = Spree::Core::Importer::Order.import(order_user, import_params)

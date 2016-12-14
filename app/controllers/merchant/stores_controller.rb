@@ -43,7 +43,8 @@ class Merchant::StoresController < Merchant::ApplicationController
     if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
       raise CanCan::AccessDenied.new
     end
-    @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
+    # @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
+    @taxons = Spree::Taxon.where(parent_id: nil)
   end
 
   # POST /stores
@@ -56,7 +57,8 @@ class Merchant::StoresController < Merchant::ApplicationController
         format.html { redirect_to merchant_store_url(id: @store.slug, anchor: "map"), notice: 'Store approval is pending' }
         format.json { render action: 'show', status: :created, location: @store }
       else
-        @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
+        #@taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
+        @taxons = Spree::Taxon.where(parent_id: nil).first.id
         format.html { render action: 'new' }
         format.json { render json: @store.errors, status: :unprocessable_entity }
         flash[:error] = @store.errors.full_messages.join(", ")

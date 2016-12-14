@@ -73,7 +73,7 @@ module Spree
 							p "((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((("
 							p @is_guest_user
 							if @is_guest_user.is_guest == true 
-								if @is_guest_user.orders.where("state != ? AND state != ?","complete" ,"canceled").present? || @is_guest_user.wishlists.present?
+								if @is_guest_user.orders.where("state != ? AND state != ? AND state != ?","complete" ,"canceled","returned").present? || @is_guest_user.wishlists.present?
 								# 	unless user.orders.where.not(state: "complete").blank?
 								# 		@is_guest_user.orders.where.not(state: "complete").last.line_items.each do |line_item|
 								# 	 	 user.orders.last.contents.add(line_item.variant, line_item.quantity, {}, line_item.delivery_type)
@@ -83,12 +83,10 @@ module Spree
 								# 	end
 								# 	@response = get_response(user)
 								#   @response[:message] = "Login successfull"
-									if @is_guest_user.orders.where("state != ? AND state != ?","complete" ,"canceled").present?
-										unless user.orders.where("state != ? AND state != ?", "complete", "canceled").blank?
+									if @is_guest_user.orders.where("state != ? AND state != ? AND state != ?","complete" ,"canceled", "returned").present?
+										unless user.orders.where("state != ? AND state != ? AND state != ?", "complete", "canceled", "returned").blank?
 											@is_guest_user.orders.where.not(state: "complete").last.line_items.each do |line_item|
-												p "added"
-												p line_item
-												user.orders.where("state != ? AND state != ?", "complete", "canceled").last.contents.add(line_item.variant, line_item.quantity, {}, line_item.delivery_type)
+												user.orders.where("state != ? AND state != ? AND state != ?", "complete", "canceled", "returned").last.contents.add(line_item.variant, line_item.quantity, {}, line_item.delivery_type)
 								 	 		end
 								 	 	else
 								 	 		@is_guest_user.orders.last.update_attributes(user_id: user.id)

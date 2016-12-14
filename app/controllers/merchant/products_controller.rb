@@ -8,13 +8,28 @@ class Merchant::ProductsController < Merchant::ApplicationController
   layout 'merchant'
 
 	def index
+    p "______________________________________________________________________________________-"
+    p params
+    p params.key?("active_tab")
+    tab = params[:active_tab]
     @search = Sunspot.search(Spree::Product) do
       fulltext params[:q][:s] if params[:q] && params[:q][:s]
+      with(:visible, true)  if params[:active_tab] == "published" || !params.key?("active_tab")
+      with(:visible, false) if params[:active_tab] == "unpublished"
       with(:store_id, current_spree_user.stores.first.try(:id))
-      paginate(:page => params[:page], :per_page => 15)
+      paginate(:page => params[:page], :per_page => 10)
       order_by(:created_at, :desc)
     end
+    # @search_1 = Sunspot.search(Spree::Product) do
+    #   fulltext params[:q][:s] if params[:q] && params[:q][:s]
+    #   with(:visible, false)  
+    #   with(:store_id, current_spree_user.stores.first.try(:id))
+    #   paginate(:page => params[:page], :per_page => 15)
+    #   order_by(:created_at, :desc)
+    # end
     @collection =  @search.results
+    # @collection_1 =  @search_1.results
+    # p @collection
     @is_owner = is_owner?(current_spree_user.stores.first)
   end
 

@@ -175,7 +175,6 @@ module Spree
 		#Update Users information
 		def update
       if @user.update_attributes(user_params)
-      	p "***********************************************************************8"
         @response = get_response
       else
         @response = error_response
@@ -189,14 +188,15 @@ module Spree
 
     def get_cart
 			variant_arr = []
-			@order = @user.orders.where("state != ? AND state != ?","complete","canceled").last
+			@order = @user.orders.where("state != ? AND state != ? AND state != ?","complete","canceled","returned").last
 			unless @order.blank?
 				render json: {
 					status: "1",
 					message: "Cart",
 					cart_count: @user.cart_count.to_s,
-					order_number: @order.number,
-					order_token: @order.guest_token,
+					order_number: @order.number.to_s,
+					order_token: @order.guest_token.to_s,
+					order_state: @order.state.to_s,
 					details: to_stringify_variant_json(@order, @user, [])
 				}
 			else
