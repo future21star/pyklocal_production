@@ -30,5 +30,10 @@ module Spree
       mail(to: @user.email, subject: "Store Remove Notification")
     end
 
+    def notify_items_out_for_delivery(line_items)
+      @user = line_items.first.order.user
+      @line_items = line_items
+      mail(to: @user.email, subject: "Out For Delivery")
+    end
   end
 end

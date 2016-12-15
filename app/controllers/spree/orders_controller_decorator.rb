@@ -91,6 +91,9 @@ Spree::OrdersController.class_eval do
     if @order.present?
       @line_items = @order.line_items.where(id: params[:item_ids])
       @line_items.find_each {|line_item| line_item.update_attributes(delivery_state: params[:option])}
+      if params[:option] == "out_for_delivery"
+        UserMailer.notify_items_out_for_delivery(@line_items).deliver
+      end
       redirect_to :back, notice: "Notified successfully."
     else
       redirect_to :back, notice: "Order not found"
