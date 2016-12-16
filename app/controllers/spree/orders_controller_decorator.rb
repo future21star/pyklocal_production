@@ -94,6 +94,10 @@ Spree::OrdersController.class_eval do
       if params[:option] == "out_for_delivery"
         UserMailer.notify_items_out_for_delivery(@line_items).deliver
       end
+
+      if @order.get_order_home_delivery_line_items_ids.count == @order.get_order_delivered_line_items.count
+        UserMailer.notify_order_items_delivered(@order).deliver
+      end
       redirect_to :back, notice: "Notified successfully."
     else
       redirect_to :back, notice: "Order not found"

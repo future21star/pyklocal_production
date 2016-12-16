@@ -52,6 +52,14 @@ module Spree
       line_items.joins(:product).where(spree_products: {store_id: store_id}, spree_line_items: {delivery_type: "home_delivery"}).collect(&:id)
     end
 
+    def get_order_home_delivery_line_items_ids
+      line_items.where(delivery_type: 'home_delivery')
+    end
+
+    def get_order_delivered_line_items
+      line_items.where(delivery_state: 'delivered')
+    end
+
     def eligible_for_free_delivery
       item_total.to_f >= 35
     end

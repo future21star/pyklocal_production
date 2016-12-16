@@ -79,6 +79,8 @@ Pyklocal::Application.routes.draw do
       namespace :v1 do
 
         resources :home
+        resources :pages, only: [:index]
+        resources :client_tokens, only: [:show]
         resources :user_addresses, only: [:show, :update, :create, :destroy]
         resources :wishlists , :only => [:index, :destroy, :create]
 
