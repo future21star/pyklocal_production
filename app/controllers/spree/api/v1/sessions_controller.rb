@@ -88,6 +88,7 @@ module Spree
 											@is_guest_user.orders.where.not(state: "complete").last.line_items.each do |line_item|
 												user.orders.where("state != ? AND state != ? AND state != ?", "complete", "canceled", "returned").last.contents.add(line_item.variant, line_item.quantity, {}, line_item.delivery_type)
 								 	 		end
+								 	 		@is_guest_user.orders.delete_all
 								 	 	else
 								 	 		@is_guest_user.orders.last.update_attributes(user_id: user.id)
 										end

@@ -16,6 +16,14 @@ module Spree
       stores.first
     end
 
+    def is_any_item_delivered?
+      unless line_items.where(delivery_state: 'delivered').blank?
+        true
+      else
+        false
+      end
+    end
+
     def full_name
       [bill_address.first_name, bill_address.last_name].compact.join(" ")
     end
