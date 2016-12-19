@@ -333,14 +333,15 @@ module Spree
           variants_hash["total_on_hand"] = variant.total_on_hand.to_s
           variants_hash["stock_status"] = variant.stock_status.to_s 
           variants_hash["minimum_quantity".to_sym] = "1"
+          variants_hash["store_id".to_sym] = variant.product.store.id.to_s
+          variants_hash["store_name".to_sym] = variant.product.store.name.to_s
+          variants_hash["store_address".to_sym] = variant.product.store.address.to_s
 
 					variants_hash["option_name"] = variant.option_name
 
           if variant.images.present?
-          	p "888888888888888888888888888888888888888888888888888"
             variants_hash["product_images".to_sym] = variant.product_images
           elsif variant.product.images.present?
-          	p "********************************************************************"
           	variants_hash["product_images".to_sym] = variant.product.product_images
           else
           	variants_hash["product_images".to_sym] = []

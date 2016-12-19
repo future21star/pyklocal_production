@@ -13,7 +13,7 @@ module Spree
           end
 	  		end
 	  		values.push(main_hash)
-	  		if c_obj.children.present?
+	  		if c_obj.children.present? && c_obj.level < 1
 	  			main_hash["sub_category".to_sym] = to_stringify_json(c_obj.children, children_array = [])
 	  		else
 	  			main_hash["sub_category".to_sym] = []
