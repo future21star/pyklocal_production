@@ -16,6 +16,8 @@ Spree.config do |config|
   config.logo = "/images/pyc-logo.png"
 end
 
+FREE_DELIVERY_ORDER_PRICE = 35
+
 Spree::Store.current.name = "Pyklocal"
 
 Spree::PrintInvoice::Config.set(logo_path: "pyc_logo.png")

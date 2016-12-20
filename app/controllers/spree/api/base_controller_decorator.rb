@@ -275,6 +275,16 @@ module Spree
               line_items_hash["price".to_sym] = line_item.price.to_s
               line_items_hash["delivery_type".to_sym] = line_item.delivery_type.to_s
               line_items_hash["variant_id".to_sym] = line_item.variant_id.to_s
+              if line_item.variant.product.store.present?
+                line_items_hash["store_id".to_sym] = line_item.variant.product.store.id.to_s
+                line_items_hash["store_name".to_sym] = line_item.variant.product.store.name.to_s
+                line_items_hash["store_address".to_sym] = line_item.variant.product.store.address.to_s
+              else
+                line_items_hash["store_id".to_sym] = ""
+                line_items_hash["store_name".to_sym] = ""
+                line_items_hash["store_address".to_sym] = ""
+              end
+
               variant_hash = Hash.new
               line_item.variant.attributes.each do|k,v|
                   variant_hash[k.to_sym] = v.to_s
