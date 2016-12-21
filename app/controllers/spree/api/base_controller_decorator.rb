@@ -27,6 +27,7 @@ module Spree
           main_hash = Hash.new
           main_hash["id".to_sym] = p_obj.id.to_s
           main_hash["master_variant_id"] = p_obj.master.id.to_s
+          main_hash["product_share_link".to_sym] = (PRODUCT_SHARE_LINK + p_obj.slug).to_s
           #main_hash["master_variant_total_on_hand"] = p_obj.master.total_on_hand.to_s
           main_hash["name".to_sym] = p_obj.name
           main_hash["description".to_sym] = p_obj.description.to_s
@@ -192,6 +193,14 @@ module Spree
 
       def to_stringify_checkout_json c_obj ,values = []
         order_hash=Hash.new
+        if c_obj.state.eql?"payment"
+          @payment_method_paypal = Spree::PaymentMethod.where(name: 'paypal').last
+          if @payment_method_paypal.present?
+            order_hash["client_token".to_sym] = @payment_method_paypal.client_token(c_obj).to_s
+          else
+            order_hash["client_token".to_sym] = "paypal method not set in backend"
+          end
+        end
         bill_address_hash = Hash.new
         ship_address_hash = Hash.new
         skip_order_attributes = ["last_ip_address","created_by_id","approver_id","approved_at","confirmation_delivered","canceled_at","store_id"]

@@ -15,8 +15,10 @@ Spree.config do |config|
   # config.track_inventory_levels = false
   config.logo = "/images/pyc-logo.png"
 end
-
+# CONSTANT
 FREE_DELIVERY_ORDER_PRICE = 35
+PRODUCT_SHARE_LINK = 'http://54.212.247.10/products/'
+
 
 Spree::Store.current.name = "Pyklocal"
 
