@@ -49,7 +49,7 @@
                         = link_to order_cancel_path(order), class: "btn btn-danger", title: "Cancel Order", method: :put do 
                           i.fa.fa-close
                       / - if order.is_any_item_delivered? == true
-                      = link_to new_customer_return_path(order_number: order.number), title: "View", class: "btn btn-default" do 
+                      = link_to order_customer_return_items_path(order), title: "View", class: "btn btn-default" do 
                           i.fa.fa-reply
               - else
                   tr

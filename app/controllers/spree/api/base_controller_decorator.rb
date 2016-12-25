@@ -459,9 +459,9 @@ module Spree
           end
 
           unless c_obj.shipments.blank?
-            adjustments_hash["shipping_total".to_sym] = c_obj.shipments.to_a.sum(&:cost).to_f.to_s
+            adjustments_hash["shipping_adjustment".to_sym] = c_obj.shipments.to_a.sum(&:cost).to_f.to_s
           else
-            adjustments_hash["shipping_total".to_sym] = ""
+            adjustments_hash["shipping_adjustment".to_sym] = ""
           end
           order_hash["adjustments".to_sym] = adjustments_hash
         else

@@ -4,7 +4,7 @@ module Spree
 		include Spree::Api::ApiHelpers
 		include Spree::Core::ControllerHelpers::Order
 
-		before_action :load_order, only: [:show, :cancel, :refresh_order_summary, :cancel_coupon]
+		before_action :load_order, only: [:show, :cancel, :refresh_order_summary, :cancel_coupon, :cancel_coupon_code, :get_adjustments]
 		before_action :find_store, only: [:show]
 		before_action :find_driver, only: [:index, :show]
 		skip_before_filter :authenticate_user, only: [:apply_coupon_code, :refresh_order_summary, :cancel_coupon]
@@ -208,16 +208,18 @@ module Spree
 	    end
   	end
 
-		def apply_coupon_code
+	def apply_coupon_code
       find_order
       authorize! :update, @order, order_token
       if @order.adjustments.blank?
 	      if params[:coupon_code]
 		      @order.coupon_code = params[:coupon_code]
 		      @handler = PromotionHandler::Coupon.new(@order).apply
+		      @order = Spree::Order.find(@order.id)
 		      render json: {
 		      	status: @handler.successful? ? "1" : "0" ,
-		      	message: @handler.successful? ? "Coupon code successfully applied" : @handler.error.to_s
+		      	message: @handler.successful? ? "Coupon code successfully applied" : @handler.error.to_s,
+		      	details: get_order_adjustments(@order)
 		      }
 		    else
 		    	render json:{
@@ -231,7 +233,16 @@ module Spree
 		  		message: "Two coupon can not be applied to order together"
 		  	}
 		  end
-    end
+		  # render json:{
+		  # 	detail: get_order_adjustments(@order)
+		  # }
+   end
+
+   def get_adjustments
+   	render json: {
+   		detail: get_order_adjustments(@order)
+   	}
+   end
 
     def cancel_coupon
     	@order.adjustments.delete_all
@@ -242,12 +253,26 @@ module Spree
     	redirect_to :back
     end
 
+    def cancel_coupon_code
+    	@order.adjustments.delete_all
+    	@order.promotions.destroy
+    	Spree::OrderPromotion.where(order_id: @order.id).delete_all
+    	@order.update_totals
+		@order.persist_totals
+    	@order = Spree::Order.find(@order.id)
+    	render json:{
+    		status: "1",
+    		message: "coupon code remove Successfully",
+    		details: get_order_adjustments(@order)
+    	}
+    end
+
     def refresh_order_summary
     end
 
 		private
 
-			def order_params
+		def order_params
         if params[:order]
           normalize_params
           params.require(:order).permit(permitted_order_attributes)
@@ -256,6 +281,47 @@ module Spree
         end
     	end
 
+    	def get_order_adjustments order_obj
+    		adjustment_arr = []
+    		Hash adjustments_hash = Hash.new 
+    		# Promotion Adjustment
+    		if order_obj.try(:adjustments)
+            promotion_adjustment_arr = []
+            order_obj.adjustments.each do |adjustment|
+              promotion_adjustment_hash = Hash.new
+               promotion_adjustment_hash[adjustment.label.to_sym] =  adjustment.amount.to_f.to_s
+               promotion_adjustment_arr.push( promotion_adjustment_hash)
+            end
+         end
+
+         # Promotion Adjustment
+         if order_obj.try(:all_adjustments)
+          	unless order_obj.all_adjustments.where(source_type: "Spree::TaxRate").blank?
+	            tax_adjustment_arr = []
+	            order_obj.all_adjustments.where(source_type: "Spree::TaxRate").each do |tax|
+	              tax_adjustment_hash = Hash.new
+	              tax_adjustment_hash[tax.label.to_sym] = tax.amount.to_f.to_s
+	              tax_adjustment_arr.push(tax_adjustment_hash)
+	            end
+	            adjustments_hash["tax_adjustment".to_sym] = tax_adjustment_arr
+	         else
+	             adjustments_hash["tax_adjustment".to_sym] = []
+	         end
+       	end
+
+          # Shipment Adjustment
+         unless order_obj.shipments.blank?
+            adjustments_hash["shipping_total".to_sym] = order_obj.shipments.to_a.sum(&:cost).to_f.to_s
+         else
+            adjustments_hash["shipping_total".to_sym] = ""
+         end
+
+         adjustments_hash["promotion_adjustment_hash".to_sym] = promotion_adjustment_arr
+
+         adjustments_hash["adjustment_total".to_sym] = @order.adjustment_total.to_f.to_s
+         adjustment_arr.push(adjustments_hash)
+         return adjustment_arr
+      end
 
     	def add_cart
         if params[:order]
