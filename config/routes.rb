@@ -1,6 +1,7 @@
 Pyklocal::Application.routes.draw do 
 
 
+  
   namespace :merchant do
     get "stores/amazon/fetch", to: "amazon_products#fetch", as: "store_amazon_product"
     get "/", to: "home#index"
@@ -66,7 +67,10 @@ Pyklocal::Application.routes.draw do
       put :ready_to_pick
       put :cancel
       put :apply_coupon_code
+      # resources :return_authorizations
+      resources :customer_return_items
     end
+    resources :return_authorizations
     resources :payment_preferences
     resources :customer_returns, only: [:index, :new, :edit, :create, :update] do
         member do
@@ -110,6 +114,8 @@ Pyklocal::Application.routes.draw do
             get :refresh_order_summary
             put :cancel_coupon
             post :populate
+            put :cancel_coupon_code
+            get :get_adjustments
           end
 
           
