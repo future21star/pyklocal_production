@@ -26,6 +26,10 @@ module Spree
     	amount + promo_amount
   	end
 
+  	def return_quantity order
+  		CustomerReturnItem.where(line_item_id: self.id, order_id: order).sum(:return_quantity)
+  	end
+
 		def seller_name
 			product.store.try(:name)
 		end

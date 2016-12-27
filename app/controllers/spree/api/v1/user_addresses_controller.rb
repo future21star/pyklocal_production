@@ -20,11 +20,17 @@ module Spree
 						}
 					end
 				else
-					render json:{
-						status: "0",
-						message: "User address already exist",
-						address_id: @user.address.id.to_s
-					}
+					if @user.address.update_attributes(addresses_params)
+						render json: {
+							status: "1",
+							message: "Address updated successfully"
+						}
+					else
+						render json:{
+							status: "0",
+							message: @user.address.errors.full_messages.join(", ")
+						}
+					end
 				end
 			else
 				render json:{

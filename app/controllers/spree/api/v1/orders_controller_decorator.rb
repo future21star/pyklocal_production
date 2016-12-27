@@ -288,61 +288,7 @@ module Spree
         end
     	end
 
-    	def get_order_adjustments order_obj
-    		adjustment_arr = []
-    		Hash adjustments_hash = Hash.new 
-    		adjustments_hash['subtotal'.to_sym] = order_obj.total.to_f.round(2).to_s
-    		# Promotion Adjustment
-    		if order_obj.try(:adjustments)
-            promotion_adjustment_arr = []
-            order_obj.adjustments.each do |adjustment|
-              promotion_adjustment_hash = Hash.new
-               promotion_adjustment_hash["title".to_sym] =  adjustment.label.to_s
-               promotion_adjustment_hash["value".to_sym]  =adjustment.amount.to_f.to_s
-               promotion_adjustment_arr.push( promotion_adjustment_hash)
-            end
-         end
-
-         # Promotion Adjustment
-         if order_obj.try(:all_adjustments)
-          	unless order_obj.all_adjustments.where(source_type: "Spree::TaxRate").blank?
-	            tax_adjustment_arr = []
-	            order_obj.all_adjustments.where(source_type: "Spree::TaxRate").each do |tax|
-	              tax_adjustment_hash = Hash.new
-	              tax_adjustment_hash["title".to_sym] = tax.label.to_s
-	              tax_adjustment_hash["value".to_sym] = tax.amount.to_f.to_s
-	              tax_adjustment_arr.push(tax_adjustment_hash)
-	            end
-	            adjustments_hash["tax".to_sym] = tax_adjustment_arr
-	         else
-	             adjustments_hash["tax".to_sym] = []
-	         end
-       	end
-
-          # Shipment Adjustment
-         # unless order_obj.shipments.blank?
-         #    adjustments_hash["shipping_total".to_sym] = order_obj.shipments.to_a.sum(&:cost).to_f.to_s
-         # else
-         #    adjustments_hash["shipping_total".to_sym] = ""
-         # end
-
-         if order_obj.try(:shipments).present?
-         	Hash shipment_hash = Hash.new
-         	shipment_hash["title".to_sym]  = order_obj.shipments.first.shipping_rates.where(selected: true).first.shipping_method.name.to_s
-         	shipment_hash["value".to_sym]  = order_obj.shipments.first.cost.to_f.to_s
-         	shipment_hash["shipment_id".to_sym]  = order_obj.shipments.first.id.to_s
-         	shipment_hash["shipping_rate_id".to_sym] = order_obj.shipments.first.shipping_rates.where(selected: true).first.id.to_s
-         	adjustments_hash["shipping".to_sym] = shipment_hash
-         else
-         	adjustments_hash["shipping".to_sym] = ""
-         end
-
-         adjustments_hash["discount".to_sym] = promotion_adjustment_arr
-
-         adjustments_hash["adjustment_total".to_sym] = order_obj.adjustment_total.to_f.to_s
-         adjustment_arr.push(adjustments_hash)
-         return adjustment_arr
-      end
+    	
 
     	def add_cart
         if params[:order]

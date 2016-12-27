@@ -68,7 +68,13 @@ Pyklocal::Application.routes.draw do
       put :cancel
       put :apply_coupon_code
       # resources :return_authorizations
-      resources :customer_return_items
+      resources :customer_return_items do
+        collection do 
+          post :return_multiple_item
+          get :eligible_item
+        end
+      end
+      
     end
     resources :return_authorizations
     resources :payment_preferences
