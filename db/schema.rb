@@ -63,15 +63,15 @@ ActiveRecord::Schema.define(version: 20161225080445) do
     t.datetime "updated_at"
   end
 
-  create_table "customer_return_items", force: :cascade do |t|
-    t.integer  "order_id",        limit: 4
-    t.integer  "line_item_id",    limit: 4
-    t.integer  "return_quantity", limit: 4
-    t.boolean  "refunded",                  default: false
-    t.boolean  "accepted",                  default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+  # create_table "customer_return_items", force: :cascade do |t|
+  #   t.integer  "order_id",        limit: 4
+  #   t.integer  "line_item_id",    limit: 4
+  #   t.integer  "return_quantity", limit: 4
+  #   t.string   "refunded",        limit: 255
+  #   t.string   "status",          limit: 255
+  #   t.datetime "created_at"
+  #   t.datetime "updated_at"
+  # end
 
   create_table "drivers_orders", force: :cascade do |t|
     t.integer  "order_id",      limit: 4

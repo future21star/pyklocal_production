@@ -229,7 +229,7 @@ module Spree
                   #   end
                     order_hash["bill_address".to_sym] = c_obj.bill_address.get_address
                   else
-                    order_hash["bill_address".to_sym] = []
+                    order_hash["bill_address".to_sym] = {}
                    end
                 end
 
@@ -254,7 +254,7 @@ module Spree
                     # end
                     order_hash["ship_address".to_sym] = c_obj.ship_address.get_address
                   else
-                    order_hash["ship_address".to_sym] = []
+                    order_hash["ship_address".to_sym] = {}
                   end
                 end
 
