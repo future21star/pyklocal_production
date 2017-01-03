@@ -209,7 +209,7 @@ module Spree
           c_obj.attributes.each do |k,v|
               unless skip_order_attributes.include? k
                 if k.eql?"bill_address_id"  
-                  if v
+                  if v && Spree::Address.exists?(v)
                   #   bill_country_hash = Hash.new
                   #   bill_state_hash = Hash.new
                   #   c_obj.bill_address.attributes.each do |k1,v1|
@@ -234,7 +234,7 @@ module Spree
                 end
 
                 if k.eql?"ship_address_id"  
-                  if v
+                  if v && Spree::Address.exists?(v)
                     # ship_country_hash = Hash.new
                     # ship_state_hash = Hash.new
                     # c_obj.bill_address.attributes.each do |k1,v1|

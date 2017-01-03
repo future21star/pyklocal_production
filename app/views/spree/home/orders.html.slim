@@ -38,7 +38,7 @@
                     -if order.canceled_at.present?
                       td.text-center= order.canceled_at.strftime("%m-%d-%Y")
                     -else
-                      td.text-center
+                      td.text-center NA
                     td.text-center= order.quantity
                     td.text-center= order.user.full_name
                     td.text-center= order.total

@@ -42,7 +42,6 @@ module Merchant
     friendly_id :name, use: :slugged
 
     def deactive_store_products
-      # p "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
       unless spree_products.blank?
         spree_products.update_all(buyable: false)
       end
@@ -107,6 +106,16 @@ module Merchant
         store_line_items << product.line_items.where("delivery_state = ? AND delivery_type = ?", "ready_to_pick", "home_delivery")
       end
       return store_line_items.flatten
+    end
+
+    def return_orders
+      store_return_order = []
+      product_line_items.each do |line_item|
+        if line_item.return_item == true
+          store_return_order << line_item.order
+        end
+      end
+      return store_return_order.uniq.flatten
     end
 
     def pickable_store_orders

@@ -209,11 +209,19 @@ module Spree
 
 		def get_orders
 			@orders = @user.orders.where("state != ? AND state != ? AND state != ?","cart", "address", "shipment")
+			order_array = []
+			p "********************************"
+			p order_array
+			p @orders
+			@orders.each do |order|
+				p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
+				order_array << to_stringify_checkout_json(order, [])
+			end
 			unless @orders.blank?
 				render json:{
 					status: "1",
 					message: "Order Detail",
-					detail: to_stringify_order(@orders, [])
+					detail: order_array
 				}
 			else
 				render json:{

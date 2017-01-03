@@ -3,6 +3,7 @@ module Spree
 
     has_many :pickable_line_items, -> {where(spree_line_items: {delivery_type: "pickup"})}, class_name: "Spree::LineItem"
     has_many :stores, through: :products
+    has_many :customer_return_items
 
     attr_accessor :in_wishlist
 

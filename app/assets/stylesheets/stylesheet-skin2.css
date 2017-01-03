@@ -1,3 +1,4 @@
+
 @font-face{
   font-family:OpenSansRegular;
   src:url(../fonts/OpenSans-Regular-webfont.eot);
@@ -2991,3 +2992,21 @@ button:hover{
   margin: 2px;
   background-color: red;
 }
+
+
+
+#return_item td{
+  vertical-align: middle;
+  text-align: center;
+}
+
+#return_item .return_item_td{
+  width: 7%;
+  max-width: 10%;
+}
+
+
+
+
+
+

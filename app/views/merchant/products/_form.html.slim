@@ -22,10 +22,10 @@
               .fa &#xf022;
             = f.error_message_on :description
         .form-group
-          = f.field_container :categories do 
-            = f.label :categories, Spree.t(:categories) 
+          = f.field_container :taxon do 
+            = f.label :taxon_ids, raw(Spree.t(:categories) + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
             br
-            = f.hidden_field :taxon_ids, :value => @product.taxon_ids.join(','), placeholder: "Add a category"
+            = f.hidden_field :taxon_ids, :value => @product.taxon_ids.join(',')
         .form-group
           = f.field_container :option_types do 
             = f.label :option_type_ids, Spree.t(:option_types) 
@@ -34,7 +34,7 @@
       .col-md-4
         .form-group
           = f.field_container :price do 
-            = f.label :price, raw(Spree.t(:retail_price) + ' (USD)' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
+            = f.label :price, raw(Spree.t(:sell_price) + ' (USD)' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
             span.input-icon.icon-right
               = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'numbersOnly fullwidth form-control input-bg', :required => "" 
               .fa &#xf0d6;
@@ -46,13 +46,13 @@
             = f.error_message_on :shipping_category 
         .form-group
           = f.field_container :tax_category do 
-            = f.label :tax_category_id, Spree.t(:tax_category), class: "control-label" 
+            = f.label :tax_category_id, raw(Spree.t(:tax_category) + content_tag(:span, ' *', :class => "required control-label lable-margin-top")), class: "control-label" 
             = f.collection_select(:tax_category_id, @tax_categories, :id, :name, { :include_blank => Spree.t('match_choices.none') }, { :class => 'select2 fullwidth form-control input-bg auto-select' }) 
             = f.error_message_on :tax_category 
         .form-group
           .col-md-6.top-margin-row.child-div
             = f.field_container :cost_price do 
-              = f.label :cost_price, class: "control-label"
+              = f.label :cost_price, raw('Retail Price' + ' (USD) ' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
               span.input-icon.icon-right 
                 = f.number_field :cost_price, class: "numbersOnly form-control input-bg",:required => "" ,:min => @product.price , :step => "0.01"
                 .fa &#xf0d6;

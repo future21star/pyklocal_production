@@ -1,6 +1,6 @@
-= form_for [:admin, @seller, @payment_history], html: {} do |f|
+= form_for @payment_history, url: admin_seller_payment_histories_path do |f|
 	.form-group
-	  = f.field_container :transection_number do
+	  = f.field_container :transaction_number do
 	    = f.label :transaction_number, raw(Spree.t(:transaction_number) + content_tag(:span, ' *', :class => 'required control-label'))
 	    = f.text_field :transaction_number, :class => 'fullwidth title form-control', :required => true
 	    = f.error_message_on :transaction_number

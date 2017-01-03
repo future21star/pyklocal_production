@@ -52,6 +52,14 @@ module Spree
       end
     end
 
+    def return_item
+      if Spree::CustomerReturnItem.where(line_item_id: self.id, refunded: 'Requested', status: 'Requested').present?
+     		true
+     	else
+     		false
+     	end
+    end
+
     def total_amount
       self.quantity * self.price.to_f
     end

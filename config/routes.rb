@@ -30,9 +30,12 @@ Pyklocal::Application.routes.draw do
           get :customer
           get :adjustments
           get :payments
-          get :returns
-          put :approve
+          get :approve
           put :cancel
+          post :return_item_accept_reject
+          collection do 
+            get :returns
+          end
         end
       end
     end
