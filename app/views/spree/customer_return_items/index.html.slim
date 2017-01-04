@@ -15,56 +15,66 @@
         h2
           | Order Return Request
         - unless @customer_return_items.blank?
-          table.table.table-responsive.table-bordered#listing_named_types.table data-hook="" 
+          table.table.table-responsive.table-bordered#return_item.table data-hook="" 
             thead
               tr 
-                th Name
-                th Quantity
-                th Unit Price
-                th Approve Quantity
-                th Merchant Approval
-                th Amount
-                th Tax
-                th Total
-                th Refund Status
-                th Request Date
-                th Action
+                th.text-center Image
+                th.text-center Name
+                th.text-center Return Quantity
+                th.text-center Unit Price
+                th.text-center Tax Rate
+                th.text-center Approve Quantity
+                th.text-center Merchant Approval
+                th.text-center Item(s) Amount
+                th.text-center Tax
+                th.text-center Refund Amount
+                th.text-center Refund Status
+                th.text-center Request Date
+                th.text-center Action
             tbody id="" 
               - @customer_return_items.each do |return_item|
+                - tax_rate = return_item.line_item.variant.tax_category_id.present? ? return_item.line_item.variant.tax_category.tax_rates.first.amount.to_f : return_item.line_item.product.tax_category.tax_rates.first.amount.to_f 
                 tr data-hook="" id="" 
                   td.align-center
+                    - if return_item.line_item.variant.images.length == 0
+                      = link_to small_image(return_item.line_item.variant.product), return_item.line_item.variant.product,class:"img-thumbnail"
+                    - else
+                      = link_to image_tag(return_item.line_item.variant.images.first.attachment.url(:mini)), return_item.line_item.variant.product,class:"img-thumbnail"
+                  td.align-center 
                     = return_item.line_item.name
-                  td.align-center
+                  td.align-center class = "return_item_td"
                     = return_item.return_quantity
-                  td.align-center
-                    = return_item.line_item.single_money.to_html
-                  td.align-center
+                  td.align-center class = "return_item_td"
+                    = return_item.line_item.price
+                  td.align-center class = "return_item_td"
+                    = tax_rate * 100
+                  td.align-center class = "return_item_td"
                     -if return_item.approve_qty.nil? == true
                       = 0
                     -else
                       = return_item.approve_qty
-                  td.align-center
+                  td.align-center class = "return_item_td"
                     = return_item.status
-                  td.align-center
+                  td.align-center class = "return_item_td"
                     / = return_item.line_item.variant.product.tax_category.name.to_s
                     -if return_item.item_return_amount.nil? == true
                       = 0
                     -else
                       = return_item.item_return_amount
-                  td.align-center
+                  td.align-center class = "return_item_td"
                     / = return_item.line_item.variant.product.tax_category_id
                     -if return_item.tax_amount.nil? == true
                       = 0
                     -else
-                      = return_item.tax_amount
-                  td.align-center
+                      = return_item.tax_amount 
+                  td.align-center class = "return_item_td"
                     -if return_item.total.nil? == true
                       = 0
                     -else
                       = return_item.total
-                  td.align-center
+                  td.align-center class = "return_item_td"
                     = return_item.refunded
-                  td.align-center
+                  td.align-center class = "return_item_td"
                     = return_item.created_at.strftime("%d-%m-%Y")
                   td.align-center
                     -if return_item.status == "Requested"

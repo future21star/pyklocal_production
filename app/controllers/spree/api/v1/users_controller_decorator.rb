@@ -209,19 +209,11 @@ module Spree
 
 		def get_orders
 			@orders = @user.orders.where("state != ? AND state != ? AND state != ?","cart", "address", "shipment")
-			order_array = []
-			p "********************************"
-			p order_array
-			p @orders
-			@orders.each do |order|
-				p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-				order_array << to_stringify_checkout_json(order, [])
-			end
 			unless @orders.blank?
 				render json:{
 					status: "1",
 					message: "Order Detail",
-					detail: order_array
+					detail: to_stringify_order_json(@orders, [])
 				}
 			else
 				render json:{
@@ -253,64 +245,79 @@ module Spree
 
 		private
 
-		def to_stringify_order obj , values = []
-			obj.each do |c_obj|
+		def to_stringify_order_json obj , values = []
+			obj.each do |order|
 				order_hash = Hash.new
-				skip_order_attributes = ["last_ip_address","created_by_id","approver_id","approved_at","confirmation_delivered","canceled_at","store_id"]
-        checkout_step_arr = ["address" ,"delivery", "payment", "complete"]
-          # c_obj.attributes.each do |k,v|
-          #     unless skip_order_attributes.include? k
-          #       if k.eql?"bill_address_id"  
-          #         if v
-          #           order_hash["bill_address".to_sym] = c_obj.bill_address.get_address
-          #         else
-          #           order_hash["bill_address".to_sym] = []
-          #          end
-          #       end
+				order_hash["order_number".to_sym] = order.number.to_s
+				order_hash["order_date".to_sym] = order.created_at.to_s
+				unless order.payments.valid.last.source.nil?
+					if order.payments.valid.last.source.paypal_email.nil?
+						order_hash["payment".to_sym]  = "Ending in " + order.payments.valid.last.source.try(:braintree_last_digits) + '(' + ActionController::Base.helpers.number_to_currency(order.payments.valid.last.amount.to_f) + ')' 
+					else
+						order_hash["payment".to_sym] = order.payments.valid.last.source.try(:paypal_email).to_s + '(' + ActionController::Base.helpers.number_to_currency(order.payments.valid.last.amount.to_f) + ')' 
+					end
+				else
+					order_hash["payment".to_sym] = "Check " + '(' + ActionController::Base.helpers.number_to_currency(order.payments.valid.last.amount.to_f) + ')' 
+				end
+				# if order.payments.valid.source.nil?
+				# 	order_hash["payment".to_sym] = "hello"
+				# else
+				# 	order_hash["payment".to_sym] = "Bye"
+				# end
+				order_hash["shipment".to_sym] = "Delivery within 6 - 8 woking hours with cost " + ActionController::Base.helpers.number_to_currency(order.shipments.last.selected_shipping_rate.cost.to_f)
 
-          #       if k.eql?"ship_address_id"  
-          #         if v
-          #           order_hash["ship_address".to_sym] = c_obj.ship_address.get_address
-          #         else
-          #           order_hash["ship_address".to_sym] = []
-          #         end
-          #       end
+				if Spree::Address.exists?(order.bill_address_id)
+					order_hash["bill_address".to_sym] = order.bill_address.get_address
+				else
+					order_hash["bill_address".to_sym] = {}
+				end
 
-          #       order_hash[k.to_sym] = v.to_s
-          #     end 
-          # end
-          order_hash[""]
-          if c_obj.try(:line_items)
+
+				if Spree::Address.exists?(order.ship_address_id)
+					order_hash["shipping_address".to_sym] = order.ship_address.get_address
+				else
+					order_hash["shipping_address".to_sym] = {}
+				end
+
+				if order.try(:line_items)
             line_item_arr = []
-            c_obj.line_items.each do|line_item|
+            order.line_items.each do|line_item|
               line_items_hash = Hash.new
               line_items_hash["id".to_sym] = line_item.id.to_s
               line_items_hash["quantity".to_sym] = line_item.quantity.to_s
               line_items_hash["price".to_sym] = line_item.price.to_s
+              line_items_hash["delivery_type".to_sym] = line_item.delivery_type.to_s
               line_items_hash["variant_id".to_sym] = line_item.variant_id.to_s
-              variant_hash = Hash.new
-              line_item.variant.attributes.each do|k,v|
-                  variant_hash[k.to_sym] = v.to_s
+              line_items_hash["product_name".to_sym] = line_item.product.name.to_s
+              line_items_hash["product_id".to_sym] = line_item.product.id.to_s
+              line_items_hash["cost_currency".to_sym] = line_item.variant.cost_currency.to_s
+              line_items_hash["sku".to_sym] = line_item.variant.sku.to_s
+              line_items_hash["option_name".to_sym] = line_item.variant.option_name.to_s
+              line_items_hash["price".to_sym] = line_item.price.to_f.round(2).to_s
+              if line_item.variant.product.store.present?
+                line_items_hash["store_id".to_sym] = line_item.variant.product.store.id.to_s
+                line_items_hash["store_name".to_sym] = line_item.variant.product.store.name.to_s
+                line_items_hash["store_address".to_sym] = line_item.variant.product.store.address.to_s
+              else
+                line_items_hash["store_id".to_sym] = ""
+                line_items_hash["store_name".to_sym] = ""
+                line_items_hash["store_address".to_sym] = ""
               end
-              
-              variant_hash["stock_status"] = line_item.variant.stock_status.to_s
-              variant_hash["option_name"] = line_item.variant.option_name
 
               if line_item.variant.images
-                variant_hash["images".to_sym] = line_item.variant.product_images
+                line_items_hash["images".to_sym] = line_item.variant.product_images
               else
-                variant_hash["images".to_sym] = []
+                line_items_hash["images".to_sym] = []
               end
 
-              line_items_hash["variants"] = variant_hash
               line_item_arr.push(line_items_hash)
             end
             order_hash["line_items"] = line_item_arr
-          else
-            order_hash["line_items"] = []
-          end
-          
-          values.push(order_hash)
+        else
+          order_hash["line_items"] = []
+        end
+         order_hash["adjustments".to_sym] = get_order_adjustments(order)
+         values.push(order_hash)
 			end
 			return values
 		end
@@ -319,7 +326,7 @@ module Spree
         @user = Spree::ApiToken.where(token: params[:user_id]).first.try(:user)
         # render json: {code: 0, message: "User not found, invalid login token"}
       end
-
+  
 			def user_device_param
 				params.require(:user_device).permit(:device_token, :device_type, :user_id, :notification)
 			end

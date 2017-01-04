@@ -1,8 +1,8 @@
-= form_tag return_multiple_item_order_customer_return_items_path(@order), {method: :post}
-  fieldset.no-border-top
-        div data-hook="customer_return_items_form_fields" 
-          fieldset
-            - if @eligible
+-if @eligible
+  = form_tag return_multiple_item_order_customer_return_items_path(@order), {method: :post}
+    fieldset.no-border-top
+          div data-hook="customer_return_items_form_fields" 
+            fieldset
               table.table.table-responsive.table-bordered#return_item
                 thead
                   tr
@@ -14,9 +14,9 @@
                     th.text-center Quantity
                     th.text-center Unit Price
                     th.text-center Tax Rate 
-                    th.text-center Item Price
+                    th.text-center Item(s) Amount
                     th.text-center Tax
-                    th.text-center Total
+                    th.text-center Refund Amount
                   tbody
                     label
                       = check_box_tag 'select-all' , nil , false ,id: "return_item_select_all"
@@ -55,12 +55,11 @@
                           td.text-center data-hook="cart_item_total"  class = "total-#{line_item.id} return_item_td" 
                             / = line_item.display_amount.to_html unless line_item.quantity.nil?
                             | 0.00
-            - else
-              .alert.alert-info.no-objects-found
-                | You have Return All the item of this Order
-        
-  .pull-right
-    = submit_tag 'Create Return', :class => 'btn btn-lg btn-success', :tabindex => 3, id: "continue-btn"
+    .pull-right
+      = submit_tag 'Create Return', :class => 'btn btn-lg btn-success', :tabindex => 3, id: "continue-btn"
+- else
+  .alert.alert-info.no-objects-found
+    | You have Return All the item of this Order
 
 / .form-actions
 /     = f.button :submit

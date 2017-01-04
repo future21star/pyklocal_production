@@ -161,8 +161,8 @@ class Merchant::OrdersController < Merchant::ApplicationController
               p qty
               p id
               p tax_rate
-               return_item_price = @customer_return_item.line_item.price.to_f * qty
-              tax_amt = return_item_price * tax_rate 
+               return_item_price = (@customer_return_item.line_item.price.to_f * qty).round(2)
+              tax_amt = (return_item_price * tax_rate).round(2) 
 
               if qty == 0
                 merchant_status = "Rejected"

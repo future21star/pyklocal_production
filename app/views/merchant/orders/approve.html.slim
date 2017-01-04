@@ -18,15 +18,16 @@
               tr
                 th.text-center Select
                 th.text-center Image
-                th.text-center Item Name
+                th.text-center Item(s) Name
                 th.text-center Purchased Qty
+                th.text-center Returned Qty
                 th.text-center Return Qty 
-                th.text-center Approve Quantity
+                th.text-center Approve Qty
                 th.text-center Unit Price
                 th.text-center Tax Rate
-                th.text-center Item Price
+                th.text-center Item Amount
                 th.text-center Tax 
-                th.text-center Total
+                th.text-center Refund Amount
               tbody
                   label
                     = check_box_tag 'select-all' , nil , false ,id: "return_item_select_all"
@@ -48,6 +49,8 @@
                           / -line_item.product.name
                         td.text-center data-hook="cart_item_quantity"  class = "return_item_td"
                           = item.line_item.quantity
+                        td.text-center class = "return_item_td"
+                          = @order.customer_return_items.where("status <> ? AND line_item_id = ?", 'Requested', item.line_item_id).sum(:return_quantity)
                         td.text-center data-hook="cart_item_quantity" class = "return_item_td" 
                           = item.return_quantity
                         td.text-center data-hook="cart_item_quantity" style="width: 100px"
@@ -65,7 +68,7 @@
                           | 0.00
                   - else
                     tr
-                      td colspan="9"
+                      td colspan="12"
                         span No orders found.
 
           .pull-right
