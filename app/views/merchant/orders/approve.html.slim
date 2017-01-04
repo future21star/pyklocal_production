@@ -23,11 +23,11 @@
                 th.text-center Returned Qty
                 th.text-center Return Qty 
                 th.text-center Approve Qty
-                th.text-center Unit Price
-                th.text-center Tax Rate
-                th.text-center Item Amount
-                th.text-center Tax 
-                th.text-center Refund Amount
+                th.text-center Unit Price (USD)
+                th.text-center Tax Rate (%)
+                th.text-center Item Amount (USD)
+                th.text-center Tax (USD)
+                th.text-center Refund Amount (USD)
               tbody
                   label
                     = check_box_tag 'select-all' , nil , false ,id: "return_item_select_all"
@@ -40,7 +40,7 @@
                           =check_box_tag 'customer_return_items[][id]', item.id, false , class: "return_item_holder"
                         td.text-center data-hook="cart_item_image" 
                           - if item.line_item.variant.images.length == 0
-                              = link_to small_image(item.line_item.variant.product), item.line_item.variant.product,class: "img-price.to_f"                          
+                              = link_to small_image(item.line_item.variant.product),class: "img-price.to_f"                          
                           - else
                             = link_to image_tag(item.line_item.variant.images.first.attachment.url(:mini)),class: "img-thumbnail"
                         td.text-center
@@ -74,7 +74,9 @@
           .pull-right
             =submit_tag 'Approve',class: "btn btn-success"
             / =submit_tag 'Reject',class: "btn btn-danger"
-        / =link_to 'Reject', merchant_order_return_item_reject_path(@order),class: "btn btn-danger", style: "margin-right: 15px;", method: :
+            = link_to returns_merchant_orders_path, class: "btn btn-default", style: "margin-left: 5px;", "data-no-turbolink" => true do 
+              span.fa.fa-arrow-left
+              |  Back to return orders
 -content_for :js do 
   javascript:
     $(document).on('change','input[type="checkbox"]',function(){

@@ -25,6 +25,14 @@ module Spree
       end
     end
 
+    def is_undelivered?
+      unless line_items.where(delivery_state: 'delivered').nil? && line_items.where(delivery_state: 'delivered').count == line_items.count
+        true
+      else
+        false
+      end
+    end
+
     def full_name
       [bill_address.first_name, bill_address.last_name].compact.join(" ")
     end

@@ -13,13 +13,13 @@
       .col-sm-9
         = render partial: "merchant/shared/order_header", locals: {order: nil}
         .form-section
-          table.table.table-bordered
+          table.table.table-bordered#return_item
             thead
               tr
-                th Order Number
-                th Customer
-                th Order Date
-                th Action
+                th.text-center Order Number
+                th.text-center  Customer
+                th.text-center  Order Date
+                th.text-center Action
             tbody
               - unless @return_orders.blank?
                 - @return_orders.each do |order|

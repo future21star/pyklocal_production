@@ -36,6 +36,12 @@ module Spree
 			if @order.state =='canceled'
 				redirect_to spree.orders_path , notice: "Cancel order can not be return"
 				return
+			elsif (@order.completed_at.to_date + 1.days) < Date.today
+				redirect_to spree.orders_path , notice: "order can not be return now, as time period of return item is expire"
+				return
+			# elsif @order.is_undelivered?
+			# 	redirect_to spree.orders_path , notice: "You can return item only after complete order is delivered"
+			# 	return
 			else
 				@eligible = (@order.line_items.sum(:quantity) - @order.customer_return_items.sum(:return_quantity)) == 0 ? false : true
 				return
