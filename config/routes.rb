@@ -190,6 +190,7 @@ Pyklocal::Application.routes.draw do
       resources :feedbacks
       resources :carousel_images
       resources :static_images
+      resources :cancel_orders
 
       resources :sellers do 
         resources :payment_preferences

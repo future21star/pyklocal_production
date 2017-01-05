@@ -9,7 +9,7 @@ Spree::Api::ApiHelpers.module_eval do
 
 	def error_response
 		{
-			sucess: "0",
+			success: "0",
 			message: ""
 		}
 	end

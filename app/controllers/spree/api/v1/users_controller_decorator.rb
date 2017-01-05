@@ -135,6 +135,7 @@ module Spree
 			else
 				@response = error_response
 				@response[:message] = "No item(s) in your list"
+				p @response
 				render json: @response.as_json()
 			end
 		end
