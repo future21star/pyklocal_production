@@ -37,7 +37,7 @@ module Spree
 				redirect_to spree.orders_path , notice: "Cancel order can not be return"
 				return
 			elsif (@order.completed_at.to_date + 21.days) < Date.today
-				redirect_to spree.orders_path , notice: "Order can be return within the 7 days of order completion"
+				redirect_to spree.orders_path , notice: "Order can only be return within the 7 days of order completion"
 				return
 			elsif @order.is_undelivered?
 				redirect_to spree.orders_path , notice: "You can return item only after complete order is delivered"
@@ -71,7 +71,7 @@ module Spree
 								p "Lllllllllllllllllllllllllll"
 								p remaining_qty
 									if qty > remaining_qty  
-										redirect_to :back, :params => @params , notice: "Quantity Can not be greater than Remaining Qty"
+										redirect_to :back, :params => @params , notice: "Quantity can not be greater than remaining Qty"
 										return
 									else
 										@customer_return_item = Spree::CustomerReturnItem.new(order_id: @order.id, line_item_id: line_item, refunded: 'Requested', status: 'Requested', return_quantity: qty)
@@ -92,7 +92,7 @@ module Spree
 					end
 				end
 
-				redirect_to order_customer_return_items_path(@order),  notice: 'Your request is register for return item(s)'
+				redirect_to order_customer_return_items_path(@order),  notice: 'Your request is registered for return item(s)'
 			end
 		end
 
