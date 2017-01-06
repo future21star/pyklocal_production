@@ -90,8 +90,16 @@ table.table.table-bordered.table-hover
             td.text-center 
               -if item.delivery_type == 'pick_up' || item.delivery_type == 'pickup'
                 = 'NA'
-              -else
-                = item.delivery_state
+              -elsif item.delivery_state == 'packaging'
+                = 'In process'
+              -elsif item.delivery_state == 'ready_to_pick'
+                = 'Ready For Pick Up'
+              -elsif item.delivery_state == 'confirmed_pickup'
+                = 'Waiting For Driver'
+               -elsif item.delivery_state == 'out_for_delivery'
+                = 'Out For Delivery'
+              -elsif item.delivery_state == 'delivered'
+                = 'Delivered' 
           td.text-center data-hook="order_item_qty" = item.quantity
           td.text-center data-hook="order_item_price" 
             span= item.single_money.to_html

@@ -90,7 +90,7 @@
                   /   = link_to "<span class='fa'></span>".html_safe, merchant_return_authorization_reason_path(named_type.id), class: "btn btn-danger btn-sm", method: "delete"
         - else
             | You Haven't made any request to Order return.
-            = link_to "Create One",  eligible_item_order_customer_return_items_path(@order)
+            = link_to " Create One",  eligible_item_order_customer_return_items_path(@order), style: "color: red;"
 / h1 Listing customer_return_items
 
 / table

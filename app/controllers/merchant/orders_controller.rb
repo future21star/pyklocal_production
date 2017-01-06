@@ -17,7 +17,7 @@ class Merchant::OrdersController < Merchant::ApplicationController
         params[:q][:orders_completed_at_lt] = Time.zone.parse(params[:q][:orders_completed_at_lt]).end_of_day rescue ""
       end
 
-      params[:q][:s] ||= "orders_completed_at desc"
+      params[:q][:s] ||= "completed_at desc"
 
       @search = @store.orders.complete.uniq.ransack(params[:q])
 

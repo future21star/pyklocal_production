@@ -34,7 +34,7 @@
                   |  Select all
                   -unless @customer_return_items.blank?
                     - @customer_return_items.each do |item|
-                      - tax_rate = item.line_item.variant.tax_category_id.present? ? itemline_item.variant.tax_category.tax_rates.first.amount.to_f : item.line_item.product.tax_category.tax_rates.first.amount.to_f 
+                      - tax_rate = item.line_item.variant.tax_category_id.present? ? item.line_item.variant.tax_category.tax_rates.first.amount.to_f : item.line_item.product.tax_category.tax_rates.first.amount.to_f 
                       tr
                         td 
                           =check_box_tag 'customer_return_items[][id]', item.id, false , class: "return_item_holder"

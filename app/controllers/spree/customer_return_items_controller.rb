@@ -37,10 +37,10 @@ module Spree
 				redirect_to spree.orders_path , notice: "Cancel order can not be return"
 				return
 			elsif (@order.completed_at.to_date + 21.days) < Date.today
-				redirect_to spree.orders_path , notice: "Order can only be return within the 7 days of order completion"
+				redirect_to spree.orders_path , notice: "Order can only be return within the 21 days of order delivered"
 				return
-			elsif @order.is_undelivered?
-				redirect_to spree.orders_path , notice: "You can return item only after complete order is delivered"
+			elsif !@order.is_undelivered?
+				redirect_to spree.orders_path , notice: "You can return item(s) only after complete order is delivered"
 				return
 			else
 				@eligible = (@order.line_items.sum(:quantity) - @order.customer_return_items.sum(:return_quantity)) == 0 ? false : true
