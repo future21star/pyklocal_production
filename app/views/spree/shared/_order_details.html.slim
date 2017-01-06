@@ -65,6 +65,8 @@ table.table.table-bordered.table-hover
         td.text-center Product Image
         td.text-center Product Name
         td.text-center Delivery Type
+        - if order.state != 'canceled' && order.state == 'complete'
+          td.text-center Delivery State
         td.text-center Quantity
         td.text-center Price
         td.text-center Total
@@ -84,6 +86,12 @@ table.table.table-bordered.table-hover
             / = truncated_product_description(item.variant.product)
             = "(" + item.variant.options_text + ")" unless item.variant.option_values.empty?
           td.text-center= item.delivery_type.humanize
+          -if order.state != 'canceled' && order.state == 'complete'
+            td.text-center 
+              -if item.delivery_type == 'pick_up' || item.delivery_type == 'pickup'
+                = 'NA'
+              -else
+                = item.delivery_state
           td.text-center data-hook="order_item_qty" = item.quantity
           td.text-center data-hook="order_item_price" 
             span= item.single_money.to_html

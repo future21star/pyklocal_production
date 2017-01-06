@@ -60,7 +60,7 @@
         = render partial: 'spree/shared/order_details', locals: { order: @order }
         -unless @order.state == "canceled"
           p.pull-right data-hook="links" 
-            = link_to "Return Order",new_customer_return_path(order_number: @order.number), class: "button btn btn-success" 
+            = link_to "Return Order",order_customer_return_items_path(@order), class: "button btn btn-success" 
             / - unless order_just_completed?(@order)
               - if try_spree_current_user && respond_to?(:spree_account_path)
                   = link_to Spree.t(:my_account), spree_account_path, class: "button"
