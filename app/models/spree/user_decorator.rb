@@ -47,17 +47,19 @@ Spree::User.class_eval do
     if driver_orders.present?
       driver_orders.each do |d_order|
         order = d_order.cart_order
-        line_items = order.line_items.where(id: d_order.line_item_ids.split(", "))
-        line_items = line_items.where("delivery_state = ? OR delivery_state = ?", "confirmed_pickup", "out_for_delivery")
-        if line_items.present?
-          store_name = line_items.first.product.store_name
-          store_address = line_items.first.product.store.try(:address)
-          p "************************************************"
-          p store_address
-          p d_order
-          state = line_items.collect(&:delivery_state).uniq.join
-          unless store_address.nil?
-            orders << {order_number: order.number, line_item_ids: line_items.collect(&:id), state: state, store_name: store_name, store_address: store_address}
+        if order.state != 'canceled'
+          line_items = order.line_items.where(id: d_order.line_item_ids.split(", "))
+          line_items = line_items.where("delivery_state = ? OR delivery_state = ?", "confirmed_pickup", "out_for_delivery")
+          if line_items.present?
+            store_name = line_items.first.product.store_name
+            store_address = line_items.first.product.store.try(:address)
+            p "************************************************"
+            p store_address
+            p d_order
+            state = line_items.collect(&:delivery_state).uniq.join
+            unless store_address.nil?
+              orders << {order_number: order.number, line_item_ids: line_items.collect(&:id), state: state, store_name: store_name, store_address: store_address}
+            end
           end
         end
       end

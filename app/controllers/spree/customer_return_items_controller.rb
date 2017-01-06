@@ -52,7 +52,7 @@ module Spree
 				p "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 				p params
 			if @order.state == 'canceled'
-				redirect_to spree.orders_path, notice: "Cancel order can not be return"
+				redirect_to spree.orders_path, notice: "Canceled order can not be return"
 				return
 			else
 				if params[:customer_return_items].blank?

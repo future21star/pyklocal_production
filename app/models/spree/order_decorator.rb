@@ -18,7 +18,7 @@ module Spree
     end
 
     def is_any_item_delivered?
-      unless line_items.where(delivery_state: 'delivered').blank?
+      unless line_items.where(delivery_state: 'out_for_delivery').blank?
         true
       else
         false
@@ -26,7 +26,7 @@ module Spree
     end
 
     def is_undelivered?
-      unless line_items.where(delivery_state: 'delivered').nil? && line_items.where(delivery_state: 'delivered').count == line_items.count
+      unless line_items.where(delivery_state: 'out_for_delivery').nil? && line_items.where(delivery_state: 'out_for_delivery').count == line_items.count
         true
       else
         false
