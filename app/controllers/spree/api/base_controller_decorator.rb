@@ -530,7 +530,7 @@ module Spree
           shipment_hash["shipment_id".to_sym]  = order_obj.shipments.first.id.to_s
           adjustments_hash["shipping".to_sym] = shipment_hash
          else
-          adjustments_hash["shipping".to_sym] = ""
+          adjustments_hash["shipping".to_sym] = {}
          end
 
          adjustments_hash["discount".to_sym] = promotion_adjustment_arr
