@@ -17,16 +17,16 @@ module Spree
       stores.first
     end
 
-    def is_any_item_delivered?
-      unless line_items.where(delivery_state: 'out_for_delivery').blank?
-        true
-      else
+    def is_any_item_shipped?
+      if line_items.where("delivery_state = ? OR delivery_state = ?",'out_for_delivery','delivered').blank?
         false
+      else
+        true
       end
     end
 
     def is_undelivered?
-      unless line_items.where(delivery_state: 'out_for_delivery').nil? && line_items.where(delivery_state: 'out_for_delivery').count == line_items.count
+      if line_items.where(delivery_state: 'delivered').nil? && line_items.where(delivery_type: 'home_delivery', delivery_state: 'delivered').count != line_items.where(delivery_type: 'home_delivery').count
         true
       else
         false
