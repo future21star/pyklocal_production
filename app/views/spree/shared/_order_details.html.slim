@@ -96,7 +96,7 @@ table.table.table-bordered.table-hover
                 = 'Ready For Pick Up'
               -elsif item.delivery_state == 'confirmed_pickup'
                 = 'Waiting For Driver'
-               -elsif item.delivery_state == 'out_for_delivery'
+              -elsif item.delivery_state == 'out_for_delivery'
                 = 'Out For Delivery'
               -elsif item.delivery_state == 'delivered'
                 = 'Delivered' 

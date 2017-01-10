@@ -106,9 +106,13 @@ Spree::OrdersController.class_eval do
 
     def cancel
       authorize! :update, @order, params[:token]
-      @order.canceled_by(try_spree_current_user)
+      if @order.is_any_item_shipped? == false  && (@order.completed_at.to_date + 14.days) >= Date.today && @order.state != 'canceled'
+        @order.canceled_by(try_spree_current_user)
+        redirect_to :back, notice: "Order canceled successfully."
+      else
+        redirect_to :back, notice: "Order could not be canceled."
       #respond_with(@order, default_template: :show)
-      redirect_to :back, notice: "Order canceled successfully."
+      end
     end
 
   private

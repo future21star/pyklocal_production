@@ -45,11 +45,11 @@
                     td.text-center
                       = link_to spree.order_path(order), title: "View", class: "btn btn-default" do 
                         i.fa.fa-eye
-                      - if order.state != "canceled" && order.is_any_item_shipped? == false
+                      - if order.state != "canceled" && order.is_any_item_shipped? == false && (order.completed_at.to_date + 14.days) >= Date.today
                         = link_to order_cancel_path(order), class: "btn btn-danger", title: "Cancel Order", method: :put do 
                           i.fa.fa-close
                       / - if order.is_any_item_delivered? == true && order.is_any_item_delivered?
-                      - if order.state != "canceled" && order.is_any_item_shipped? == true
+                      - if order.state != "canceled" && order.is_any_item_shipped? == true 
                         = link_to order_customer_return_items_path(order), title: "Return Order", class: "btn btn-default" do 
                           i.fa.fa-reply
               - else
