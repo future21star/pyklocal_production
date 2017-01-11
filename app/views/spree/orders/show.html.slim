@@ -58,7 +58,7 @@
                 =@order.created_at 
       #order data-hook=""
         = render partial: 'spree/shared/order_details', locals: { order: @order }
-        -unless @order.state == "canceled"
+        -if @order.state != "canceled" && @order.is_any_item_shipped? == true 
           p.pull-right data-hook="links" 
             = link_to "Return Order",order_customer_return_items_path(@order), class: "button btn btn-success" 
             / - unless order_just_completed?(@order)

@@ -143,15 +143,20 @@ module Spree
 		#Set item as delivered
 		def mark_as_deliver
 			@order = Spree::Order.find_by_number(params[:order_number])
-			@line_items = @order.line_items.where(id: params[:line_item_ids], delivery_state: "out_for_delivery")
-			if @line_items.present?
-				@line_items.update_all(delivery_state: "delivered")
-				@user.driver_orders.where(order_id: @order.try(:id), line_item_ids: params[:line_item_ids].join(", ")).update_all(is_delivered: true)
-				@response = get_response
-				@response[:message] = "Successfully delivered"
+			if @order.state != 'canceled'
+				@line_items = @order.line_items.where(id: params[:line_item_ids], delivery_state: "out_for_delivery")
+				if @line_items.present?
+					@line_items.update_all(delivery_state: "delivered")
+					@user.driver_orders.where(order_id: @order.try(:id), line_item_ids: params[:line_item_ids].join(", ")).update_all(is_delivered: true)
+					@response = get_response
+					@response[:message] = "Successfully delivered"
+				else
+					@response = error_response
+					@response[:message] = "Line item or order not present"
+				end
 			else
 				@response = error_response
-				@response[:message] = "Line item or order not present"
+				@response[:message] = "order is already canceled"
 			end
 		rescue Exception => e
 			api_exception_handler(e)
@@ -208,8 +213,9 @@ module Spree
 			end
 		end
 
-		def get_orders
-			@orders = @user.orders.where("state != ? AND state != ? AND state != ?","cart", "address", "shipment")
+		def get_orders 
+			@orders = @user.orders.where("state != ? AND state != ? AND state != ? AND state != ?","cart", "address", "delivery",'payment').order('created_at desc')
+			# @orders = @user.orders.where(state: 'complete')
 			unless @orders.blank?
 				render json:{
 					status: "1",
@@ -250,8 +256,17 @@ module Spree
 			obj.each do |order|
 				order_hash = Hash.new
 				order_hash["order_number".to_sym] = order.number.to_s
-				order_hash["order_date".to_sym] = order.created_at.to_s
-				unless order.payments.valid.last.source.nil?
+				order_hash["order_date".to_sym] = order.completed_at.to_s
+				order_hash["state".to_sym] = order.state.to_s
+				if order.state != "canceled" && order.is_any_item_shipped? == false && (order.completed_at.to_date + 14.days) >= Date.today
+					order_hash["shipped".to_sym] = "0"
+				elsif order.state != "canceled" && order.is_any_item_shipped? == true && (order.completed_at.to_date + 14.days) >= Date.today
+					order_hash["shipped".to_sym] = "1"
+				else
+					order_hash["shipped".to_sym] = "2"
+				end
+					
+				unless order.payments.valid.last.try(:source).nil?
 					if order.payments.valid.last.source.paypal_email.nil?
 						order_hash["payment".to_sym]  = "Ending in " + order.payments.valid.last.source.try(:braintree_last_digits) + '(' + ActionController::Base.helpers.number_to_currency(order.payments.valid.last.amount.to_f) + ')' 
 					else
@@ -288,6 +303,19 @@ module Spree
               line_items_hash["quantity".to_sym] = line_item.quantity.to_s
               line_items_hash["price".to_sym] = line_item.price.to_s
               line_items_hash["delivery_type".to_sym] = line_item.delivery_type.to_s
+              if line_item.delivery_type == 'pick_up' || line_item.delivery_type == 'pickup'
+               line_items_hash["delivery_state".to_sym] = 'NA'
+              elsif line_item.delivery_state == 'packaging'
+                line_items_hash["delivery_state".to_sym] = 'In Process'
+              elsif line_item.delivery_state == 'ready_to_pick'
+                line_items_hash["delivery_state".to_sym] = 'Ready For Pick Up'
+              elsif line_item.delivery_state == 'confirmed_pickup'
+              	line_items_hash["delivery_state".to_sym]  = 'Waiting For Driver'
+              elsif line_item.delivery_state == 'out_for_delivery'
+                line_items_hash["delivery_state".to_sym] = 'Out For Delivery'
+              elsif line_item.delivery_state == 'delivered'
+                line_items_hash["delivery_state".to_sym] = 'Delivered' 
+              end
               line_items_hash["variant_id".to_sym] = line_item.variant_id.to_s
               line_items_hash["product_name".to_sym] = line_item.product.name.to_s
               line_items_hash["product_id".to_sym] = line_item.product.id.to_s

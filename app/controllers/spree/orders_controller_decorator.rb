@@ -89,16 +89,20 @@ Spree::OrdersController.class_eval do
 
   def ready_to_pick
     if @order.present?
-      @line_items = @order.line_items.where(id: params[:item_ids])
-      @line_items.find_each {|line_item| line_item.update_attributes(delivery_state: params[:option])}
-      if params[:option] == "out_for_delivery"
-        UserMailer.notify_items_out_for_delivery(@line_items).deliver
-      end
+      if @order.state != 'canceled'
+        @line_items = @order.line_items.where(id: params[:item_ids])
+        @line_items.find_each {|line_item| line_item.update_attributes(delivery_state: params[:option])}
+        if params[:option] == "out_for_delivery"
+          UserMailer.notify_items_out_for_delivery(@line_items).deliver
+        end
 
-      if @order.get_order_home_delivery_line_items_ids.count == @order.get_order_delivered_line_items.count
-        UserMailer.notify_order_items_delivered(@order).deliver
+        if @order.get_order_home_delivery_line_items_ids.count == @order.get_order_delivered_line_items.count
+          UserMailer.notify_order_items_delivered(@order).deliver
+        end
+        redirect_to :back, notice: "Notified successfully."
+      else
+        redirect_to :back, notice: "Order is already canceled."
       end
-      redirect_to :back, notice: "Notified successfully."
     else
       redirect_to :back, notice: "Order not found"
     end

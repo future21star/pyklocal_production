@@ -25,7 +25,7 @@ module Spree
 							store.pickable_store_orders.each do |s_o|
 								p "9999999999999999999999999999"
 								p s_o 
-								unless s_o.nil?
+								unless s_o.nil? && s_o.state == 'canceled'
 									line_items = s_o.line_items.joins(:product).where(spree_line_items: {delivery_type: "home_delivery"}, spree_products: {store_id: store.id})
 									line_item_ids = line_items.collect(&:id)
 									@orders_list.push({order_number: s_o.number, store_name: store.name, line_item_ids: line_item_ids, state: line_items.collect(&:delivery_state).uniq.join, location: {lat: store.try(:latitude), long: store.try(:longitude)}})

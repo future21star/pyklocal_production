@@ -102,6 +102,9 @@ Pyklocal::Application.routes.draw do
         end
 
         resources :categories
+        resources :customer_return_items do
+          get :eligible_item, on: :collection
+        end
 
         resources :store_sessions
         resources :users_feedbacks

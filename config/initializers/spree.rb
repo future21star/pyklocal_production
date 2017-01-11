@@ -40,4 +40,5 @@ Spree::BackendConfiguration.class_eval do
   CAROUSEL_IMAGE_TAB  ||= [:carousel_image]
   FEEDBACK_TAB  ||= [:feedback]
   STATIC_IMAGE_TAB  ||= [:static_image]
+  CANCEL_ORDER_TAB ||= [:cancel_order]
 end
