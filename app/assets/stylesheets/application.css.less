@@ -10,9 +10,12 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree .
- *= require_self
- *= require font-awesome
+ *= require new_design/fonts
+ *= require new_design/lightslider
+ *= require new_design/animate.min
+ *= require new_design/font-awesome.min
+ *= require new_design/bootstrap.min
+ *= require new_design/style
  *= require social-share-button
  *= stub merchant_section.css.less
  */
@@ -63,7 +66,7 @@
       border: 1px solid #eee;
     }
   }
-  
+
   .menu {
     position: relative;
     float: right;
@@ -74,7 +77,7 @@
       float: left;
       margin-left: 13px;
       padding: 2px;
-      
+
       &:hover{
         border-radius: 3px;
       }
@@ -253,10 +256,10 @@ span.wish-section {
       padding: 5px;
       list-style: none;
       max-height: 250px;
-      overflow: auto; 
+      overflow: auto;
     }
     .filter-field {
-      padding-top: 7px; 
+      padding-top: 7px;
     }
   }
 }

@@ -1,80 +1,72 @@
-#header.style3
-  nav#top.htop
-    .container
+.onloadimg
+  img.loader alt="pyk" height="128" src="/assets/new_design/loading.gif" width="128" /
+header.header
+  .top-bar
+    .container-fluid
       .row
-        #top-links.nav.pull-right.flip
+        .col-md-3.col-sm-4.col-xs-5
+          .social
+            a href="#"
+              i.fa.fa-twitter aria-hidden="true"
+            a href="#"
+              i.fa.fa-facebook aria-hidden="true"
+        .col-md-9.col-sm-8.col-xs-7
           ul
-            -if spree_user_signed_in?
-              -unless current_spree_user.has_spree_role?("merchant")
-                li
-                  = link_to "Wish List",spree.wishlists_path 
-              li#my_account.dropdown
-                a href= spree.edit_account_path 
-                  = current_spree_user.try(:full_name)
-                  |&nbsp;
-                  i.fa.fa-caret-down
-                ul.dropdown-menu.dropdown-menu-right
-                  li
-                    = link_to "My Account",spree.edit_account_path
-                  li
-                    = link_to "Logout", spree.logout_path ,"data-no-turbolink" => true
-
-            -else 
-              li 
-               = link_to "Login", spree.login_path 
+            li
+              a data-target="#login" data-toggle="modal" href="#"
+                i.fa.fa-sign-in.visible-xs aria-hidden="true"
+                span.hidden-xs Log In
+  .container-fluid
+    .row
+      .logo.col-md-2.col-sm-3.col-xs-7
+        a href="index.html"
+          img.hidden-xs alt="pyk" height="78" src="/assets/new_design/logo.png" width="125" /
+          img.visible-xs alt="pyk" height="34" src="/assets/new_design/logo-mobile.png" width="125" /
+      .col-md-2.col-sm-3.col-xs-5.visible-xs
+        .cart-favorite
+          .cart
+            span.cart-icon
+              = link_to spree.cart_path, "data-no-turbolink" => true do
+                i.fa.fa-shopping-cart aria-hidden="true"
+                small= simple_current_order.item_count
+            h5 CART
+          .favorite
+            span.favorite-icon
+              a href="#"
+                i.fa.fa-heart aria-hidden="true"
+                small 0
+      .col-md-8.col-sm-6.col-xs-12
+        .input-group.search-box
+          .input-group-btn.search-panel
+            button.btn.btn-default.dropdown-toggle data-toggle="dropdown" type="button"
+              span#search_concept All
+              i.fa.fa-angle-down aria-hidden="true"
+            ul.dropdown-menu role="menu"
               li
-                = link_to "Register", spree.signup_path     
-            
-  header.header-row
-    .container
-      .table-container
-        -type = current_spree_user.try(:registration_type) == "vendor"? true : false
-        .col-table-cell.col-lg-4.col-md-4.col-sm-12.col-xs-12.inner
-          = link_to spree.root_path ,class: 'pyklocal-logo' , "data-no-turbolink" => true do
-            = image_tag "/images/pyc-logo.png", class: "img-responsive"
-        .col-table-cell.col-lg-4.col-md-4.col-sm-12.col-xs-12.inner
-          #search.input-group
-            = form_tag '/shop', :method => 'get', id: "search-box" do 
-              - if params[:q] && params[:q][:lat]
-                = hidden_field_tag "q[lat]", params[:q][:lat]
-              - if params[:q] && params[:q][:lng]
-                = hidden_field_tag "q[lng]", params[:q][:lng]
-              - if params[:q] && params[:q][:radius]
-                = hidden_field_tag "q[radius]", params[:q][:radius]
-              input id="discover" class="form-control" autocomplete="off" disabled=type name="q[search]" placeholder="Search for..." value=(params[:q][:search] rescue "")
-              button.button-search type="submit" 
-                i.fa.fa-search
-        .col-table-cell.col-lg-3.col-md-3.col-sm-6.col-xs-12.inner
-          - unless spree_user_signed_in? && (current_spree_user.has_spree_role?("merchant") || current_spree_user.registration_type == "vendor")#current_spree_user.registration_type == "customer")
-            #cart
-              = link_to spree.cart_path, "data-no-turbolink" => true do 
-                span#cart-total 
-                  i.fa.fa-shopping-cart
-                  |  CART(
-                  = simple_current_order.item_count
-                  |&nbsp;
-                  = "Item".pluralize(simple_current_order.item_count) 
-                  |)
-  nav#menu.navbar
-    .navbar-header
-      span.visible-xs.visible-sm
-        | Menu
-    .container
-      .collapse.navbar-collapse.navbar-ex1-collapse
-        ul.nav.navbar-nav
-          li
-            a.home_link href=spree.root_path title="Home" data-no-turbolink="true" 
-              span Home
-          -if current_spree_user.try(:registration_type) == "vendor"
-          -else
-            - if params["controller"] != "spree/checkout"
-              li.categories.dropdown.sub
-                = link_to spree.shop_index_path ,"data-no-turbolink" => true
-                  | All Categories
-                  |&nbsp;&nbsp;
-                  i.fa.fa-caret-down
-                .dropdown-menu style=("display: none;") 
-                  = render :partial => "spree/shared/taxonomies" 
-          / -if !spree_user_signed_in?    
-          /   li.custom-link-right
-          /     = goto_merchant_path
+                a href="#contains"  Example 1
+              li
+                a href="#its_equal"  Example 2
+              li
+                a href="#greather_than"  Example 3
+              li
+                a href="#less_than"  Example 4
+              li
+                a href="#all"  All
+          input#search_param name="search_param" type="hidden" value="all" /
+          input.form-control name="x" placeholder="Search" /
+          span.input-group-btn
+            button.btn.btn-default type="button"
+              i.fa.fa-search aria-hidden="true"
+      .col-md-2.col-sm-3.col-xs-12.hidden-xs
+        .cart-favorite
+          .cart
+            span.cart-icon
+              = link_to spree.cart_path, "data-no-turbolink" => true do
+                i.fa.fa-shopping-cart aria-hidden="true"
+                  small= simple_current_order.item_count
+            h5 CART
+          .favorite
+            span.favorite-icon
+              a href="#"
+                i.fa.fa-heart aria-hidden="true"
+                small 0

@@ -10,16 +10,17 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require jquery_ujs
+//= require new_design/jquery.min
 //= require spree/frontend/all
-//= require twitter/bootstrap
-//= require_tree .
+//= require jquery_ujs
+//= require new_design/bootstrap.min
+//= require new_design/wow.min
+//= require new_design/lightslider
+//= require new_design/jquery.flexslider
+//= require new_design/custom
+
 //= stub merchant.js
 //= stub chatbox.min.js
-//= require noty/jquery.noty
-//= require noty/layouts/topCenter
-//= require noty/themes/default
 //= require spree/frontend/spree_braintree_vzero
 //= require spree/frontend/spree_auth
 //= require social-share-button
@@ -45,7 +46,7 @@ var pyklocal = {
 	},
 
   restrictNumber: function() {
-    jQuery('.numbersOnly').keyup(function () { 
+    jQuery('.numbersOnly').keyup(function () {
       this.value = this.value.replace(/[^0-9\.]/g,'');
     });
   },
@@ -139,7 +140,7 @@ var pyklocal = {
         }
       });
     });
-  }, 
+  },
 
   configurePhoneField: function() {
     $('.number-only').keypress(function(e){

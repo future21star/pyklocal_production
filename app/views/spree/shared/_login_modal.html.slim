@@ -1,0 +1,33 @@
+#login.modal.fade role="dialog" tabindex="-1"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header.text-center
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"  &times;
+        h2.modal-title User Login
+        h5.modal-sub-title
+          | Please enter Your
+          strong Email ID
+          | and
+          strong Password
+          | to Login!
+      .modal-body
+        form
+          .form-group.col-xs-12
+            input.form-control name="email" placeholder="E-Mail" type="email" /
+          .form-group.col-xs-12
+            input.form-control name="password" placeholder="Password" /
+          .form-group.col-xs-12
+            .row
+              .col-sm-6.col-xs-12
+                a.forgot href="#"  Forgot Password
+              .col-sm-6.col-xs-12.text-right
+                label for="keepme"
+                  input#keepme name="rememberme" type="checkbox" value="forever" /
+                  span.keep Keep me signed in.
+          .form-group.col-xs-12.text-center
+            input name="submit" type="submit" value="Login" /
+          .form-group.col-xs-12.text-center
+            h4.New New to PykLocal?
+          .form-group.col-xs-12.text-center
+            a.Create-accoount href="register.html"  Create your PykLocal account
