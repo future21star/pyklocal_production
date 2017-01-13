@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 
 module Pyklocal
   class Application < Rails::Application
-    
+
     config.to_prepare do
       # Load application's model / class decorators
       Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")) do |c|
@@ -36,5 +36,6 @@ module Pyklocal
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+    config.assets.paths << "#{Rails.root}/app/assets/fonts"
   end
 end

@@ -6,8 +6,9 @@ html lang="#{I18n.locale}"
     / link[rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"]
     = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => false
   body#home
+    = render :partial => 'spree/shared/header'
     .container-fluid style = ("padding-left: 0;padding-right: 0;")
-      = render :partial => 'spree/shared/header'
+
       div class=(params["controller"] == "spree/checkout" || params["controller"] == "spree/orders" ? "container" : "")
         #wrapper.main-body[data-hook]
           = render :partial => 'spree/shared/sidebar' if content_for? :sidebar
@@ -17,8 +18,8 @@ html lang="#{I18n.locale}"
     .container
       .custom-feature-box.row
         = render :partial => 'spree/shared/custome_feature'
-    = render 'spree/shared/login_modal'
     = render :partial => 'spree/shared/footer'
+    = render 'spree/shared/login_modal'
     = javascript_include_tag 'application'
     = javascript_include_tag 'jquery.raty'
     script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5799d7abbbb1ae8a"
