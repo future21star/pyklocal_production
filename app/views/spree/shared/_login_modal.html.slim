@@ -12,21 +12,21 @@
           strong Password
           | to Login!
       .modal-body
-        form
+        = form_for Spree::User.new, :as => :spree_user, :url => spree.create_new_session_path do |f|
           .form-group.col-xs-12
-            input.form-control name="email" placeholder="E-Mail" type="email" /
+            = f.email_field :email, :class => 'form-control', :tabindex => 1, :placeholder => Spree.t(:email), required: true
           .form-group.col-xs-12
-            input.form-control name="password" placeholder="Password" /
+            = f.password_field :password, :class => 'form-control', :tabindex => 2, :placeholder => Spree.t(:password), required: true
           .form-group.col-xs-12
             .row
               .col-sm-6.col-xs-12
-                a.forgot href="#"  Forgot Password
+                = link_to "Forgot Password", spree.recover_password_path, class: 'forgot'
               .col-sm-6.col-xs-12.text-right
-                label for="keepme"
-                  input#keepme name="rememberme" type="checkbox" value="forever" /
-                  span.keep Keep me signed in.
+                = f.label :remember_me do
+                  = f.check_box :remember_me
+                  = Spree.t(:remember_me)
           .form-group.col-xs-12.text-center
-            input name="submit" type="submit" value="Login" /
+            = f.submit Spree.t(:login)
           .form-group.col-xs-12.text-center
             h4.New New to PykLocal?
           .form-group.col-xs-12.text-center

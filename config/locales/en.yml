@@ -22,6 +22,8 @@ en:
   spree:
     admin_login: "Admin Login"
     change_your_password: "Change your password"
+    email: E-Mail
+    remember_me: Keep me signed in.
   devise:
     confirmations:
       confirmed: Your account was successfully confirmed. You are now signed in.
