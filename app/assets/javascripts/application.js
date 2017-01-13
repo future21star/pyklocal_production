@@ -11,18 +11,16 @@
 // about supported directives.
 //
 //= require new_design/jquery.min
-//= require spree/frontend/all
 //= require jquery_ujs
 //= require new_design/bootstrap.min
 //= require new_design/wow.min
 //= require new_design/lightslider
 //= require new_design/jquery.flexslider
 //= require new_design/custom
+//= require spree/frontend/all
 
 //= stub merchant.js
 //= stub chatbox.min.js
-//= require spree/frontend/spree_braintree_vzero
-//= require spree/frontend/spree_auth
 //= require social-share-button
 
 $.ajaxSetup({
