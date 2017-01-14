@@ -36,27 +36,7 @@ header.header
                 i.fa.fa-heart aria-hidden="true"
                 small 0
       .col-md-8.col-sm-6.col-xs-12
-        .input-group.search-box
-          .input-group-btn.search-panel
-            button.btn.btn-default.dropdown-toggle data-toggle="dropdown" type="button"
-              span#search_concept All
-              i.fa.fa-angle-down aria-hidden="true"
-            ul.dropdown-menu role="menu"
-              li
-                a href="#contains"  Example 1
-              li
-                a href="#its_equal"  Example 2
-              li
-                a href="#greather_than"  Example 3
-              li
-                a href="#less_than"  Example 4
-              li
-                a href="#all"  All
-          input#search_param name="search_param" type="hidden" value="all" /
-          input.form-control name="x" placeholder="Search" /
-          span.input-group-btn
-            button.btn.btn-default type="button"
-              i.fa.fa-search aria-hidden="true"
+        = render 'spree/shared/search'
       .col-md-2.col-sm-3.col-xs-12.hidden-xs
         .cart-favorite
           .cart

@@ -1,0 +1,23 @@
+- @taxons = @taxon && @taxon.parent ? @taxon.parent.children : Spree::Taxon.roots
+- type = current_spree_user.try(:registration_type) == "vendor"? true : false
+= form_tag '/shop', :method => 'get' do
+  .input-group.search-box
+    .input-group-btn.search-panel
+      button.btn.btn-default.dropdown-toggle data-toggle="dropdown" type="button"
+        span#search_concept All
+        i.fa.fa-angle-down aria-hidden="true"
+      ul.dropdown-menu role="menu"
+        - @taxons.each do |taxon|
+          li
+            = link_to taxon.name, taxon.name
+    input#search_param name="search_param" type="hidden" value="all" /
+    - if params[:q] && params[:q][:lat]
+      = hidden_field_tag "q[lat]", params[:q][:lat]
+    - if params[:q] && params[:q][:lng]
+      = hidden_field_tag "q[lng]", params[:q][:lng]
+    - if params[:q] && params[:q][:radius]
+      = hidden_field_tag "q[radius]", params[:q][:radius]
+    input id="discover" class="form-control" autocomplete="off" disabled=type name="q[search]" placeholder="Search" value=(params[:q][:search] rescue "")
+    span.input-group-btn
+      button.btn.btn-default.button-search type="submit"
+        i.fa.fa-search aria-hidden="true"
