@@ -1,0 +1,200 @@
+
+
+<body id=home>
+  <div class=onloadimg><img class=loader src=images/loading.gif alt=pyk width=128 height=128></div>
+
+<nav class="navbar navbar-default">
+  <div class=container-fluid>
+    <div class=navbar-header>
+      <button type=button class="navbar-toggle collapsed" data-toggle=collapse data-target="#bs-example-navbar-collapse-1" aria-expanded=false>
+        <span class=sr-only>Toggle navigation</span>
+        <span class=icon-bar></span>
+        <span class=icon-bar></span>
+        <span class=icon-bar></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id=bs-example-navbar-collapse-1>
+      <ul class="nav navbar-nav text-center">
+        <li><a href="#">Best Sellers</a></li>
+        <li><a href="#">What's New</a></li>
+        <li><a href="#">On Sale</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <div class=container-fluid>
+      <div class=row>
+          <div class=col-xs-12>
+              <ol class=breadcrumb>
+                  <li><a href="/">Home</a></li>
+                  <li class=active>Shop</li>
+              </ol>
+          </div>
+      </div>
+  </div>
+
+  <section class=product_sec>
+    <div class=container-fluid>
+      <div class=row>
+
+        <div class="col-md-3 col-sm-4 col-xs-12">
+          <div class=filter>
+            <%= form_tag(" ", :method => :get, :id => "facet-filter") do %>
+              <% if params[:q] %>
+                <%= render partial: "spree/shared/filter_form", locals: {filters: [:lat, :lng, :radius, :search, :sort_by, :per_page]} %>
+              <% end %>
+
+
+              <h4 class=hidden-xs>Filters</h4>
+              <h4 class="navbar-toggle collapsed" data-toggle=collapse data-target="#filters" aria-expanded=false>
+                <span>Filters</span>
+                <span class=button><span class=sr-only>Toggle navigation</span>
+                <span class=icon-bar></span>
+                <span class=icon-bar></span>
+                <span class=icon-bar></span></span>
+              </h4>
+
+              <div class="collapse navbar-collapse" id=filters>
+
+                <div class=filter-box>
+                  <h5>Price</h5>
+                  <ul>
+                    <% @all_facets.facet(:price).rows.each do |price_row| %>
+                      <% filter_found = true %>
+                      <% selected = (@price_array.include?(price_row.value.to_s)) rescue false %>
+                      <li class = "filter-field">
+                        <%= check_box_tag "q[price][]", price_row.value, selected, class: "filters" %>
+                        <%= number_to_currency("#{price_row.value}").gsub(/\.0\.\./," to $").gsub(/\.0/,"")+" (#{price_row.try(:count).to_i})".html_safe %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+                <div class=filter-box>
+                  <h5>Brand</h5>
+                  <ul>
+                    <% @all_facets.facet(:brand_name).rows.each do |brand_row| %>
+                      <% filter_found = true %>
+                      <% selected = (params[:q][:brand].include?(brand_row.value.to_s)) rescue false %>
+                      <li class = "filter-field">
+                        <%= check_box_tag "q[brand][]", brand_row.value, selected, class: "filters" %>
+                        <%= "#{brand_row.value} (#{brand_row.try(:count).to_i})" %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+                <div class=filter-box>
+                  <h5>Store</h5>
+                  <ul>
+                    <% @all_facets.facet(:store_name).rows.each do |store_row| %>
+                      <% filter_found = true %>
+                      <% selected = (params[:q][:store].include?(store_row.value.to_s)) rescue false  %>
+                      <li class = "filter-field">
+                        <%= check_box_tag "q[store][]", store_row.value, selected, class: "filters" %>
+                        <%= "#{store_row.value} (#{store_row.try(:count).to_i})" %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+                <div class=filter-box>
+                  <h5>Category</h5>
+                  <ul>
+                    <% @all_facets.facet(:taxon_name).rows.each do |taxon_row| %>
+                      <% filter_found = true %>
+                      <% selected = (params[:q][:categories].include?(taxon_row.value.to_s)) rescue false   %>
+                      <li class = "filter-field">
+                        <%= check_box_tag "q[categories][]", taxon_row.value, selected, class: "filters" %>
+                        <%= "#{taxon_row.value} (#{taxon_row.try(:count).to_i})" %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+
+        <div class="col-md-9 col-sm-8 col-xs-12">
+
+          <div class=sort-bar>
+            <a href="shop_index_path" data-no-turbolink=true ><i class="fa fa-bars" aria-hidden=true></i><span class=all-products>&nbsp; All Products</span></a>
+
+            <%= form_tag " ", method: :get, id: "rFilter" do %>
+              <% if params[:q] %>
+                <%= render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]} %>
+              <% end %>
+              <%#= hidden_field_tag "q[lat]", id: "lat"%>
+              <%#s= hidden_field_tag  "q[lng]", id: "lng"%>
+              <% location = params[:q] && params[:q][:radius] ? params[:q][:radius] : " " %>
+              <select class=form-control id=radiusFilter name="q[radius]">
+                  <option selected(<%= location == "" %>) value="">Sort By Location</option>
+                  <option selected(<%= location == "2" %>) value=2>2 KM</option>
+                  <option selected(<%= location == "5" %>) value=5>5 KM</option>
+                  <option selected(<%= location == "10" %>) value=10>10 KM</option>
+                  <option selected(<%= location == "50" %>) value=50>More than 10 KM</option>
+              </select>
+            <% end %>
+
+            <% selected = params[:q] && params[:q][:sort_by] ? params[:q][:sort_by] : nil %>
+            <%= form_tag " ", method: :get, id: "sortFilter" do %>
+              <% if params[:q] %>
+                <%= render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]} %>
+              <% end %>
+              <%=  select_tag "q[sort_by]", options_for_select(["Sort By", "Highest Price", "Lowest Price"], selected: selected), class: "form-control", id: "input-sort" %>
+            <% end %>
+
+            <div class=number-select>
+              <% selected = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : nil %>
+              <label>No of products:</label>
+              <%= form_tag " ", method: :get, id: "itemShow" do %>
+                <% if params[:q] %>
+                  <%= render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]} %>
+                <% end %>
+                <%= select_tag "q[per_page]", options_for_select([12, 24, 48, 96], selected: selected), class: "filter-select", id: "noOfItem" %>
+              <% end %>
+            </div>
+          </div>
+
+          <h3 class=category-title>All Products <small>(<%= Spree::Product.count%>)</small></h3>
+            <ul class=static_products>
+              <% if @products.blank? %>
+                No product(s) available
+              <% else %>
+                <% @products.each do |product| %>
+                  <%= render :partial => 'spree/shared/product', locals: {product: product} %>
+                <% end %>
+              <% end %>
+            </ul>
+
+            <ul class=pagination>
+              <% if @products.respond_to?(:num_pages) %>
+                <%= paginate @products %>
+              <% end %>
+            </ul>
+
+              </div>
+          </div>
+      </div>
+  </section>
+ <!--  <section class=benefits>
+      <div class=container-fluid>
+          <div class=row>
+              <div class="col-sm-4 col-xs-12 wow fadeInLeft" data-wow-delay=0.3s>
+                  <i class="sprite sprite-benefit-1"></i>
+                  <h2>Free Shipping</h2>
+                  <h4>Free shipping on order over $1000</h4>
+              </div>
+              <div class="col-sm-4 col-xs-12 wow fadeInDown" data-wow-delay=0.3s>
+                  <i class="sprite sprite-benefit-2"></i>
+                  <h2>Gift Cards</h2>
+                  <h4>Give the special perfect gift</h4>
+              </div>
+              <div class="col-sm-4 col-xs-12 wow fadeInRight" data-wow-delay=0.3s>
+                  <i class="sprite sprite-benefit-3"></i>
+                  <h2>Reward Points</h2>
+                  <h4>Earn and spend with ease</h4>
+              </div>
+          </div>
+      </div>
+  </section> -->
