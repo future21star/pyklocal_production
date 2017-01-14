@@ -13,3 +13,46 @@ section.product_part
           ul.content-slider
             - @products.each do |product|
               = render :partial => 'spree/shared/product', locals: {product: product}
+
+= render 'spree/shared/advertising'
+
+section.product_part
+  .container-fluid
+    .row
+      .col-xs-12
+        .product_box
+          h3
+            | New Arrivals &nbsp;
+            a href="#"
+              | View All
+              i.fa.fa-angle-right aria-hidden="true"
+          ul.content-slider
+            - @new_arrival.each do |product|
+              = render :partial => 'spree/shared/product', locals: {product: product}
+
+= render 'spree/shared/advertising'
+
+section.product_part
+  .container-fluid
+    .row
+      .col-xs-12
+        .product_box
+          h3
+            | Most Viewed &nbsp;
+            a href="#"
+              | View All
+              i.fa.fa-angle-right aria-hidden="true"
+          ul.content-slider
+            - @most_viewed_products.each do |product|
+              = render :partial => 'spree/shared/product', locals: {product: product}
+
+.advertise-big
+  .container-fluid
+    .row
+      .col-sm-6.col-xs-12.text-center.wow.fadeInLeft data-wow-delay="0.3s"
+        a href="#"
+          img alt="pyk" height="303" src="/assets/new_design/add-big-1.jpg" width="585" /
+      .col-sm-6.col-xs-12.text-center.wow.fadeInRight data-wow-delay="0.3s"
+        a href="#"
+          img alt="pyk" height="303" src="/assets/new_design/add-big-2.jpg" width="585" /
+
