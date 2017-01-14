@@ -1,0 +1,119 @@
+body#home
+  .onloadimg
+    img.loader alt="pyk" height="128" src="images/loading.gif" width="128" /
+  nav.navbar.navbar-default
+    .container-fluid
+      .navbar-header
+        button.navbar-toggle.collapsed aria-expanded="false" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button"
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+      #bs-example-navbar-collapse-1.collapse.navbar-collapse
+        ul.nav.navbar-nav.text-center
+          li
+            a href="#"  Best Sellers
+          li
+            a href="#"  What's New
+          li
+            a href="#"  On Sale
+  .container-fluid
+    .row
+      .col-xs-12
+        ol.breadcrumb
+          li
+            a href="/"  Home
+          li.active Shop
+  section.product_sec
+    .container-fluid
+      .row
+        .col-md-3.col-sm-4.col-xs-12
+          .filter
+            = form_tag(" ", :method => :get, :id => "facet-filter") do
+              - if params[:q]
+                = render partial: "spree/shared/filter_form", locals: {filters: [:lat, :lng, :radius, :search, :sort_by, :per_page]}
+              h4.hidden-xs Filters
+              h4.navbar-toggle.collapsed aria-expanded="false" data-target="#filters" data-toggle="collapse"
+                span Filters
+                span.button
+                  span.sr-only Toggle navigation
+                  span.icon-bar
+                  span.icon-bar
+                  span.icon-bar
+              #filters.collapse.navbar-collapse
+                .filter-box
+                  h5 Price
+                  ul
+                    - @all_facets.facet(:price).rows.each do |price_row|
+                      - filter_found = true
+                      - selected = (@price_array.include?(price_row.value.to_s)) rescue false
+                      li.filter-field
+                        = check_box_tag "q[price][]", price_row.value, selected, class: "filters"
+                        = number_to_currency("#{price_row.value}").gsub(/\.0\.\./," to $").gsub(/\.0/,"")+" (#{price_row.try(:count).to_i})".html_safe
+                .filter-box
+                  h5 Brand
+                  ul
+                    - @all_facets.facet(:brand_name).rows.each do |brand_row|
+                      - filter_found = true
+                      - selected = (params[:q][:brand].include?(brand_row.value.to_s)) rescue false
+                      li.filter-field
+                        = check_box_tag "q[brand][]", brand_row.value, selected, class: "filters"
+                        = "#{brand_row.value} (#{brand_row.try(:count).to_i})"
+                .filter-box
+                  h5 Store
+                  ul
+                    - @all_facets.facet(:store_name).rows.each do |store_row|
+                      - filter_found = true
+                      - selected = (params[:q][:store].include?(store_row.value.to_s)) rescue false
+                      li.filter-field
+                        = check_box_tag "q[store][]", store_row.value, selected, class: "filters"
+                        = "#{store_row.value} (#{store_row.try(:count).to_i})"
+                .filter-box
+                  h5 Category
+                  ul
+                    - @all_facets.facet(:taxon_name).rows.each do |taxon_row|
+                      - filter_found = true
+                      - selected = (params[:q][:categories].include?(taxon_row.value.to_s)) rescue false
+                      li.filter-field
+                        = check_box_tag "q[categories][]", taxon_row.value, selected, class: "filters"
+                        = "#{taxon_row.value} (#{taxon_row.try(:count).to_i})"
+        .col-md-9.col-sm-8.col-xs-12
+          .sort-bar
+            a data-no-turbolink="true" href="shop_index_path"
+              i.fa.fa-bars aria-hidden="true"
+              span.all-products   All Products
+            = form_tag " ", method: :get, id: "rFilter" do
+              - if params[:q]
+                = render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]}
+              - location = params[:q] && params[:q][:radius] ? params[:q][:radius] : " "
+              select#radiusFilter.form-control name="q[radius]"
+                option selected=(location == "") value="" Sort By Location
+                option selected=(location == "2") value="2" 2 KM
+                option selected=(location == "5") value="5" 5 KM
+                option selected=(location == "10") value="10" 10 KM
+                option selected=(location == "50") value="50" More than 10 KM
+            - selected = params[:q] && params[:q][:sort_by] ? params[:q][:sort_by] : nil
+            = form_tag " ", method: :get, id: "sortFilter" do
+              - if params[:q]
+                = render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]}
+              = select_tag "q[sort_by]", options_for_select(["Sort By", "Highest Price", "Lowest Price"], selected: selected), class: "form-control", id: "input-sort"
+            .number-select
+              - selected = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : nil
+              label No of products:
+              = form_tag " ", method: :get, id: "itemShow" do
+                - if params[:q]
+                  = render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]}
+                = select_tag "q[per_page]", options_for_select([12, 24, 48, 96], selected: selected), class: "filter-select", id: "noOfItem"
+          h3.category-title
+            | All Products
+            small
+              | (#{Spree::Product.count})
+          ul.static_products
+            - if @products.blank?
+              | No product(s) available
+            - else
+              - @products.each do |product|
+                = render :partial => 'spree/shared/product', locals: {product: product}
+          ul.pagination
+            - if @products.respond_to?(:num_pages)
+              = paginate @products
