@@ -1,2 +1,15 @@
 section#banner
   = render partial: "spree/shared/slider1"
+section.product_part
+  .container-fluid
+    .row
+      .col-xs-12
+        .product_box
+          h3
+            | Best Sellers &nbsp;
+            a href="#"
+              | View All
+              i.fa.fa-angle-right aria-hidden="true"
+          ul.content-slider
+            - @products.each do |product|
+              = render :partial => 'spree/shared/product', locals: {product: product}
