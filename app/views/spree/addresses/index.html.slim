@@ -2,14 +2,14 @@
   .container
     ul.breadcrumb
       li
-        a href="/" 
+        a href="/"
           i.fa.fa-home
           | Home
       li
         a href=spree.account_path  Account
       li
         span  Address Book
-    .row     
+    .row
       #content.col-sm-3
         =render :partial => "spree/shared/user_menu", locals: {current: "address"}
       .col-sm-9
@@ -18,8 +18,8 @@
           .panel.panel-default
             .panel-heading
               h4.panel-title
-                  | Address 
-                  
+                  | Address
+
             #collapse-checkout-option.panel-collapse.collapse.in
               .panel-body
                 - if current_spree_user.address.present?
@@ -54,12 +54,12 @@
                       td= @address.phone
                     tr
                       td
-                        = link_to edit_address_path(@address), class: "btn btn-default", "data-no-turbolink" => true do 
+                        = link_to edit_address_path(@address), class: "btn btn-default", "data-no-turbolink" => true do
                           span.fa.fa-edit
                           | Edit
-                        / = link_to addresses_path(@addresses), class: "btn btn-danger margin-left" do 
+                        / = link_to addresses_path(@addresses), class: "btn btn-danger margin-left" do
                         /   span.fa.fa-trash
-                  
+
                 - else
                   .col-xs-12
                     = render partial: "form"

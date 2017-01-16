@@ -21,7 +21,7 @@
           h5 My Stuff
           ul.account
             li
-              a href="#"  Address Book
+              a class=(current == "address" ? 'active' : '') href=edit_address_path(current_spree_user.address) Address Book
             li
               a href="#"  Wish List
         .filter-box
