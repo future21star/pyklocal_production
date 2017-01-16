@@ -1,7 +1,7 @@
 module Spree
 	class Api::V1::SearchController < Spree::Api::BaseController
 		before_filter :perform_search, only: [:index]
-		
+    
 		def index
       @api_token = ApiToken.where(token: params[:q][:token]).last 
       if @api_token
@@ -78,6 +78,8 @@ module Spree
 		end
 
 		private
+
+  
 
 		def perform_search
 			per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12

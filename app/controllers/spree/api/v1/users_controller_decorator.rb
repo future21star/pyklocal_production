@@ -103,26 +103,45 @@ module Spree
 
 		#Pickup item(s) added in the cart
 		def pickup
-			driver_id = eval(params[:option]) ? @user.id : nil
-			state = eval(params[:option]) ? "confirmed_pickup" : "ready_to_pick"
-			params[:line_items_object].each do |item_obj|
-				order = Spree::Order.find_by_number(item_obj["order_number"])
-				line_items = order.line_items.where(id: item_obj["line_item_ids"])
-				if eval(params[:option])
-					driver_order = Spree::DriverOrder.where(order_id: order.id, line_item_ids: item_obj["line_item_ids"].join(", "), driver_id: @user.id).first_or_initialize
-					driver_order.save
-				else
-					@user.driver_orders.where(order_id: order.id, line_item_ids: item_obj["line_item_ids"].join(", ")).delete_all
+			begin
+				p "================================================================"
+				p params[:line_items_object]
+				p params[:line_items_object].collect{|x| x[:order_number]}
+				params[:line_items_object].collect{|x| x[:order_number]}.each do |order|
+					p "^^^^^^^^^^^^^^^^^^"
+					p order
+					if Spree::Order.find_by_number(order).state == 'canceled'
+						p "4444444444444444444444444444444"
+						render json:{
+							status: "0",
+							message: "Item(s) you are trying to pick has been canceled. Please refresh."
+						}
+						return
+					end
 				end
-				line_items.update_all(driver_id: driver_id, delivery_state: state)
-			end
+				driver_id = eval(params[:option]) ? @user.id : nil
+				state = eval(params[:option]) ? "confirmed_pickup" : "ready_to_pick"
+				params[:line_items_object].each do |item_obj|
+					order = Spree::Order.find_by_number(item_obj["order_number"])
+					line_items = order.line_items.where(id: item_obj["line_item_ids"])
+					if eval(params[:option])
+						driver_order = Spree::DriverOrder.where(order_id: order.id, line_item_ids: item_obj["line_item_ids"].join(", "), driver_id: @user.id).first_or_initialize
+						driver_order.save
+					else
+						@user.driver_orders.where(order_id: order.id, line_item_ids: item_obj["line_item_ids"].join(", ")).delete_all
+					end
+					line_items.update_all(driver_id: driver_id, delivery_state: state)
+				end
 
-			@response = get_response
-			@response[:message] = eval(params[:option]) ? "Item(s) picked up by you" : "You have canceled this pickup"
-		rescue Exception => e
-			api_exception_handler(e)
-		ensure
-			render json: @response
+				@response = get_response
+				@response[:message] = eval(params[:option]) ? "Item(s) picked up by you" : "You have canceled this pickup"
+				render json: @response
+			rescue Exception => e
+				render json:{
+					status: "0",
+					message: e.message.to_s
+				}
+			end
 		end
 
 		#See list of picked item(s)
@@ -280,7 +299,11 @@ module Spree
 				# else
 				# 	order_hash["payment".to_sym] = "Bye"
 				# end
-				order_hash["shipment".to_sym] = "Delivery within 6 - 8 woking hours with cost " + ActionController::Base.helpers.number_to_currency(order.shipments.last.selected_shipping_rate.cost.to_f)
+				unless order.self_pickup
+					order_hash["shipment".to_sym] = "Delivery within 6 - 8 woking hours with cost " + ActionController::Base.helpers.number_to_currency(order.shipments.last.selected_shipping_rate.cost.to_f)
+				else
+					order_hash["shipment".to_sym] = ""
+				end
 
 				if Spree::Address.exists?(order.bill_address_id)
 					order_hash["bill_address".to_sym] = order.bill_address.get_address
