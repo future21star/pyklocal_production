@@ -1,63 +1,51 @@
-#container
-  .container
-    ul.breadcrumb
-      li
-        a href="/" 
-          i.fa.fa-home
-          | Home
-      li
-        a href=spree.account_path  Account
-      li
-        span  Order  History
+section.account_page
+  .container-fluid
     .row
-      #content.col-sm-3
-        =render :partial => "spree/shared/user_menu" ,locals: {current: "orders"}
-      #content.col-sm-9
-      
-        h1 Order History
-        .table-responsive
-          table.table.table-hover
-            thead
-              tr
-                th.text-center.strong= sort_link @search, :number, "Number"
-                th.text-center= sort_link @search, :state, "State"
-                th.text-center= sort_link @search, :completed_at, "Completed At"
-                th.text-center Canceled At
-                th.text-center Total Item
-                th.text-center Customer
-                th.text-center= sort_link @search, :total, "Total"
-                th.text-center Detail
-               
-            tbody
-              - unless @orders.blank?
-                - @orders.each do |order|
-                  tr
-                    td.text-center= link_to order.number,spree.order_path(order)
-                    td.text-center= order.state.try(:titleize)
-                    td.text-center= order.completed_at.strftime("%m-%d-%Y")
-                    -if order.canceled_at.present?
-                      td.text-center= order.canceled_at.strftime("%m-%d-%Y")
-                    -else
-                      td.text-center NA
-                    td.text-center= order.quantity
-                    td.text-center= order.user.full_name
-                    td.text-center= order.total
-                    td.text-center
-                      = link_to spree.order_path(order), title: "View", class: "btn btn-default" do 
-                        i.fa.fa-eye
+      .col-md-10.col-md-offset-1.col-xs-12.account_page_wrap
+        .row
+          .col-xs-12
+            ol.breadcrumb
+              li
+                a href="/"  Home
+              li.active My Order
+        .row
+          = render :partial => "spree/shared/user_menu" ,locals: {current: "orders"}
+          .col-lg-9.col-md-8.col-sm-8.col-xs-12
+            h3 My Order
+            .table-responsive
+              table.order
+                tr
+                  th Order Number
+                  th State
+                  th Completed At
+                  th Canceled At
+                  th Total Item
+                  th Total
+                  th colspan="2"  Detail
+                - unless @orders.blank?
+                  - @orders.each do |order|
+                    tr
+                      td= link_to order.number,spree.order_path(order)
+                      td= order.state.try(:titleize)
+                      td= order.completed_at.strftime("%m-%d-%Y")
+                      -if order.canceled_at.present?
+                        td= order.canceled_at.strftime("%m-%d-%Y")
+                      -else
+                        td NA
+                      td= order.quantity
+                      td= order.total
+                      td
+                        = link_to spree.order_path(order), title: "View", class: "view" do
+                          | view
                       - if order.state != "canceled" && order.is_any_item_shipped? == false && (order.completed_at.to_date + 14.days) >= Date.today
-                        = link_to order_cancel_path(order), class: "btn btn-danger", title: "Cancel Order", method: :put do 
-                          i.fa.fa-close
-                      / - if order.is_any_item_delivered? == true && order.is_any_item_delivered?
-                      - if order.state != "canceled" && order.is_any_item_shipped? == true 
-                        = link_to order_customer_return_items_path(order), title: "Return Order", class: "btn btn-default" do 
-                          i.fa.fa-reply
-              - else
+                        td
+                          = link_to order_cancel_path(order), title: "Cancel Order", class: "delete", method: :put do
+                            | x
+                - else
                   tr
                     th.text-center colspan="7"
                       | You do not have any Order!
-        .pull-right
-          - if @orders.respond_to?(:num_pages)
-            = paginate @orders
 
- 
+          .pull-right
+            - if @orders.respond_to?(:num_pages)
+              = paginate @orders
