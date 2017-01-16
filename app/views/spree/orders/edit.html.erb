@@ -49,9 +49,10 @@
                           </div>
                           <div class="col-sm-5 col-xs-12">
                             <%= link_to Spree.t(:continue_shopping), shop_index_path, class: 'Continue' %>
-                            <%= button_tag class: 'Checkout', id: 'checkout-link', name: 'checkout' do %>
-                              <%= Spree.t(:checkout) %>
-                            <% end %>
+                            <%#= button_tag class: 'Checkout', id: 'checkout-link', name: 'checkout' do %>
+                            <button class="Checkout" id='checkout-link'><%= Spree.t(:checkout) %></button>
+                              <%#= Spree.t(:checkout) %>
+                            <%# end %>
                           </div>
                         </div>
                       </div>
