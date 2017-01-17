@@ -64,8 +64,8 @@ span.price small{font-size:13px;display:block;color:#8c8c8c;text-decoration:line
 span.offer{float:right;width:43px;height:43px;line-height:13px;font-size:11px;font-weight:700;color:#db2e2e;border:1px solid #db2e2e;border-radius:50%;padding:8px 4px 0}
 .addtocart a{color:#fff;line-height:26px;display:inline-block;padding:0 8px;font-size:13px;border-radius:2px;margin-top:10px;margin-bottom:5px}
 a.out-of-stock{background:#536698;cursor:default}
-a.add-to-cart{background:#23376c}
-a.add-to-cart:hover{background:#28903b}
+button.add-to-cart{background:#23376c}
+button.add-to-cart:hover{background:#28903b}
 .advertising{padding:30px 0}
 .advertising img,section.advertise-big img{width:100%}
 .advertise-big{padding:30px 0}
@@ -391,8 +391,8 @@ span.wl-price small{font-size:13px;display:block;color:#8c8c8c;text-decoration:l
 span.wl-offer{float:right;width:43px;height:43px;line-height:13px;font-size:11px;font-weight:700;color:#db2e2e;border:1px solid #db2e2e;border-radius:50%;padding:8px 4px 0;text-align:center}
 ul.wish-list li .addtocart{float:left;width:100%}
 ul.wish-list li .addtocart a.remove{color:#c82828;padding:0;margin:0 0 0 15px;font-weight:600}
-ul.wish-list li .addtocart a.add-to-cart{background:#28903b}
-ul.wish-list li .addtocart a.add-to-cart:hover{background:#23376c}
+ul.wish-list li .addtocart button.add-to-cart{background:#28903b}
+ul.wish-list li .addtocart button.add-to-cart:hover{background:#23376c}
 table.order{width:100%;max-width:100%;font-size:13px}
 table.order tr th{padding:8px;vertical-align:top;border-bottom:1px solid #536698;color:#1e1e1e;font-weight:600}
 table.order tr td{padding:8px;vertical-align:top;border-bottom:1px solid #f4f4f4;color:#2b2b2b}
@@ -658,7 +658,7 @@ ul.wish-list li .addtocart{text-align:center}
 .ship_icon.same{width:100%;height:auto!important;min-height:50px}
 .ship_detail.same{width:100%;height:auto!important;min-height:0}
 }
-.addtocart button{color:#fff;line-height:26px;display:inline-block;padding:0 8px;font-size:13px;border-radius:2px;margin-top:10px;margin-bottom:5px}
+.addtocart button{color:#fff;line-height:26px;display:inline-block;padding:0 8px;font-size:13px;border-radius:2px;margin-top:10px;margin-bottom:5px;border:none;}
 button.out-of-stock{background:#536698;cursor:default}
 button.add-to-cart{background:#23376c}
 button.add-to-cart:hover{background:#28903b}

@@ -23,7 +23,7 @@
             li
               a class=(current == "address" ? 'active' : '') href=edit_address_path(current_spree_user.address) Address Book
             li
-              a href="#"  Wish List
+              a class=(current == "wishlist" ? 'active-link' : '') href=spree.wishlists_url Wish List
         .filter-box
           h5 Settings
           ul.account

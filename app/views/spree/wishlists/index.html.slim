@@ -1,26 +1,26 @@
-#container
-  .container
-    ul.breadcrumb
-      li
-        a href="/" 
-          i.fa.fa-home
-          | Home
-      li
-        a href=spree.account_path  Account
-      li
-        span  Wish List
+section.account_page
+  .container-fluid
     .row
-      #content.col-sm-3
-        =render :partial => "spree/shared/user_menu" ,locals: {current: "wishlist"}
-      #content.col-sm-9 
-        h1 Wish List
-        - unless @wishlists.blank?
-        	.row
-	        	- @wishlists.each do |wishlist|
-	        		.col-md-3.col-sm-4.col-xs-6.text-center.wished_item
-	        			= render partial: "spree/shared/wished_product", locals: {wish: wishlist}
-        - else
-        	h4
-	        	| No wish available 
-	        	span.fa.fa-frown-o 
+      .col-md-10.col-md-offset-1.col-xs-12.account_page_wrap
+        .row
+          .col-xs-12
+            ol.breadcrumb
+              li
+                a href="/"  Home
+              li
+                span Wish List
+        .row
+          =render :partial => "spree/shared/user_menu" ,locals: {current: "wishlist"}
+
+        .col-lg-9.col-md-8.col-sm-8.col-xs-12
+          h3 Wish List
+          ul.wish-list
+            - unless @wishlists.blank?
+  	        	- @wishlists.each do |wishlist|
+  	        		li
+  	        			= render partial: "spree/shared/wished_product", locals: {wish: wishlist}
+            - else
+            	h4
+    	        	| No wish available
+    	        	span.fa.fa-frown-o
 

@@ -11,7 +11,7 @@ section.account_page
         .row
           = render :partial => "spree/shared/user_menu" ,locals: {current: "orders"}
           .col-lg-9.col-md-8.col-sm-8.col-xs-12
-            h3 My Order
+            h3 My Orders
             .table-responsive
               table.order
                 tr
@@ -46,6 +46,6 @@ section.account_page
                     th.text-center colspan="7"
                       | You do not have any Order!
 
-          .pull-right
-            - if @orders.respond_to?(:num_pages)
-              = paginate @orders
+            .pull-right
+              - if @orders.respond_to?(:num_pages)
+                = paginate @orders
