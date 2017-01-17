@@ -192,7 +192,8 @@ module Spree
       p tax_category
       p variant_prices
       p variants
-      if cost_price < master_price
+      p stock.present? && variants.blank?
+      if cost_price.blank? || cost_price < master_price
         cost_price = master_price
       end
       # tax_category_id = Spree::TaxCategory.find_by_name("clothing").try(:id)
@@ -216,6 +217,9 @@ module Spree
         end
         unless variants.blank?
           product.build_variant(product, variants, variant_prices, stock, master_price)
+        end
+        if stock.present? && variants.blank?
+          product.master_variant_stock_build(product, stock)
         end
       end
     end
@@ -296,6 +300,21 @@ module Spree
         end
         p variant
         i = i + 1;
+      end
+    end
+
+    def master_variant_stock_build(product, stock)
+      p "555555555555555555"
+      p stock
+      stock_location = Spree::StockLocation.find(1)
+      stock_movement = stock_location.stock_movements.build(quantity: stock)
+      stock_movement.stock_item = stock_location.set_up_stock_item(product.master)
+      if stock_movement.save
+        p "yes saved"
+      else
+        p "sorry not saved"
+        p "***********error*******************"
+        p stock_movement.errors.full_messages.to_s
       end
     end
 
