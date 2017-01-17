@@ -34,7 +34,7 @@
       .col-md-4
         .form-group
           = f.field_container :price do 
-            = f.label :price, raw(Spree.t(:sell_price) + ' (USD)' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
+            = f.label :price, raw(Spree.t(:sale_price) + ' (USD)' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
             span.input-icon.icon-right
               = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'numbersOnly fullwidth form-control input-bg', :required => "" 
               .fa &#xf0d6;

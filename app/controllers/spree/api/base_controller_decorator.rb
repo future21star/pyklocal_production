@@ -191,23 +191,23 @@ module Spree
     end
 
     def to_stringify_variant_json obj, user ,values = []
-        obj.line_items.each do |line_item|
-          variants_hash = Hash.new
-          variants_hash["line_item_id".to_sym] = line_item.id.to_s
-          variants_hash["quantity".to_sym] = line_item.quantity.to_s
-          variants_hash["delivery_type".to_sym] = line_item.delivery_type.to_s
-          variants_hash["product_id".to_sym] = line_item.variant.product.id.to_s
-          variants_hash["product_name".to_sym] = line_item.variant.product.name.to_s
+      obj.line_items.each do |line_item|
+        variants_hash = Hash.new
+        variants_hash["line_item_id".to_sym] = line_item.id.to_s
+        variants_hash["quantity".to_sym] = line_item.quantity.to_s
+        variants_hash["delivery_type".to_sym] = line_item.delivery_type.to_s
+        variants_hash["product_id".to_sym] = line_item.variant.product.id.to_s
+        variants_hash["product_name".to_sym] = line_item.variant.product.name.to_s
 
-          variant = line_item.variant
-          variants_hash["variant_id".to_sym] = variant.id.to_s
-          variants_hash["price".to_sym] = variant.cost_price.to_f.to_s
-          variants_hash["special_price".to_sym] = variant.price.to_f.to_s
-          variants_hash["discount".to_sym] = variant.discount.to_s
-          variants_hash["total_on_hand"] = variant.total_on_hand.to_s
-          variants_hash["stock_status"] = variant.stock_status.to_s 
-          variants_hash["minimum_quantity".to_sym] = "1"
-          unless variant.product.store.blank?
+        variant = line_item.variant
+        variants_hash["variant_id".to_sym] = variant.id.to_s
+        variants_hash["price".to_sym] = variant.cost_price.to_f.to_s
+        variants_hash["special_price".to_sym] = variant.price.to_f.to_s
+        variants_hash["discount".to_sym] = variant.discount.to_s
+        variants_hash["total_on_hand"] = variant.total_on_hand.to_s
+        variants_hash["stock_status"] = variant.stock_status.to_s 
+        variants_hash["minimum_quantity".to_sym] = "1"
+        unless variant.product.store.blank?
           variants_hash["store_id".to_sym] = variant.product.store.id.to_s
           variants_hash["store_name".to_sym] = variant.product.store.name.to_s
           variants_hash["store_address".to_sym] = variant.product.store.address.to_s
@@ -217,19 +217,19 @@ module Spree
           variants_hash["store_address".to_sym] = ""
         end
 
-          variants_hash["option_name"] = variant.option_name
+        variants_hash["option_name"] = variant.option_name
 
-          if variant.images.present?
-            variants_hash["product_images".to_sym] = variant.product_images
-          elsif variant.product.images.present?
-            variants_hash["product_images".to_sym] = variant.product.product_images
-          else
-            variants_hash["product_images".to_sym] = []
-          end
-          values.push(variants_hash)
+        if variant.images.present?
+          variants_hash["product_images".to_sym] = variant.product_images
+        elsif variant.product.images.present?
+          variants_hash["product_images".to_sym] = variant.product.product_images
+        else
+          variants_hash["product_images".to_sym] = []
         end
-        return values
+        values.push(variants_hash)
       end
+      return values
+    end
 
 
       def to_stringify_checkout_json c_obj ,values = []
