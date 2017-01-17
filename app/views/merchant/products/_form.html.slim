@@ -25,7 +25,7 @@
           = f.field_container :taxon do 
             = f.label :taxon_ids, raw(Spree.t(:categories) + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
             br
-            = f.hidden_field :taxon_ids, :value => @product.taxon_ids.join(',')
+            = f.text_field :taxon_ids, :value => @product.taxon_ids.join(',')
         .form-group
           = f.field_container :option_types do 
             = f.label :option_type_ids, Spree.t(:option_types) 
