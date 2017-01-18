@@ -12,15 +12,15 @@ section.account_page
         .row
           =render :partial => "spree/shared/user_menu" ,locals: {current: "wishlist"}
 
-        .col-lg-9.col-md-8.col-sm-8.col-xs-12
-          h3 Wish List
-          ul.wish-list
-            - unless @wishlists.blank?
-  	        	- @wishlists.each do |wishlist|
-  	        		li
-  	        			= render partial: "spree/shared/wished_product", locals: {wish: wishlist}
-            - else
-            	h4
-    	        	| No wish available
-    	        	span.fa.fa-frown-o
+          .col-lg-9.col-md-8.col-sm-8.col-xs-12
+            h3 Wish List
+            ul.wish-list
+              - unless @wishlists.blank?
+    	        	- @wishlists.each do |wishlist|
+    	        		li
+    	        			= render partial: "spree/shared/wished_product", locals: {wish: wishlist}
+              - else
+              	h4
+      	        	| No wish available
+      	        	span.fa.fa-frown-o
 
