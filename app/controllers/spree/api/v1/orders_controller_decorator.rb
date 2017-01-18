@@ -195,7 +195,7 @@ module Spree
 
 		def cancel
 		 	authorize! :update, @order, params[:token]
-		 	if @order.state == "complete" && (@order.completed_at.to_date + 14.days) < Date.today
+		 	if @order.state == "complete" && (@order.completed_at.to_date + 14.days) >= Date.today
 	    	if	@order.canceled_by(current_api_user)
 	    		render json: {
 	    			status: "1",
@@ -204,9 +204,14 @@ module Spree
 	    	else
 	    		render json: {
 	    			status: "0",
-	    			message: "order could not be cancelled"
+	    			message: "order could not be cancelled! Something went wrong"
 	    		}
 	    	end
+	    elsif @order.completed_at.to_date + 14.days < Date.today
+	    	render json:{
+	    		status: "0",
+	    		message: "Order can only be cancel within 14 days of completion"
+	    	}
 	    else
 	    	render json: {
 	    		status: "0",

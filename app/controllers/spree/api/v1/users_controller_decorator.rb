@@ -233,7 +233,7 @@ module Spree
 		end
 
 		def get_orders 
-			@orders = @user.orders.where("state != ? AND state != ? AND state != ? AND state != ?","cart", "address", "delivery",'payment').order('created_at desc')
+			@orders = @user.orders.where("state != ? AND state != ? AND state != ? AND state != ?","cart", "address", "delivery","payment").order('created_at desc')
 			# @orders = @user.orders.where(state: 'complete')
 			unless @orders.blank?
 				render json:{

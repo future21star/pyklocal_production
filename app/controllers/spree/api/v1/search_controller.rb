@@ -117,7 +117,7 @@ module Spree
 
 
     def load_all_facets
-      if params[:page] == "1"
+      if params[:page] == "1" && params[:filter_apply] == "0"
         @all_facets = Sunspot.search(Spree::Product) do 
           fulltext params[:q][:search] if params[:q] && params[:q][:search]
           if params[:q] && params[:q][:categories]
