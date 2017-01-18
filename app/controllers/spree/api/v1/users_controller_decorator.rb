@@ -169,6 +169,9 @@ module Spree
 					@user.driver_orders.where(order_id: @order.try(:id), line_item_ids: params[:line_item_ids].join(", ")).update_all(is_delivered: true)
 					@response = get_response
 					@response[:message] = "Successfully delivered"
+					if @order.get_order_home_delivery_line_items_ids.count == @order.get_order_delivered_line_items.count
+         		UserMailer.notify_order_items_delivered(@order).deliver
+        	end
 				else
 					@response = error_response
 					@response[:message] = "Line item or order not present"
