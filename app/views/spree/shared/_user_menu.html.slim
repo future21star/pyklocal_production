@@ -28,7 +28,8 @@
           h5 Settings
           ul.account
             li
-              a href="#"  Personal Information
+              a class=(current == "account" ? 'active-link' : '') href=spree.edit_account_path Personal Information
+            -unless current_spree_user.has_spree_role?("merchant")
             li
               a href="#"  Change Password
             li
