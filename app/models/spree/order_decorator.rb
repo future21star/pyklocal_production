@@ -72,6 +72,10 @@ module Spree
       line_items.joins(:product).where(spree_products: {store_id: store_id})
     end
 
+    def get_order_delivered_line_items
+      line_items.where(delivery_state: 'delivered')
+    end
+
     def get_home_delivery_line_item_ids(store_id)
       line_items.joins(:product).where(spree_products: {store_id: store_id}, spree_line_items: {delivery_type: "home_delivery"}).collect(&:id)
     end
@@ -80,8 +84,8 @@ module Spree
       line_items.where(delivery_type: 'home_delivery')
     end
 
-    def get_order_delivered_line_items
-      line_items.where(delivery_state: 'delivered')
+    def get_store_delivered_line_items(store_id)
+      line_items.joins(:product).where(spree_products: {store_id: 16},spree_line_items: {delivery_state: "delivered"})
     end
 
     def eligible_for_free_delivery
