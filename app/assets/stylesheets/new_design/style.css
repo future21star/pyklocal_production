@@ -662,3 +662,5 @@ ul.wish-list li .addtocart{text-align:center}
 button.out-of-stock{background:#536698;cursor:default}
 button.add-to-cart{background:#23376c}
 button.add-to-cart:hover{background:#28903b}
+.qty-action button.but{padding:0 20px}
+.qty-action button.but{color:#fff;line-height:35px;float:right;padding:0 50px;font-size:13px;border-radius:2px}
