@@ -11,7 +11,9 @@
         span  Return
 
     .row
-      .col-md-12
+      .col-sm-3
+        =render :partial=>"merchant/shared/seller"
+      .col-md-9
         h2
           | Order Return Request
         - unless @customer_return_items.blank?
@@ -23,23 +25,23 @@
                 th.text-center Return Quantity
                 th.text-center Unit Price (USD)
                 th.text-center Tax Rate (%)
-                th.text-center Approve Quantity
-                th.text-center Merchant Approval
+                / th.text-center Approve Quantity
+                / th.text-center Merchant Approval
                 th.text-center Item(s) Amount (USD)
                 th.text-center Tax (USD)
                 th.text-center Refund Amount (USD)
-                th.text-center Refund Status
+                / th.text-center Refund Status
                 th.text-center Request Date
-                th.text-center Action
+                / th.text-center Action
             tbody id="" 
               - @customer_return_items.each do |return_item|
-                - tax_rate = return_item.line_item.variant.tax_category_id.present? ? return_item.line_item.variant.tax_category.tax_rates.first.amount.to_f : return_item.line_item.product.tax_category.tax_rates.first.amount.to_f 
+                - tax_rate = return_item.line_item.tax_rate
                 tr data-hook="" id="" 
                   td.align-center
                     - if return_item.line_item.variant.images.length == 0
-                      = link_to small_image(return_item.line_item.variant.product), return_item.line_item.variant.product,class:"img-thumbnail"
+                      = link_to small_image(return_item.line_item.variant.product),class:"img-thumbnail"
                     - else
-                      = link_to image_tag(return_item.line_item.variant.images.first.attachment.url(:mini)), return_item.line_item.variant.product,class:"img-thumbnail"
+                      = link_to image_tag(return_item.line_item.variant.images.first.attachment.url(:mini)),class:"img-thumbnail"
                   td.align-center 
                     = return_item.line_item.name
                   td.align-center class = "return_item_td"
@@ -48,49 +50,49 @@
                     = return_item.line_item.price
                   td.align-center class = "return_item_td"
                     = tax_rate * 100
-                  td.align-center class = "return_item_td"
+                  / td.align-center class = "return_item_td"
                     -if return_item.approve_qty.nil? == true
                       = 0
                     -else
                       = return_item.approve_qty
-                  td.align-center class = "return_item_td"
+                  / td.align-center class = "return_item_td"
                     = return_item.status
                   td.align-center class = "return_item_td"
                     / = return_item.line_item.variant.product.tax_category.name.to_s
-                    -if return_item.item_return_amount.nil? == true
-                      = 0
-                    -else
-                      = return_item.item_return_amount
+                    / -if return_item.item_return_amount.nil? == true
+                    /   = 0
+                    / -else
+                    = return_item.item_return_amount
                   td.align-center class = "return_item_td"
                     / = return_item.line_item.variant.product.tax_category_id
-                    -if return_item.tax_amount.nil? == true
+                    / -if return_item.tax_amount.nil? == true
                       = 0
-                    -else
-                      = return_item.tax_amount 
+                    / -else
+                    = return_item.tax_amount 
                   td.align-center class = "return_item_td"
-                    -if return_item.total.nil? == true
+                    / -if return_item.total.nil? == true
                       = 0
-                    -else
-                      = return_item.total
-                  td.align-center class = "return_item_td"
+                    /-else
+                    = return_item.total
+                  / td.align-center class = "return_item_td"
                     = return_item.refunded
                   td.align-center class = "return_item_td"
                     = return_item.created_at.strftime("%d-%m-%Y")
-                  td.align-center
+                  / td.align-center
                     -if return_item.status == "Requested"
                       = link_to  order_customer_return_item_path(@order, return_item), title: "Delete",method: :delete, class: "btn btn-danger" do 
                           i.fa.fa-close
                     -else
                       = 'NA'
           .pull-right
-            = link_to "Return Item",  eligible_item_order_customer_return_items_path(@order), class: "btn btn-success"
+            = link_to "Return Item", eligible_item_merchant_order_customer_return_items_path(@order), class: "btn btn-success"
 
                   / td.actions.actions-1.text-right
                   /   = link_to "<span class='fa'></span>".html_safe, edit_merchant_return_authorization_reason_path(named_type.id), class: "btn btn-info btn-sm", "data-no-turbolink" => true
                   /   = link_to "<span class='fa'></span>".html_safe, merchant_return_authorization_reason_path(named_type.id), class: "btn btn-danger btn-sm", method: "delete"
         - else
             | You Haven't made any request to Order return.
-            = link_to " Create One",  eligible_item_order_customer_return_items_path(@order), style: "color: red;"
+            = link_to " Create One",  eligible_item_merchant_order_customer_return_items_path(@order), style: "color: red;"
 / h1 Listing customer_return_items
 
 / table

@@ -1,9 +1,11 @@
 class Spree::CustomerReturnsController < Spree::StoreController
 
-  before_filter :authenticate_spree_user!
+  # before_filter :authenticate_spree_user!
+  before_filter :find_order
 
   def index
-   @customer_return_request = spree_current_user.customer_returns   
+   # @customer_return_request = spree_current_user.customer_returns   
+   @customer_return = @order.customer_return_items
   end
 
   def new
@@ -30,6 +32,10 @@ class Spree::CustomerReturnsController < Spree::StoreController
   end
 
   private
+
+  def find_order
+    @order = Spree::Order.find_by_number(params[:order_id])
+  end
 
    def customer_returns_param
     params.require(:customer_return).permit( customer_return: [:number, :stock_location_id, :return_authorization_reason_id, return_items_attributes: [id: [:inventory_unit_id, :return_authorization_id, :pre_tax_amount, :returned, :resellable, ]]])

@@ -88,7 +88,7 @@ class Merchant::OrdersController < Merchant::ApplicationController
     p current_spree_user.stores.first
     @store = current_spree_user.stores.first
     @is_owner = is_owner?(@store)
-    @return_orders = @store.return_orders
+    @return_orders = @store.customer_return_items.collect(&:order_id).uniq
   end
 
   def approve

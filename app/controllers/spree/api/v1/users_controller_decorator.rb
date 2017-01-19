@@ -170,7 +170,9 @@ module Spree
 					@response = get_response
 					@response[:message] = "Successfully delivered"
 					if @order.get_order_home_delivery_line_items_ids.count == @order.get_order_delivered_line_items.count
+						p "555555555555555555"
          		UserMailer.notify_order_items_delivered(@order).deliver
+         		p "66666666666666666666"
         	end
 				else
 					@response = error_response

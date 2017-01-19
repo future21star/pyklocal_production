@@ -85,7 +85,7 @@ module Spree
     end
 
     def get_store_delivered_line_items(store_id)
-      line_items.joins(:product).where(spree_products: {store_id: 16},spree_line_items: {delivery_state: "delivered"})
+      line_items.joins(:product).where(spree_products: {store_id: store_id},spree_line_items: {delivery_state: "delivered"})
     end
 
     def eligible_for_free_delivery

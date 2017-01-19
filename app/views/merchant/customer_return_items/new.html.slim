@@ -11,6 +11,8 @@
         span  Return
 
     .row
-      .col-md-12
+      .col-sm-3
+        =render :partial=>"merchant/shared/seller"
+      .col-md-9
         h2 New Order Return Request
         =render partial: 'form', locals: {order: @order}

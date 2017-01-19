@@ -63,6 +63,8 @@
                           = link_to "<span class='fa'>&#xf044;</span>".html_safe, edit_merchant_product_path(product.slug), class: "btn btn-info btn-sm", "data-no-turbolink" => true
                           
                           = link_to "<span class='fa'>&#xf014;</span>".html_safe, merchant_product_path(product.slug), class: "btn btn-danger btn-sm", method: "delete"
+                    -else
+                      = "No Product Found"
               .row
                 .col-sm-6.text-left
                 .col-sm-6
