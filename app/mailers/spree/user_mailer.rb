@@ -35,5 +35,11 @@ module Spree
       @line_items = line_items
       mail(to: @user.email, subject: "Out For Delivery")
     end
+
+    def notify_order_items_delivered(order)
+      @order = order
+      @user = order.user
+      mail(to: @user.email , subject: "PykLocal Order Delivered Confirmation")
+    end
   end
 end
