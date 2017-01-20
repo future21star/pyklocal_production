@@ -64,8 +64,8 @@ span.price small{font-size:13px;display:block;color:#8c8c8c;text-decoration:line
 span.offer{float:right;width:43px;height:43px;line-height:13px;font-size:11px;font-weight:700;color:#db2e2e;border:1px solid #db2e2e;border-radius:50%;padding:8px 4px 0}
 .addtocart a{color:#fff;line-height:26px;display:inline-block;padding:0 8px;font-size:13px;border-radius:2px;margin-top:10px;margin-bottom:5px}
 a.out-of-stock{background:#536698;cursor:default}
-a.add-to-cart{background:#23376c}
-a.add-to-cart:hover{background:#28903b}
+button.add-to-cart{background:#23376c}
+button.add-to-cart:hover{background:#28903b}
 .advertising{padding:30px 0}
 .advertising img,section.advertise-big img{width:100%}
 .advertise-big{padding:30px 0}
@@ -265,7 +265,7 @@ section.cart-sec{min-height:670px}
 .table>tbody>tr>td strong.price{color:#be0404}
 .table>tbody>tr>td img{min-width:70px;max-height:70px;max-height:70px}
 .price-table{position:fixed;z-index:99;left:0;right:0;bottom:0;background:#536698;color:#fff;font-size:16px;padding:5px 0;min-height:145px}
-a.Update,a.Empty,a.Continue,a.Checkout{background:#c92828;display:inline-block;width:147px;text-align:center;line-height:37px;border-radius:4px;margin-bottom:10px}
+button.Update,a.Empty,a.Continue,button.Checkout{background:#c92828;display:inline-block;width:147px;text-align:center;line-height:37px;border-radius:4px;margin-bottom:10px;border:none; padding: 0px}
 a.Empty{background:#d1d1d1;color:#424242;margin-left:5px}
 .price-table ul{display:inline-block;width:100%}
 .price-table ul li{line-height:30px;float:left;width:100%}
@@ -274,10 +274,10 @@ a.Empty{background:#d1d1d1;color:#424242;margin-left:5px}
 .price-table ul li:last-child{border-top:1px solid #808eb3;margin-top:3px;padding-top:3px}
 body.cart-page{padding-bottom:145px}
 .price-table .row .equal:first-child{-webkit-align-items:center;-ms-flex-align:center;align-items:flex-end;display:-webkit-flex;display:-ms-flexbox;display:flex}
-a.Continue,a.Checkout{width:100%}
+a.Continue,button.Checkout{width:100%}
 a.Continue{margin:20px 0 15px}
-a.Checkout{background:#28903b}
-a.Update:hover,a.Empty:hover,a.Continue:hover,a.Checkout:hover{background:#1a2d60;color:#fff}
+button.Checkout{background:#28903b; border:none; padding: 0px}
+button.Update:hover,a.Empty:hover,a.Continue:hover,button.Checkout:hover{background:#1a2d60;color:#fff}
 h4.check-title{margin:30px 0 15px;font-weight:400;color:#616161}
 .payment-wizard{float:left;width:100%;padding:0 10px}
 .payment-wizard li.active{position:relative;z-index:1}
@@ -391,8 +391,8 @@ span.wl-price small{font-size:13px;display:block;color:#8c8c8c;text-decoration:l
 span.wl-offer{float:right;width:43px;height:43px;line-height:13px;font-size:11px;font-weight:700;color:#db2e2e;border:1px solid #db2e2e;border-radius:50%;padding:8px 4px 0;text-align:center}
 ul.wish-list li .addtocart{float:left;width:100%}
 ul.wish-list li .addtocart a.remove{color:#c82828;padding:0;margin:0 0 0 15px;font-weight:600}
-ul.wish-list li .addtocart a.add-to-cart{background:#28903b}
-ul.wish-list li .addtocart a.add-to-cart:hover{background:#23376c}
+ul.wish-list li .addtocart button.add-to-cart{background:#28903b}
+ul.wish-list li .addtocart button.add-to-cart:hover{background:#23376c}
 table.order{width:100%;max-width:100%;font-size:13px}
 table.order tr th{padding:8px;vertical-align:top;border-bottom:1px solid #536698;color:#1e1e1e;font-weight:600}
 table.order tr td{padding:8px;vertical-align:top;border-bottom:1px solid #f4f4f4;color:#2b2b2b}
@@ -575,7 +575,7 @@ ul.categories li{width:50%}
 .equal{height:auto!important;text-align:center}
 .price-table .row .equal:first-child{display:inline-block}
 .price-table ul li{text-align:left}
-a.Update,a.Empty,a.Continue,a.Checkout{width:auto;padding:0 30px;margin-left:5px;margin-right:5px}
+button.Update,a.Empty,a.Continue,button.Checkout{width:auto;padding:0 30px;margin-left:5px;margin-right:5px;}
 .wizard-content table.table{width:650px}
 .account_page_wrap .filter{margin-bottom:20px}
 .title-box{width:65%}
@@ -658,7 +658,7 @@ ul.wish-list li .addtocart{text-align:center}
 .ship_icon.same{width:100%;height:auto!important;min-height:50px}
 .ship_detail.same{width:100%;height:auto!important;min-height:0}
 }
-.addtocart button{color:#fff;line-height:26px;display:inline-block;padding:0 8px;font-size:13px;border-radius:2px;margin-top:10px;margin-bottom:5px}
+.addtocart button{color:#fff;line-height:26px;display:inline-block;padding:0 8px;font-size:13px;border-radius:2px;margin-top:10px;margin-bottom:5px;border:none;}
 button.out-of-stock{background:#536698;cursor:default}
 button.add-to-cart{background:#23376c}
 button.add-to-cart:hover{background:#28903b}

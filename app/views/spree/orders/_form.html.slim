@@ -1,37 +1,20 @@
 
 = render partial: 'spree/shared/error_messages', locals: { target: @order }
 
-table.table.table-bordered
+table.table
   thead
     tr
-      td.text-center Image
-      td.text-center Item Name
-      td.text-center Model
-      td.text-center Quantity
-      td.text-center Delivery Type
-      td.text-center Unit Price
-      td.text-center Total
-      td.text-center Remove
-  tbody#line_items data-hook="" 
+      th colspan="2" Item Details
+      th Model
+      th Quantity
+      th Delivery Type
+      th Unit Price
+      th Total
+
+  tbody#line_items data-hook=""
     = render partial: 'spree/orders/line_item', collection: order_form.object.line_items, locals: { order_form: order_form }
   - if @order.adjustments.nonzero.exists? || @order.line_item_adjustments.nonzero.exists? || @order.shipment_adjustments.nonzero.exists? || @order.shipments.any?
 
-.col-sm-offset-8
-  table.table.table-bordered
-    tr.cart-subtotal
-      td align="right" colspan="4" 
-        h5= Spree.t(:cart_subtotal, count: @order.line_items.sum(:quantity))
-      td align="left" colspan="" 
-        h5=order_form.object.display_item_total
-        
-    
-    = render "spree/orders/adjustments"
-    tr.cart-total
-      td align="right" colspan="4" 
-        h4= Spree.t(:total)
-      td align="left" colspan=""
-        h4= order_form.object.display_total
-      
 
 
 

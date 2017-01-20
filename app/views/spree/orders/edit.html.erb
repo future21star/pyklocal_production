@@ -1,54 +1,68 @@
 <% @body_id = 'cart' %>
-<div id="container">
-  <ul class="breadcrumb">
-    <li>
-      <a href="/">
-        <i class='fa.fa-home'></i>
-        Home
-      </a>
-    </li>
-    <li>
-      <span> Shopping Cart </span>
-    </li>
-  </ul>
-  <div data-hook="cart_container">
-    <h1><%= Spree.t(:shopping_cart) %></h1>
 
-    <% if @order.line_items.empty? %>
-      <div data-hook="empty_cart">
-        <div class="alert alert-info"><%= Spree.t(:your_cart_is_empty) %></div>
-        <p><%= link_to Spree.t(:continue_shopping), shop_index_path, class: 'btn btn-primary' %></p>
-      </div>
-    <% else %>
-      <div data-hook="outside_cart_form">
-        <%= form_for @order, url: update_cart_path, html: { id: 'update-cart' } do |order_form| %>
-          <div data-hook="inside_cart_form">
+  <section class=cart-sec>
+    <div class=container-fluid>
+      <div class=row>
+        <div class=col-xs-12>
+          <h3><%= Spree.t(:shopping_cart) %>&nbsp;<small>(<%= @order.line_items.sum(:quantity) %> item) </small></h3>
 
-            <div data-hook="cart_items" class="table-responsive">
-              <%= render partial: 'form', locals: { order_form: order_form } %>
+          <% if @order.line_items.empty? %>
+            <div data-hook="empty_cart">
+              <div class="alert alert-info"><%= Spree.t(:your_cart_is_empty) %></div>
+              <p><%= link_to Spree.t(:continue_shopping), shop_index_path, class: 'btn btn-primary' %></p>
             </div>
+          <% else %>
+            <div data-hook="outside_cart_form">
+              <%= form_for @order, url: update_cart_path, html: { id: 'update-cart' } do |order_form| %>
+                <div data-hook="inside_cart_form">
 
-            <div class="row">
-              <div class="links col-md-12" data-hook="cart_buttons">
-                <div class="form-group">
-                  <div class="pull-right">
-                    <%= link_to Spree.t(:continue_shopping), shop_index_path, class: 'continue btn btn-primary' %>
-                    <%= button_tag class: 'btn btn-lg btn-success', id: 'checkout-link', name: 'checkout' do %>
-                      <%= Spree.t(:checkout) %>
-                    <% end %>
+                  <div data-hook="cart_items" class="table-responsive">
+                    <%= render partial: 'form', locals: { order_form: order_form } %>
                   </div>
-                  <div class="pull-left">
-                    <%= button_tag class: 'btn btn-primary', id: 'update-button' do %>
-                      <%= Spree.t(:update) %>
-                    <% end %>
-                    <%= link_to "Empty Cart", empty_cart_path, method: :put, class: 'btn btn-default' %>
+
+                </div>
+
+                <div class=price-table>
+                  <div class=container-fluid>
+                    <div class=row>
+                      <div class="col-md-6 col-sm-5 col-xs-12 equal">
+                        <%= button_tag '', class: 'Update', id: 'update-button' do %>
+                          <%= Spree.t(:update) %>
+                        <% end %>
+                        <%#= link_to Spree.t(:update), , method: :put, class: 'Empty' %>
+                          <!-- <a class=Update id= 'update-button' href="#">Update</a> -->
+                          <%= link_to "Empty Cart", empty_cart_path, method: :put, class: 'Empty' %>
+
+                      </div>
+                      <div class="col-md-6 col-sm-7 col-xs-12 equal">
+                        <div class=row>
+                          <div class="col-sm-7 col-xs-12">
+                            <ul>
+                              <li>Estimated Total</li>
+                              <li>
+                                <span>Subtotal <small>(<%= @order.line_items.sum(:quantity) %> item)</small></span>
+                                <span><%= order_form.object.display_item_total %></span>
+                              </li>
+                              <li><span>Tax</span> <span>$02.44</span></li>
+                              <li><span>Total</span> <span><%= order_form.object.display_total %></span></li>
+                            </ul>
+                          </div>
+                          <div class="col-sm-5 col-xs-12">
+                            <%= link_to Spree.t(:continue_shopping), shop_index_path, class: 'Continue' %>
+                            <%#= button_tag class: 'Checkout', id: 'checkout-link', name: 'checkout' do %>
+                            <button class="Checkout" id='checkout-link'><%= Spree.t(:checkout) %></button>
+                              <%#= Spree.t(:checkout) %>
+                            <%# end %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              <% end %>
             </div>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       </div>
-    <% end %>
-  </div>
-</div>
+    </div>
+  </section>

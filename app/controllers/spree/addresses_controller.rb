@@ -1,7 +1,7 @@
 class Spree::AddressesController < Spree::StoreController
 	before_filter :authenticate_spree_user!
 	before_action :find_address, only: [:create, :edit, :update, :destroy]
-	
+
 	def index
 		@address = current_spree_user.address
 		if @address.blank?
@@ -10,8 +10,8 @@ class Spree::AddressesController < Spree::StoreController
 		end
 	end
 
-	def edit			
-	end	
+	def edit
+	end
 
 	def create
 		@addresses = Spree::Address.new(addresses_params)
@@ -25,7 +25,7 @@ class Spree::AddressesController < Spree::StoreController
 
 	def update
 		if @address.update_attributes(addresses_params)
-			redirect_to spree.addresses_path, notice: "Successfully updated."
+			redirect_to :back, notice: "Successfully updated."
 		else
 			render action: 'edit'
 		end
