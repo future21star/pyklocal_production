@@ -36,6 +36,21 @@
       / br
       = hidden_field_tag "variant_id", @product.master.id
 
+    - if @product.price_in(current_currency) and !@product.price.nil?
+
+      #product-price data-hook="product_price"
+        / - if @product.master.can_supply?
+        /   link href="https://schema.org/InStock" itemprop="availability" /
+        / - elsif @product.variants.empty?
+        /   br
+        /   span.out-of-stock= Spree.t(:out_of_stock)
+
+    - else
+      #product-price
+        br
+        div
+          span.price.selling itemprop="price" = Spree.t('product_not_available_in_this_currency')
+
     .delivery-option
       h4 Delivery Option:
       label
@@ -51,22 +66,14 @@
         span.quantity
           = text_field_tag :quantity, 1, :class => 'numberOnly qty', :min => 1, :id =>'input-quantity'
           input.qtyplus field="quantity" type="button" value="+" /
-          input.qtyminus field="quantity" type="button" value="-" /
+          input.qtyminus field="quantity" type="button" value="-" min=1 /
       a.fav-but href="#"
         i.fa.fa-heart aria-hidden="true"
       -unless @product.store.blank?
         - button_text =  @product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"
         = button_tag"#{button_text}" , :id => 'add-to-cart-button', :type => :submit, disabled: @product.total_on_hand <= 0 , class: "#{button_text == "Out Of Stock" ? 'out-of-stock' : 'add-to-cart'} but btn" , data: { disable_with: "Please wait..." }
     hr.dotted/
-    .social-share
-      a href="#"
-        i.fa.fa-twitter aria-hidden="true"
-      a href="#"
-        i.fa.fa-facebook aria-hidden="true"
-      a href="#"
-        i.fa.fa-google-plus aria-hidden="true"
-      a href="#"
-        i.fa.fa-linkedin aria-hidden="true"
+    = social_share_button_tag(@product.name, 'data-twitter-title' => 'TheTitleForTwitter', :url => request.url)
     ul.list-unstyled.description
       li.active
         h5 itemprop="brand"
@@ -186,5 +193,10 @@
       jQuery('.numberOnly').keyup(function () {
         this.value = this.value.replace(/[^0-9\.]/g,'');
       });
+      $('.social-share-button').addClass('social-share');
+      $('.social-share-button .ssb-twitter').removeClass().addClass('fa fa-twitter');
+      $('.social-share-button .ssb-facebook').removeClass().addClass('fa fa-facebook');
+      $('.social-share-button .ssb-google_plus').removeClass().addClass('fa fa-google-plus');
+      $('.social-share-button .ssb-linkedin').removeClass().addClass('fa fa-linkedin');
     });
 
