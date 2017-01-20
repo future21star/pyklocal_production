@@ -27,11 +27,13 @@ module Spree
 	      @order.contents.remove_line_item(@line_item)
 	      render json:{
 	      	status: "1",
+	      	cart_count: order.user.cart_count.to_s,
 	      	message: "Line item deleted successfully"
 	      }
 	    rescue Exception => e
 	    	render json:{
 	    		status: "0",
+	    		cart_count: order.user.cart_count.to_s,
 	    		message: e.message
 	    	}
 	    end
@@ -45,12 +47,14 @@ module Spree
 	        @line_item.reload
 	        render json:{
 	        	status: "1",
+	        	cart_count: order.user.cart_count.to_s,
 	        	message: "Line item updated successfully"
 	        }
 	      else
 	        #invalid_resource!(@line_item)
 	        render json:{
 	        	status: "0",
+	        	cart_count: order.user.cart_count.to_s,
 	        	message: "Something went wrong"
 	        }
 	      end

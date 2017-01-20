@@ -74,6 +74,7 @@ group :development, :test do
   gem 'zip-zip'
   gem 'selenium-webdriver', '2.52.0'
   gem 'byebug'
+  gem 'hirb'
 end
 
 group :development do

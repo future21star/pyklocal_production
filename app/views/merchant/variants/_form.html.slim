@@ -14,12 +14,12 @@
             = f.text_field :sku, class: "form-control input-bg"
             i.fa &#xf02a;
         .form-group
-          = f.label :Retail_Price, class: "control-label"
+          = f.label :Sale_Price, class: "control-label"
           span.input-icon.icon-right
             = f.text_field :price, class: "form-control input-bg", :required => "", value: @product.price
             i.fa &#xf0d6;
         .form-group
-          = f.label :cost_price, class: "control-label"
+          = f.label :Retail_Price, class: "control-label"
           span.input-icon.icon-right
            = f.number_field :cost_price, class: "numbersOnly form-control input-bg", :required => "", :min => @product.price, :step => "0.01"
            i.fa &#xf0d6;

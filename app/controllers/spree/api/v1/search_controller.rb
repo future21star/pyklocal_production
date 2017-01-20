@@ -1,7 +1,8 @@
 module Spree
 	class Api::V1::SearchController < Spree::Api::BaseController
 		before_filter :perform_search, only: [:index]
-		
+    before_filter :load_all_facets, only: [:index]
+    
 		def index
       @api_token = ApiToken.where(token: params[:q][:token]).last 
       if @api_token
@@ -23,6 +24,7 @@ module Spree
             cart_count: @user.cart_count.to_s,
             number_of_pages: (@search.total / per_page.to_f).ceil().to_s,
             total_product: @search.total.to_s,
+            attributes: to_stringify_attribute_json(@all_facets, []),
     				details:  to_stringify_product_json(@products , @user ,[])
     			}
     		end
@@ -78,6 +80,92 @@ module Spree
 		end
 
 		private
+
+    def to_stringify_attribute_json attr_obj, values = []
+      if attr_obj.present?
+        price_facet = Array.new
+        brand_facet = Array.new
+        store_facet = Array.new
+
+        Hash price_facet_hash = Hash.new
+        Hash brand_facet_hash = Hash.new
+        Hash store_facet_hash = Hash.new
+
+        @all_facets.facet(:price).rows.each do |price|
+          price_facet.push(price.value.to_s)
+        end
+
+        @all_facets.facet(:store_name).rows.each do |store|
+          store_facet.push(store.value.to_s)
+        end
+
+        @all_facets.facet(:brand_name).rows.each do |brand|
+          brand_facet.push(brand.value.to_s)
+        end
+          brand_facet_hash["name".to_sym] = "brand"
+          brand_facet_hash["list".to_sym] = brand_facet.as_json()
+          store_facet_hash["name".to_sym] = "store"
+          store_facet_hash["list".to_sym] = store_facet.as_json()
+          price_facet_hash["name".to_sym] = "price"
+          price_facet_hash["list".to_sym] = price_facet.as_json()
+          values.push(brand_facet_hash)
+          values.push(store_facet_hash)
+          values.push(price_facet_hash)
+      end
+      return values
+    end
+
+
+    def load_all_facets
+      if params[:page] == "1" && params[:filter_apply] == "0"
+        @all_facets = Sunspot.search(Spree::Product) do 
+          fulltext params[:q][:search] if params[:q] && params[:q][:search]
+          if params[:q] && params[:q][:categories]
+            any_of do 
+              params[:q][:categories].each do |category|
+                with(:taxon_name, category)
+              end
+            end
+          end
+          if params[:q] && params[:q][:brand]
+            any_of do 
+              params[:q][:brand].each do |brand|
+                with(:brand_name, brand)
+              end
+            end
+          end
+          if params[:q] && params[:q][:store]
+            any_of do 
+              params[:q][:store].each do |store|
+                with(:store_name, store)
+              end
+            end
+          end
+          if params[:q] && params[:q][:price]
+            any_of do 
+              params[:q][:price].each do |price|
+                with(:price, Range.new(*price.split("..").map(&:to_i)))
+              end
+            end
+          end
+          with(:buyable, :true)
+          with(:visible, :true)
+          with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
+          with(:taxon_ids, Spree::Taxon.where(permalink: params[:id]).collect(&:id)) if params[:id].present?
+          facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
+          facet(:brand_name)
+          facet(:store_name)
+          facet(:taxon_name)
+          if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Highest Price")
+            order_by(:price, :desc)
+          end
+          if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Lowest Price")
+            order_by(:price, :asc) if params[:q] && params[:q][:sort_by]
+          end
+        end
+      end
+    end
+
 
 		def perform_search
 			per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12

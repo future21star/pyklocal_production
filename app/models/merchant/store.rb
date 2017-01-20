@@ -19,6 +19,7 @@ module Merchant
     has_many :email_tokens, as: :resource
     has_many :ratings, as: :rateable
     has_many :comments, as: :commentable 
+    has_many :customer_return_items
 
 
     validate :category, on: :create

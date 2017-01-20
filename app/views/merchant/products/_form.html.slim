@@ -25,7 +25,7 @@
           = f.field_container :taxon do 
             = f.label :taxon_ids, raw(Spree.t(:categories) + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
             br
-            = f.hidden_field :taxon_ids, :value => @product.taxon_ids.join(',')
+            = f.text_field :taxon_ids, :value => @product.taxon_ids.join(',')
         .form-group
           = f.field_container :option_types do 
             = f.label :option_type_ids, Spree.t(:option_types) 
@@ -34,7 +34,7 @@
       .col-md-4
         .form-group
           = f.field_container :price do 
-            = f.label :price, raw(Spree.t(:sell_price) + ' (USD)' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
+            = f.label :price, raw(Spree.t(:sale_price) + ' (USD)' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
             span.input-icon.icon-right
               = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'numbersOnly fullwidth form-control input-bg', :required => "" 
               .fa &#xf0d6;

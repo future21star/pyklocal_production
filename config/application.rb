@@ -21,6 +21,7 @@ module Pyklocal
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
     end
+    # config.autoload_paths += %W(#{config.root}/config/initializers)
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

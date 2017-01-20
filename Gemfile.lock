@@ -235,6 +235,7 @@ GEM
       activesupport (>= 4.1.0)
     hashie (3.4.4)
     highline (1.6.21)
+    hirb (0.7.3)
     htmlentities (4.3.4)
     httpclient (2.8.2.3)
     httpi (2.4.2)
@@ -603,6 +604,7 @@ DEPENDENCIES
   exception_notification
   factory_girl_rails (~> 4.0)
   font-awesome-rails
+  hirb
   impressionist
   jbuilder (~> 2.0)
   jquery-rails
@@ -645,4 +647,4 @@ DEPENDENCIES
   zip-zip
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

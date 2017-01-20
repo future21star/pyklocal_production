@@ -19,7 +19,11 @@ class Merchant::OrdersController < Merchant::ApplicationController
 
       params[:q][:s] ||= "completed_at desc"
 
-      @search = @store.orders.complete.uniq.ransack(params[:q])
+      if params[:q][:search].present?
+        @search = @store.orders.complete.where("number LIKE ?", "%#{params[:q][:search]}%").uniq.ransack(params[:q])
+      else
+        @search = @store.orders.complete.uniq.ransack(params[:q])
+      end
 
       @orders = Kaminari.paginate_array(@search.result).page(params[:page]).per(10)
       @is_owner = is_owner?(@store)
@@ -88,7 +92,7 @@ class Merchant::OrdersController < Merchant::ApplicationController
     p current_spree_user.stores.first
     @store = current_spree_user.stores.first
     @is_owner = is_owner?(@store)
-    @return_orders = @store.return_orders
+    @return_orders = @store.customer_return_items.collect(&:order_id).uniq
   end
 
   def approve
