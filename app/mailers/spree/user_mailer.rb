@@ -36,6 +36,13 @@ module Spree
       mail(to: @user.email, subject: "Out For Delivery")
     end
 
+    def notify_return_order_item(return_item)
+      @user = return_item.order.user
+      @return_item = return_item
+      mail(to: @user.email, subject: "Return Item")
+      mail(to: "manish.rai@w3villa.com", subject: "Return Item")
+    end
+
     def notify_order_items_delivered(order)
       @order = order
       @user = order.user

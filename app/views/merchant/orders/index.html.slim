@@ -13,6 +13,13 @@
         =render :partial => "merchant/shared/seller"
       .col-sm-9
         = render partial: "merchant/shared/order_header", locals: {order: nil}
+        #seller-search.input-group
+          = form_tag '', :method => 'get', id: "seller-search-box" do 
+            input id="seller-search-input" class="form-control" autocomplete="off" name="q[search]" placeholder="Search for..." value=(params[:q][:search] rescue "")
+            button.button-search type="submit" 
+              i.fa.fa-search
+        br 
+        br    
         .form-section
           table.table.table-striped
             thead

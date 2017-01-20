@@ -2,16 +2,14 @@
   <tr>
     <td>
       <p class="lede">
-        Dear <%= @order.try(:full_name) %>
+        Dear <%= @order.try(:full_name) %>cd
       </p>
       <p>
         <%= Spree.t('order_mailer.confirm_email.instructions') %>
       </p>
-      <p>
-        <%= Spree.t('order_mailer.confirm_email.order_summary', number: @order.number) %>
-      </p>
-      <%= render partial: 'spree/shared/mailer_line_item', locals: {order: @order} %>
-      <% if @order.pickable_line_items.present? %>
+     
+      <%= render partial: 'spree/shared/mailer_home_delivery_line_item', locals: {line_items: @line_items} %>
+    <!--   <% if @order.pickable_line_items.present? %>
         <table class="table table-bordered table-hover" style="width: 100%;">
           <thead>
             <tr style="border-bottom: 2px solid #eee;">
@@ -31,7 +29,7 @@
           </tbody>
         </table>
       <% end %>
-      <br>
+      <br> -->
       <br>
       <p>
         <%= Spree.t('order_mailer.confirm_email.thanks') %>
@@ -39,6 +37,7 @@
     </td>
     <td class="expander"></td>
   </tr>
-  <tr>
-    <a href="#{Spree::Store.current.url}users_feedbacks/new?<%= @order.try(:full_name) %>"> Share your Shopping Experience</a>
+ <!--  <tr>
+    <a href="users_feedbacks/new?<%= @order.try(:full_name) %>"> Share your Shopping Experience</a>
+  </tr> -->
 </table>

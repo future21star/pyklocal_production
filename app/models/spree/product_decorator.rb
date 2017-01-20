@@ -186,7 +186,7 @@ module Spree
       {product_property_name: dynamic_filters.flatten.collect(&:value), taxon_ids: search.facet(:taxon_ids).rows.collect(&:value)}
     end
 
-    def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants,  variant_prices, categories, stock, tax_category, cost_price)
+    def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants,  variant_prices, categories, stock, tax_category, cost_price,upc_code)
       p Spree::Product.where(name: name, store_id: store_id).present?
       p "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
       p tax_category
@@ -220,6 +220,14 @@ module Spree
         end
         if stock.present? && variants.blank?
           product.master_variant_stock_build(product, stock)
+        end
+        if upc_code.present?
+          if (Spree::Product.last.properties.collect(&:name) & ["upc"]).blank?
+            property = Spree::Property.where(name: "upc", presentation: "Upc").first_or_create
+            product_property = product.product_properties.build(value: upc_code, property_id: property.id)
+            
+            product_property.save
+          end
         end
       end
     end

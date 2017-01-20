@@ -94,11 +94,8 @@ class Merchant::CustomerReturnItemsController < Merchant::ApplicationController
 									unless @customer_return_item.save
 										redirect_to merchant_order_customer_return_items_path(@order),  notice: 'Something went wrong'
 										return
-									# else
-									# 	# redirect_to order_customer_return_items_path(@order),  notice: 'Your Request is Registered'
-									# 	redirect_to order_customer_return_items_path(@order), notice: 'Your Request is Registered'
-									# 	return
 									end
+									# UserMailer.notify_return_order_item(@customer_return_item)
 								end
 						end
 					else
@@ -109,6 +106,7 @@ class Merchant::CustomerReturnItemsController < Merchant::ApplicationController
 			end
 
 			redirect_to merchant_order_customer_return_items_path(@order),  notice: 'Item(s) Return Succssfully'
+			# UserMailer.notify_return_order_items_delivered(params[:customer_return_items]).deliver
 		end
 	end
 

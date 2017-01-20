@@ -55,6 +55,9 @@
                           td.text-center data-hook="cart_item_total"  class = "total-#{line_item.id} return_item_td" 
                             / = line_item.display_amount.to_html unless line_item.quantity.nil?
                             | 0.00
+    .alert.alert-info style="color:black;"
+      | Total Amount: 
+      span#total-amount 0.00
     .pull-right
       = submit_tag 'Create Return', :class => 'btn btn-lg btn-success', :tabindex => 3, id: "continue-btn"
 - else
@@ -73,6 +76,7 @@
       } else {
         $('.selectbox-'+$(this).val()).attr('disabled',true);
       }
+       totalRefundAmount();
     });
 
     $(document).on('click','#return_item_select_all',function(){
@@ -96,7 +100,19 @@
       $('.item-price-' + $(this).attr("line_item_id")).text(item_price.toFixed(2));
       $('.tax-' + $(this).attr("line_item_id")).text(tax.toFixed(2));
       $('.total-' + $(this).attr("line_item_id")).text((tax + item_price).toFixed(2));
+      totalRefundAmount();
     });
+
+    function totalRefundAmount(){
+      var total = 0.00;
+       $('input:checkbox').each(function () {
+        if ($(this).is(':checked'))
+        {
+          total = total + parseFloat($('.total-' + $(this).val()).text())
+        }
+        $('#total-amount').text(total.toFixed(2))
+      });
+    }
 
 
 
