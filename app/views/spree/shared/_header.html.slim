@@ -12,10 +12,24 @@ header.header
               i.fa.fa-facebook aria-hidden="true"
         .col-md-9.col-sm-8.col-xs-7
           ul
-            li
-              a data-target="#login" data-toggle="modal" href="#"
-                i.fa.fa-sign-in.visible-xs aria-hidden="true"
-                span.hidden-xs Log In
+            - if spree_user_signed_in?
+              - unless current_spree_user.has_spree_role?("merchant")
+                li
+                  = link_to "Wish List",spree.wishlists_path
+              li#my_account.dropdown
+                a href= spree.edit_account_path
+                  = current_spree_user.try(:full_name)
+                  |&nbsp;
+                  i.fa.fa-caret-down
+              li
+                = link_to "My Account",spree.edit_account_path
+              li
+                = link_to "Logout", spree.logout_path ,"data-no-turbolink" => true
+            - else
+              li
+                a data-target="#login" data-toggle="modal" href="#"
+                  i.fa.fa-sign-in.visible-xs aria-hidden="true"
+                  span.hidden-xs Log In
   .container-fluid
     .row
       .logo.col-md-2.col-sm-3.col-xs-7
