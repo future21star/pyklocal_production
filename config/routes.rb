@@ -92,6 +92,7 @@ Pyklocal::Application.routes.draw do
     resource :account, :controller => 'users', except: [:index, :new, :edit, :create, :update, :destroy] do
       member do
         get :change_password
+        get :update_contact_details
       end
     end
 

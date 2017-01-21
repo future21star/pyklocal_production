@@ -25,4 +25,8 @@ Spree::UsersController.class_eval do
     @user = spree_current_user
   end
 
+  def update_contact_details
+    @user = spree_current_user
+  end
+
 end

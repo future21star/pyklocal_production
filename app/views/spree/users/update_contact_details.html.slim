@@ -1,0 +1,42 @@
+section.account_page
+  .container-fluid
+    .row
+      .col-md-10.col-md-offset-1.col-xs-12.account_page_wrap
+        .row
+          .col-xs-12
+            ol.breadcrumb
+              li
+                a href="/"  Home
+              li
+                span My Account
+        .row
+          =render :partial => "spree/shared/user_menu", locals: {current: "update_contact_details"}
+
+          .col-lg-9.col-md-8.col-sm-8.col-xs-12
+            h3 Update Email / Mobile
+            p
+              | Enter the new
+              b  Email ID / Mobile number
+              |  you wish to associate with your
+              b  pykLocal
+              |  account
+            .address-from.personalinfo
+
+              - if current_spree_user && @user == current_spree_user
+
+                = form_for Spree::User.new, :html => {class: 'form-horizontal'}, :as => @user, :url => spree.user_path(@user), :method => :put do |f|
+
+                    = render partial: "spree/shared/error_messages", locals: {target: @user}
+
+                    .form-group
+                      .box-left.number
+                      label.col-sm-2.control-label Email Address:
+                      .col-sm-10
+                        = f.email_field :email, class: "form-control", id: "InputEmail", placeholder: "example@pyklocal.com"
+
+                    .form-group
+                      .col-sm-offset-3.col-sm-7
+                        button type="submit" class="btn btn-default"
+                          | Save Changes
+              - else
+                = render partial: "spree/shared/error_messages"
