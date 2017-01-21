@@ -1,21 +1,21 @@
-Pyklocal::Application.routes.draw do 
+Pyklocal::Application.routes.draw do
 
 
-  
+
   namespace :merchant do
     get "stores/amazon/fetch", to: "amazon_products#fetch", as: "store_amazon_product"
     get "/", to: "home#index"
     get "stores/products/:product_id/variants", to: "variants#index", as: "stores_products_variants"
     get "stores/products/:product_id/variants/new", to: "variants#new", as: "stores_products_variants_new"
     get "stores/:store_id/orders", to: "orders#index", as: :store_orders
-    
+
     resources :stores do
       collection do
         resources :amazon_products do
           collection do
             post :import_collection
           end
-        end 
+        end
         resources :products do
           resources :images
           resources :variants
@@ -33,7 +33,7 @@ Pyklocal::Application.routes.draw do
           get :approve
           put :cancel
           post :return_item_accept_reject
-          collection do 
+          collection do
             get :returns
           end
         end
@@ -56,28 +56,28 @@ Pyklocal::Application.routes.draw do
   # We ask that you don't use the :as option here, as Spree relies on it being the default of "spree"
   mount Spree::Core::Engine, at: '/'
 
-  Spree::Core::Engine.routes.draw do 
+  Spree::Core::Engine.routes.draw do
     get "new_store_application", to: "home#new_store_application"
     get "orders" => "home#orders"
     get "order_placed/:id", to: "orders#order_placed", as: "order_placed"
-    resources :addresses 
+    resources :addresses
     resources :payment_histories
-    resources :wishlists 
+    resources :wishlists
     resources :users_feedbacks
     #Applications routes
     resources :shop , :only => [:index,:show]
-    resources :orders do 
+    resources :orders do
       put :ready_to_pick
       put :cancel
       put :apply_coupon_code
       # resources :return_authorizations
       resources :customer_return_items do
-        collection do 
+        collection do
           post :return_multiple_item
           get :eligible_item
         end
       end
-      
+
     end
     resources :return_authorizations
     resources :payment_preferences
@@ -86,9 +86,15 @@ Pyklocal::Application.routes.draw do
           put :refund
         end
       end
-    
+    resource :account, :controller => 'users', except: [:index, :new, :edit, :create, :update, :destroy] do
+      member do
+        get :change_password
+      end
+    end
+
+
     #Api routes
-    namespace :api do 
+    namespace :api do
       namespace :v1 do
 
         resources :home
@@ -97,7 +103,7 @@ Pyklocal::Application.routes.draw do
         resources :user_addresses, only: [:show, :update, :create, :destroy]
         resources :wishlists , :only => [:index, :destroy, :create]
 
-        resources :search do 
+        resources :search do
           get :filters, on: :collection
         end
 
@@ -111,7 +117,7 @@ Pyklocal::Application.routes.draw do
 
         resources :ratings_reviews, only: [:index, :create]
 
-        resources :products do 
+        resources :products do
           post :rate_and_comment
           get :related_product
         end
@@ -130,7 +136,7 @@ Pyklocal::Application.routes.draw do
             get :get_adjustments
           end
 
-          
+
           resources :line_items
           resources :payments do
             member do
@@ -153,13 +159,13 @@ Pyklocal::Application.routes.draw do
           end
         end
 
-        resources :countries do 
+        resources :countries do
           member do
             get :states
           end
         end
 
-        resources :merchant_stores do 
+        resources :merchant_stores do
           put :update_location
           post :rate
         end
@@ -188,14 +194,14 @@ Pyklocal::Application.routes.draw do
     end
 
     #Admin routes
-    namespace :admin do 
+    namespace :admin do
       resources :commissions
       resources :feedbacks
       resources :carousel_images
       resources :static_images
       resources :cancel_orders
 
-      resources :sellers do 
+      resources :sellers do
         resources :payment_preferences
         get :stores
         resources :payment_histories
