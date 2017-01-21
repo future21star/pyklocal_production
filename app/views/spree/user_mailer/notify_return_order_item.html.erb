@@ -1,0 +1,43 @@
+<table class="row header">
+  <tr>
+    <td>
+      <p class="lede">
+        Dear <%= @order.try(:full_name) %>cd
+      </p>
+      <p>
+        <%= Spree.t('order_mailer.confirm_email.instructions') %>
+      </p>
+     
+      <%= render partial: 'spree/shared/mailer_home_delivery_line_item', locals: {line_items: @line_items} %>
+    <!--   <% if @order.pickable_line_items.present? %>
+        <table class="table table-bordered table-hover" style="width: 100%;">
+          <thead>
+            <tr style="border-bottom: 2px solid #eee;">
+              <th style="width: 40%;"> Item </th>
+              <th style="width: 20%;"> Store </th>
+              <th style="width: 39%;"> Pickup Address </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @order.pickable_line_items.each do |pickable_item| %>
+              <tr style="border-bottom: 2px solid #eee; background: #ffe2e2;">
+                <td><%= pickable_item.product.name %></td>
+                <td><%= pickable_item.seller_name || "No store" %></td>
+                <td><%= pickable_item.pickup_address || "No address" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+      <br> -->
+      <br>
+      <p>
+        <%= Spree.t('order_mailer.confirm_email.thanks') %>
+      </p>
+    </td>
+    <td class="expander"></td>
+  </tr>
+ <!--  <tr>
+    <a href="users_feedbacks/new?<%= @order.try(:full_name) %>"> Share your Shopping Experience</a>
+  </tr> -->
+</table>

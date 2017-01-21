@@ -9,11 +9,11 @@ class ImportProductWorker
     store_id = seller.stores.first.try(:id)
     CSV.foreach(csv_path) do |row|
       unless row.include?("Product Name") && row.include?("Description")
+        p "---------------------------------------------------"
         sku = row[0][0..2].upcase+SecureRandom.hex(5).upcase
-        Spree::Product.analize_and_create(row[0], row[1], sku, Time.zone.now.strftime("%Y/%m/%d"), row[2], shipping_category_id, row[3], store_id, row[4], row[5], row[6])
+        Spree::Product.analize_and_create(row[0], row[2], sku, Time.zone.now.strftime("%Y/%m/%d"), row[1], shipping_category_id, row[6], store_id, row[7], row[8], row[9], row[4], row[10], row[5], row[3],row[11])
       end
     end
     CsvUploadMailer.uploading_complete(seller).deliver
   end
-
 end

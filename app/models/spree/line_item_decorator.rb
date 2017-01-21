@@ -30,6 +30,10 @@ module Spree
   		CustomerReturnItem.where(line_item_id: self.id, order_id: order).sum(:return_quantity)
   	end
 
+  	def tax_rate
+  		variant.tax_category_id.present? ? variant.tax_category.tax_rates.first.amount.to_f : product.tax_category.tax_rates.first.amount.to_f 
+  	end
+
 		def seller_name
 			product.store.try(:name)
 		end

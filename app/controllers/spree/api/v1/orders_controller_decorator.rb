@@ -25,7 +25,7 @@ module Spree
 							store.pickable_store_orders.each do |s_o|
 								p "9999999999999999999999999999"
 								p s_o 
-								unless s_o.nil? && s_o.state == 'canceled'
+								if s_o.present? && s_o.state != 'canceled'
 									line_items = s_o.line_items.joins(:product).where(spree_line_items: {delivery_type: "home_delivery"}, spree_products: {store_id: store.id})
 									line_item_ids = line_items.collect(&:id)
 									@orders_list.push({order_number: s_o.number, store_name: store.name, line_item_ids: line_item_ids, state: line_items.collect(&:delivery_state).uniq.join, location: {lat: store.try(:latitude), long: store.try(:longitude)}})
@@ -148,8 +148,11 @@ module Spree
 	            render json:{
 	            	status: "1",
 	            	message: "Updated Successfully",
-	            	cart_count: @user.cart_count.to_s
-	            	# details: to_stringify_checkout_json(@order, [])
+	            	cart_count: @order.user.cart_count.to_s,
+	            	order_number: @order.number.to_s,
+								order_token: @order.guest_token.to_s,
+								order_state: @order.state.to_s,
+	            	details: to_stringify_variant_json(@order, @user, [])
 	            }
 	          else
 	          	render json:{
@@ -192,7 +195,7 @@ module Spree
 
 		def cancel
 		 	authorize! :update, @order, params[:token]
-		 	if @order.state == "complete" && (@order.completed_at.to_date + 14.days) < Date.today
+		 	if @order.state == "complete" && (@order.completed_at.to_date + 14.days) >= Date.today
 	    	if	@order.canceled_by(current_api_user)
 	    		render json: {
 	    			status: "1",
@@ -201,9 +204,14 @@ module Spree
 	    	else
 	    		render json: {
 	    			status: "0",
-	    			message: "order could not be cancelled"
+	    			message: "order could not be cancelled! Something went wrong"
 	    		}
 	    	end
+	    elsif @order.completed_at.to_date + 14.days < Date.today
+	    	render json:{
+	    		status: "0",
+	    		message: "Order can only be cancel within 14 days of completion"
+	    	}
 	    else
 	    	render json: {
 	    		status: "0",

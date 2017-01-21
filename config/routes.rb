@@ -33,6 +33,12 @@ Pyklocal::Application.routes.draw do
           get :approve
           put :cancel
           post :return_item_accept_reject
+          resources :customer_return_items do
+            collection do
+              get :eligible_item
+              post :return_multiple_item
+            end
+          end
           collection do
             get :returns
           end
@@ -70,6 +76,7 @@ Pyklocal::Application.routes.draw do
       put :ready_to_pick
       put :cancel
       put :apply_coupon_code
+      resources :customer_returns
       # resources :return_authorizations
       resources :customer_return_items do
         collection do
@@ -81,16 +88,18 @@ Pyklocal::Application.routes.draw do
     end
     resources :return_authorizations
     resources :payment_preferences
-    resources :customer_returns, only: [:index, :new, :edit, :create, :update] do
-        member do
-          put :refund
-        end
-      end
+
     resource :account, :controller => 'users', except: [:index, :new, :edit, :create, :update, :destroy] do
       member do
         get :change_password
       end
     end
+
+    # resources :customer_returns, only: [:index, :new, :edit, :create, :update] do
+    #     member do
+    #       put :refund
+    #     end
+    #   end
 
 
     #Api routes

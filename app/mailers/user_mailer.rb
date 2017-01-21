@@ -14,6 +14,15 @@ class UserMailer < ActionMailer::Base
  		mail(to: "gopal.sharma@w3villa.com", subject: "#{store.name} is created/updated")
  	end
 
+  def notify_out_of_stock_product(variant)
+    @variant = variant
+    @product = variant.product
+    @seller = @product.store.try(:spree_users).try(:first)
+    if @seller
+      mail(to: @seller.email, subject: "Product Out Of Stock")
+    end
+  end
+
   def password_changed_notification(user)
     @user = user
     mail(to: @user.email, subject: "Notice of Password Change from Pyklocal")

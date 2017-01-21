@@ -11,7 +11,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
     p "______________________________________________________________________________________-"
     p params
     p params.key?("active_tab")
-    tab = params[:active_tab]
+    @tab = params[:active_tab]
     @search = Sunspot.search(Spree::Product) do
       fulltext params[:q][:s] if params[:q] && params[:q][:s]
       with(:visible, true)  if params[:active_tab] == "published" || !params.key?("active_tab")

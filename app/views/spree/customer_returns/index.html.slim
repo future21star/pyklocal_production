@@ -1,23 +1,43 @@
 #container
   .container
-    .col-sm-3
-      =render :partial => "spree/shared/user_menu", locals: {current: "customer_return"}
-    .col-sm-9
-      h2 Your Order Return Request
-      - if !@customer_return_request.blank?
-        table#listing_named_types.table data-hook="" 
+    .col-sm-12
+      h2 Your Order Return Request(s)
+      - unless @customer_return.blank?
+        table.table.table-responsive.table-bordered#return_item
           thead
             tr 
-              th Request Number
-              th Order Number 
+              th.text-center Item Image
+              th.text-center Item Name
+              th.text-center Unit Price (USD)
+              th.text-center Return Quantity
+              th.text-center Tax Rate (%)
+              th.text-center Item Return Amount (USD)
+              th.text-center Tax Amount (USD)
+              th.text-center Refund Amount (USD)
           tbody id="" 
-            - @customer_return_request.each do |named_type|
+            - @customer_return.each do |return_item|
               tr data-hook="" id="" 
                 td.align-center
-                  = named_type.number
+                  - if return_item.line_item.variant.images.length == 0
+                    = link_to small_image(return_item.line_item.variant.product),class:"img-thumbnail"
+                  - else
+                    = link_to image_tag(return_item.line_item.variant.images.first.attachment.url(:mini)),class:"img-thumbnail"
                 td.align-center
+                  = return_item.line_item.product.name
+                td.align-center
+                  = return_item.line_item.price
+                td.align-center
+                   = return_item.return_quantity
+                td.align-center
+                  = return_item.line_item.tax_rate * 100
+                td.align-center 
+                  = return_item.item_return_amount
+                td.align-center
+                  = return_item.tax_amount 
+                td.align-center
+                  = return_item.total
                 / td.actions.actions-1.text-right
                 /   = link_to "<span class='fa'></span>".html_safe, edit_merchant_return_authorization_reason_path(named_type.id), class: "btn btn-info btn-sm", "data-no-turbolink" => true
                 /   = link_to "<span class='fa'></span>".html_safe, merchant_return_authorization_reason_path(named_type.id), class: "btn btn-danger btn-sm", method: "delete"
       - else
-          | You didnt make any request to Order return
+          | You Haven't made any request For Order return
