@@ -89,41 +89,6 @@ section.product_part.related
 
 - content_for :js do
   javascript:
-   //initiate the plugin and pass the id of the div containing gallery images
-    $("#zoom_01").elevateZoom({
-      gallery:'gallery_01',
-      zoomWindowFadeIn: 500,
-      zoomWindowFadeOut: 500,
-      lensFadeIn: 500,
-      lensFadeOut: 500,
-      easing : true,
-    });
-
-    //pass the images to Fancybox
-    $("#zoom_01").bind("click", function(e) {
-      var ez =   $('#zoom_01').data('elevateZoom');
-      $.fancybox(ez.getGalleryList());
-      return false;
-    });
-
-
-    $('#slideshow0').owlCarousel({
-      items: 1,
-      autoPlay: 3000,
-      singleItem: true,
-      navigation: true,
-      navigationText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
-      pagination: true
-    });
-
-
-    $("#content .owl-carousel.bestseller_carousel").owlCarousel({
-      itemsCustom : [[320, 1],[600, 2],[768, 3],[992, 5],[1199, 5]],
-      lazyLoad : true,
-      navigation : true,
-      navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-      scrollPerPage : true
-    });
 
     $(document).ready(function() {
       $('#overall-rating').raty({
