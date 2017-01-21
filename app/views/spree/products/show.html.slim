@@ -39,23 +39,43 @@ section.product_sec
           .col-md-6.col-xs-12.product-info
             = render 'cart_form'
 
-              /! AddThis Button END
-          ul.nav.nav-tabs
-            li.active
-              a data-toggle="tab" href="#tab-description"  Description
-            li
-              a data-toggle="tab" href="#tab-review"  Reviews
-          .tab-content
-            #tab-description.tab-pane.active itemprop="description"
-              .cpt_product_description
-                = product_description(@product) rescue Spree.t(:product_has_no_description)
-            #tab-review.tab-pane
+    .row
+      .container-fluid
+        .descwithratting
+          ul.tabs
+            li.active rel="tab1"  Description
+            li rel="tab2"  Reviews
+          .tab_container
+            h3.d_active.tab_drawer_heading rel="tab1"  Description
+            #tab1.tab_content2
+              p= product_description(@product) rescue Spree.t(:product_has_no_description)
+            h3.tab_drawer_heading rel="tab2"  Reviews
+            #tab2.tab_content2
               .rating-info
                 label Overall Ratings
                 span#overall-rating.ratings-info
               #ratings style="margin-top: 15px;"
                 = render partial: "spree/shared/previous_rate_and_comment"
               = render partial: "spree/shared/review_section"
+section.product_part.related
+  .container-fluid
+    .row
+      .col-xs-12
+        .product_box
+          h3
+            | Related Products &nbsp;
+            a href="#"
+              | View All
+              i.fa.fa-angle-right aria-hidden="true"
+
+          ul.content-slider
+            - if @product.similar.blank?
+              No Product Found
+            - else
+              - @product.similar.each do |similar_product|
+                = render :partial => 'spree/shared/product', locals: {product: similar_product}
+
+
       /column#column-right.col-sm-3.hidden-xs
       /  h4 Product Sold by :
       /  = render :partial => 'spree/shared/seller'
@@ -66,13 +86,6 @@ section.product_sec
     /     - @product.taxons.first.products.each do |similar_product|
     /       = render :partial => 'spree/shared/product', locals: {product: similar_product}
     / -else
-    h3 Related Products
-    -unless @product.similar.blank?
-      .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")
-        - @product.similar.each do |similar_product|
-          = render :partial => 'spree/shared/product', locals: {product: similar_product}
-    -else
-      | No Product Found
 
 - content_for :js do
   javascript:
