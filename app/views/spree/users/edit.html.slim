@@ -31,10 +31,10 @@ section.account_page
                       .col-sm-10
                         = f.text_field :last_name, class: "form-control", id: "InputLastName", placeholder: "Last name"
 
-                    .col-sm-12
-                      .form-group
-
-                        /= f.email_field :email, class: "form-control", id: "InputEmail", placeholder: "example@pyklocal.com"
+                    .form-group
+                      label.col-sm-2.control-label Email Address:
+                      .col-sm-10
+                        = f.email_field :email, class: "form-control", id: "InputEmail", placeholder: "example@pyklocal.com"
 
                     .col-sm-12
                       .form-group
