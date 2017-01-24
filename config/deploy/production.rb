@@ -1,5 +1,5 @@
 # Settings for staging server
-server '54.212.247.10', :app, :web, :db, :primary => true
+server '54.202.62.141', :app, :web, :db, :primary => true
 set :rails_env, 'production'
 
 set :use_sudo, false

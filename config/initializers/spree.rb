@@ -17,7 +17,7 @@ Spree.config do |config|
 end
 # CONSTANT
 FREE_DELIVERY_ORDER_PRICE = 35
-PRODUCT_SHARE_LINK = 'http://54.212.247.10/products/'
+PRODUCT_SHARE_LINK = 'http://54.202.62.141/products/'
 
 
 Spree::Store.current.name = "Pyklocal"
