@@ -1,5 +1,5 @@
 .onloadimg
-  img.loader alt="pyk" height="128" src="/assets/new_design/loading.gif" width="128" /
+  = image_tag(asset_path('new_design/loading.gif'), height: 128, width: 128, class: 'loader' )
 header.header
   .top-bar
     .container-fluid
@@ -34,8 +34,8 @@ header.header
     .row
       .logo.col-md-2.col-sm-3.col-xs-7
         a href="/"
-          img.hidden-xs alt="pyk" height="78" src="/assets/new_design/logo.png" width="125" /
-          img.visible-xs alt="pyk" height="34" src="/assets/new_design/logo-mobile.png" width="125" /
+          img.hidden-xs alt="pyk" height="78" src=asset_path("new_design/logo.png") width="125" /
+          img.visible-xs alt="pyk" height="34" src=asset_path("new_design/logo-mobile.png") width="125" /
       .col-md-2.col-sm-3.col-xs-5.visible-xs
         .cart-favorite
           .cart
