@@ -1,25 +1,25 @@
-.col-sm-12
-  h3 = Spree.t(:billing_address)
-  #billing data-hook="billing_fieldset_wrapper" 
-    = form.fields_for :bill_address do |bill_form|
-        = render :partial => 'spree/address/form', :locals => { :form => bill_form, :address_type => 'billing', :address => @order.bill_address }
-        p.field.checkbox.col-sm-12 data-hook="use_billing" 
-          = label_tag :order_use_billing, :id => 'use_billing' do
-            = check_box_tag 'order[use_billing]','1', @order.shipping_eq_billing_address?
-            | Use My Billing Address for Shipping
-.col-sm-12
-  #shipping data-hook="shipping_fieldset_wrapper" 
+.form-group.col-xs-12
+  h4.title = Spree.t(:billing_address)
+#billing data-hook="billing_fieldset_wrapper"
+  = form.fields_for :bill_address do |bill_form|
+      = render :partial => 'spree/address/form', :locals => { :form => bill_form, :address_type => 'billing', :address => @order.bill_address }
+      .form-group.checkbox.col-sm-12 data-hook="use_billing"
+        = label_tag :order_use_billing, :id => 'use_billing' do
+          = check_box_tag 'order[use_billing]','1', @order.shipping_eq_billing_address?
+          span.check Use My Billing Address for Shipping
+
+#shipping data-hook="shipping_fieldset_wrapper"
+  #shpping style=("display:none")
+    .form-group.col-xs-12
+      h4.title = Spree.t(:shipping_address)
     = form.fields_for :ship_address do |ship_form|
-        
-        #shpping style=("display:none")
-          h3.panel-title= Spree.t(:shipping_address)
-          = render :partial => 'spree/address/form', :locals => { :form => ship_form, :address_type => 'shipping', :address => @order.ship_address }
-          
-          = form.hidden_field :bill_address
-.text-right.form-buttons.col-sm-12 data-hook="buttons" 
-  = submit_tag Spree.t(:delivery), :class => 'btn btn-lg btn-primary'
-  
-    
+      = render :partial => 'spree/address/form', :locals => { :form => ship_form, :address_type => 'shipping', :address => @order.ship_address }
+      = form.hidden_field :bill_address
+.text-right.form-buttons.col-sm-12 data-hook="buttons"
+button.btn-green.done type="submit"  Next
+
+
+
 - content_for :js do
   javascript:
 
@@ -27,7 +27,7 @@
       if (this.checked) {
         $('#shpping').hide();
         this.checked = 'true';
-     
+
       } else {
           $('#shpping').show();
           this.checked = false;
