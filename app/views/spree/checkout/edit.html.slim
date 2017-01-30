@@ -10,7 +10,7 @@ section.checkout
         ul.payment-wizard
           = form_for @order, url: update_checkout_path(@order.state), html: { id: "checkout_form_#{@order.state}" } do |form|
             - states.map.with_index do |state, i|
-              li class=('active' if state == @order.state)
+              li class=(change_states(state, i, @order.state, states))
                 .change
                   a href="javascript:void(0)"  Change
                 .wizard-heading
@@ -18,14 +18,14 @@ section.checkout
                   small Step #{i+1} of #{states.count}
                 - content_for :google_analytics do
                   = render partial: 'spree/shared/google_checkout.js', locals: { order: @order, step_number: (@order.checkout_steps.index(@order.state) + 1) }
-                .wizard-content
-                  #checkout data-hook=""
-                    = render partial: 'spree/shared/error_messages', locals: { target: @order }
-                    div data-hook="checkout_content"
-                      div data-hook="checkout_header"
-                        = form.hidden_field :state_lock_version
-                        - unless state == "complete"
-                          - if state == @order.state
+                = form.hidden_field :state_lock_version
+                - unless state == "complete"
+                  - if state == @order.state
+                    .wizard-content
+                      #checkout data-hook=""
+                        = render partial: 'spree/shared/error_messages', locals: { target: @order }
+                        div.row data-hook="checkout_content"
+                          div data-hook="checkout_header"
                             = render state, form: form
 
                     /- if @order.state != 'confirm'
