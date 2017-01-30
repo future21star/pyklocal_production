@@ -11,7 +11,7 @@
         - num_user = store.ratings.count > 0 ? store.ratings.count : 1
         - rate_count = (store.ratings.try(:sum, :rating) / num_user).to_i
         - (1..5).each do |i|
-          - rate_image_path = (i <= rate_count ? "/assets/new_design/rate-star.png" : "/assets/new_design/blank-star.png")
+          - rate_image_path = (i <= rate_count ? asset_path("new_design/rate-star.png") : asset_path("new_design/blank-star.png")
           img alt="pyk" height="17" src = rate_image_path width="18" /
       span.lable Rate Store
     h5 Store Information
