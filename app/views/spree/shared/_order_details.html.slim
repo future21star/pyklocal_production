@@ -1,167 +1,43 @@
-table.table.table-bordered.table-hover
-  tbody
-    tr      
-      td style=("width:50%;") data-hook="order-shipment" 
-        h4
-          = Spree.t(:shipments)
-          = link_to "(#{Spree.t(:edit)})", checkout_state_path(:delivery) unless order.completed?
-        .delivery
-          - shipment = order.shipments.last
-          / - order.shipments.uniq.each do |shipment|
-          div
-            - unless order.self_pickup
-              i.fa.fa-truck
-              |&nbsp;
-              = "Delivery within 6 - 8 woking hours with cost #{number_to_currency(shipment.selected_shipping_rate.cost.to_f)}"
-            -else
-              = "Not Available"
-              / = Spree.t(:shipment_details, stock_location: shipment.stock_location.name, shipping_method: shipment.selected_shipping_rate.name)
-        = render 'spree/shared/shipment_tracking', order: order if order.shipped?
+.col-sm-6.col-xs-12.shipping_info
+  .shipping_box
+    span.ship_icon.same
+      = image_tag("new_design/delivery-ico.png", height: 22, width: 40)
+    .ship_detail.same
+      h5 Shipments
+      = link_to "(#{Spree.t(:edit)})", checkout_state_path(:delivery) unless order.completed?
+      - shipment = order.shipments.last
+
+      - unless order.self_pickup
+        = "Delivery within 6 - 8 woking hours with cost #{number_to_currency(shipment.selected_shipping_rate.cost.to_f)}"
+      -else
+        = "Not Available"
+    = render 'spree/shared/shipment_tracking', order: order if order.shipped?
+
+  - if !order.self_pickup
+    h4 Billing Address
+    - if order.has_step?("address")
+      = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
+      = render 'spree/shared/address', address: order.bill_address
+
+.col-sm-6.col-xs-12.shipping_info
+  .shipping_box
+    span.ship_icon.same
+      = image_tag("new_design/card-ico.png", height: 34, width: 34)
+    .ship_detail.same
+      h5
+        | Payment Information
+        = image_tag("new_design/payment-card.jpg", height: 18, width: 32)
       - if order.has_step?("payment")
-        td data-hook="order-payment" 
-          h4
-            = Spree.t(:payment_information)
-            = link_to "(#{Spree.t(:edit)})", checkout_state_path(:payment) unless order.completed?
-          .payment-info
-            div
-              - order.payments.valid.each do |payment|
-                i.fa.fa-money
-                = render payment
-                br
-- if !order.self_pickup
-  table.table.table-bordered.table-hover
-    thead
-      tr
-        td.text-left style=("width:50%;")  Billing Address
-        td.text-left Shipping Address
+        = link_to "(#{Spree.t(:edit)})", checkout_state_path(:payment) unless order.completed?
+        - order.payments.valid.each do |payment|
+          = render payment
+          br
 
-    tbody
-      tr 
-      - if order.has_step?("address")
-        td data-hook="order-bill-address" 
-          h4
-            = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
-          = render 'spree/shared/address', address: order.bill_address
-      - if order.has_step?("delivery")
-        td data-hook="order-ship-address" 
-          h4
-            = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
-          = render 'spree/shared/address', address: order.bill_address
-- if order.pickable_line_items.present?
-  table.table.table-bordered.table-hover
-    thead
-      tr
-        th Item
-        th Store
-        th Pickup Address
-    tbody
-      - order.pickable_line_items.each do |pickable_item|
-        tr style="background: #ffe2e2;"
-          td= pickable_item.product.name
-          td= pickable_item.seller_name || "No store"
-          td= pickable_item.pickup_address || "No address"
 
-.table-responsive
-  table.table.table-bordered.table-hover
-    thead
-      tr
-        td.text-center Product Image
-        td.text-center Product Name
-        td.text-center Delivery Type
-        - if order.state != 'canceled' && order.state == 'complete'
-          td.text-center Delivery State
-        td.text-center Quantity
-        td.text-center Price
-        td.text-center Total
-        / - if order.completed?
-        /   td style=("width: 20px;") 
-    tbody
-      - order.line_items.each do |item|
-        - bg_color = item.delivery_type == "pickup" ? '#ffe2e2' : '#fff'
-        tr data-hook="order_details_line_item_row" style="background: #{bg_color};"
-          td.text-center data-hook="order_item_image"
-            - if item.variant.images.length == 0
-              = link_to small_image(item.variant.product), item.variant.product
-            - else
-              = link_to image_tag(item.variant.images.first.attachment.url(:small)), item.variant.product
-          td.text-center data-hook="order_item_description"
-            b= item.variant.product.name
-            / = truncated_product_description(item.variant.product)
-            = "(" + item.variant.options_text + ")" unless item.variant.option_values.empty?
-          td.text-center= item.delivery_type.humanize
-          -if order.state != 'canceled' && order.state == 'complete'
-            td.text-center 
-              -if item.delivery_type == 'pick_up' || item.delivery_type == 'pickup'
-                = 'NA'
-              -elsif item.delivery_state == 'packaging'
-                = 'In process'
-              -elsif item.delivery_state == 'ready_to_pick'
-                = 'Ready For Pick Up'
-              -elsif item.delivery_state == 'confirmed_pickup'
-                = 'Waiting For Driver'
-              -elsif item.delivery_state == 'out_for_delivery'
-                = 'Out For Delivery'
-              -elsif item.delivery_state == 'delivered'
-                = 'Delivered' 
-          td.text-center data-hook="order_item_qty" = item.quantity
-          td.text-center data-hook="order_item_price" 
-            span= item.single_money.to_html
-          td.text-center data-hook="order_item_total" 
-            span= item.display_amount.to_html
-          / - if order.completed?
-              / td.text-text-right style=("white-space: nowrap;")
-                = link_to "<i class='fa fa-reply'></i>".html_safe, new_customer_return_path(order_number: order.number), class: "btn btn-primary"
-    tfoot#order-total data-hook="order_details_total" 
-      tr.warning.total
-        td align="right" colspan="5" 
-          b
-            = Spree.t(:order_total)
-            | :
-        td.total colspan="2"
-          span#order_total.lead.text-primary= order.display_total.to_html
-    tfoot#subtotal data-hook="order_details_subtotal" 
-      tr#subtotal-row.total
-        td align="right"colspan="5" 
-          b
-            = Spree.t(:subtotal)
-            | :
-        td.total colspan="2"
-          span= order.display_item_total.to_html
-    - if order.line_item_adjustments.exists?
-      - if order.line_item_adjustments.promotion.eligible.exists?
-        tfoot#price-adjustments data-hook="order_details_price_adjustments" 
-          - order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments|
-            tr.total
-              td colspan="5" 
-                = Spree.t(:promotion)
-                | :
-                strong= label
-              td.total colspan="2"
-                span= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency)
-    tfoot#shipment-total
-      - order.shipments.group_by { |s| s.selected_shipping_rate.name }.each do |name, shipments|
-        tr.total data-hook="shipment-row" 
-          td.text-muted align="right" colspan="5" 
-            = Spree.t(:shipping)
-            | :
-            strong= name
-          td.total colspan="2"
-            span= Spree::Money.new(shipments.sum(&:discounted_cost), currency: order.currency).to_html
-    - if order.all_adjustments.tax.exists?
-      tfoot#tax-adjustments data-hook="order_details_tax_adjustments" 
-        - order.all_adjustments.tax.group_by(&:label).each do |label, adjustments|
-          tr.total
-            td.text-muted align="right" colspan="5" 
-              = Spree.t(:tax)
-              | :
-              strong= label
-            td.total colspan="2"
-              span= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency)
-    tfoot#order-charges data-hook="order_details_adjustments" 
-      - order.adjustments.eligible.each do |adjustment|
-        - next if (adjustment.source_type == 'Spree::TaxRate') and (adjustment.amount == 0)
-        tr.total
-          td align="right" colspan="5" 
-            strong= adjustment.label
-          td.total colspan="2"
-            span= adjustment.display_amount.to_html
+  h4 Shipping Address
+  - if order.has_step?("address")
+    = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
+    = render 'spree/shared/address', address: order.bill_address
+
+
+

@@ -2,67 +2,155 @@
   - if order_just_completed?(@order)
     = render partial: 'spree/shared/google_purchase.js', locals: { order: @order }
 
-#container
-  ul.breadcrumb
-    li
-      a href="/" 
-        i.fa.fa-home  Home
-    li
-      a href=spree.account_path  Account
-    li
-      a href=spree.orders_path  Order History
-    li
-      span  Order Information
-  #content
-              
-    - if order_just_completed?(@order)
-      #order data-hook="" 
-        .jumbotron style=("padding-top: 100px; padding-bottom: 100px;")
-          h1 
-            center
-              strong Thank You !
-              |&nbsp; for shopping at 
-              span style=("color:#be0404;") Pyk
-              span style=("color:##00154d;") Local
+
+
+#content
+
+  - if order_just_completed?(@order)
+    #order data-hook=""
+      .jumbotron style=("padding-top: 100px; padding-bottom: 100px;")
+        h1
           center
-            p You will receive an e-mail confirmaton shortly
-            p if you fail to receive the email order invoice from us in our Inbox please check your spam folder.
+            strong Thank You !
+            |&nbsp; for shopping at
+            span style=("color:#be0404;") Pyk
+            span style=("color:##00154d;") Local
+        center
+          p You will receive an e-mail confirmaton shortly
+          p if you fail to receive the email order invoice from us in our Inbox please check your spam folder.
 
-          h2
-          h4
-            .pull-left 
-              a href=order_placed_path(@order)
-                i.fa.fa-yelp
-                | View your order
-              
-            .pull-right data-hook="links" 
-              = link_to Spree.t(:continue), spree.root_path
-              - unless order_just_completed?(@order)
-                - if try_spree_current_user && respond_to?(:spree_account_path)
-                  = link_to Spree.t(:my_account), spree_account_path, class: "button"
+        h2
+        h4
+          .pull-left
+            a href=order_placed_path(@order)
+              i.fa.fa-yelp
+              | View your order
 
-    - else
-      h3.panel-title data-hook="checkout_title"
-        | Order History
-      table.table.table-bordered.table-hover
-          thead
-            tr
-              td.text-left colspan="2"  Order Details
-          tbody
-            tr
-              td style=("width: 50%;")
-                b =accurate_title
-              td
-                b Order Date:
-                |&nbsp;
-                =@order.created_at 
-      #order data-hook=""
-        = render partial: 'spree/shared/order_details', locals: { order: @order }
-        -if @order.state != "canceled" && @order.is_any_item_shipped? == true 
-          p.pull-right data-hook="links" 
-            = link_to "Return Order",order_customer_return_items_path(@order), class: "button btn btn-success" 
-            / - unless order_just_completed?(@order)
+          .pull-right data-hook="links"
+            = link_to Spree.t(:continue), spree.root_path
+            - unless order_just_completed?(@order)
               - if try_spree_current_user && respond_to?(:spree_account_path)
-                  = link_to Spree.t(:my_account), spree_account_path, class: "button"
+                = link_to Spree.t(:my_account), spree_account_path, class: "button"
 
-      
+  - else
+    section.invoice_page
+      .container-fluid
+        .col-xs-12
+          h4.check-title.text-center Order Complete
+
+        .row
+          .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1.col-xs-12
+            .invoice
+              h5 Order Details
+              .order-detail
+                span.order_no
+                  strong =accurate_title
+                span.order_detail
+                  strong Order Date:
+                  |&nbsp;
+                  =@order.created_at
+              .row data-hook=""
+                = render partial: 'spree/shared/order_details', locals: { order: @order }
+
+              - if @order.pickable_line_items.present?
+                table.table.table-bordered.table-hover
+                  thead
+                    tr
+                      th Item
+                      th Store
+                      th Pickup Address
+                  tbody
+                    - @order.pickable_line_items.each do |pickable_item|
+                      tr style="background: #ffe2e2;"
+                        td= pickable_item.product.name
+                        td= pickable_item.seller_name || "No store"
+                        td= pickable_item.pickup_address || "No address"
+
+              .table-responsive
+                table.table.invoice_info
+                  tbody
+                    tr
+                      th colspan="2"  Item
+                      th Delivery Type
+                      th Qty
+                      th Price
+                    - @order.line_items.each do |item|
+                      - if item.delivery_type == "pickup"
+                        tr.pick
+                          td
+                            - if item.variant.images.length == 0
+                              = link_to small_image(item.variant.product), item.variant.product
+                            - else
+                              = link_to image_tag(item.variant.images.first.attachment.url(:small)), item.variant.product
+                          td
+                            h5
+                              = item.variant.product.name
+                              = "(" + item.variant.options_text + ")" unless item.variant.option_values.empty?
+                              -if item.delivery_type == 'pick_up' || item.delivery_type == 'pickup'
+                                .delivery_option
+                                  | * Pick Up Info: #{item.seller_name || "No store"}, #{item.pickup_address || "No address"}
+                          td= item.delivery_type.humanize
+                          td data-hook="order_item_qty"
+                            strong = item.quantity
+                          td
+                            strong.price = item.single_money.to_html
+                      - else
+                        tr.Home
+                          td
+                            - if item.variant.images.length == 0
+                              = link_to small_image(item.variant.product), item.variant.product
+                            - else
+                              = link_to image_tag(item.variant.images.first.attachment.url(:small)), item.variant.product
+                          td
+                            h5
+                              = item.variant.product.name
+                              = "(" + item.variant.options_text + ")" unless item.variant.option_values.empty?
+                              -if item.delivery_type == 'pick_up' || item.delivery_type == 'pickup'
+                                .delivery_option
+                                  | * Pick Up Info: #{item.seller_name || "No store"}, #{item.pickup_address || "No address"}
+                          td= item.delivery_type.humanize
+                          td data-hook="order_item_qty"
+                            strong = item.quantity
+                          td
+                            strong.price = item.single_money.to_html
+
+                    tr.totals
+                      th.text-right colspan="4"  Subtotal:
+                      th.text-right
+                        span.pricing= @order.display_item_total.to_html
+
+                    - if @order.line_item_adjustments.exists?
+                      - if @order.line_item_adjustments.promotion.eligible.exists?
+                        tfoot#price-adjustments data-hook="order_details_price_adjustments"
+                          - @order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments|
+                            tr.total
+                              td colspan="5"
+                                = Spree.t(:promotion)
+                                | :
+                                strong= label
+                              td.total colspan="2"
+                                span= Spree::Money.new(adjustments.sum(&:amount), currency: @order.currency)
+
+                    tr.totals
+                      - if @order.all_adjustments.tax.exists?
+                        - @order.all_adjustments.tax.group_by(&:label).each do |label, adjustments|
+                          th.text-right colspan="4" Sales Tax:
+                          th.text-right= Spree::Money.new(adjustments.sum(&:amount), currency: @order.currency)
+                    tr.totals
+                      - @order.shipments.group_by { |s| s.selected_shipping_rate.name }.each do |name, shipments|
+                          th.text-right colspan="4" Shipping Charge:
+                          th.text-right= Spree::Money.new(shipments.sum(&:discounted_cost), currency: @order.currency).to_html
+                    tr.subtotals
+                      th.text-right colspan="4"  Order Total:
+                      th.text-right
+                        span.pricing $
+                        span.pricing= @order.total.to_f
+              /.text-center
+               / a.print_order href="#"  Print Order
+
+
+
+
+
+
+

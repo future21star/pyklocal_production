@@ -11,7 +11,7 @@ li.item
        = hidden_field_tag "variant_id", product.master.id
     = hidden_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
     span.pr-image
-      - image_path = product.images.present? ? product.images.first.try(:attachment).try(:url) : "/images/no-img.jpg"
+      - image_path = product.images.present? ? product.images.first.try(:attachment).try(:url) : "no-img.gif"
       a href=product_path(product) data-no-turbolink=true
         = image_tag(image_path, height: 104, width: 129 )
     h5.pr-title
