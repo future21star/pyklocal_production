@@ -20,8 +20,9 @@
         .filter-box
           h5 My Stuff
           ul.account
-            li class=(current == "address" ? 'active' : '')
-              a href=edit_address_path(current_spree_user.address) Address Book
+            - if current_spree_user.address.present?
+                li class=(current == "address" ? 'active' : '')
+                  a href=edit_address_path(current_spree_user.address) Address Book
             li class=(current == "wishlist" ? 'active' : '')
               a href=spree.wishlists_url Wish List
         .filter-box

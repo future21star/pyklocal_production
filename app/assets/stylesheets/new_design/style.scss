@@ -133,7 +133,7 @@ ul.categories{float:left;width:100%}
 ul.categories li{float:left;width:33.33%;margin:0 0 7px}
 ul.categories li input[type=checkbox]{margin:3px 5px 0 0}
 .tab_container .vender textarea.form-control{height:80px}
-.sprite{background-image:url(/assets/new_design/spritesheet.png);background-repeat:no-repeat;display:inline-block}
+.sprite{background-image:asset_url('new_design/spritesheet.png');background-repeat:no-repeat;display:inline-block}
 .sprite-benefit-1{width:104px;height:47px;background-position:-5px -5px}
 .sprite-benefit-2{width:62px;height:53px;background-position:-119px -5px}
 .sprite-benefit-3{width:49px;height:45px;background-position:-191px -5px}
