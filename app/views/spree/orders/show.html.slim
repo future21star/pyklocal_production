@@ -35,9 +35,8 @@
   - else
     section.invoice_page
       .container-fluid
-        .row
-          .col-xs-12
-            h4.check-title.text-center Order Complete
+        .col-xs-12
+          h4.check-title.text-center Order Complete
 
         .row
           .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1.col-xs-12
@@ -52,6 +51,76 @@
                   =@order.created_at
               .row data-hook=""
                 = render partial: 'spree/shared/order_details', locals: { order: @order }
+
+              - if @order.pickable_line_items.present?
+                table.table.table-bordered.table-hover
+                  thead
+                    tr
+                      th Item
+                      th Store
+                      th Pickup Address
+                  tbody
+                    - @order.pickable_line_items.each do |pickable_item|
+                      tr style="background: #ffe2e2;"
+                        td= pickable_item.product.name
+                        td= pickable_item.seller_name || "No store"
+                        td= pickable_item.pickup_address || "No address"
+
+              .table-responsive
+                table.table.invoice_info
+                  tbody
+                    tr
+                      th colspan="2"  Item
+                      th Delivery Type
+                      th Qty
+                      th Price
+                    - @order.line_items.each do |item|
+                      tr.pick
+                        td
+                          - if item.variant.images.length == 0
+                            = link_to small_image(item.variant.product), item.variant.product
+                          - else
+                            = link_to image_tag(item.variant.images.first.attachment.url(:small)), item.variant.product
+                        td
+                          h5
+                            = item.variant.product.name
+                            = "(" + item.variant.options_text + ")" unless item.variant.option_values.empty?
+                            -if item.delivery_type == 'pick_up' || item.delivery_type == 'pickup'
+                              .delivery_option
+                                | * Pick Up Info: #{item.seller_name || "No store"}, #{item.pickup_address || "No address"}
+                        td= item.delivery_type.humanize
+                        td data-hook="order_item_qty"
+                          strong = item.quantity
+                        td
+                          strong.price = item.single_money.to_html
+                    tr.Home
+                      td
+                        a href="#"
+                          img alt="pyk" height="70" src="images/cart-img-3.png" width="70" /
+                      td
+                        h5
+                          a href="#"  Homestarry Dimmable String Lights PRO 66 LED's, 16-Feet, Flexible Silver Wire Battery Operated, Waterproof Design with Wireless Remote Control, Warm White
+                      td Home delivery
+                      td
+                        strong 1
+                      td
+                        strong.price $35.44
+                    tr.totals
+                      th.text-right colspan="4"  Subtotal:
+                      th.text-right
+                        span.pricing= @order.display_item_total.to_html
+                    tr.totals
+                      th.text-right colspan="4"  Sales Tax:
+                      th.text-right $0.00
+                    tr.totals
+                      th.text-right colspan="4"  Shipping Charge
+                      th.text-right $0.00
+                    tr.subtotals
+                      th.text-right colspan="4"  Order Total:
+                      th.text-right
+                        span.pricing $35.44
+              .text-center
+                a.print_order href="#"  Print Order
 
 
 
