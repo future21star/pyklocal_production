@@ -22,6 +22,7 @@
 //= stub merchant.js
 //= stub chatbox.min.js
 //= require social-share-button
+//= require spree/frontend/spree_braintree_vzero
 
 $.ajaxSetup({
   headers: {

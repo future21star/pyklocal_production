@@ -4,4 +4,3 @@
 //= require spree/frontend/product
 //= require spree/frontend/cart
 //= require spree/frontend/account
-//= require spree/frontend/spree_braintree_vzero
