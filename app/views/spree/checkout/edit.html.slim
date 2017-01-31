@@ -1,44 +1,47 @@
-- states = @order.checkout_steps
+- states = @order.checkout_steps.select{|c| c != 'complete'}
 - states = states.push("confirm") if !states.include?("confirm")
-#container.checkout  
-    - content_for :google_analytics do
-      = render partial: 'spree/shared/google_checkout.js', locals: { order: @order, step_number: (@order.checkout_steps.index(@order.state) + 1) }
-    #checkout data-hook="" 
-      = render partial: 'spree/shared/error_messages', locals: { target: @order }
-      .row data-hook="checkout_content" 
-        div class=(@order.state == 'confirm' ? 'col-sm-12' : 'col-sm-9') data-hook="checkout_header"
+section.checkout
+  .container-fluid
+    .row
+      .col-xs-12
+        h4.check-title Secure Checkout
+    .row
+      .col-md-9.col-xs-12
+        ul.payment-wizard
           = form_for @order, url: update_checkout_path(@order.state), html: { id: "checkout_form_#{@order.state}" } do |form|
-            = form.hidden_field :state_lock_version
-            - states.map do |state| 
-              - unless state == "complete"
-                #accordion.panel-group
-                  .panel.panel-default style=("border-radius:0px;margin-bottom: -18px;font-size:15px;")
-                    .panel-heading
-                      / a href=checkout_state_path(state) 
-                      /   h4.panel-title data-hook="checkout_title"
-                          
-                      = state.titleize
-                      | &nbsp;
-                      i.fa.fa-caret-down
-                    - unless state == "complete"
-                      - if state == @order.state
-                        .panel-body id=(state) data-order_state=(state) 
-                          = render state, form: form
+            - states.map.with_index do |state, i|
+              li class=(change_states(state, i, @order.state, states))
+                .change
+                  = link_to 'Change', checkout_state_path(state)
+                .wizard-heading
+                  | #{i+1}. #{state} &nbsp;
+                  small Step #{i+1} of #{states.count}
+                - content_for :google_analytics do
+                  = render partial: 'spree/shared/google_checkout.js', locals: { order: @order, step_number: (@order.checkout_steps.index(@order.state) + 1) }
+                = form.hidden_field :state_lock_version
+                - unless state == "complete"
+                  - if state == @order.state
+                    .wizard-content
+                      #checkout data-hook=""
+                        = render partial: 'spree/shared/error_messages', locals: { target: @order }
+                        div.row data-hook="checkout_content"
+                          div data-hook="checkout_header"
+                            = render state, form: form
 
-        - if @order.state != 'confirm'
-          #checkout-summary.col-md-3 data-hook="checkout_summary_box" 
-            = render partial: 'summary', locals: { order: @order }
-        -if @order.state == 'address' 
-          #checkout-summary.col-md-3 data-hook="checkout_summary_box" 
-            = form_for @order, url: update_checkout_path(@order.state), html: { id: "checkout_form_#{@order.state}" } do |f|
-              p.field data-hook="coupon_code" 
-                = f.label :coupon_code
-                input#coupon-code.form-control type='text'
-                / = form.text_field :coupon_code, :class => 'form-control'
-                #coupon-response
-                a#apply-coupon-code.pay-btn.btn-success.btn data-order_id=(@order.number) data-order_token=(@order.guest_token) Apply
-      
-      
+                    /- if @order.state != 'confirm'
+                    /  #checkout-summary.col-md-3 data-hook="checkout_summary_box"
+                    /    = render partial: 'summary', locals: { order: @order }
+                    /-if @order.state == 'address'
+                    /  #checkout-summary.col-md-3 data-hook="checkout_summary_box"
+                    /    = form_for @order, url: update_checkout_path(@order.state), html: { id: "checkout_form_#{@order.state}" } do |f|
+                    /      p.field data-hook="coupon_code"
+                    /        = f.label :coupon_code
+                    /        input#coupon-code.form-control type='text'
+                            / = form.text_field :coupon_code, :class => 'form-control'
+                    /        #coupon-response
+                    /        a#apply-coupon-code.pay-btn.btn-success.btn data-order_id=(@order.number) data-order_token=(@order.guest_token) Apply
+
+
 
 - content_for :js
   javascript:
