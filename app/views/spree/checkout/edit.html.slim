@@ -1,4 +1,4 @@
-- states = @order.checkout_steps
+- states = @order.checkout_steps.select{|c| c != 'complete'}
 - states = states.push("confirm") if !states.include?("confirm")
 section.checkout
   .container-fluid
@@ -12,7 +12,7 @@ section.checkout
             - states.map.with_index do |state, i|
               li class=(change_states(state, i, @order.state, states))
                 .change
-                  a href="javascript:void(0)"  Change
+                  = link_to 'Change', checkout_state_path(state)
                 .wizard-heading
                   | #{i+1}. #{state} &nbsp;
                   small Step #{i+1} of #{states.count}
