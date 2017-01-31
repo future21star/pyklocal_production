@@ -75,52 +75,78 @@
                       th Qty
                       th Price
                     - @order.line_items.each do |item|
-                      tr.pick
-                        td
-                          - if item.variant.images.length == 0
-                            = link_to small_image(item.variant.product), item.variant.product
-                          - else
-                            = link_to image_tag(item.variant.images.first.attachment.url(:small)), item.variant.product
-                        td
-                          h5
-                            = item.variant.product.name
-                            = "(" + item.variant.options_text + ")" unless item.variant.option_values.empty?
-                            -if item.delivery_type == 'pick_up' || item.delivery_type == 'pickup'
-                              .delivery_option
-                                | * Pick Up Info: #{item.seller_name || "No store"}, #{item.pickup_address || "No address"}
-                        td= item.delivery_type.humanize
-                        td data-hook="order_item_qty"
-                          strong = item.quantity
-                        td
-                          strong.price = item.single_money.to_html
-                    tr.Home
-                      td
-                        a href="#"
-                          img alt="pyk" height="70" src="images/cart-img-3.png" width="70" /
-                      td
-                        h5
-                          a href="#"  Homestarry Dimmable String Lights PRO 66 LED's, 16-Feet, Flexible Silver Wire Battery Operated, Waterproof Design with Wireless Remote Control, Warm White
-                      td Home delivery
-                      td
-                        strong 1
-                      td
-                        strong.price $35.44
+                      - if item.delivery_type == "pickup"
+                        tr.pick
+                          td
+                            - if item.variant.images.length == 0
+                              = link_to small_image(item.variant.product), item.variant.product
+                            - else
+                              = link_to image_tag(item.variant.images.first.attachment.url(:small)), item.variant.product
+                          td
+                            h5
+                              = item.variant.product.name
+                              = "(" + item.variant.options_text + ")" unless item.variant.option_values.empty?
+                              -if item.delivery_type == 'pick_up' || item.delivery_type == 'pickup'
+                                .delivery_option
+                                  | * Pick Up Info: #{item.seller_name || "No store"}, #{item.pickup_address || "No address"}
+                          td= item.delivery_type.humanize
+                          td data-hook="order_item_qty"
+                            strong = item.quantity
+                          td
+                            strong.price = item.single_money.to_html
+                      - else
+                        tr.Home
+                          td
+                            - if item.variant.images.length == 0
+                              = link_to small_image(item.variant.product), item.variant.product
+                            - else
+                              = link_to image_tag(item.variant.images.first.attachment.url(:small)), item.variant.product
+                          td
+                            h5
+                              = item.variant.product.name
+                              = "(" + item.variant.options_text + ")" unless item.variant.option_values.empty?
+                              -if item.delivery_type == 'pick_up' || item.delivery_type == 'pickup'
+                                .delivery_option
+                                  | * Pick Up Info: #{item.seller_name || "No store"}, #{item.pickup_address || "No address"}
+                          td= item.delivery_type.humanize
+                          td data-hook="order_item_qty"
+                            strong = item.quantity
+                          td
+                            strong.price = item.single_money.to_html
+
                     tr.totals
                       th.text-right colspan="4"  Subtotal:
                       th.text-right
                         span.pricing= @order.display_item_total.to_html
+
+                    - if @order.line_item_adjustments.exists?
+                      - if @order.line_item_adjustments.promotion.eligible.exists?
+                        tfoot#price-adjustments data-hook="order_details_price_adjustments"
+                          - @order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments|
+                            tr.total
+                              td colspan="5"
+                                = Spree.t(:promotion)
+                                | :
+                                strong= label
+                              td.total colspan="2"
+                                span= Spree::Money.new(adjustments.sum(&:amount), currency: @order.currency)
+
                     tr.totals
-                      th.text-right colspan="4"  Sales Tax:
-                      th.text-right $0.00
+                      - if @order.all_adjustments.tax.exists?
+                        - @order.all_adjustments.tax.group_by(&:label).each do |label, adjustments|
+                          th.text-right colspan="4" Sales Tax:
+                          th.text-right= Spree::Money.new(adjustments.sum(&:amount), currency: @order.currency)
                     tr.totals
-                      th.text-right colspan="4"  Shipping Charge
-                      th.text-right $0.00
+                      - @order.shipments.group_by { |s| s.selected_shipping_rate.name }.each do |name, shipments|
+                          th.text-right colspan="4" Shipping Charge:
+                          th.text-right= Spree::Money.new(shipments.sum(&:discounted_cost), currency: @order.currency).to_html
                     tr.subtotals
                       th.text-right colspan="4"  Order Total:
                       th.text-right
-                        span.pricing $35.44
-              .text-center
-                a.print_order href="#"  Print Order
+                        span.pricing $
+                        span.pricing= @order.total.to_f
+              /.text-center
+               / a.print_order href="#"  Print Order
 
 
 
