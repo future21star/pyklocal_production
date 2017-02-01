@@ -37,11 +37,11 @@ span.cart-icon small{width:18px;height:18px;border-radius:50%;background:#be0404
 span.favorite-icon{position:relative;display:inline-block}
 span.favorite-icon i{color:#5bb75b;font-size:30px}
 span.favorite-icon small{width:18px;height:18px;border-radius:50%;background:#be0404;display:inline-block;text-align:center;line-height:17px;position:absolute;top:-5px;right:-6px;color:#fff;font-weight:600}
-.free-shipping h5{position:absolute;left:0;top:-35px;right:0;margin:auto;width:420px;line-height:40px;z-index:999;background:#339c46 url(../images/pattern-bg.png) repeat-x top left;font-size:16px;font-weight:400;color:#fff}
+.free-shipping h5{position:absolute;left:0;top:-35px;right:0;margin:auto;width:420px;line-height:40px;z-index:999;background:#339c46 asset_url('new_design/pattern-bg.png') repeat-x top left;font-size:16px;font-weight:400;color:#fff}
 .free-shipping h5 strong{font-weight:700}
 .free-shipping h5:before{content:'';width:0;height:0;border-style:solid;border-width:0 0 15px 15px;border-color:transparent transparent #156924;top:0;left:-15px;position:absolute}
 .free-shipping h5:after{content:'';width:0;height:0;border-style:solid;border-width:15px 0 0 15px;border-color:transparent transparent transparent #156924;top:0;right:-15px;position:absolute}
-#banner{background:url(../images/banner-bg.jpg) no-repeat top center;min-height:325px;padding-top:20px;background-size:cover}
+#banner{background:asset_url('new_design/banner-bg.jpg') no-repeat top center;min-height:325px;padding-top:20px;background-size:cover}
 .caption-ir h1{font-size:60px;text-transform:uppercase;font-weight:300;color:#23376c}
 .caption-ir{margin-top:30px}
 .caption-ir h1 strog{font-weight:700}
