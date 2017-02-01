@@ -27,19 +27,11 @@ section.checkout
                         div.row data-hook="checkout_content"
                           div data-hook="checkout_header"
                             = render state, form: form
-
-                    /- if @order.state != 'confirm'
-                    /  #checkout-summary.col-md-3 data-hook="checkout_summary_box"
-                    /    = render partial: 'summary', locals: { order: @order }
-                    /-if @order.state == 'address'
-                    /  #checkout-summary.col-md-3 data-hook="checkout_summary_box"
-                    /    = form_for @order, url: update_checkout_path(@order.state), html: { id: "checkout_form_#{@order.state}" } do |f|
-                    /      p.field data-hook="coupon_code"
-                    /        = f.label :coupon_code
-                    /        input#coupon-code.form-control type='text'
-                            / = form.text_field :coupon_code, :class => 'form-control'
-                    /        #coupon-response
-                    /        a#apply-coupon-code.pay-btn.btn-success.btn data-order_id=(@order.number) data-order_token=(@order.guest_token) Apply
+      .col-md-3.col-xs-12
+        .order_summry
+          - if @order.state != 'confirm'
+            #checkout-summary data-hook="checkout_summary_box"
+              = render partial: 'summary', locals: { order: @order }
 
 
 
