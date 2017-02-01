@@ -1,0 +1,18 @@
+
+= form_tag  store_details_report_admin_reports_path, {method: :post}
+  .form-group.date-range-filter
+    = label_tag nil, Spree.t(:date_range)
+    .date-range-filter.row
+      .col-md-6
+        = text_field :orders_completed_at_gt,datepicker_field_value(params[:q][:orders_completed_at_gt]), class: 'datepicker datepicker-to form-control order_range', date_from: @date1,id: 'date_from'
+        = hidden_field_tag "range[from_date]", @date1
+      .col-md-6
+        = text_field :orders_completed_at_lt, datepicker_field_value(params[:q][:orders_completed_at_lt]), class: 'datepicker datepicker-to form-control',date_to: @date2, id: 'date_to'
+        = hidden_field_tag "range[to_date]", @date2
+  .form-actions
+    =submit_tag 'Search', :class => 'btn btn-lg btn-success'
+
+-content_for :js 
+	javascript:
+
+		$('.order_range').datapicker();

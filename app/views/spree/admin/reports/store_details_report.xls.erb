@@ -9,29 +9,21 @@
       <Row>
         <Cell><Data ss:Type="String">Store Name</Data></Cell>
         <Cell><Data ss:Type="String">Total Sale Amount</Data></Cell>
-        <Cell><Data ss:Type="String">Total Adjustment Amount</Data></Cell>
-        <Cell><Data ss:Type="String">Total Promo Amount</Data></Cell>
+        <Cell><Data ss:Type="String">Total Tax</Data></Cell>
+        <Cell><Data ss:Type="String">commission</Data></Cell>
+        <Cell><Data ss::Type="String">Return Amount</Data></Cell>
       </Row>
-    <%if params[:q][:orders_completed_at_lt] %>
-      <% @merchant.each do |merchant| %>
-        <% order = merchant.orders.where(spree_orders:{created_at: params[:q][:orders_completed_at_gt]..params[:q][:orders_completed_at_lt]}) %>
-        <Row>
-          <Cell><Data ss:Type="String"><%= merchant.name %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= order.sum(:total) %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= order.sum(:adjustment_total) %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= order.sum(:promo_total) %></Data></Cell>
-        </Row>
-      <% end %>
-    <%else%>
-      <% @merchant.each do |merchant| %>
-        <Row>
-          <Cell><Data ss:Type="String"><%= merchant.name %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= merchant.orders_filter.sum(:Total) %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= merchant.orders_filter.sum(:adjustment_total) %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= merchant.orders_filter.sum(:promo_total) %></Data></Cell>
-        </Row>
-      <% end %>
-    <%end%>
+    <% @store_sale_array.each do |merchant| %>
+      <% commission = (( merchant[:sales_amount] *  Spree::Commission.last.percentage ) /100).round(2) %>
+      <% amount = (merchant[:sales_amount] - commission) %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= merchant[:name] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= merchant[:sales_amount] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= merchant[:tax] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= commission %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= amount %></Data></Cell>
+      </Row>
+    <% end %>
     </Table>
   </Worksheet>
 </Workbook>

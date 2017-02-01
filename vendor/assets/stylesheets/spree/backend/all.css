@@ -14,3 +14,13 @@
 .margin-left {
   margin-left: 10px;
 }
+
+
+.sale-products{
+	background: rgba(3, 169, 244, 0.25);
+	display: none;
+}
+
+.merge-column{
+	column-span: 4;
+}

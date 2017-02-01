@@ -24,6 +24,7 @@
 //= require spree/frontend/spree_auth
 //= require social-share-button
 
+
 $.ajaxSetup({
   headers: {
     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')

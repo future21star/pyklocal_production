@@ -212,6 +212,7 @@ Pyklocal::Application.routes.draw do
       resources :reports, only: [:index] do
         collection do
           get :products_sale_report
+          get :store_sale_product
           post :products_sale_report
           get :store_details_report
           post :store_details_report
