@@ -27,7 +27,7 @@ table.table.table-bordered.admin-report data-hook="sales_total"
         td = merchant[:sales_amount]
         td = merchant[:tax]
         td = commission
-        td = merchant[:sales_amount] - commission
+        td = (merchant[:sales_amount] - commission).round(2)
       
 #wait style="display:none;width:69px;height:89px;position:absolute;top:50%;left:50%;padding:2px;" 
   img height="64" src="/loading_wait.gif" width="64" /
