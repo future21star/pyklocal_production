@@ -4,7 +4,7 @@
     = label_tag nil, Spree.t(:date_range)
     .date-range-filter.row
       .col-md-6
-        = text_field :orders_completed_at_gt,datepicker_field_value(params[:q][:orders_completed_at_gt]), class: 'datepicker datepicker-to form-control order_range', date_from: @date1,id: 'date_from'
+        = text_field :orders_completed_at_gt,datepicker_field_value(params[:q][:orders_completed_at_gt]), class: 'datepicker datepicker-to form-control ', date_from: @date1,id: 'date_from'
         = hidden_field_tag "range[from_date]", @date1
       .col-md-6
         = text_field :orders_completed_at_lt, datepicker_field_value(params[:q][:orders_completed_at_lt]), class: 'datepicker datepicker-to form-control',date_to: @date2, id: 'date_to'
