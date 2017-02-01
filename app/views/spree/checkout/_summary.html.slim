@@ -49,8 +49,8 @@ ul.amount
     span
       strong= order.display_total.to_html
   li
-    label Coupon Code
     -if @order.state == 'address'
+      label Coupon Code
       #checkout-summary data-hook="checkout_summary_box"
         = form_for @order, url: update_checkout_path(@order.state), html: { id: "checkout_form_#{@order.state}" } do |f|
           p.field data-hook="coupon_code"
