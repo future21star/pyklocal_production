@@ -43,5 +43,6 @@
       .col-sm-8
         = f.text_area :comment, cols: 40, rows: 15, class: 'form-control', :required => ""
         / = f.text_field :comment, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => Spree.t(:name)
-    .pull-right
-      = f.submit
+      .col-sm-10
+        .pull-right style="margin-top:10px;"
+          = f.submit "Create Feedback", :class => 'btn btn-lg btn-primary'
