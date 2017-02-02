@@ -10,15 +10,28 @@ module Spree
       end
 
       def store_details_report
+        p "(((((((((((((((((((((("
+        per_page = 20
+        p params[:page]
+        unless params[:page].blank?
+          # p params[:page]
+          page = params[:page].to_i
+          start = per_page * ( params[:page].to_i - 1)
+        else
+          start = 0
+        end
         # p "********************************************"
         # p params[:orders_completed_at_gt]
         # p params[:orders_completed_at_gt]["2017/01/01"]
-        p params[:orders_completed_at_gt]
+        p params[:order_completed_at_gt]
         p params[:range]
         # p params[:orders_completed_at_gt].values
         # p params[:orders_completed_at_lt].first.to_date
         p "*********8888**************************"
         if params[:download_excel]
+          @date1 = params[:order_completed_at_gt].to_date
+          @date2 = params[:order_completed_at_lt].to_date
+        elsif params[:order_completed_at_lt].present? && params[:order_completed_at_gt].present?
           @date1 = params[:order_completed_at_gt].to_date
           @date2 = params[:order_completed_at_lt].to_date
         else
@@ -58,7 +71,7 @@ module Spree
 
         # @search = Merchant::Store.includes(:orders).ransack(params[:q])
         @store_sale_array = []
-        Merchant::Store.all.each do |merchant|
+        Merchant::Store.all.offset(start).limit(per_page).each do |merchant|
           Hash merchant_hash = Hash.new
           merchant_hash["id".to_sym] = merchant.id
           merchant_hash["name".to_sym] = merchant.name
@@ -67,12 +80,18 @@ module Spree
           merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.created_at > ? AND spree_line_items.created_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).sum(:additional_tax_total).to_f.round(2)
           @store_sale_array.push(merchant_hash)
         end
+
+        @total_merchant_count = Merchant::Store.all.count / per_page
+        if (Merchant::Store.all.count % per_page) != 0
+          @total_merchant_count = @total_merchant_count + 1
+        end
         # @search = Spree::LineItem.ransack(params[:q])
         # p "8888888888888888"
         # p @search
         # @merchant = Merchant::Store.includes(:orders)
 
         p "*************************************"
+        p @total_merchant_count 
         p @date1
         p @date2
         p @store_sale_array

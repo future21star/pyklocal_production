@@ -28,6 +28,19 @@ table.table.table-bordered.admin-report data-hook="sales_total"
         td = merchant[:tax]
         td = commission
         td = (merchant[:sales_amount] - commission).round(2)
+
+.store-report-pagination
+  - i = @total_merchant_count
+  - if @total_merchant_count > 1
+    - while i > 0
+      - if  (params[:page].present? == false && i == 1) || i == params[:page].to_i 
+        .pull-right
+          = link_to i, store_details_report_admin_reports_path(order_completed_at_gt: @date1.strftime("%d-%m-%Y"), order_completed_at_lt: @date2.strftime("%d-%m-%Y"), page: i), class: "btn btn-danger"
+      - else
+        .pull-right
+          = link_to i, store_details_report_admin_reports_path(order_completed_at_gt: @date1.strftime("%d-%m-%Y"), order_completed_at_lt: @date2.strftime("%d-%m-%Y"), page: i), class: "btn btn-primary"
+      - i = i - 1
+
       
 #wait style="display:none;width:69px;height:89px;position:absolute;top:50%;left:50%;padding:2px;" 
   img height="64" src="/loading_wait.gif" width="64" /

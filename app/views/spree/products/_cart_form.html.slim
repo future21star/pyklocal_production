@@ -20,7 +20,13 @@
         span itemprop="qty"  
           |&nbsp;
           = @product.total_on_hand
-        / - if @product.total_on_hand > 0
+
+        / -if @product.available_on.present? && @product.available_on > Time.now.to_date
+        /    b Available:
+        /     span itemprop="qty"  
+        /   |   &nbsp;
+        /     = @product.avaiable_on.strftime("%d-%m-%Y")
+        /  - if @product.total_on_hand > 0
         /   span style="color:#53af2e; font-weight:bold;" 
         /     '
         /     |In Stock
