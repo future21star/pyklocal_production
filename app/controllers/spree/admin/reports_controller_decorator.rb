@@ -10,7 +10,6 @@ module Spree
       end
 
       def store_details_report
-        p "(((((((((((((((((((((("
         per_page = 20
         p params[:page]
         unless params[:page].blank?
