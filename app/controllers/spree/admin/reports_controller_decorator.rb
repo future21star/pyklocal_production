@@ -70,15 +70,36 @@ module Spree
 
 				# @search = Merchant::Store.includes(:orders).ransack(params[:q])
 				@store_sale_array = []
-				Merchant::Store.all.offset(start).limit(per_page).each do |merchant|
-					Hash merchant_hash = Hash.new
-					merchant_hash["id".to_sym] = merchant.id
-					merchant_hash["name".to_sym] = merchant.name
-					merchant_hash["sales_amount".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.updated_at > ? AND spree_line_items.updated_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).collect{|obj| obj.price * obj.quantity}.sum.to_f.round(2)
+				if params[:download_excel]
+					Merchant::Store.all.each do |merchant|
+						Hash merchant_hash = Hash.new
+						merchant_hash["id".to_sym] = merchant.id
+						merchant_hash["name".to_sym] = merchant.name
+						merchant_hash["sales_amount".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.updated_at > ? AND spree_line_items.updated_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).collect{|obj| obj.price * obj.quantity}.sum.to_f.round(2)
 
-					merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.created_at > ? AND spree_line_items.created_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).select("spree_line_items.quantity,spree_line_items.price,spree_line_items.tax_category_id").collect{|x| Spree::TaxCategory.find(x.tax_category_id).tax_rates.first.amount * x.price * x.quantity}.sum.to_f.round(2)
-					@store_sale_array.push(merchant_hash)
+						merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.created_at > ? AND spree_line_items.created_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).select("spree_line_items.quantity,spree_line_items.price,spree_line_items.tax_category_id").collect{|x| Spree::TaxCategory.find(x.tax_category_id).tax_rates.first.amount * x.price * x.quantity}.sum.to_f.round(2)
+						@store_sale_array.push(merchant_hash)
+					end
+				else
+					Merchant::Store.all.offset(start).limit(per_page).each do |merchant|
+						Hash merchant_hash = Hash.new
+						merchant_hash["id".to_sym] = merchant.id
+						merchant_hash["name".to_sym] = merchant.name
+						merchant_hash["sales_amount".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.updated_at > ? AND spree_line_items.updated_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).collect{|obj| obj.price * obj.quantity}.sum.to_f.round(2)
+
+						merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.created_at > ? AND spree_line_items.created_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).select("spree_line_items.quantity,spree_line_items.price,spree_line_items.tax_category_id").collect{|x| Spree::TaxCategory.find(x.tax_category_id).tax_rates.first.amount * x.price * x.quantity}.sum.to_f.round(2)
+						@store_sale_array.push(merchant_hash)
+					end
 				end
+				# Merchant::Store.all.offset(start).limit(per_page).each do |merchant|
+				# 	Hash merchant_hash = Hash.new
+				# 	merchant_hash["id".to_sym] = merchant.id
+				# 	merchant_hash["name".to_sym] = merchant.name
+				# 	merchant_hash["sales_amount".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.updated_at > ? AND spree_line_items.updated_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).collect{|obj| obj.price * obj.quantity}.sum.to_f.round(2)
+
+				# 	merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.created_at > ? AND spree_line_items.created_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).select("spree_line_items.quantity,spree_line_items.price,spree_line_items.tax_category_id").collect{|x| Spree::TaxCategory.find(x.tax_category_id).tax_rates.first.amount * x.price * x.quantity}.sum.to_f.round(2)
+				# 	@store_sale_array.push(merchant_hash)
+				# end
 
 				@total_merchant_count = Merchant::Store.all.count / per_page
 				if (Merchant::Store.all.count % per_page) != 0
