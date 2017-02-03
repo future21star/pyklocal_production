@@ -1,3 +1,6 @@
+#wait style="display: none;width: 100%;height: 100%;position: absolute;top: 0;left: 0;background: rgba(255,255,255,.8);text-align: center;" 
+  img height="64" src="/loading_wait.gif" width="64" style='position: absolute;margin: auto;top: 0;bottom: 0;' /
+
 - content_for :page_title do 
   = link_to Spree.t(:reports), spree.admin_reports_url 
   |/
@@ -40,11 +43,3 @@ table.table.table-bordered.admin-report data-hook="sales_total"
         .pull-right
           = link_to i, store_details_report_admin_reports_path(order_completed_at_gt: @date1.strftime("%d-%m-%Y"), order_completed_at_lt: @date2.strftime("%d-%m-%Y"), page: i), class: "btn btn-primary"
       - i = i - 1
-
-      
-#wait style="display:none;width:69px;height:89px;position:absolute;top:50%;left:50%;padding:2px;" 
-  img height="64" src="/loading_wait.gif" width="64" /
-   
-
-
-
