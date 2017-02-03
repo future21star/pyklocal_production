@@ -10,7 +10,7 @@ module Spree
       end
 
       def store_details_report
-        per_page = 20
+        per_page = 10
         p params[:page]
         unless params[:page].blank?
           # p params[:page]
@@ -74,7 +74,7 @@ module Spree
           Hash merchant_hash = Hash.new
           merchant_hash["id".to_sym] = merchant.id
           merchant_hash["name".to_sym] = merchant.name
-          merchant_hash["sales_amount".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.updated_at > ? AND spree_line_items.updated_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).sum(:pre_tax_amount).to_f.round(2)
+          merchant_hash["sales_amount".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.updated_at > ? AND spree_line_items.updated_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).collect{|obj| obj.price * obj.quantity}.sum.to_f.round(2)
 
           merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.created_at > ? AND spree_line_items.created_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).sum(:additional_tax_total).to_f.round(2)
           @store_sale_array.push(merchant_hash)
@@ -112,7 +112,12 @@ module Spree
         @date2 = params[:order_completed_at_lt].to_date
         @store_id = params[:store_id]
 
+        p "88888888888888"
+        p @date1
+        p @date2
+
         @sale_product =  Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.updated_at > ? AND spree_line_items.updated_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: @store_id}).select("spree_line_items.variant_id, spree_line_items.quantity").group("spree_line_items.variant_id").sum("spree_line_items.quantity")
+        p @sale_product
         @product_sale_arr = []
          @sale_product.keys.each do |variant_id|
           variant = Spree::Variant.find(variant_id)
