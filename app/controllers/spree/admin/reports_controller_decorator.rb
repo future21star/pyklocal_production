@@ -19,14 +19,7 @@ module Spree
 				else
 					start = 0
 				end
-				# p "********************************************"
-				# p params[:orders_completed_at_gt]
-				# p params[:orders_completed_at_gt]["2017/01/01"]
-				p params[:order_completed_at_gt]
-				p params[:range]
-				# p params[:orders_completed_at_gt].values
-				# p params[:orders_completed_at_lt].first.to_date
-				p "*********8888**************************"
+
 				if params[:download_excel]
 					@date1 = params[:order_completed_at_gt].to_date
 					@date2 = params[:order_completed_at_lt].to_date
@@ -75,9 +68,13 @@ module Spree
 						Hash merchant_hash = Hash.new
 						merchant_hash["id".to_sym] = merchant.id
 						merchant_hash["name".to_sym] = merchant.name
-						merchant_hash["sales_amount".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.updated_at > ? AND spree_line_items.updated_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).collect{|obj| obj.price * obj.quantity}.sum.to_f.round(2)
+						merchant_hash["sales_amount".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).collect{|obj| obj.price * obj.quantity}.sum.to_f.round(2)
 
-						merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.created_at > ? AND spree_line_items.created_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).select("spree_line_items.quantity,spree_line_items.price,spree_line_items.tax_category_id").collect{|x| Spree::TaxCategory.find(x.tax_category_id).tax_rates.first.amount * x.price * x.quantity}.sum.to_f.round(2)
+						merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).select("spree_line_items.quantity,spree_line_items.price,spree_line_items.tax_category_id").collect{|x| Spree::TaxCategory.find(x.tax_category_id).tax_rates.first.amount * x.price * x.quantity}.sum.to_f.round(2)
+
+						merchant_hash["amount_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ?",@date1,@date2, merchant.id).sum(:item_return_amount).to_f.round(2)
+
+						merchant_hash["tax_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ?",@date1,@date2, merchant.id).sum(:tax_amount).to_f.round(2)						
 						@store_sale_array.push(merchant_hash)
 					end
 				else
@@ -85,38 +82,21 @@ module Spree
 						Hash merchant_hash = Hash.new
 						merchant_hash["id".to_sym] = merchant.id
 						merchant_hash["name".to_sym] = merchant.name
-						merchant_hash["sales_amount".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.updated_at > ? AND spree_line_items.updated_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).collect{|obj| obj.price * obj.quantity}.sum.to_f.round(2)
+						merchant_hash["sales_amount".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).collect{|obj| obj.price * obj.quantity}.sum.to_f.round(2)
 
-						merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.created_at > ? AND spree_line_items.created_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).select("spree_line_items.quantity,spree_line_items.price,spree_line_items.tax_category_id").collect{|x| Spree::TaxCategory.find(x.tax_category_id).tax_rates.first.amount * x.price * x.quantity}.sum.to_f.round(2)
+						merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).select("spree_line_items.quantity,spree_line_items.price,spree_line_items.tax_category_id").collect{|x| Spree::TaxCategory.find(x.tax_category_id).tax_rates.first.amount * x.price * x.quantity}.sum.to_f.round(2)
+
+						merchant_hash["amount_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ?",@date1,@date2, merchant.id).sum(:item_return_amount).to_f.round(2)
+
+						merchant_hash["tax_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ?",@date1,@date2, merchant.id).sum(:tax_amount).to_f.round(2)			
 						@store_sale_array.push(merchant_hash)
 					end
 				end
-				# Merchant::Store.all.offset(start).limit(per_page).each do |merchant|
-				# 	Hash merchant_hash = Hash.new
-				# 	merchant_hash["id".to_sym] = merchant.id
-				# 	merchant_hash["name".to_sym] = merchant.name
-				# 	merchant_hash["sales_amount".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.updated_at > ? AND spree_line_items.updated_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).collect{|obj| obj.price * obj.quantity}.sum.to_f.round(2)
-
-				# 	merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.created_at > ? AND spree_line_items.created_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).select("spree_line_items.quantity,spree_line_items.price,spree_line_items.tax_category_id").collect{|x| Spree::TaxCategory.find(x.tax_category_id).tax_rates.first.amount * x.price * x.quantity}.sum.to_f.round(2)
-				# 	@store_sale_array.push(merchant_hash)
-				# end
 
 				@total_merchant_count = Merchant::Store.all.count / per_page
 				if (Merchant::Store.all.count % per_page) != 0
 					@total_merchant_count = @total_merchant_count + 1
 				end
-				# @search = Spree::LineItem.ransack(params[:q])
-				# p "8888888888888888"
-				# p @search
-				# @merchant = Merchant::Store.includes(:orders)
-
-				p "*************************************"
-				p @total_merchant_count 
-				p @date1
-				p @date2
-				p @store_sale_array
-				# p @store_sale_array.first
-				# p @store_sale_array.first[:name]
 
 				if params[:download_excel] && eval(params[:download_excel])
 					request.format = "xls"
@@ -133,13 +113,10 @@ module Spree
 				@date2 = params[:order_completed_at_lt].to_date
 				@store_id = params[:store_id]
 
-				p "88888888888888"
-				p @date1
-				p @date2
-
-				@sale_product =  Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (spree_line_items.updated_at > ? AND spree_line_items.updated_at < ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: @store_id}).select("spree_line_items.variant_id, spree_line_items.quantity").group("spree_line_items.variant_id").sum("spree_line_items.quantity")
+				@sale_product =  Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: @store_id}).select("spree_line_items.variant_id, spree_line_items.quantity").group("spree_line_items.variant_id").sum("spree_line_items.quantity")
 				p @sale_product
 				@product_sale_arr = []
+				@return_item_arr = []
 				 @sale_product.keys.each do |variant_id|
 					variant = Spree::Variant.find(variant_id)
 					Hash product_sale_hash = Hash.new
@@ -152,7 +129,28 @@ module Spree
 					@product_sale_arr.push(product_sale_hash)
 				 end
 				
-				render json: @product_sale_arr.as_json
+				@return_items =  Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ?",@date1,@date2, @store_id).group("customer_return_items.line_item_id").sum("customer_return_items.return_quantity")
+
+				unless @return_items.blank?
+					@return_items.keys.each do |return_item|
+						p return_item
+						Hash return_item_hash = Hash.new
+						variant = Spree::LineItem.find(return_item).variant
+						return_item_hash["name".to_sym] = variant.product.name
+						return_item_hash["price".to_sym] = variant.price.to_f.round(2)
+						return_item_hash["tax_rate".to_sym] = variant.tax_category_id.present? ? variant.tax_category.tax_rates.first.amount.to_f : variant.product.tax_category.tax_rates.first.amount.to_f 
+						# return_item_hash["option_name".to_sym] = variant.option_name
+						return_item_hash["qty".to_sym] = @return_items[return_item]
+
+						 @return_item_arr.push(return_item_hash)
+					end
+				end
+				p "((((((((((((((((((((((((((((((((((((((((((("
+				p @return_item_arr
+				render json: {
+					product: @product_sale_arr.as_json(),
+					return_items: @return_item_arr.as_json()
+				}
 			end
 
 			def products_sale_report
