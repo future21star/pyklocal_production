@@ -187,19 +187,12 @@ module Spree
     end
 
     def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants,  variant_prices, categories, stock, tax_category, cost_price,upc_code)
-      p Spree::Product.where(name: name, store_id: store_id).present?
-      p "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-      p tax_category
-      p variant_prices
-      p variants
-      p stock.present? && variants.blank?
       if cost_price.blank? || cost_price < master_price
         cost_price = master_price
       end
       # tax_category_id = Spree::TaxCategory.find_by_name("clothing").try(:id)
       # p tax_category_id
       unless Spree::Product.where(name: name, store_id: store_id).present?
-        p "77777777777777777777777777777777777777777777777"
         tax_category_id = Spree::TaxCategory.find_by_name(tax_category).try(:id)
         p tax_category_id
         product = Spree::Product.new({name: name, price: master_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id, tax_category_id: tax_category_id, cost_price: cost_price})
@@ -266,14 +259,9 @@ module Spree
       p variant_stock_arr
       i = 0
       variants.split(';').each do |variant|
-        p "888888888888888888888888888888888888"
-        p stock
-        p tax_category
         option_type_ids = []
         option_value_ids = []
         variant.split(",").each do |item|
-          p "===================================================="
-          p item
           option_fields = item.split(":")
           option_type = Spree::OptionType.where(name: option_fields[0].strip, presentation: option_fields[0].strip.titleize).first_or_create
           option_type_ids << option_type.id
@@ -287,7 +275,6 @@ module Spree
           variant = product.variants.build(option_value_ids: option_value_ids,price: master_price)
         end
         variant.save
-        p "99999999999999999999"
         if variant_stock_arr.present? && variant_stock_arr[i].present?
           stock_location = Spree::StockLocation.find(1)
           stock_movement = stock_location.stock_movements.build(quantity: variant_stock_arr[i].to_i)

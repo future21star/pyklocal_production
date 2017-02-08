@@ -94,3 +94,7 @@ $(document).ajaxStart(function(){
       }
     },500);     
   });
+  window.onload = function () {
+    $('#orders_completed_start').datepicker();
+     $('#orders_completed_end').datepicker();
+  }

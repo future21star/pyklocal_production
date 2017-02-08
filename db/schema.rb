@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170118113525) do
+ActiveRecord::Schema.define(version: 20170208132104) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 20170118113525) do
     t.float    "tax_amount",         limit: 24
     t.float    "total",              limit: 24
     t.integer  "store_id",           limit: 4
+    t.string   "status",             limit: 255
   end
 
   create_table "drivers_orders", force: :cascade do |t|
@@ -838,6 +839,12 @@ ActiveRecord::Schema.define(version: 20170118113525) do
     t.datetime "updated_at",                                                          null: false
     t.integer  "refund_reason_id", limit: 4
     t.integer  "reimbursement_id", limit: 4
+    t.integer  "order_id",         limit: 4
+    t.string   "type",             limit: 255
+    t.string   "card_type",        limit: 255
+    t.string   "status",           limit: 255
+    t.integer  "last_card_digits", limit: 4
+    t.string   "expiration",       limit: 255
   end
 
   add_index "spree_refunds", ["refund_reason_id"], name: "index_refunds_on_refund_reason_id", using: :btree

@@ -6,6 +6,39 @@ module Spree
 		after_update :notify_driver
 		validate :ensure_for_valid_quantity
 
+    searchable do
+
+      time :updated_at
+
+      string :brand_name, references: Spree::ProductProperty, multiple: true do
+        unless self.variant.product.blank?
+          self.product.product_properties.where(property_id: self.product.properties.where(name: "Brand").first.try(:id)).collect { |p| p.value }.flatten
+        end
+      end
+
+      integer :taxon_ids, references: Spree::Taxon, multiple: true do
+        unless self.product.blank?
+          self.product.taxons.collect { |t| t.self_and_ancestors.map(&:id) }.flatten
+        end
+      end
+
+      string :email , references: Spree::Order do
+        if order.present?
+          order.email
+        end
+      end
+
+      integer :store_id, references: Spree::Product do
+        unless product.blank?
+          product.store_id
+        end
+      end
+    end
+
+    # def brand_names
+    #   self.variant.product.product_properties.where(property_id: self.variant.product.properties.where(name: "Brand").first.try(:id)).collect { |p| p.value }.flatten
+    # end
+
 		def product_name
 			product.try(:name)
 		end

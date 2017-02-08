@@ -154,6 +154,37 @@ module Spree
 			end
 
 			def products_sale_report
+				p "999999999999999999999999999"
+				p params
+				@date1 = Time.now - 14.days
+				@date2 = Time.now
+				# if params[:orders_completed_start].present?
+				# 	@date1 = params[:orders_completed_start].to_date
+				# else
+				# 	@date1 = 2.weeks.ago
+				# end
+
+				# if params[:orders_completed_end].present?
+				# 	@date2 = params[:orders_completed_end].to_date
+				# else
+				# 	@date2 = Date.today
+				# end
+				@merchants = Merchant::Store.all
+				@taxons = Spree::Taxon.where(parent_id: nil)
+				@brand_names = Spree::Property.where(name: "Brand").first.product_properties
+
+				@search = Sunspot.search(Spree::LineItem) do
+					with(:store_id, params[:store_name].to_i) if params[:store_name].present?
+					all_of do
+						with(:updated_at).greater_than_or_equal_to(Time.now - 14.days)
+						with(:updated_at).less_than_or_equal_to(Time.now)
+					end
+					with(:email,params[:user_email]) if params[:user_email].present?
+					with(:brand_name,params[:brand_name]) if params[:brand_name]
+				end
+				@line_items = @search.results
+				p "***********************************************"
+				p @search.results
 				params[:q] = {} unless params[:q]
 				if params[:q][:orders_completed_at_gt].blank?
 					params[:q][:orders_completed_at_gt] = Time.zone.now.beginning_of_month
