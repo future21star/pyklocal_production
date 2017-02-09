@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170208132104) do
+ActiveRecord::Schema.define(version: 20170209055334) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 20170208132104) do
     t.float    "total",              limit: 24
     t.integer  "store_id",           limit: 4
     t.string   "status",             limit: 255
+    t.string   "transaction_id",     limit: 255
   end
 
   create_table "drivers_orders", force: :cascade do |t|

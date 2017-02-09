@@ -72,9 +72,9 @@ module Spree
 
 						merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).select("spree_line_items.quantity,spree_line_items.price,spree_line_items.tax_category_id").collect{|x| Spree::TaxCategory.find(x.tax_category_id).tax_rates.first.amount * x.price * x.quantity}.sum.to_f.round(2)
 
-						merchant_hash["amount_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ?",@date1,@date2, merchant.id).sum(:item_return_amount).to_f.round(2)
+						merchant_hash["amount_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",@date1,@date2, merchant.id,"refunded").sum(:item_return_amount).to_f.round(2)
 
-						merchant_hash["tax_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ?",@date1,@date2, merchant.id).sum(:tax_amount).to_f.round(2)						
+						merchant_hash["tax_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",@date1,@date2, merchant.id,"refunded").sum(:tax_amount).to_f.round(2)						
 						@store_sale_array.push(merchant_hash)
 					end
 				else
@@ -86,9 +86,9 @@ module Spree
 
 						merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: merchant.id}).select("spree_line_items.quantity,spree_line_items.price,spree_line_items.tax_category_id").collect{|x| Spree::TaxCategory.find(x.tax_category_id).tax_rates.first.amount * x.price * x.quantity}.sum.to_f.round(2)
 
-						merchant_hash["amount_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ?",@date1,@date2, merchant.id).sum(:item_return_amount).to_f.round(2)
+						merchant_hash["amount_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",@date1,@date2, merchant.id,"refunded").sum(:item_return_amount).to_f.round(2)
 
-						merchant_hash["tax_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ?",@date1,@date2, merchant.id).sum(:tax_amount).to_f.round(2)			
+						merchant_hash["tax_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",@date1,@date2, merchant.id,"refunded").sum(:tax_amount).to_f.round(2)			
 						@store_sale_array.push(merchant_hash)
 					end
 				end
@@ -129,7 +129,7 @@ module Spree
 					@product_sale_arr.push(product_sale_hash)
 				 end
 				
-				@return_items =  Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ?",@date1,@date2, @store_id).group("customer_return_items.line_item_id").sum("customer_return_items.return_quantity")
+				@return_items =  Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",@date1,@date2, @store_id,"refunded").group("customer_return_items.line_item_id").sum("customer_return_items.return_quantity")
 
 				unless @return_items.blank?
 					@return_items.keys.each do |return_item|
@@ -180,7 +180,8 @@ module Spree
 						with(:updated_at).less_than_or_equal_to(Time.now)
 					end
 					with(:email,params[:user_email]) if params[:user_email].present?
-					with(:brand_name,params[:brand_name]) if params[:brand_name]
+					with(:taxon_ids, params[:category_name]) if params[:category_name].present?
+					with(:brand_names,params[:brand_name]) if params[:brand_name].present?
 				end
 				@line_items = @search.results
 				p "***********************************************"

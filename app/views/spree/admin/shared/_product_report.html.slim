@@ -10,13 +10,13 @@
       = text_field_tag :orders_completed_end,'', class: "form-control"
     .col-md-4.form-group
       = label_tag nil, Spree.t(:store_name)
-      = select_tag 'store_name',options_from_collection_for_select(@merchants,"id","name","0"),prompt: "Select Store",class: "form-control"
+      = select_tag 'store_name',options_from_collection_for_select(@merchants,"id","name","0"),prompt: "Select Store",class: "select2"
     .col-md-4.form-group
       = label_tag nil, Spree.t(:category_name)
-      = select_tag 'category_name',options_from_collection_for_select(@taxons,"id","name","0"),prompt: "Select Category",class: "form-control"
+      = select_tag 'category_name',options_from_collection_for_select(@taxons,"id","name","0"),prompt: "Select Category",class: "select2"
     .col-md-4.form-group
       = label_tag nil, Spree.t(:brand_name)
-      = select_tag 'brand_name',options_from_collection_for_select(@brand_names,"value","value","0"),prompt: "Select Brand",class: "form-control"
+      = select_tag 'brand_name',options_from_collection_for_select(@brand_names,"value","value","0"),prompt: "Select Brand",class: "select2"
     .col-md-4.form-group
       = label_tag nil, Spree.t(:user_email)
       = text_field_tag :user_email,'', class: "form-control"

@@ -10,7 +10,7 @@ module Spree
 
       time :updated_at
 
-      string :brand_name, references: Spree::ProductProperty, multiple: true do
+      string :brand_names, references: Spree::ProductProperty, multiple: true do
         unless self.variant.product.blank?
           self.product.product_properties.where(property_id: self.product.properties.where(name: "Brand").first.try(:id)).collect { |p| p.value }.flatten
         end
@@ -60,7 +60,7 @@ module Spree
   	end
 
   	def return_quantity order
-  		CustomerReturnItem.where(line_item_id: self.id, order_id: order).sum(:return_quantity)
+  		CustomerReturnItem.where(line_item_id: self.id, order_id: order,status: "refunded").sum(:return_quantity)
   	end
 
   	def tax_rate

@@ -34,7 +34,7 @@ table.table.table-bordered.admin-report data-hook="sales_total"
         td = commission
         td = merchant[:amount_return]
         td = merchant[:tax_return]
-        td = (merchant[:sales_amount] - commission - merchant[:amount_return] - merchant[:tax_return]).round(2)
+        td = (merchant[:sales_amount] - commission - merchant[:amount_return]).round(2)
 
 .store-report-pagination
   - i = @total_merchant_count
