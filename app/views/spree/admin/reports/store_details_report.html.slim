@@ -42,7 +42,7 @@ table.table.table-bordered.admin-report data-hook="sales_total"
     - while i > 0
       - if  (params[:page].present? == false && i == 1) || i == params[:page].to_i 
         .pull-right
-          = link_to i, store_details_report_admin_reports_path(order_completed_at_gt: @date1.strftime("%d-%m-%Y"), order_completed_at_lt: @date2.strftime("%d-%m-%Y"), page: i), class: "btn btn-danger"
+          = link_to i, store_details_report_admin_reports_path(orders_completed_start: @date1.strftime("%d-%m-%Y"), order_completed_end: @date2.strftime("%d-%m-%Y"), page: i), class: "btn btn-danger"
       - else
         .pull-right
           = link_to i, store_details_report_admin_reports_path(orders_completed_start: @date1.strftime("%d-%m-%Y"), orders_completed_end: @date2.strftime("%d-%m-%Y"), page: i), class: "btn btn-primary"

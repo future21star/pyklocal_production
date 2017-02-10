@@ -31,9 +31,9 @@ $(document).ajaxStart(function(){
     
     var trHTML = '';
       console.log($(this).attr('id'));
-      date_from = $('#range_from_date').val();
-      date_to = $('#range_to_date').val();
-      $.get('/admin/reports/store_sale_product',{order_completed_at_gt: date_from, order_completed_at_lt: date_to, store_id: id},function(response){
+      date_from = $('#orders_completed_start').val();
+      date_to = $('#orders_completed_end').val();
+      $.get('/admin/reports/store_sale_product',{orders_completed_start: date_from, orders_completed_end: date_to, store_id: id},function(response){
           // console.log(response);
           // console.log(response["product"])
           if (response["product"].length || response["return_items"].length){
