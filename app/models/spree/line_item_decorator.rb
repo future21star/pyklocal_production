@@ -33,6 +33,18 @@ module Spree
           product.store_id
         end
       end
+
+      string :product_names, references: Spree::Product, multiple: true  do
+        unless product.blank?
+          product.name.split(" ")
+        end
+      end
+
+      double :product_price, references: Spree::Product , multiple: true do
+        unless product.blank?
+          product.price
+        end
+      end
     end
 
     # def brand_names

@@ -95,6 +95,6 @@ $(document).ajaxStart(function(){
     },500);     
   });
   window.onload = function () {
-    $('#orders_completed_start').datepicker();
-     $('#orders_completed_end').datepicker();
+    $('#orders_completed_start').datepicker({ dateFormat: 'dd-mm-yy' });
+     $('#orders_completed_end').datepicker({ dateFormat: 'dd-mm-yy' });
   }

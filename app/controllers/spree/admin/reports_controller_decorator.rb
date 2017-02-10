@@ -155,9 +155,27 @@ module Spree
 
 			def products_sale_report
 				p "999999999999999999999999999"
-				p params
-				@date1 = Time.now - 14.days
-				@date2 = Time.now
+				if params[:orders_completed_start].present?
+					@date1 = params[:orders_completed_start].to_date
+					@date2 = params[:orders_completed_end].to_date
+				else
+					@date1 = 2.weeks.ago.to_date
+					@date2 = Date.today
+				end
+				if params[:brand_name].present?
+					@brand = params[:brand_name]
+				else
+					@brand = "Select Brand"
+				end
+				p "8888888888888888"
+
+				@store = params[:store_name].present? ? Merchant::Store.find(params[:store_name]).name.to_s : "Select Store"
+				@category = params[:category_name].present? ? Spree::Taxon.find(params[:category_name]).name : "Select Category"
+				@email = params[:user_email].present? ? params[:user_email] : ""
+				@product_name = params[:product_name].present? ?  params[:product_name] : ""
+				@max_price = (params[:max_price].present? && params[:max_price].to_i > 0) ?  params[:max_price] : 0
+				@min_price = (params[:min_price].present? && params[:min_price].to_i > 0) ?  params[:min_price] : 0
+			
 				# if params[:orders_completed_start].present?
 				# 	@date1 = params[:orders_completed_start].to_date
 				# else
@@ -174,18 +192,31 @@ module Spree
 				@brand_names = Spree::Property.where(name: "Brand").first.product_properties
 
 				@search = Sunspot.search(Spree::LineItem) do
+					@page = params[:page].present? ? params[:page] : 1
+					@per_page = 25
 					with(:store_id, params[:store_name].to_i) if params[:store_name].present?
 					all_of do
-						with(:updated_at).greater_than_or_equal_to(Time.now - 14.days)
-						with(:updated_at).less_than_or_equal_to(Time.now)
+						if params[:orders_completed_start].blank? && params[:orders_completed_end].blank?
+							@date_start = Date.today - 14
+							@date_end = Date.today
+						else
+							@date_start = params[:orders_completed_start].to_date
+							@date_end = params[:orders_completed_end].to_date
+						end
+						with(:updated_at).greater_than_or_equal_to(@date_start)
+						with(:updated_at).less_than_or_equal_to(@date_end)
 					end
 					with(:email,params[:user_email]) if params[:user_email].present?
 					with(:taxon_ids, params[:category_name]) if params[:category_name].present?
 					with(:brand_names,params[:brand_name]) if params[:brand_name].present?
+					with(:product_names, params[:product_name]) if params[:product_name].present?
+					with(:product_price, params[:min_price]..params[:max_price]) if params[:max_price].present? && params[:max_price].to_i > 0 && params[:min_price].present? && params[:min_price].to_i > 0
+					paginate(:page => @page, :per_page => @per_page)
 				end
 				@line_items = @search.results
 				p "***********************************************"
-				p @search.results
+				# p @search.results
+				# p @line_items
 				params[:q] = {} unless params[:q]
 				if params[:q][:orders_completed_at_gt].blank?
 					params[:q][:orders_completed_at_gt] = Time.zone.now.beginning_of_month

@@ -2,7 +2,7 @@
   = link_to Spree.t(:reports), spree.admin_reports_url 
   |/
   = Spree.t(:products_sale)
-  .pull-right
+  / .pull-right
     = link_to "Download As Excel", products_sale_report_admin_reports_path(download_excel: true, :format => :xls, q: params[:q]), class: "btn btn-primary"
 
 .well
@@ -19,14 +19,21 @@ table.table.table-bordered.admin-report data-hook="sales_total"
       / th= sort_link @search, :line_items_count, Spree.t(:sales_total), {}, {title: 'line_items_count'}
       th= Spree.t(:store)
   tbody
-    - unless @products.blank?
+    - if @line_items.present?
       - @line_items.each do |line_item|
         tr
           td= line_item.order.number
           td= line_item.product.name
           td= number_to_currency(line_item.price)
           td= line_item.quantity
-          td= line_item.product.store.name
+          -if line_item.product.store.name.present?
+            td= line_item.product.store.name
+          - else
+            td= "NA"
+
     - else
       tr
         td colspan="5" No sold products available.
+.pull-right
+  - if @line_items.respond_to?(:num_pages)
+    = paginate @line_items
