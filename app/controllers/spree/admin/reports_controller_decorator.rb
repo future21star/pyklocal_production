@@ -10,7 +10,7 @@ module Spree
 			end
 
 			def store_details_report
-				per_page = 20
+				per_page = 25
 				p params[:page]
 				unless params[:page].blank?
 					# p params[:page]
@@ -21,47 +21,23 @@ module Spree
 				end
 
 				if params[:download_excel]
-					@date1 = params[:order_completed_at_gt].to_date
-					@date2 = params[:order_completed_at_lt].to_date
-				elsif params[:order_completed_at_lt].present? && params[:order_completed_at_gt].present?
-					@date1 = params[:order_completed_at_gt].to_date
-					@date2 = params[:order_completed_at_lt].to_date
-				else
-					if params[:orders_completed_at_gt].blank? || params[:orders_completed_at_gt].values.first.blank? || params[:orders_completed_at_lt].first.blank?
-						@date1 = 2.week.ago
-						@date2 = Date.today
-					elsif params[:orders_completed_at_gt].values.first.present? && params[:orders_completed_at_lt].first.blank?
-						@date1 = params[:orders_completed_at_gt].values.first.to_date
-						@date2 = Date.today
-					else
-						@date1 = params[:orders_completed_at_gt].values.first.to_date
-						@date2 = params[:orders_completed_at_lt].first.to_date
-						if @date1 > @date2
-							redirect_to :back, notice: "From date can not be greater than To date. Displaying last 2 weeks records"
-						end
+					@date1 = params[:orders_completed_start].to_date
+					@date2 = params[:orders_completed_end].to_date
+				elsif params[:orders_completed_end].present? && params[:orders_completed_start].present?
+					@date1 = params[:orders_completed_start].to_date
+					@date2 = params[:orders_completed_end].to_date
+					if @date1 > @date2
+						redirect_to :back, notice: "From date can not be greater than To date. Displaying last 2 weeks records"
 					end
-				end
-				# p params[:orders_completed_at_lt].first.blank?
-				# p params[:orders_completed_at_gt].values.first < params[:orders_completed_at_lt].first
-				# p params[:orders_completed_at_lt].first
-				# date1 = 2.week.ago
-				# date2 = 1.week.ago
-				# date1 = params[:orders_completed_at_gt].values.first.to_date
-				# date2 = params[:orders_completed_at_lt].first.to_date
-				params[:q] = {} unless params[:q]
-				if params[:q][:orders_completed_at_gt].blank?
-					params[:q][:orders_completed_at_gt] = Time.zone.now.beginning_of_month
 				else
-					params[:q][:orders_completed_at_gt] = Time.zone.parse(params[:q][:orders_completed_at_gt]).beginning_of_day rescue Time.zone.now.beginning_of_month
+					@date1 = 2.weeks.ago.to_date
+					@date2 = Date.today
 				end
 
-				if params[:q] && !params[:q][:orders_completed_at_lt].blank?
-					params[:q][:orders_completed_at_lt] = Time.zone.parse(params[:q][:orders_completed_at_lt]).end_of_day rescue ""
-				end
-
-				params[:q][:s] ||= "orders_completed_at desc"
-
-				# @search = Merchant::Store.includes(:orders).ransack(params[:q])
+				p "********************123*******************************"
+				p @date1
+				p @date2
+			
 				@store_sale_array = []
 				if params[:download_excel]
 					Merchant::Store.all.each do |merchant|
@@ -109,8 +85,8 @@ module Spree
 
 			def store_sale_product
 
-				@date1 = params[:order_completed_at_gt].to_date
-				@date2 = params[:order_completed_at_lt].to_date
+				@date1 = params[:orders_completed_start].to_date
+				@date2 = params[:orders_completed_end].to_date
 				@store_id = params[:store_id]
 
 				@sale_product =  Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: @store_id}).select("spree_line_items.variant_id, spree_line_items.quantity").group("spree_line_items.variant_id").sum("spree_line_items.quantity")

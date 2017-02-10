@@ -17,7 +17,7 @@
       </Row>
     <% @store_sale_array.each do |merchant| %>
       <% commission = (( merchant[:sales_amount] *  Spree::Commission.last.percentage ) /100).round(2) %>
-      <% amount = (merchant[:sales_amount] - commission - merchant[:amount_return] - merchant[:tax_return]) %>
+      <% amount = (merchant[:sales_amount] - commission - merchant[:amount_return]) %>
       <Row>
         <Cell><Data ss:Type="String"><%= merchant[:name] %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= merchant[:sales_amount] %></Data></Cell>
