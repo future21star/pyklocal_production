@@ -67,14 +67,16 @@
           = text_field_tag :quantity, 1, :class => 'numberOnly qty', :min => 1, :id =>'input-quantity'
           input.qtyplus field="quantity" type="button" value="+" /
           input.qtyminus field="quantity" type="button" value="-" min=1 /
-      -unless  @product.store.blank?
-        = render partial: 'spree/shared/wish_form', locals: {product: @product}
+      /-unless  @product.store.blank?
+       /= render partial: 'spree/shared/wish_form', locals: {product: @product}
 
       -unless @product.store.blank?
         - button_text =  @product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"
         = button_tag"#{button_text}" , :id => 'add-to-cart-button', :type => :submit, disabled: @product.total_on_hand <= 0 , class: "#{button_text == "Out Of Stock" ? 'out-of-stock' : 'add-to-cart'} but btn" , data: { disable_with: "Please wait..." }
     hr.dotted/
     = social_share_button_tag(@product.name, 'data-twitter-title' => 'TheTitleForTwitter', :url => request.url)
+-unless  @product.store.blank?
+        = render partial: 'spree/shared/wish_form', locals: {product: @product}
 
 -content_for :js
   javascript:
