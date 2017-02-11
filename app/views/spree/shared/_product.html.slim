@@ -1,4 +1,6 @@
 li.item
+  .wish-list-section
+      = render partial: 'spree/shared/wish_form', locals: {product: product}
   = form_for :order, :url => populate_orders_path do |f|
     = hidden_field_tag :bunch_cart, true
     = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
