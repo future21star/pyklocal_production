@@ -6,7 +6,7 @@ class Merchant::CustomerReturnItemsController < Merchant::ApplicationController
 	def index
 		@store = current_spree_user.stores.first
     @is_owner = is_owner?(@store)
-		@customer_return_items = Spree::CustomerReturnItem.where(order_id: @order.id, store_id: @store.id)
+		@customer_return_items = Spree::CustomerReturnItem.where(order_id: @order.id, store_id: @store.id,status: "refunded")
 
 
 	end
@@ -90,7 +90,7 @@ class Merchant::CustomerReturnItemsController < Merchant::ApplicationController
 								else
 									return_item_price = (line_item.price.to_f * qty).round(2)
               		tax_amt = (return_item_price * line_item.tax_rate).round(2) 
-									@customer_return_item = Spree::CustomerReturnItem.new(order_id: @order.id, line_item_id: line_item.id, return_quantity: qty,item_return_amount: return_item_price, tax_amount: tax_amt,total: return_item_price + tax_amt,store_id: @store.id)
+									@customer_return_item = Spree::CustomerReturnItem.new(order_id: @order.id, line_item_id: line_item.id, return_quantity: qty,item_return_amount: return_item_price, tax_amount: tax_amt,total: return_item_price + tax_amt,store_id: @store.id,status: "approved")
 									unless @customer_return_item.save
 										redirect_to merchant_order_customer_return_items_path(@order),  notice: 'Something went wrong'
 										return
@@ -104,7 +104,35 @@ class Merchant::CustomerReturnItemsController < Merchant::ApplicationController
 					end
 				end
 			end
-
+			@amount = Spree::CustomerReturnItem.where(store_id: @store.id,order_id: @order.id,status: "approved").sum(:total).to_f.round(2) * 100
+			p "*****************************************"
+			p @order
+			@paypal_refund_object = @order.payments.valid.last.payment_method.credit(@amount,@order.payments.valid.last.response_code,{})
+				p "*****************************************"
+				p @paypal_refund_object 
+			if @paypal_refund_object.success?
+				@paypal_transaction_object = @paypal_refund_object.transaction
+				p "*****************************************"
+				p @paypal_transaction_object 
+				Spree::CustomerReturnItem.where(store_id: @store.id,order_id: @order.id,status: "approved").update_all(transaction_id: @paypal_transaction_object.id,status: "refunded")
+				@refund = Spree::Refund.new(payment_id:@order.payments.valid.last.response_code, amount: @paypal_transaction_object.amount * 100, transaction_id: @paypal_transaction_object.id,order_id: @order.id, card_type:@paypal_transaction_object.credit_card_details.card_type, last_card_digits:@paypal_transaction_object.credit_card_details.last_4, expiration:@paypal_transaction_object.credit_card_details.expiration_date, status:@paypal_transaction_object.status)
+				if @refund.save
+					redirect_to merchant_order_customer_return_items_path(@order),  notice: 'Item(s) Return Succssfully'
+					return
+				else
+					redirect_to merchant_order_customer_return_items_path(@order),  notice: 'Something Went Wrong while refunding amount'
+					p "*************************************"
+					p @refund.errors.full_messages.join(', ')
+					return
+				end
+			else
+				p "((((((((((((((((((((((((((((((((((((((((((((((((((((("
+				p @paypal_refund_object.errors
+				p @paypal_refund_object.errors.first
+				Spree::CustomerReturnItem.where(store_id: @store.id,order_id: @order.id,status: "approved").update_all(status: "failed")
+				redirect_to merchant_order_customer_return_items_path(@order),  notice: @paypal_refund_object.errors.first.message.to_s
+				return
+			end
 			redirect_to merchant_order_customer_return_items_path(@order),  notice: 'Item(s) Return Succssfully'
 			# UserMailer.notify_return_order_items_delivered(params[:customer_return_items]).deliver
 		end

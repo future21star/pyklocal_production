@@ -1,55 +1,49 @@
+#wait style="display: none;width: 100%;height: 100%;position: absolute;top: 0;left: 0;background: rgba(255,255,255,.8);text-align: center;" 
+  img height="64" src="/loading_wait.gif" width="64" style='position: absolute;margin: auto;top: 0;bottom: 0;' /
+
 - content_for :page_title do 
   = link_to Spree.t(:reports), spree.admin_reports_url 
   |/
   = Spree.t(:store_details)
   .pull-right
-    = link_to "Download As Excel", store_details_report_admin_reports_path(download_excel: true, :format => :xls, q: params[:q]), class: "btn btn-primary"
+    = link_to "Download As Excel", store_details_report_admin_reports_path(download_excel: true, :format => :xls, orders_completed_start: @date1.strftime("%d-%m-%Y"), orders_completed_end: @date2.strftime("%d-%m-%Y")), class: "btn btn-primary"
 
 .well
-  = render :partial => 'spree/admin/shared/report_store'
+  = render :partial => 'spree/admin/shared/store_detail_report'
 
 table.table.table-bordered.admin-report data-hook="sales_total"
   thead
     tr
-      th= Spree.t(:store)
+      th
+      th= Spree.t(:store_name)
       th= Spree.t(:total_sale_amount)
-      th= Spree.t(:total_adjustment_amount)
-      th= Spree.t(:promo_total)
-      / th= sort_link @search, :master_default_price_amount, Spree.t(:master_price), {}, {title: 'admin_products_listing_price_title'} 
-      / th= sort_link @search, :line_items_count, Spree.t(:sales_total), {}, {title: 'line_items_count'}
-      / th= Toal sales  tax
-      / th= Total Discount Earned
-      / th= Delivery charges Adjustments
-      / th= Total Net Pay
-
-
-      / Store Name, Total sales amount , Toal sales  tax,  total discount earned by PYKLOCAL , Delivery charges adjustments, and Total Net Pay to the store, Status of payment ( paid or to be paid) ( once paid cannot be changed to unpaid, log the user details )
-
-
+      th= Spree.t(:total_tax)
+      th= Spree.t(:commission)
+      th= "Return Amount"
+      th= "Return Tax"
+      th= "Amount Due"
   tbody
-    - if params[:q][:orders_completed_at_lt]
-      - unless @merchant.blank?
-        - @merchant.each do |merchant|
-          - order = merchant.orders.where(spree_orders:{created_at: params[:q][:orders_completed_at_gt]..params[:q][:orders_completed_at_lt]})
-          tr
-            td= merchant.name
-            td= order.sum(:total)
-            td= order.sum(:adjustment_total)
-            td= order.sum(:promo_total)
+    - @store_sale_array.each do |merchant|
+      - commission = (( merchant[:sales_amount] *  Spree::Commission.last.percentage ) /100).round(2)
+      tr id = merchant[:id]
+        td 
+          span.icon.icon-plus id = merchant[:id]
+        td = merchant[:name]
+        td = merchant[:sales_amount]
+        td = merchant[:tax]
+        td = commission
+        td = merchant[:amount_return]
+        td = merchant[:tax_return]
+        td = (merchant[:sales_amount] - commission - merchant[:amount_return]).round(2)
 
+.store-report-pagination
+  - i = @total_merchant_count
+  - if @total_merchant_count > 1
+    - while i > 0
+      - if  (params[:page].present? == false && i == 1) || i == params[:page].to_i 
+        .pull-right
+          = link_to i, store_details_report_admin_reports_path(orders_completed_start: @date1.strftime("%d-%m-%Y"), order_completed_end: @date2.strftime("%d-%m-%Y"), page: i), class: "btn btn-danger"
       - else
-        tr
-          td colspan="5" No sold merchant available.
-    -else
-      - unless @merchant.blank?
-        - @merchant.each do |merchant|
-          tr
-            / td= merchant.stores.first.try(:name)
-            td= merchant.name
-            td= merchant.orders_filter.sum(:total)
-            td= merchant.orders_filter.sum(:adjustment_total)
-            td= merchant.orders_filter.sum(:promo_total)
-            
-      - else
-        tr
-          td colspan="5" No sold merchant available.
+        .pull-right
+          = link_to i, store_details_report_admin_reports_path(orders_completed_start: @date1.strftime("%d-%m-%Y"), orders_completed_end: @date2.strftime("%d-%m-%Y"), page: i), class: "btn btn-primary"
+      - i = i - 1

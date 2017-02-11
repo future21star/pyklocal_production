@@ -22,6 +22,8 @@
 //= stub merchant.js
 //= stub chatbox.min.js
 //= require social-share-button
+//= require spree/backend/report
+
 
 $.ajaxSetup({
   headers: {

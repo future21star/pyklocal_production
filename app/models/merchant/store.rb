@@ -43,8 +43,8 @@ module Merchant
     friendly_id :name, use: :slugged
 
     def deactive_store_products
-      unless spree_products.blank?
-        spree_products.update_all(buyable: false)
+      unless self.spree_products.blank?
+        self.spree_products.update_all(buyable: false)
       end
     end
 

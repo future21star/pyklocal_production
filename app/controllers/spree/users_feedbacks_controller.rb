@@ -6,7 +6,7 @@ class Spree::UsersFeedbacksController < Spree::StoreController
       p params
       @user_feedback = Feedback.new(user_feedback_params)
       if @user_feedback.save
-        redirect_to root_path, notice: "Thank you for sharing your experience with"
+        redirect_to root_path, notice: "Thank you for sharing your experience with PykLocal"
       else
         require :back
       end

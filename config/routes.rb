@@ -221,6 +221,8 @@ Pyklocal::Application.routes.draw do
         collection do
           get :products_sale_report
           post :products_sale_report
+          get :store_sale_product
+          post :products_sale_report
           get :store_details_report
           post :store_details_report
         end
