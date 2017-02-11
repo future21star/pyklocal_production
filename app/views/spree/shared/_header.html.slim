@@ -19,10 +19,11 @@ header.header
                   = current_spree_user.try(:full_name)
                   |&nbsp;
                   i.fa.fa-caret-down
-              li
-                = link_to "My Account",spree.edit_account_path
-              li
-                = link_to "Logout", spree.logout_path ,"data-no-turbolink" => true
+                ul.dropdown-menu.dropdown-menu-right
+                  li
+                    = link_to "My Account",spree.edit_account_path
+                  li
+                    = link_to "Logout", spree.logout_path ,"data-no-turbolink" => true
             - else
               li
                 a data-target="#login" data-toggle="modal" href="#"

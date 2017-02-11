@@ -13,3 +13,18 @@ button.Update:hover,a.Empty:hover,a.Continue:hover,button.Checkout:hover{backgro
 ul.wish-list li .addtocart button.add-to-cart{background:#28903b}
 ul.wish-list li .addtocart button.add-to-cart:hover{background:#23376c}
 button.Update,a.Empty,a.Continue,button.Checkout{width:auto;padding:0 30px;margin-left:5px;margin-right:5px;}
+#my_account:hover > a:after {
+  clear: both;
+  content: ' ';
+  display: block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent transparent #fff;
+  position: absolute;
+  z-index: 1014;
+  border-width: 0 7px 6px;
+  bottom: 0;
+  left: 50%;
+  margin: 0 0 0 -5px;
+}
