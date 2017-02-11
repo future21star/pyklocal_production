@@ -28,3 +28,10 @@ button.Update,a.Empty,a.Continue,button.Checkout{width:auto;padding:0 30px;margi
   left: 50%;
   margin: 0 0 0 -5px;
 }
+
+
+.dropdown-menu a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
