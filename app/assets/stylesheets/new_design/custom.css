@@ -1,0 +1,15 @@
+.addtocart button{color:#fff;line-height:26px;display:inline-block;padding:0 8px;font-size:13px;border-radius:2px;margin-top:10px;margin-bottom:5px;border:none;}
+button.out-of-stock{background:#536698;cursor:default}
+button.add-to-cart{background:#23376c}
+button.add-to-cart:hover{background:#28903b}
+.qty-action button.but{padding:0 20px}
+.qty-action button.but{color:#fff;line-height:35px;float:right;padding:0 50px;font-size:13px;border-radius:2px}
+button.fav-but{float:left;margin:0 15px;width:35px;height:35px;vertical-align:top;text-align:center;line-height:35px;background:#5bb75b;color:#fff;border-radius:50%;padding:0;}
+button.fav-but{float:none;display:inline-block}
+button.Update,a.Empty,a.Continue,button.Checkout{background:#c92828;display:inline-block;width:147px;text-align:center;line-height:37px;border-radius:4px;margin-bottom:10px;border:none; padding: 0px}
+a.Continue,button.Checkout{width:100%}
+button.Checkout{background:#28903b; border:none; padding: 0px}
+button.Update:hover,a.Empty:hover,a.Continue:hover,button.Checkout:hover{background:#1a2d60;color:#fff}
+ul.wish-list li .addtocart button.add-to-cart{background:#28903b}
+ul.wish-list li .addtocart button.add-to-cart:hover{background:#23376c}
+button.Update,a.Empty,a.Continue,button.Checkout{width:auto;padding:0 30px;margin-left:5px;margin-right:5px;}
