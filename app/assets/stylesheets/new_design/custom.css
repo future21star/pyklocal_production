@@ -30,8 +30,3 @@ button.Update,a.Empty,a.Continue,button.Checkout{width:auto;padding:0 30px;margi
 }
 
 
-.dropdown-menu a:hover {background-color: #f1f1f1}
-
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
