@@ -46,8 +46,9 @@ module Merchant
       p "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       unless self.spree_products.blank?
         p "***************^^^^^^^^**********************"
-        self.spree_products.update_all(buyable: false)
-        # self.spree_products.reindex
+        self.spree_products.each do |product|
+          product.update_attributes(buyable: false)
+        end
       end
     end
 
