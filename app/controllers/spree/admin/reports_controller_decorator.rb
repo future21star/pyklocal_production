@@ -30,7 +30,7 @@ module Spree
 						redirect_to :back, notice: "From date can not be greater than To date. Displaying last 2 weeks records"
 					end
 				else
-					@date1 = 2.weeks.ago.to_date
+					@date1 =  2.weeks.ago.to_date + 1
 					@date2 = Date.today
 				end
 
@@ -135,7 +135,7 @@ module Spree
 					@date1 = params[:orders_completed_start].to_date
 					@date2 = params[:orders_completed_end].to_date
 				else
-					@date1 = 2.weeks.ago.to_date
+					@date1 =  2.weeks.ago.to_date + 1
 					@date2 = Date.today
 				end
 				if params[:brand_name].present?
