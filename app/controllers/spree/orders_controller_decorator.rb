@@ -1,6 +1,6 @@
 Spree::OrdersController.class_eval do 
   before_filter :process_paypal_express, only: :update
-  before_filter :load_order, only: [:cancel, :ready_to_pick]
+  before_filter :load_order, only: [:cancel, :ready_to_pick, :populate]
   skip_before_filter :authenticate_user, only: [:apply_coupon_code]
 
   include Spree::Api::ApiHelpers
@@ -37,7 +37,9 @@ Spree::OrdersController.class_eval do
 
     
 	def populate
+
     order    = current_order(create_order_if_necessary: true)
+    @order = order
     variant  = Spree::Variant.find(params[:variant_id])
     quantity = params[:quantity].to_i
     options  = params[:options] || {}
@@ -66,8 +68,10 @@ Spree::OrdersController.class_eval do
       respond_with(order) do |format|
         if params[:bunch_cart]
           format.html { redirect_to :back, notice: "Successfully added into cart" }
+          format.js
         else
           format.html { redirect_to spree.root_path , notice: "Successfully added into cart" }
+          format.js
         end
       end
     end

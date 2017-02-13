@@ -69,7 +69,7 @@ module Spree
     end
 
     def visible
-      if self.cost_price.present? && self.tax_category.present? && self.taxons.present? && self.price.present? && self.total_on_hand > 0 && self.try(:available_on).present? && self.try(:available_on) <= Time.now.to_date
+      if self.cost_price.present? && self.tax_category.present? && self.taxons.present? && self.price.present? && self.total_on_hand > 0 && self.try(:available_on).present? && self.try(:available_on) <= Time.now.to_date && self.buyable == true
        return true
       else
        return false

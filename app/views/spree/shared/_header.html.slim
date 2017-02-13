@@ -51,7 +51,8 @@
                 span#cart-total 
                   i.fa.fa-shopping-cart
                   |  CART(
-                  = simple_current_order.item_count
+                  span#cart-count
+                    = simple_current_order.item_count
                   |&nbsp;
                   = "Item".pluralize(simple_current_order.item_count) 
                   |)
