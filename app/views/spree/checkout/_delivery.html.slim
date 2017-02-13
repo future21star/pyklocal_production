@@ -28,18 +28,18 @@
           h4.stock-shipping-method-title= Spree.t(:shipping_method)
           ul.list-group.shipping-methods
             - rates = ship_form.object.shipping_rates
-            - if @order.eligible_for_free_delivery || @order.self_pickup
-              - rate = rates.where(cost: 0).first
-              = ship_form.hidden_field :selected_shipping_rate_id, value: rate.try(:id)
-              span.rate-name= rate.try(:name)
-              |&nbsp;
-              span.badge.rate-cost= rate.try(:display_cost)
-            - else
-              - rate = rates.where("cost <> ?", 0).first
-              = ship_form.hidden_field :selected_shipping_rate_id, value: rate.try(:id)
-              span.rate-name Same day home Delivery Charge
-              |&nbsp;
-              span.badge.rate-cost= rate.try(:display_cost)
+            / - if @order.eligible_for_free_delivery || @order.self_pickup
+            - rate = rates.where(cost: 0).first
+            = ship_form.hidden_field :selected_shipping_rate_id, value: rate.try(:id)
+            span.rate-name= rate.try(:name)
+            |&nbsp;
+            span.badge.rate-cost= rate.try(:display_cost)
+            / - else
+            /   - rate = rates.where("cost <> ?", 0).first
+            /   = ship_form.hidden_field :selected_shipping_rate_id, value: rate.try(:id)
+            /   span.rate-name Same day home Delivery Charge
+            /   |&nbsp;
+            /   span.badge.rate-cost= rate.try(:display_cost)
       - if @differentiator.try(:missing?)
         .shipment.unshippable
           h3.stock-location data-hook="stock-location" 
