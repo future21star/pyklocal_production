@@ -1,3 +1,4 @@
+
 .col-sm-6.col-xs-12.shipping_info
   .shipping_box
     span.ship_icon.same
@@ -27,6 +28,27 @@
       h5
         | Payment Information
         = image_tag("new_design/payment-card.jpg", height: 18, width: 32)
+
+table.table.table-bordered.table-hover
+  tbody
+    tr      
+      td style=("width:50%;") data-hook="order-shipment" 
+        h4
+          = Spree.t(:shipments)
+          = link_to "(#{Spree.t(:edit)})", checkout_state_path(:delivery) unless order.completed?
+        .delivery
+          / - shipment = order.shipments.last
+          / - order.shipments.uniq.each do |shipment|
+          div
+            - unless order.self_pickup
+              i.fa.fa-truck
+              |&nbsp;
+              / = " Free Delivery within 6 - 8 woking hours with cost #{number_to_currency(shipment.selected_shipping_rate.cost.to_f)}"
+              = "Free Delivery within 6 - 8 woking hours"
+            -else
+              = "Not Available"
+              / = Spree.t(:shipment_details, stock_location: shipment.stock_location.name, shipping_method: shipment.selected_shipping_rate.name)
+        = render 'spree/shared/shipment_tracking', order: order if order.shipped?
       - if order.has_step?("payment")
         = link_to "(#{Spree.t(:edit)})", checkout_state_path(:payment) unless order.completed?
         - order.payments.valid.each do |payment|

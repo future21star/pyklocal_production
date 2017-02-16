@@ -26,8 +26,9 @@ header.header
                     = link_to "Logout", spree.logout_path ,"data-no-turbolink" => true
             - else
               li
-                a data-target="#login" data-toggle="modal" href="#"
-                  i.fa.fa-sign-in.visible-xs aria-hidden="true"
+            / <<<<<<< HEAD
+            /                 a data-target="#login" data-toggle="modal" href="#"
+            /                   i.fa.fa-sign-in.visible-xs aria-hidden="true"
                   span.hidden-xs Log In
   .container-fluid
     .row
@@ -63,3 +64,60 @@ header.header
               a href="#"
                 i.fa.fa-heart aria-hidden="true"
                 small 0
+                = link_to "Register", spree.signup_path     
+            
+  header.header-row
+    .container
+      .table-container
+        -type = current_spree_user.try(:registration_type) == "vendor"? true : false
+        .col-table-cell.col-lg-4.col-md-4.col-sm-12.col-xs-12.inner
+          = link_to spree.root_path ,class: 'pyklocal-logo' , "data-no-turbolink" => true do
+            = image_tag "/images/pyc-logo.png", class: "img-responsive"
+        .col-table-cell.col-lg-4.col-md-4.col-sm-12.col-xs-12.inner
+          #search.input-group
+            = form_tag '/shop', :method => 'get', id: "search-box" do 
+              - if params[:q] && params[:q][:lat]
+                = hidden_field_tag "q[lat]", params[:q][:lat]
+              - if params[:q] && params[:q][:lng]
+                = hidden_field_tag "q[lng]", params[:q][:lng]
+              - if params[:q] && params[:q][:radius]
+                = hidden_field_tag "q[radius]", params[:q][:radius]
+              input id="discover" class="form-control" autocomplete="off" disabled=type name="q[search]" placeholder="Search for..." value=(params[:q][:search] rescue "")
+              button.button-search type="submit" 
+                i.fa.fa-search
+        .col-table-cell.col-lg-3.col-md-3.col-sm-6.col-xs-12.inner
+          - unless spree_user_signed_in? && (current_spree_user.has_spree_role?("merchant") || current_spree_user.registration_type == "vendor")#current_spree_user.registration_type == "customer")
+            #cart
+              = link_to spree.cart_path, "data-no-turbolink" => true do 
+                span#cart-total 
+                  i.fa.fa-shopping-cart
+                  |  CART(
+                  span#cart-count
+                    = simple_current_order.item_count
+                  |&nbsp;
+                  = "Item".pluralize(simple_current_order.item_count) 
+                  |)
+  nav#menu.navbar
+    .navbar-header
+      span.visible-xs.visible-sm
+        | Menu
+    .container
+      .collapse.navbar-collapse.navbar-ex1-collapse
+        ul.nav.navbar-nav
+          li
+            a.home_link href=spree.root_path title="Home" data-no-turbolink="true" 
+              span Home
+          -if current_spree_user.try(:registration_type) == "vendor"
+          -else
+            - if params["controller"] != "spree/checkout"
+              li.categories.dropdown.sub
+                = link_to spree.shop_index_path ,"data-no-turbolink" => true
+                  | All Categories
+                  |&nbsp;&nbsp;
+                  i.fa.fa-caret-down
+                .dropdown-menu style=("display: none;") 
+                  = render :partial => "spree/shared/taxonomies" 
+          / -if !spree_user_signed_in?    
+          /   li.custom-link-right
+          /     = goto_merchant_path
+
