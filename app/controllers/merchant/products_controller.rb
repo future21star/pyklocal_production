@@ -76,6 +76,8 @@ class Merchant::ProductsController < Merchant::ApplicationController
       params[:product][:option_type_ids] = params[:product][:option_type_ids].split(",")
     end
     if @product.update_attributes(product_params)
+      # Sunspot.index(@product)
+      # Sunspot.commit
       redirect_to redirect_path, notice: "Product updated successfully"
     else
       @shipping_categories = Spree::ShippingCategory.all
