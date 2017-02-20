@@ -10,9 +10,12 @@ module Spree
         stock_movement.stock_item = stock_location.set_up_stock_item(variant)
 
         if stock_movement.save
-          flash[:success] = flash_message_for(stock_movement, :successfully_created)
-          Sunspot.index(variant.product)
+        	p "**********************************"
+        	p variant.product
+        	Sunspot.index(variant.product)
           Sunspot.commit
+          p "********************************"
+          flash[:success] = flash_message_for(stock_movement, :successfully_created)
         else
           flash[:error] = Spree.t(:could_not_create_stock_movement)
         end
