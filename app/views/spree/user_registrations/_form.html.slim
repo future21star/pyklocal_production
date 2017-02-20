@@ -1,4 +1,4 @@
-= form_for @user, html: {class: "custom-form"}, :as => :spree_user, url: spree.registration_path do |f|   
+= form_for @user, html: {class: "custom-form"}, :as => :spree_user, url: spree.registration_path , validate: true do |f|   
   fieldset#password-credentials
     legend Your Personal Details
     .form-group.required style=("display: none;") 

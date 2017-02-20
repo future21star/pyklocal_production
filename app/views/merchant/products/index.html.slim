@@ -54,7 +54,7 @@
                     - @collection.each do |product|
                       tr
                         td= product.sku
-                        td= product.name
+                        td= truncate(product.name, :length =>50)
                         td= product.view_counter
                         td= product.total_on_hand
                         td= product.price

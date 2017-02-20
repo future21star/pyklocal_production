@@ -83,9 +83,16 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { :host => 'http://54.202.62.141' }
   config.action_mailer.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
-    :enable_starttls_auto => false,
-    :openssl_verify_mode => 'none'
+    # :enable_starttls_auto => false,
+    # :openssl_verify_mode => 'none'
+    :address => "smpt.mandrillapp.com",
+    :port => 587,
+    :enable_starttls_auto => true,
+    :user_name => "pyklocal",
+    :password => "E7BhM0LgZKaanbD1DfaW2w",
+    :authentication => "login"
   }
+
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new

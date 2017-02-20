@@ -26,6 +26,8 @@ gem 'sunspot_rails'
 gem 'sunspot_solr'
 gem 'progress_bar'
 gem 'noty-rails'
+gem 'client_side_validations'
+gem 'gibbon', git: 'git://github.com/amro/gibbon.git'
 
 
 gem 'spree_editor', github: 'spree-contrib/spree_editor', branch: '3-1-stable'

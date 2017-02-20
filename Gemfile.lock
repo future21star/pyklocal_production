@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/amro/gibbon.git
+  revision: 5058ad64c9462148a4f245ead090026b6cad18da
+  specs:
+    gibbon (3.0.1)
+      faraday (>= 0.9.1)
+      multi_json (>= 1.11.0)
+
+GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
   revision: d3776ddd0b89d28fdebfd6e1c1541348cc90e5cc
   specs:
@@ -153,6 +161,10 @@ GEM
       cocaine
       orm_adapter (~> 0.5.0)
     cldr-plurals-runtime-rb (1.0.1)
+    client_side_validations (4.2.12)
+      jquery-rails (>= 3.1.2, < 5.0.0)
+      js_regex (~> 1.0, >= 1.0.19)
+      rails (>= 4.0.0, < 4.3.0)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
@@ -224,6 +236,8 @@ GEM
     factory_girl_rails (4.7.0)
       factory_girl (~> 4.7.0)
       railties (>= 3.0.0)
+    faraday (0.11.0)
+      multipart-post (>= 1.2, < 3)
     ffaker (2.2.0)
     ffi (1.9.14)
     font-awesome-rails (4.6.3.1)
@@ -254,6 +268,8 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
+    js_regex (1.2.1)
+      regexp_parser (>= 0.3.6, <= 0.4.2)
     json (1.8.3)
     jsonapi (0.1.1.beta2)
       json (~> 1.8)
@@ -289,6 +305,7 @@ GEM
       sixarm_ruby_unaccent (>= 1.1.1, < 2)
     multi_json (1.12.1)
     multi_test (0.1.2)
+    multipart-post (2.0.0)
     mysql2 (0.4.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -385,6 +402,7 @@ GEM
       json (~> 1.4)
     redis (3.3.1)
     ref (2.0.0)
+    regexp_parser (0.4.2)
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
     rsolr (1.1.2)
@@ -597,6 +615,7 @@ DEPENDENCIES
   capistrano (= 2.15.5)
   capistrano-unicorn
   capybara
+  client_side_validations
   coffee-rails
   cucumber-rails
   cucumber-websteps
@@ -604,6 +623,7 @@ DEPENDENCIES
   exception_notification
   factory_girl_rails (~> 4.0)
   font-awesome-rails
+  gibbon!
   hirb
   impressionist
   jbuilder (~> 2.0)
