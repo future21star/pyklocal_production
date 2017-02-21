@@ -3,6 +3,7 @@ module Merchant
 
     self.table_name = "pyklocal_stores" 
     acts_as_paranoid
+   
 
     before_destroy :deactive_store_products
 

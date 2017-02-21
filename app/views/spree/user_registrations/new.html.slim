@@ -15,14 +15,18 @@
           | &nbsp;
           a href=spree.login_path Login
         ul.nav.nav-tabs
-          li.active style="width: 50%;"
-            a data-toggle="tab" href="#customer"  Registration As Customer
-          li style="width: 50%;"
-            a data-toggle="tab" href="#vendor"  Registration As Vendor
+          li style="width: 50%;" class=((params[:active_tab] != "vendor") ? 'active' : '')
+            a href=new_spree_user_registration_path(active_tab: "customer") Registration As Customer
+          li style="width: 50%;" class=((params[:active_tab] == "vendor") ? 'active' : '')
+            a  href=new_spree_user_registration_path(active_tab: "vendor") Registration As Vendor
         .tab-content 
           #customer.tab-pane.fade.in.active
-            = render partial: 'form'
-          #vendor.tab-pane.fade
+            .form-section
+              - if @tab == "vendor"
+                = render partial: 'vendor_form'
+              - else
+                = render partial: 'form'
+          / #vendor.tab-pane.fade
             = render partial: 'vendor_form'
       column#column-right.col-sm-3.hidden-xs
         h3 Account

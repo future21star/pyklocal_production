@@ -34,8 +34,6 @@ $(document).ajaxStart(function(){
       date_from = $('#orders_completed_start').val();
       date_to = $('#orders_completed_end').val();
       $.get('/admin/reports/store_sale_product',{orders_completed_start: date_from, orders_completed_end: date_to, store_id: id},function(response){
-          // console.log(response);
-          // console.log(response["product"])
           if (response["product"].length || response["return_items"].length){
             if (response["product"].length){
               trHTML = 
@@ -55,9 +53,6 @@ $(document).ajaxStart(function(){
             }
 
             if (response["return_items"].length){
-              // trHTML = 
-              //       '<tr id="'+ id +'" class="sale-products"><td></td><th>Name</th><th>Price(USD)</th><th>Quantity</th><th>Tax Rate(%)</th></tr>'; 
-              // // $('tr').filter('#'+id).css("display","");
               $.each(response["return_items"],function(index){
                 // console.log(response["return_items"][index]);
                 product = response["return_items"][index];
@@ -75,7 +70,6 @@ $(document).ajaxStart(function(){
           } else {
             trHTML += 
                   '<tr id="'+ id +'" class="sale-products no-sale-product"><td></td><th>No Product Found</th>'
-            // alert('No Products found!');
           }
           $('tr').filter('#'+id).after(trHTML);
           $('.sale-products').fadeIn();

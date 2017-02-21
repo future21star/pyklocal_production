@@ -2,6 +2,7 @@ module Spree
   UserRegistrationsController.class_eval do 
 
     def new
+      @tab = params[:active_tab]
       @user = Spree::User.new
     end
     

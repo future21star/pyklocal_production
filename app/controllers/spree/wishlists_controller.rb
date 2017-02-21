@@ -7,10 +7,14 @@ class Spree::WishlistsController < Spree::StoreController
   end
 
   def create
-    @wishlist = Spree::Wishlist.new wishlist_params
-    @wishlist.user = current_spree_user
-    @wishlist.save
-    redirect_to :back, notice: "Product added into your wishlist"
+    unless current_spree_user.wishlists.collect(&:variant_id).include?(params[:wishlist][:variant_id].to_i)
+      @wishlist = Spree::Wishlist.new wishlist_params
+      @wishlist.user = current_spree_user
+      @wishlist.save
+      redirect_to :back, notice: "Product added into your wishlist"
+    else
+       redirect_to :back, notice: "Product already present in wishlist"
+    end
   end
 
   def destroy
