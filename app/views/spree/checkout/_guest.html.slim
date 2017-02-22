@@ -8,6 +8,6 @@
                         .form-group
                           = f.label :email, Spree.t(:email), class: 'form-label'
                           span.required 
-                          = f.email_field :email, class: 'title form-control', id: 'email',:placeholder => Spree.t(:email)
-                        .form-footer
+                          = f.email_field :email, required: "",class: 'title form-control', id: 'email',:placeholder => Spree.t(:email)
+                        .form-group
                           = f.submit Spree.t(:continue), class: 'btn btn-lg btn-primary btn-block'
