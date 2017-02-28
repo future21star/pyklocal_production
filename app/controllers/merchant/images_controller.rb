@@ -49,9 +49,9 @@ class Merchant::ImagesController < Merchant::ApplicationController
 
 	def destroy
 		if @image.destroy
-			redirect_to :back, notice: "Deleted successfully"
+			redirect_to  merchant_product_images_path(@product), notice: "Image Deleted successfully"
 		else
-			redirect_to :back, notice: "Something went wrong"
+			redirect_to  merchant_product_images_path(@product), notice: "Something went wrong"
 		end
 	end
 
