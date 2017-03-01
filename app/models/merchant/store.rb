@@ -3,6 +3,7 @@ module Merchant
 
     self.table_name = "pyklocal_stores" 
     acts_as_paranoid
+   
 
     before_destroy :deactive_store_products
 
@@ -43,7 +44,6 @@ module Merchant
     friendly_id :name, use: :slugged
 
     def deactive_store_products
-      p "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       unless self.spree_products.blank?
         p "***************^^^^^^^^**********************"
         self.spree_products.each do |product|

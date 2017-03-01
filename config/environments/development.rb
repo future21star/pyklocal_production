@@ -9,8 +9,14 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
-    :enable_starttls_auto => false,
-    :openssl_verify_mode => 'none'
+    # :enable_starttls_auto => false,
+    # :openssl_verify_mode => 'none'
+    :address => "smpt.mandrillapp.com",
+    :port => 587,
+    :enable_starttls_auto => true,
+    :user_name => "pyklocal",
+    :password => "E7BhM0LgZKaanbD1DfaW2w",
+    :authentication => "login"
   }
 
   # Do not eager load code on boot.

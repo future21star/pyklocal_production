@@ -8,9 +8,6 @@ class Merchant::ProductsController < Merchant::ApplicationController
   layout 'merchant'
 
 	def index
-    p "______________________________________________________________________________________-"
-    p params
-    p params.key?("active_tab")
     @tab = params[:active_tab]
     @search = Sunspot.search(Spree::Product) do
       fulltext params[:q][:s] if params[:q] && params[:q][:s]
@@ -79,6 +76,8 @@ class Merchant::ProductsController < Merchant::ApplicationController
       params[:product][:option_type_ids] = params[:product][:option_type_ids].split(",")
     end
     if @product.update_attributes(product_params)
+      # Sunspot.index(@product)
+      # Sunspot.commit
       redirect_to redirect_path, notice: "Product updated successfully"
     else
       @shipping_categories = Spree::ShippingCategory.all

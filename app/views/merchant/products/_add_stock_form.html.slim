@@ -9,7 +9,7 @@
           .form-group
             = f.field_container :quantity do
               = f.label :quantity, Spree.t(:quantity), class: "control-label"
-              = f.number_field :quantity, class: 'form-control', value: 1
+              = f.number_field :quantity, :min => "1",class: 'form-control', value: 1
         .col-md-4
           .form-group
             = f.field_container :stock_location do

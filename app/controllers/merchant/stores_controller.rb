@@ -26,6 +26,7 @@ class Merchant::StoresController < Merchant::ApplicationController
       redirect_to current_spree_user.stores.first
     elsif current_spree_user.registration_type == "vendor"
       @store = Merchant::Store.new
+      p "88888888888"
      # @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
      @taxons = Spree::Taxon.where(parent_id: nil)
     # elsif current_spree_user.registration_type == "customer"

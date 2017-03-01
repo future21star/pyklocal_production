@@ -5,6 +5,7 @@ html lang="#{I18n.locale}"
     = render :partial => 'spree/shared/head'
     / link[rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"]
     = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => false
+<<<<<<< HEAD
   body#home
     .onloadimg
       = image_tag(asset_path('new_design/loading.gif'), height: 128, width: 128, class: 'loader' )
@@ -12,6 +13,21 @@ html lang="#{I18n.locale}"
 
     = yield
 
+=======
+    = javascript_include_tag 'defaults', 'rails.validations'
+  body
+    .container-fluid style = ("padding-left: 0;padding-right: 0;")
+      = render :partial => 'spree/shared/header'
+      div class=(params["controller"] == "spree/checkout" || params["controller"] == "spree/orders" ? "container" : "")
+        #wrapper.main-body[data-hook]
+          = render :partial => 'spree/shared/sidebar' if content_for? :sidebar
+          #content[data-hook]
+            = yield
+          = yield :templates
+    .container
+      .custom-feature-box.row
+        = render :partial => 'spree/shared/custome_feature' 
+>>>>>>> apis
     = render :partial => 'spree/shared/footer'
     = render 'spree/shared/login_modal'
     = javascript_include_tag 'application'

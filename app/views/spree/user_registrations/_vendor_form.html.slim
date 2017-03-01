@@ -1,112 +1,150 @@
-h3.h3-title Sell With Us!
-p
-  i.sprite.sprite-checkmark
-  | Use our platform to sell your products.
-  br/
-  small Note: All the fields with * are Required
-= form_for @user, html: {class: "custom-form"}, :as => :spree_user, url: spree.registration_path do |f|
-  .row
-    .form-group.col-xs-12
-      h4.title Fill the form for New store
-    .form-group.col-xs-12
-      input.form-control name="store-name" placeholder=("Store Name*") /
-    .form-group.col-xs-12
-      label
-        strong Logo*
-      .fileUpload.btn.btn-primary
-        span Browse...
-        input#uploadBtn.upload type="file" /
-      input#uploadFile.uploadFile disabled="" placeholder=("No file selected") /
-    .form-group.col-xs-12
-      label
-        strong Certificate of authority*
-      .fileUpload.btn.btn-primary
-        span Browse...
-        input#uploadBtn1.upload type="file" /
-      input#uploadFile1.uploadFile disabled="" placeholder=("No file selected") /
-    .form-group.col-xs-12
-      h4.title Manager Details
-    .form-group.col-sm-6.col-xs-12
-      = f.text_field :first_name, :class => 'form-control',:required => "", :tabindex => 1, :placeholder => 'First Name*'
-    .form-group.col-sm-6.col-xs-12
-      = f.text_field :last_name, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => 'Last Name*'
-    .form-group.col-sm-6.col-xs-12
-      input.form-control name="phone-number" placeholder=("Phone number*") type="tel" /
-    .form-group.col-sm-6.col-xs-12
-      select.form-control
-        option Store type*
-        option Store 1
-        option Store 2
-        option Store 3
-    .form-group.col-sm-6.col-xs-12
-      input.form-control name="edt" placeholder=("Estimated delivery time") /
-    .form-group.col-sm-6.col-xs-12
-      input.form-control name="Website" placeholder="Website(s)" /
-    .form-group.col-xs-12
-      h4.title Address
-    .form-group.col-sm-6.col-xs-12
-      input.form-control name="address" placeholder="Address*" /
-    .form-group.col-sm-6.col-xs-12
-      input.form-control name="city" placeholder="City*" /
-    .form-group.col-sm-4.col-xs-12
-      select.form-control
-        option State*
-        option Rajasthan
-        option Madya Pradesh
-        option Utter Pradesh
-    .form-group.col-sm-4.col-xs-12
-      input.form-control name="zipcode" placeholder="Zipcode*" /
-    .form-group.col-sm-4.col-xs-12
-      select.form-control
-        option Country*
-        option Rajasthan
-        option Madya Pradesh
-        option Utter Pradesh
-    .form-group.col-xs-12
-      h4.title Categories*
-    .form-group.col-xs-12
-      ul.categories
-        li
-          label for="rememberme1"
-            input#rememberme1 name="rememberme" type="checkbox" value="forever" /
-            | Electronics
-        li
-          label for="rememberme2"
-            input#rememberme2 name="rememberme" type="checkbox" value="forever" /
-            | Footware
-        li
-          label for="rememberme3"
-            input#rememberme3 name="rememberme" type="checkbox" value="forever" /
-            | Pharmacy
-        li
-          label for="rememberme4"
-            input#rememberme4 name="rememberme" type="checkbox" value="forever" /
-            | Household supplies
-        li
-          label for="rememberme5"
-            input#rememberme5 name="rememberme" type="checkbox" value="forever" /
-            | Hair Care
-        li
-          label for="rememberme6"
-            input#rememberme6 name="rememberme" type="checkbox" value="forever" /
-            | Baby &amp; Children
-        li
-          label for="rememberme7"
-            input#rememberme7 name="rememberme" type="checkbox" value="forever" /
-            | Nutrition
-        li
-          label for="rememberme8"
-            input#rememberme8 name="rememberme" type="checkbox" value="forever" /
-            | Home Furnishing
-    .form-group.col-xs-12
-      h4.title Description
-    .form-group.col-xs-12
-      textarea.form-control
-    = f.hidden_field :registration_type, :value => "vendor"
-    .form-group.col-xs-12
-      label Registration Type:
-      span.Type Vendor
-    .form-group.col-xs-12.bdr
+
+/ h3.h3-title Sell With Us!
+/ p
+/   i.sprite.sprite-checkmark
+/   | Use our platform to sell your products.
+/   br/
+/   small Note: All the fields with * are Required
+/ = form_for @user, html: {class: "custom-form"}, :as => :spree_user, url: spree.registration_path do |f|
+/   .row
+/     .form-group.col-xs-12
+/       h4.title Fill the form for New store
+/     .form-group.col-xs-12
+/       input.form-control name="store-name" placeholder=("Store Name*") /
+/     .form-group.col-xs-12
+/       label
+/         strong Logo*
+/       .fileUpload.btn.btn-primary
+/         span Browse...
+/         input#uploadBtn.upload type="file" /
+/       input#uploadFile.uploadFile disabled="" placeholder=("No file selected") /
+/     .form-group.col-xs-12
+/       label
+/         strong Certificate of authority*
+/       .fileUpload.btn.btn-primary
+/         span Browse...
+/         input#uploadBtn1.upload type="file" /
+/       input#uploadFile1.uploadFile disabled="" placeholder=("No file selected") /
+/     .form-group.col-xs-12
+/       h4.title Manager Details
+/     .form-group.col-sm-6.col-xs-12
+/       = f.text_field :first_name, :class => 'form-control',:required => "", :tabindex => 1, :placeholder => 'First Name*'
+/     .form-group.col-sm-6.col-xs-12
+/       = f.text_field :last_name, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => 'Last Name*'
+/     .form-group.col-sm-6.col-xs-12
+/       input.form-control name="phone-number" placeholder=("Phone number*") type="tel" /
+/     .form-group.col-sm-6.col-xs-12
+/       select.form-control
+/         option Store type*
+/         option Store 1
+/         option Store 2
+/         option Store 3
+/     .form-group.col-sm-6.col-xs-12
+/       input.form-control name="edt" placeholder=("Estimated delivery time") /
+/     .form-group.col-sm-6.col-xs-12
+/       input.form-control name="Website" placeholder="Website(s)" /
+/     .form-group.col-xs-12
+/       h4.title Address
+/     .form-group.col-sm-6.col-xs-12
+/       input.form-control name="address" placeholder="Address*" /
+/     .form-group.col-sm-6.col-xs-12
+/       input.form-control name="city" placeholder="City*" /
+/     .form-group.col-sm-4.col-xs-12
+/       select.form-control
+/         option State*
+/         option Rajasthan
+/         option Madya Pradesh
+/         option Utter Pradesh
+/     .form-group.col-sm-4.col-xs-12
+/       input.form-control name="zipcode" placeholder="Zipcode*" /
+/     .form-group.col-sm-4.col-xs-12
+/       select.form-control
+/         option Country*
+/         option Rajasthan
+/         option Madya Pradesh
+/         option Utter Pradesh
+/     .form-group.col-xs-12
+/       h4.title Categories*
+/     .form-group.col-xs-12
+/       ul.categories
+/         li
+/           label for="rememberme1"
+/             input#rememberme1 name="rememberme" type="checkbox" value="forever" /
+/             | Electronics
+/         li
+/           label for="rememberme2"
+/             input#rememberme2 name="rememberme" type="checkbox" value="forever" /
+/             | Footware
+/         li
+/           label for="rememberme3"
+/             input#rememberme3 name="rememberme" type="checkbox" value="forever" /
+/             | Pharmacy
+/         li
+/           label for="rememberme4"
+/             input#rememberme4 name="rememberme" type="checkbox" value="forever" /
+/             | Household supplies
+/         li
+/           label for="rememberme5"
+/             input#rememberme5 name="rememberme" type="checkbox" value="forever" /
+/             | Hair Care
+/         li
+/           label for="rememberme6"
+/             input#rememberme6 name="rememberme" type="checkbox" value="forever" /
+/             | Baby &amp; Children
+/         li
+/           label for="rememberme7"
+/             input#rememberme7 name="rememberme" type="checkbox" value="forever" /
+/             | Nutrition
+/         li
+/           label for="rememberme8"
+/             input#rememberme8 name="rememberme" type="checkbox" value="forever" /
+/             | Home Furnishing
+/     .form-group.col-xs-12
+/       h4.title Description
+/     .form-group.col-xs-12
+/       textarea.form-control
+/     = f.hidden_field :registration_type, :value => "vendor"
+/     .form-group.col-xs-12
+/       label Registration Type:
+/       span.Type Vendor
+/     .form-group.col-xs-12.bdr
+= form_for @user, html: {class: "custom-form"}, :as => :spree_user,validate: true, url: spree.registration_path do |f|   
+  fieldset#password-credentials
+    legend Your Personal Details
+    .form-group.required style=("display: none;") 
+      label.col-sm-2.control-label Customer Group
+      .col-sm-10
+        .radio
+          label
+            input checked="checked" name="customer_group_id" type="radio" value="1" 
+            | Default
+    .form-group.required.clearfix
+      label.col-sm-2.control-label for="input-email"  First Name
+      .col-sm-10
+        = f.text_field :first_name, :class => 'form-control',:required => "", :tabindex => 1, :placeholder => Spree.t(:first_name)
+    .form-group.required.clearfix
+      label.col-sm-2.control-label for="input-email"  Last Name
+      .col-sm-10
+        = f.text_field :last_name, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => Spree.t(:last_name)
+    .form-group.required.clearfix
+      label.col-sm-2.control-label for="input-email"  E-Mail
+      .col-sm-10
+        = f.email_field :email, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => Spree.t(:email)
+    .form-group.required.clearfix
+      label.col-sm-2.control-label for="input-password"  Password
+      .col-sm-10
+        = f.password_field :password, :class => 'form-control', :required => "", :tabindex => 2, :placeholder => Spree.t(:password)
+    .form-group.required.clearfix
+      label.col-sm-2.control-label for="input-confirm"  Password Confirm
+      .col-sm-10
+        = f.password_field :password_confirmation, :class => 'form-control', :required => "", :tabindex => 2, :placeholder => Spree.t(:password)
+    / .form-group.required.clearfix
+    /   label.col-sm-2.control-label for="input-confirm"  Registration Type
+    /   .col-sm-10
+    /     span Vendor
+    = f.hidden_field :registration_type, :value => "vendor" 
+  .buttons
+    .form-group
       label.t_and_c
         = f.check_box :t_and_c_accepted, class: "t_and_c_ven"
         span.check

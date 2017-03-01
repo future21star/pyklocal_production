@@ -38,16 +38,23 @@ module Spree
         if @user.present?
          # @wishlist = Spree::Wishlist.create(user_id: @user.id , variant_id: params[:wishlist][:variant_id])
           if Spree::Variant.exists?(params[:wishlist][:variant_id])
-            @wishlist  = Spree::Wishlist.new(wishlist_params.merge({user_id: @user.id}))
-            if @wishlist.save
-              render json: {
-                status: "1" ,
-                message: "Item added successfully to wishlist"
-              }
+            unless @user.wishlists.collect(:variant_id).include?(params[:wishlist][:variant_id].to_i)
+              @wishlist  = Spree::Wishlist.new(wishlist_params.merge({user_id: @user.id}))
+              if @wishlist.save
+                render json: {
+                  status: "1" ,
+                  message: "Item added successfully to wishlist"
+                }
+              else
+                render json: {
+                  status: "0",
+                  message: "Something Went Wrong"
+                }
+              end
             else
               render json: {
                 status: "0",
-                message: "Something Went Wrong"
+                message: "Product already present in wishlist"
               }
             end
           else

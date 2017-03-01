@@ -1,6 +1,10 @@
 Spree::User.class_eval do
 
   devise :registerable, :confirmable
+  validates :first_name, :last_name,:password,:email, presence: true
+  # validates :email, format: {with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i}
+  # validates :t_and_c_accepted, acceptance: true
+  validates :password, confirmation: true
   before_destroy :notify_store_destroy, :destroy_store
   #------------------------ Associations------------------------------
   has_many :store_users, foreign_key: :spree_user_id, class_name: 'Merchant::StoreUser'
@@ -30,6 +34,7 @@ Spree::User.class_eval do
   #---------------------Callbacks--------------------------
   after_create :assign_api_key 
   after_create :notify_admin
+  after_create :subscribe_user_to_mailing_list
   after_update :notify_user
   after_update :send_changed_password_notification
   attr_accessor :role_name
@@ -173,6 +178,10 @@ Spree::User.class_eval do
 
     def assign_api_key
       self.generate_spree_api_key!
+    end
+
+    def subscribe_user_to_mailing_list
+      SubscribeUserToMailingListJob.perform_later(self)
     end
 
 
