@@ -12,22 +12,21 @@ Spree::UsersController.class_eval do
       else
         render :edit
       end
-<<<<<<< HEAD
-      if params[:user][:password].present?
-        redirect_to change_password_account_path, :notice => Spree.t(:account_updated_successfully)
-      else
-        redirect_to edit_account_path, :notice => Spree.t(:account_updated_successfully)
-      end
-    else
-      if params[:user][:password].present?
-        render :change_password
-      else
-        render :edit
-      end
-=======
+# <<<<<<< HEAD
+#       if params[:user][:password].present?
+#         redirect_to change_password_account_path, :notice => Spree.t(:account_updated_successfully)
+#       else
+#         redirect_to edit_account_path, :notice => Spree.t(:account_updated_successfully)
+#       end
+#     else
+#       if params[:user][:password].present?
+#         render :change_password
+#       else
+#         render :edit
+#       end
+# =======
     else
       redirect_to edit_account_path, :notice => "Please Provide Valid Email"
->>>>>>> apis
     end
   end
 

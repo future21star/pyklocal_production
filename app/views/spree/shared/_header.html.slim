@@ -26,50 +26,58 @@ header.header
                     = link_to "Logout", spree.logout_path ,"data-no-turbolink" => true
             - else
               li
-<<<<<<< HEAD
-            / <<<<<<< HEAD
-            /                 a data-target="#login" data-toggle="modal" href="#"
-            /                   i.fa.fa-sign-in.visible-xs aria-hidden="true"
-                  span.hidden-xs Log In
-  .container-fluid
-    .row
-      .logo.col-md-2.col-sm-3.col-xs-7
-        a href="/"
-          img.hidden-xs alt="pyk" height="78" src=asset_path("new_design/logo.png") width="125" /
-          img.visible-xs alt="pyk" height="34" src=asset_path("new_design/logo-mobile.png") width="125" /
-      .col-md-2.col-sm-3.col-xs-5.visible-xs
-        .cart-favorite
-          .cart
-            span.cart-icon
-              = link_to spree.cart_path, "data-no-turbolink" => true do
-                i.fa.fa-shopping-cart aria-hidden="true"
-                small= simple_current_order.item_count
-            h5 CART
-          .favorite
-            span.favorite-icon
-              a href="#"
-                i.fa.fa-heart aria-hidden="true"
-                small 0
-      .col-md-8.col-sm-6.col-xs-12
-        = render 'spree/shared/search'
-      .col-md-2.col-sm-3.col-xs-12.hidden-xs
-        .cart-favorite
-          .cart
-            span.cart-icon
-              = link_to spree.cart_path, "data-no-turbolink" => true do
-                i.fa.fa-shopping-cart aria-hidden="true"
-                  small= simple_current_order.item_count
-            h5 CART
-          .favorite
-            span.favorite-icon
-              a href="#"
-                i.fa.fa-heart aria-hidden="true"
-                small 0
-                = link_to "Register", spree.signup_path     
-=======
+                 = link_to "Login", spree.login_path 
+              li
                 = link_to "Register", spree.signup_path 
+/ <<<<<<< HEAD
+/ <<<<<<< HEAD
+/             / <<<<<<< HEAD
+/             /                 a data-target="#login" data-toggle="modal" href="#"
+/             /                   i.fa.fa-sign-in.visible-xs aria-hidden="true"
+/ =======
+/                 a data-target="#login" data-toggle="modal" href="#" 
+/                   i.fa.fa-sign-in.visible-xs aria-hidden="true"
+/ >>>>>>> 058baff2e4dfce1612a2513f7453fe76f39c4691
+/                   span.hidden-xs Log In
+/   .container-fluid
+/     .row
+/       .logo.col-md-2.col-sm-3.col-xs-7
+/         a href="/"
+/           img.hidden-xs alt="pyk" height="78" src=asset_path("new_design/logo.png") width="125" /
+/           img.visible-xs alt="pyk" height="34" src=asset_path("new_design/logo-mobile.png") width="125" /
+/       .col-md-2.col-sm-3.col-xs-5.visible-xs
+/         .cart-favorite
+/           .cart
+/             span.cart-icon
+/               = link_to spree.cart_path, "data-no-turbolink" => true do
+/                 i.fa.fa-shopping-cart aria-hidden="true"
+/                 small= simple_current_order.item_count
+/             h5 CART
+/           .favorite
+/             span.favorite-icon
+/               a href="#"
+/                 i.fa.fa-heart aria-hidden="true"
+/                 small 0
+/       .col-md-8.col-sm-6.col-xs-12
+/         = render 'spree/shared/search'
+/       .col-md-2.col-sm-3.col-xs-12.hidden-xs
+/         .cart-favorite
+/           .cart
+/             span.cart-icon
+/               = link_to spree.cart_path, "data-no-turbolink" => true do
+/                 i.fa.fa-shopping-cart aria-hidden="true"
+/                   small= simple_current_order.item_count
+/             h5 CART
+/           .favorite
+/             span.favorite-icon
+/               a href="#"
+/                 i.fa.fa-heart aria-hidden="true"
+/                 small 0
+/ <<<<<<< HEAD
+/                 = link_to "Register", spree.signup_path     
+/ =======
+/                 = link_to "Register", spree.signup_path 
  
->>>>>>> apis
             
   header.header-row
     .container
@@ -125,4 +133,5 @@ header.header
           / -if !spree_user_signed_in?    
           /   li.custom-link-right
           /     = goto_merchant_path
+
 
