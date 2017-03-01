@@ -25,8 +25,6 @@ class Merchant::ImagesController < Merchant::ApplicationController
 
 	def create
 		extension = params[:image][:attachment].original_filename.split('.').second.strip
-		p "*****************************************************"
-		p params[:image][:attachment].original_filename
 		if ["jpeg","png","jpg"].include?(extension)
 			@image = Spree::Image.new(image_params)
 			if @image.save
