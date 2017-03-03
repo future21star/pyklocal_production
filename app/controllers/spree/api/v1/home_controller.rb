@@ -11,6 +11,7 @@ module Spree
             with(:location).in_radius(session[:lat], session[:lng], 30.to_i, bbox: true) if session[:lat].present? && session[:lng].present?
             with(:buyable, :true)
             with(:visible, :true)
+            with(:product_discontinue, :true)
             paginate(:page => 1, :per_page => 5)
             order_by(:sell_count, :desc)
           end 
@@ -19,6 +20,7 @@ module Spree
             order_by(:view_counter, :desc)
             with(:buyable, :true)
             with(:visible, :true)
+            with(:product_discontinue, :true)
             paginate page: 1, per_page: 5
           end
           @most_viewed_products = @view_search.results
@@ -27,6 +29,7 @@ module Spree
           @search_new_arrival = Sunspot.search(Spree::Product) do
             with(:buyable, :true)
             with(:visible, :true)
+            with(:product_discontinue, :true)
             order_by(:created_at, :desc)
             paginate page: 1, per_page: 30
           end
