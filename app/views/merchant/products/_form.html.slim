@@ -1,5 +1,5 @@
 .col-md-9
-  = form_for [:merchant, @product], html: {multipart: true} do |f|
+  = form_for [:merchant, @product], validate: true,html: {multipart: true} do |f|
     .row.top-margin-row
       .col-md-8
         .from-group

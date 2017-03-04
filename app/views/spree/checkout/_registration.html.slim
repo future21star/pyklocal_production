@@ -8,17 +8,18 @@
             .col-md-12
               h2.login-title
                 |Registration as New Customer
-              = form_for Spree::User.new, html: {class: "custom-form"}, :as => :spree_user, :url => spree.registration_path do |f|
-                .form-group
+              = render partial: 'spree/shared/user_form'
+              / = form_for Spree::User.new, html: {class: "custom-form"}, :as => :spree_user, :url => spree.registration_path do |f|
+              /   .form-group
                   
-                  = f.email_field :email, class: "form-control ", id: "email",:placeholder => Spree.t(:email)
-                .form-group
+              /     = f.email_field :email, :required => true, class: "form-control ", id: "email",:placeholder => Spree.t(:email)
+              /   .form-group
               
-                  = f.password_field :password, class: "form-control", id: "pwd",:placeholder => Spree.t(:password)
-                .form-group.required
+              /     = f.password_field :password, :required => true, class: "form-control", id: "pwd",:placeholder => Spree.t(:password)
+              /   .form-group.required
               
-                  = f.password_field :password, :class => 'form-control', :tabindex => 2,:placeholder => Spree.t(:password)
+              /     = f.password_field :password_confirmation, :required => true,:class => 'form-control', :tabindex => 2,:placeholder => Spree.t(:password)
 
-                .form-footer
-                  = f.submit Spree.t(:continue), :class => 'btn btn-lg btn-primary btn-block', :tabindex => 3
-                    |Create
+              /   .form-group
+              /     = f.submit Spree.t(:continue), :class => 'btn btn-lg btn-primary btn-block', :tabindex => 3
+              /       |Create

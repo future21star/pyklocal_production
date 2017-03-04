@@ -13,7 +13,6 @@ module Spree
 				per_page = 25
 				p params[:page]
 				unless params[:page].blank?
-					# p params[:page]
 					page = params[:page].to_i
 					start = per_page * ( params[:page].to_i - 1)
 				else
@@ -33,10 +32,6 @@ module Spree
 					@date1 =  2.weeks.ago.to_date + 1
 					@date2 = Date.today
 				end
-
-				p "********************123*******************************"
-				p @date1
-				p @date2
 			
 				@store_sale_array = []
 				if params[:download_excel]

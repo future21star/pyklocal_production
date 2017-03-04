@@ -1,5 +1,6 @@
 module Spree
 	Product.class_eval do 
+    validates :name, length: {maximum: 100}
 		belongs_to :store, class_name: "Merchant::Store"
 		has_many :order_variants, -> { order("#{::Spree::Variant.quoted_table_name}.position ASC") },
     inverse_of: :product, class_name: 'Spree::Variant'
@@ -27,6 +28,7 @@ module Spree
       latlon(:location) { Sunspot::Util::Coordinates.new(store.try(:latitude), store.try(:longitude)) }
       text :asin
       boolean :visible
+      boolean :product_discontinue
       
       float :price
       float :cost_price
@@ -74,6 +76,18 @@ module Spree
       else
        return false
      end
+    end
+
+    def product_discontinue
+      if self.try(:discontinue_on).present? 
+        if self.try(:discontinue_on) >= Time.now.to_date
+          true
+        else
+          false
+        end
+      else
+        true
+      end
     end
 
     def in_wishlist(user)
