@@ -1,6 +1,8 @@
 module Spree
 	Product.class_eval do 
     validates :name, length: {maximum: 100}
+    validates :cost_price, :price, presence: true
+    validate :cost_price_must_be_greater_than_price
 		belongs_to :store, class_name: "Merchant::Store"
 		has_many :order_variants, -> { order("#{::Spree::Variant.quoted_table_name}.position ASC") },
     inverse_of: :product, class_name: 'Spree::Variant'
@@ -28,7 +30,6 @@ module Spree
       latlon(:location) { Sunspot::Util::Coordinates.new(store.try(:latitude), store.try(:longitude)) }
       text :asin
       boolean :visible
-      boolean :product_discontinue
       
       float :price
       float :cost_price
@@ -72,23 +73,20 @@ module Spree
 
     def visible
       if self.cost_price.present? && self.tax_category.present? && self.taxons.present? && self.price.present? && self.total_on_hand > 0 && self.try(:available_on).present? && self.try(:available_on) <= Time.now.to_date && self.buyable == true
-       return true
+        if self.try(:discontinue_on).present? 
+          if self.try(:discontinue_on) >= Time.now.to_date
+            return true
+          else
+            return false
+          end
+        else
+          return true
+        end
       else
        return false
      end
     end
 
-    def product_discontinue
-      if self.try(:discontinue_on).present? 
-        if self.try(:discontinue_on) >= Time.now.to_date
-          true
-        else
-          false
-        end
-      else
-        true
-      end
-    end
 
     def in_wishlist(user)
       variant_id_arr = variants.collect(&:id)
@@ -140,6 +138,11 @@ module Spree
 
     def store_name
       store.try(:name)
+    end
+
+
+    def cost_price_must_be_greater_than_price
+       errors.add(:cost_price,"Retail price must be greater than sale price") if self.price.to_f > self.cost_price
     end
 
     def self.max_price

@@ -48,10 +48,16 @@ Spree::OrdersController.class_eval do
     # 2,147,483,647 is crazy. See issue #2695.
     if quantity.between?(1, 500)
       if quantity <= variant.total_on_hand
-        begin
-          order.contents.add(variant, quantity, options, delivery_type)
-        rescue ActiveRecord::RecordInvalid => e
-          error = e.record.errors.full_messages.join(", ")
+        already_ordered_quantity = order.line_items.select{|line_item| line_item.variant_id == variant.id }.try(:first).try(:quantity)
+
+        if  already_ordered_quantity.nil? || (variant.total_on_hand >= (already_ordered_quantity.to_i + quantity))
+           begin
+            order.contents.add(variant, quantity, options, delivery_type)
+          rescue ActiveRecord::RecordInvalid => e
+            error = e.record.errors.full_messages.join(", ")
+          end
+        else
+          error ="You already have this item in your cart. Max Quantity Available for add: " + (variant.total_on_hand - already_ordered_quantity).to_s
         end
       else
        # error = 'Max Available: "#{variant.total_on_hand}"'
@@ -90,6 +96,36 @@ Spree::OrdersController.class_eval do
   #       message: @handler.successful? ? "Coupon code successfully applied" : @handler.error.blank? ? "Please enter a coupon code" : @handler.error
   #     }
   # end
+
+  def update
+    p "((((((((((((((((((((((("
+    p params
+    params["order"]["line_items_attributes"].each do |line_item|
+      line_item_hash =  line_item.last
+      p line_item_hash["id"].to_i
+      line_item = Spree::LineItem.find(line_item_hash["id"].to_i)
+      variant = line_item.variant
+      if variant.total_on_hand < line_item.quantity + line_item_hash["quantity"].to_i
+        flash[:error] = "Max Quantity Available for " + variant.product.name + " is " + variant.total_on_hand.to_s
+        redirect_to :back
+        return
+      end
+    end
+    if @order.contents.update_cart(order_params)
+      respond_with(@order) do |format|
+        format.html do
+          if params.has_key?(:checkout)
+            @order.next if @order.cart?
+            redirect_to checkout_state_path(@order.checkout_steps.first)
+          else
+            redirect_to cart_path
+          end
+        end
+      end
+    else
+      respond_with(@order)
+    end
+  end
 
   def ready_to_pick
     if @order.present?

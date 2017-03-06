@@ -184,7 +184,6 @@ module Spree
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
         with(:buyable, :true)
         with(:visible, :true)
-        with(:product_discontinue, :true)
         with(:store_id, params[:q][:store_id]) if params[:q] && params[:q][:store_id] != "" && params[:q][:store_id] != nil
         with(:taxon_ids, params[:q][:id]) if params[:q] && params[:q][:id] != "" && params[:q][:id] != nil
         facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
