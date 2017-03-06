@@ -7,24 +7,17 @@ Spree::UsersController.class_eval do
           # this logic needed b/c devise wants to log us out after password changes
           user = Spree::User.reset_password_by_token(params[:user])
           sign_in(@user, :event => :authentication, :bypass => true)
+          redirect_to change_password_account_path, :notice => Spree.t(:account_updated_successfully)
+        else
+          redirect_to edit_account_path, :notice => Spree.t(:account_updated_successfully)
         end
-        redirect_to edit_account_path, :notice => Spree.t(:account_updated_successfully)
       else
-        render :edit
+        if params[:user][:password].present?
+          render :change_password
+        else
+          render :edit
+        end
       end
-# <<<<<<< HEAD
-#       if params[:user][:password].present?
-#         redirect_to change_password_account_path, :notice => Spree.t(:account_updated_successfully)
-#       else
-#         redirect_to edit_account_path, :notice => Spree.t(:account_updated_successfully)
-#       end
-#     else
-#       if params[:user][:password].present?
-#         render :change_password
-#       else
-#         render :edit
-#       end
-# =======
     else
       redirect_to edit_account_path, :notice => "Please Provide Valid Email"
     end
@@ -35,3 +28,4 @@ Spree::UsersController.class_eval do
   end
 
 end
+

@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-= form_for @user, html: {class: "custom-form"}, :as => :spree_user, url: spree.registration_path do |f|
+= form_for @user, html: {class: "custom-form"}, :as => :spree_user, url: spree.registration_path, validate: true do |f|
   .row
     .form-group.col-xs-12
       h4.title Your Personal Details
@@ -13,42 +12,6 @@
       = f.password_field :password, :class => 'form-control', :required => "", :tabindex => 2, :placeholder => 'Password*'
     .form-group.col-sm-6.col-xs-12
       = f.password_field :password_confirmation, :class => 'form-control', :required => "", :tabindex => 2, :placeholder => 'Confirm Password*'
-=======
-= form_for @user, html: {class: "custom-form"}, :as => :spree_user, url: spree.registration_path , validate: true do |f|   
-  fieldset#password-credentials
-    legend Your Personal Details
-    .form-group.required style=("display: none;") 
-      label.col-sm-2.control-label Customer Group
-      .col-sm-10
-        .radio
-          label
-            input checked="checked" name="customer_group_id" type="radio" value="1" 
-            | Default
-    .form-group.required.clearfix
-      label.col-sm-2.control-label for="input-email"  First Name
-      .col-sm-10
-        = f.text_field :first_name, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => Spree.t(:first_name)
-    .form-group.required.clearfix
-      label.col-sm-2.control-label for="input-email"  Last Name
-      .col-sm-10
-        = f.text_field :last_name, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => Spree.t(:last_name)
-    .form-group.required.clearfix
-      label.col-sm-2.control-label for="input-email"  E-Mail
-      .col-sm-10
-        = f.email_field :email, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => Spree.t(:email)
-    .form-group.required.clearfix
-      label.col-sm-2.control-label for="input-password"  Password
-      .col-sm-10
-        = f.password_field :password, :class => 'form-control', :required => "", :tabindex => 2, :placeholder => Spree.t(:password)
-    .form-group.required.clearfix
-      label.col-sm-2.control-label for="input-confirm"  Password Confirm
-      .col-sm-10
-        = f.password_field :password_confirmation, :class => 'form-control', :required => "", :tabindex => 2, :placeholder => Spree.t(:password)
-    / .form-group.required.clearfix
-    /   label.col-sm-2.control-label for="input-confirm"  Registration Type
-    /   .col-sm-10
-    /     span Customer
->>>>>>> apis
     = f.hidden_field :registration_type, :value => "customer"
     .form-group.col-xs-12
       label Registration Type:
@@ -75,4 +38,3 @@
         }
       })
     })
-

@@ -28,6 +28,7 @@ module Spree
       latlon(:location) { Sunspot::Util::Coordinates.new(store.try(:latitude), store.try(:longitude)) }
       text :asin
       boolean :visible
+      boolean :product_discontinue
       
       float :price
       float :cost_price
@@ -75,6 +76,18 @@ module Spree
       else
        return false
      end
+    end
+
+    def product_discontinue
+      if self.try(:discontinue_on).present? 
+        if self.try(:discontinue_on) >= Time.now.to_date
+          true
+        else
+          false
+        end
+      else
+        true
+      end
     end
 
     def in_wishlist(user)
