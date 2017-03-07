@@ -51,8 +51,12 @@ class Merchant::ProductsController < Merchant::ApplicationController
   def bulk_upload
     row_array = Array.new
     my_file = params[:file]
-    ImportProductWorker.perform_in(5.seconds, my_file.path, current_spree_user.email)
-    redirect_to merchant_products_path, notice: "Your product importing from the csv you uploaded, we will notify you it's progress through email"
+    if my_file.original_filename.split('.').second.strip != 'csv'
+      redirect_to :back, notice: "Uploaded file must have .csv extension"
+    else
+      ImportProductWorker.perform_in(5.seconds, my_file.path, current_spree_user.email)
+      redirect_to merchant_products_path, notice: "Your product importing from the csv you uploaded, we will notify you it's progress through email"
+    end
   end
 
   def sample_csv

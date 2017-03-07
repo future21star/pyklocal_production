@@ -98,17 +98,15 @@ Spree::OrdersController.class_eval do
   # end
 
   def update
-    p "((((((((((((((((((((((("
-    p params
-    params["order"]["line_items_attributes"].each do |line_item|
-      line_item_hash =  line_item.last
-      p line_item_hash["id"].to_i
-      line_item = Spree::LineItem.find(line_item_hash["id"].to_i)
-      variant = line_item.variant
-      if variant.total_on_hand < line_item.quantity + line_item_hash["quantity"].to_i
-        flash[:error] = "Max Quantity Available for " + variant.product.name + " is " + variant.total_on_hand.to_s
-        redirect_to :back
-        return
+    unless params.has_key?(:checkout)
+      params["order"]["line_items_attributes"].each do |key,value|
+        line_item = Spree::LineItem.find(value["id"].to_i)
+        variant = line_item.variant
+        if variant.total_on_hand < value["quantity"].to_i
+          flash[:error] = "Max Quantity Available for " + variant.product.name + " is " + variant.total_on_hand.to_s
+          redirect_to :back
+          return
+        end
       end
     end
     if @order.contents.update_cart(order_params)

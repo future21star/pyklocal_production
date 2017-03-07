@@ -18,7 +18,7 @@ module Spree
           @view_search = Sunspot.search(Spree::Product) do 
             order_by(:view_counter, :desc)
             with(:buyable, :true)
-            with(:visible, :true
+            with(:visible, :true)
             paginate page: 1, per_page: 5
           end
           @most_viewed_products = @view_search.results
