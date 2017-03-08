@@ -1,7 +1,7 @@
 Spree::UsersController.class_eval do
 
   def update
-    if @user.email == params[:user][:email]
+    # if @user.email == params[:user][:email]
       if @user.update_attributes(user_params)
         if params[:user][:password].present?
           # this logic needed b/c devise wants to log us out after password changes
@@ -18,9 +18,9 @@ Spree::UsersController.class_eval do
           render :edit
         end
       end
-    else
-      redirect_to edit_account_path, :notice => "Please Provide Valid Email"
-    end
+    # else
+      # redirect_to edit_account_path, :notice => "Please Provide Valid Email"
+    # end
   end
 
   def change_password

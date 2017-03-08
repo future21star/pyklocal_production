@@ -74,7 +74,7 @@
               br
               = form_tag bulk_upload_merchant_products_path, method: :post, multipart: true do 
                 .form-group
-                  = file_field_tag :file, class: "form-control"
+                  = file_field_tag :file, accept: "text/csv",class: "form-control"
                 .form-group
                   = submit_tag "Import", class: "btn btn-primary"
                   span
