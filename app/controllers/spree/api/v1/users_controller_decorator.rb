@@ -204,7 +204,7 @@ module Spree
 
 		#Update Users information
 		def update
-			if @user.update_attributes(user_params)
+			if @user.update_attributes(first_name: params[:user][:first_name],last_name: params[:user][:last_name])
 				@response = get_response
 			else
 				@response = error_response
