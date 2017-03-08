@@ -1,6 +1,6 @@
 Spree::OrdersController.class_eval do 
   before_filter :process_paypal_express, only: :update
-  before_filter :load_order, only: [:cancel, :ready_to_pick, :populate]
+  before_filter :load_order, only: [:cancel, :ready_to_pick, :populate,:order_placed]
   skip_before_filter :authenticate_user, only: [:apply_coupon_code]
 
   include Spree::Api::ApiHelpers
@@ -28,7 +28,7 @@ Spree::OrdersController.class_eval do
   end
 
   def order_placed
-    @order = current_spree_user.orders.includes(line_items: [variant: [:option_values, :images, :product]], bill_address: :state, ship_address: :state).find_by_number!(params[:id])
+    # @order = current_spree_user.orders.includes(line_items: [variant: [:option_values, :images, :product]], bill_address: :state, ship_address: :state).find_by_number!(params[:id])
   end
 
     def promotions_total

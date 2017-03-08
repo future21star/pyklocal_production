@@ -34,12 +34,6 @@
     #order data-hook="" 
       = render partial: 'spree/shared/order_details', locals: { order: @order }
       br.clear
-      -unless @order.state == "canceled"
-        p.pull-right data-hook="links" 
-          = link_to Spree.t(:cancel_order),order_cancel_path(@order), class: "button btn btn-success" ,id: "cancel_order" ,method: :put
-          - unless order_just_completed?(@order)
-            - if try_spree_current_user && respond_to?(:spree_account_path)
-              = link_to Spree.t(:my_account), spree_account_path, class: "button"
       p.pull-right data-hook="links" 
         = link_to Spree.t(:continue), spree.root_path, class: "button btn btn-info",id: "continue"
         - unless order_just_completed?(@order)
