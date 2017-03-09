@@ -12,13 +12,14 @@
       #content.col-sm-9
         h1 Forgot Your Password?
         p Enter the e-mail address associated with your account. Click submit to have your password e-mailed to you.
-        = form_for Spree::User.new, validate: true,:as => :spree_user, :html => { class: "custom-form"}, :url => spree.reset_password_path do |f|
+        = form_for Spree::User.new,:as => :spree_user, :html => { class: "custom-form"}, :url => spree.reset_password_path do |f|
           fieldset
             legend Your E-Mail Address
             .form-group.required.clearfix
               label.col-sm-2.control-label for="input-email"  E-Mail Address
               .col-sm-10
-                = f.email_field :email, class: "form-control", id: "#exampleInputEmail1", placeholder: "Enter Email"
+                = f.email_field :email, class: "form-control", required: "true",id: "forget-password-email", placeholder: "Enter Email"
+                span#invalid-email.alert.alert-danger
           .buttons.clearfix
             .pull-left
               a.btn.btn-default href="#"  Back
@@ -34,3 +35,25 @@
               a href=spree.signup_path  Register
             li
               a href=spree.recover_password_path  Forgotten Password
+
+    
+-content_for :js do
+  javascript:
+    $(document).ready(function(){
+      $('#new_spree_user').on('submit', function(e){
+          e.preventDefault();
+          var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  ;
+          console.log($('#forget-password-email').val());
+          var test_result = re.test($('#forget-password-email').val());
+          console.log(test_result);
+          if (!test_result) {
+            $('#invalid-email').html("<ul> Email is Invalid </ul>");
+            $('#invalid-email').css("display", "block");
+          }
+          else
+          {
+             this.submit();
+          }
+      });
+    });
+    

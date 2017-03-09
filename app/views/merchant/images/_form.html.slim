@@ -3,6 +3,7 @@
     .form-group data-hook="file" 
       = f.label :attachment, Spree.t(:filename),class: "control-label"
       = f.file_field :attachment, accept: "image/png,image/jpeg,image/jpg", class: "form-control"
+      span#file-upload
     .form-group data-hook="variant"
       = f.label :viewable_id, Spree::Variant.model_name.human, class: "control-label"
       = f.select :viewable_id, @variants, {}, {:class => 'form-control'}
@@ -11,3 +12,19 @@
     .form-group
       = f.label :alt, Spree.t(:alt_text), class: "control-label"
       = f.text_area :alt, :rows => 4, :class => 'form-control'
+
+-content_for :js do 
+  javascript:
+    $(document).ready(function(){
+      $('#new_image').on('submit', function(e){
+          e.preventDefault();
+          var file_name = $('#image_attachment').val().split('.');
+          if ( (file_name[file_name.length - 1] == 'jpeg') || (file_name[file_name.length - 1] == 'jpg') || (file_name[file_name.length - 1] == 'png') ) {
+              this.submit();
+          }
+          else{
+            $('#file-upload').html("<p class='inline-error'> File extension must either be jpeg, jpg or png</p>");
+            $('.inline-error').css("display", "block");
+          }
+      });
+    });

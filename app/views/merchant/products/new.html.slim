@@ -72,9 +72,10 @@
               br
               label Bulk Upload
               br
-              = form_tag bulk_upload_merchant_products_path, method: :post, multipart: true do 
+              = form_tag bulk_upload_merchant_products_path, id: 'bulk-upload',method: :post, multipart: true do 
                 .form-group
                   = file_field_tag :file, accept: "text/csv",class: "form-control"
+                span#bulk-upload-error
                 .form-group
                   = submit_tag "Import", class: "btn btn-primary"
                   span
@@ -101,3 +102,17 @@
         prototype_select.change();
       }
     });(jQuery); 
+
+    $(document).ready(function(){
+      $('#bulk-upload').on('submit', function(e){
+          e.preventDefault();
+          var file_name = $('#file').val().split('.');
+          if ( (file_name[file_name.length - 1] == 'csv') || (file_name[file_name.length - 1] == 'CSV')  ) {
+              this.submit();
+          }
+          else{
+            $('#bulk-upload-error').html("<p class='inline-error'> File extension must be csv</p>");
+            $('.inline-error').css("display", "block");
+          }
+      });
+    });

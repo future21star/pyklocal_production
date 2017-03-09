@@ -1,12 +1,12 @@
 .col-md-9
-  = form_for [:merchant, @product], validate: true,html: {multipart: true} do |f|
+  = form_for [:merchant, @product],html: {multipart: true} do |f|
     .row.top-margin-row
       .col-md-8
         .from-group
           = f.field_container :name do 
             = f.label :name, raw(Spree.t(:name) + content_tag(:span, ' *', :class => 'required control-label'))
             span.input-icon.icon-right
-              = f.text_field :name, :class => 'fullwidth title form-control input-bg' 
+              = f.text_field :name, :class => 'fullwidth title form-control input-bg', maxlength: "100" 
               .fa &#xf170;
             = f.error_message_on :name
         .from-group
@@ -47,7 +47,7 @@
         .form-group
           = f.field_container :tax_category do 
             = f.label :tax_category_id, raw(Spree.t(:tax_category) + content_tag(:span, ' *', :class => "required control-label lable-margin-top")), class: "control-label" 
-            = f.collection_select(:tax_category_id, @tax_categories, :id, :name, { :include_blank => Spree.t('match_choices.none') }, { :class => 'select2 fullwidth form-control input-bg auto-select' }) 
+            = f.collection_select(:tax_category_id, @tax_categories, :id, :name, { :include_blank => Spree.t('match_choices.none') }, { :class => 'select2 fullwidth form-control input-bg auto-select product-tax-category' }) 
             = f.error_message_on :tax_category 
         .form-group
           .col-md-6.top-margin-row.child-div
@@ -91,7 +91,7 @@
             .col-md-6.top-margin-row.child-div
               = f.label :weight, class: "control-label"
               span.input-icon.icon-right
-                = f.number_field :weight, class: "numbersOnly form-control input-bg"
+                = f.number_field :weight, step: "0.01",class: "numbersOnly form-control input-bg"
                 .fa &#xf24e;
             .col-md-6.top-margin-row.child-div1
               = f.label :height, class: "control-label"

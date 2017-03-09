@@ -1,11 +1,11 @@
-= form_for @user, html: {class: "custom-form"}, :as => :spree_user, url: spree.registration_path, validate: true do |f|
+= form_for @user, html: {class: "custom-form"}, :as => :spree_user, url: spree.registration_path do |f|
   .row
     .form-group.col-xs-12
       h4.title Your Personal Details
     .form-group.col-sm-6.col-xs-12
-      = f.text_field :first_name, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => 'First Name*'
+      = f.text_field :first_name, :class => 'form-control', :required => "", maxlength: "50",:tabindex => 1, :placeholder => 'First Name*'
     .form-group.col-sm-6.col-xs-12
-      = f.text_field :last_name, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => 'Last Name*'
+      = f.text_field :last_name, :class => 'form-control', :required => "",  maxlength: "50",:tabindex => 1, :placeholder => 'Last Name*'
     .form-group.col-xs-12
       = f.email_field :email, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => 'E-Mail*'
     .form-group.col-sm-6.col-xs-12
@@ -38,3 +38,4 @@
         }
       })
     })
+

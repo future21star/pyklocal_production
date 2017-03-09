@@ -36,7 +36,6 @@ module Spree
     def create
       begin
         if @user.present?
-         @wishlist = Spree::Wishlist.create(user_id: @user.id , variant_id: params[:wishlist][:variant_id])
           if Spree::Variant.exists?(params[:wishlist][:variant_id])
             unless @user.wishlists.collect(&:variant_id).include?(params[:wishlist][:variant_id].to_i)
               @wishlist  = Spree::Wishlist.new(wishlist_params.merge({user_id: @user.id}))

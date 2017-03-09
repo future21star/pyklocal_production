@@ -2,9 +2,7 @@ Spree::User.class_eval do
 
   devise :registerable, :confirmable
   validates :first_name, :last_name,:password,:email, presence: true, on: :create
-  # validates :email, format: {with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i}
-  # validates :t_and_c_accepted, acceptance: true
-  validates :password, confirmation: true
+  validates :first_name, :last_name, length: {maximum: 40}
   before_destroy :notify_store_destroy, :destroy_store
   #------------------------ Associations------------------------------
   has_many :store_users, foreign_key: :spree_user_id, class_name: 'Merchant::StoreUser'
