@@ -24,16 +24,20 @@ class Merchant::ImagesController < Merchant::ApplicationController
 	end
 
 	def create
-		extension = params[:image][:attachment].original_filename.split('.').second.strip
-		if ["jpeg","png","jpg"].include?(extension)
-			@image = Spree::Image.new(image_params)
-			if @image.save
-				redirect_to merchant_product_images_path(@product), notice: "Image uploaded successfully"
+		unless params[:image][:attachment].blank?
+			extension = params[:image][:attachment].original_filename.split('.').second.strip
+			if ["jpeg","png","jpg"].include?(extension)
+				@image = Spree::Image.new(image_params)
+				if @image.save
+					redirect_to merchant_product_images_path(@product), notice: "Image uploaded successfully"
+				else
+					render action: 'new'
+				end
 			else
-				render action: 'new'
+				redirect_to :back, notice: "Image extension can be jpeg, jpg or png"
 			end
 		else
-			redirect_to :back, notice: "Image extension can be jpeg, jpg or png"
+			redirect_to :back, notice: "No file selected"
 		end
 	end
 

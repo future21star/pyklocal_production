@@ -18,11 +18,11 @@
             .form-group.required.clearfix
               label.col-sm-2.control-label for="input-email"  E-Mail Address
               .col-sm-10
-                = f.email_field :email, class: "form-control", required: "true",id: "forget-password-email", placeholder: "Enter Email"
-                span#invalid-email.alert.alert-danger
+                = f.email_field :email, class: "form-control", required: "true",maxlength: "50",id: "forget-password-email", placeholder: "Enter Email"
+                span#invalid-email
           .buttons.clearfix
             .pull-left
-              a.btn.btn-default href="#"  Back
+              a.btn.btn-default href=spree.root_path  Back
             .pull-right
               input.btn.btn-primary type="submit" value="Continue" 
       column#column-right.col-sm-3.hidden-xs
@@ -42,13 +42,9 @@
     $(document).ready(function(){
       $('#new_spree_user').on('submit', function(e){
           e.preventDefault();
-          var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  ;
-          console.log($('#forget-password-email').val());
-          var test_result = re.test($('#forget-password-email').val());
-          console.log(test_result);
-          if (!test_result) {
-            $('#invalid-email').html("<ul> Email is Invalid </ul>");
-            $('#invalid-email').css("display", "block");
+          if (!validateEmail()) {
+            $('#invalid-email').html("<p class='inline-error'> Email is Invalid </p>");
+            $('.inline-error').css("display", "block");
           }
           else
           {
@@ -56,4 +52,26 @@
           }
       });
     });
-    
+
+    $('#forget-password-email').on('focusout',function(){
+      console.log(validateEmail());
+      if ( $('#forget-password-email').val() == null || $('#forget-password-email').val() == ''){
+        $('#invalid-email').html("<p class='inline-error'> Email can not be blank </p>");
+         $('.inline-error').css("display", "block");
+         return;
+      }
+      if (validateEmail() == true){
+         $('.inline-error').css("display", "none");
+      }
+      else{
+         $('#invalid-email').html("<p class='inline-error'> Email is Invalid </p>");
+         $('.inline-error').css("display", "block");
+      }
+
+    });
+
+    function validateEmail(){
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  ;
+          console.log($('#forget-password-email').val());
+          return re.test($('#forget-password-email').val());
+    }

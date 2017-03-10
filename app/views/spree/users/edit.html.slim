@@ -27,12 +27,12 @@ section.account_page
                     .form-group
                       label.col-sm-2.control-label First Name:
                       .col-sm-10
-                        = f.text_field :first_name, class: "form-control", id: "first-name", placeholder: "First name"
+                        = f.text_field :first_name, class: "form-control", id: "first-name",maxlength: "50", placeholder: "First name"
 
                     .form-group
                       label.col-sm-2.control-label Last Name:
                       .col-sm-10
-                        = f.text_field :last_name, class: "form-control", id: "last-name", placeholder: "Last name"
+                        = f.text_field :last_name, class: "form-control", id: "last-name", maxlength: "50",placeholder: "Last name"
 
                     / .form-group
                     /   label.col-sm-2.control-label Email Address:
@@ -79,12 +79,12 @@ section.account_page
 
     function validateForm(){
       var error = []
-      if ($('#first-name').val().length > 40){
-        error.push("First Name is of wrong length (Should be 40 characters or less)");
+      if ($('#first-name').val().length > 50){
+        error.push("First Name is of wrong length (Should be 50 characters or less)");
       }
 
       if ( $('#last-name').val().length > 40) {
-        error.push("Last Name is of wrong length (Should be 40 characters or less)")
+        error.push("Last Name is of wrong length (Should be 50 characters or less)")
       }
       return error;
     }

@@ -103,16 +103,54 @@
       }
     });(jQuery); 
 
+
     $(document).ready(function(){
       $('#bulk-upload').on('submit', function(e){
           e.preventDefault();
-          var file_name = $('#file').val().split('.');
-          if ( (file_name[file_name.length - 1] == 'csv') || (file_name[file_name.length - 1] == 'CSV')  ) {
-              this.submit();
+          if (($('#file').val() == '') || ($('#file').val() == null)){
+             $('#bulk-upload-error').html("<p class='inline-error'> No file is selected </p>");
+             $('.inline-error').css("display", "block");
+             return;
+          }
+          if (validate() == true ){
+            this.submit();
           }
           else{
-            $('#bulk-upload-error').html("<p class='inline-error'> File extension must be csv</p>");
-            $('.inline-error').css("display", "block");
+            if  ($('#bulk-upload-error').html().length == 0){
+              $('#bulk-upload-error').html("<p class='inline-error'> File extension must be csv </p>");
+              $('.inline-error').css("display", "block");
+            }
+            else{
+              $('.inline-error').css("display", "block");
+            }
           }
       });
     });
+
+    $("input:file").on('change', function(){
+      console.log("inside");
+      if (validate() == true ){
+       $('.inline-error').css("display", "none");
+      }
+      else{
+        if  ($('#bulk-upload-error').html().length == 0){
+          console.log($('#bulk-upload-error').html().length);
+          $('#bulk-upload-error').html("<p class='inline-error'> File extension must be csv</p>");
+          $('.inline-error').css("display", "block");
+        }
+        else{
+          $('#bulk-upload-error').html("<p class='inline-error'> File extension must be csv</p>");
+          $('.inline-error').css("display", "block");
+        }
+      }
+    });
+
+    function validate(){
+      var file_name = $('#file').val().split('.');
+      if ( (file_name[file_name.length - 1] == 'CSV') || (file_name[file_name.length - 1] == 'csv') ) {
+          return true;
+      }
+      else{
+        return false;
+      }
+    }

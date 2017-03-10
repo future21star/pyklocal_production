@@ -30,7 +30,7 @@
                   = submit_tag "Search", class:"pull-right btn btn-default  "
         - if @amazon_products.present?
           .row
-            = form_tag import_collection_merchant_amazon_products_path,{method: :post} do 
+            = form_tag import_collection_merchant_amazon_products_path,{method: :post, id: 'product-fetch-amazon'} do 
               .col-xs-12
                 label
                   input type="checkbox" id="select-all"
@@ -65,3 +65,20 @@
                 = hidden_field_tag :keywords, params[:keywords]
                 = hidden_field_tag :serch_index, params[:serch_index]
                 = submit_tag "Next Page >", class:"pull-right btn btn-default margin-bottom"
+
+-content_for :js do 
+  javascript:
+    $(document).ready(function(){
+      $('#product-fetch-amazon').on('submit', function(e){
+          e.preventDefault();
+          if ($("#product-fetch-amazon input:checkbox:checked").length > 0)
+          {
+              this.submit();
+          }
+          else
+          {
+            alert("No Product is selected");
+          }
+      });
+    });
+

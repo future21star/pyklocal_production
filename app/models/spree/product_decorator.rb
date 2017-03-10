@@ -142,7 +142,9 @@ module Spree
 
 
     def cost_price_must_be_greater_than_price
-       errors.add(:cost_price,"Retail price must be greater than sale price") if self.price.to_f > self.cost_price
+      if self.cost_price.present? && self.price.present?
+        errors.add(:cost_price,"Retail price must be greater than sale price") if self.price.to_f > self.cost_price
+      end
     end
 
     def self.max_price
