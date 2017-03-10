@@ -60,6 +60,10 @@ header.header
             h5 CART
           .favorite
             span.favorite-icon
-              a href="#"
+              a href=spree.wishlists_path
                 i.fa.fa-heart aria-hidden="true"
-                small 0
+                small 
+                  - if current_spree_user.present?
+                    = current_spree_user.wishlists.count
+                  -else
+                    = 0
