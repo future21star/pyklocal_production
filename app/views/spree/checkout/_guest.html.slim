@@ -1,13 +1,53 @@
-      .col-md-12#registration
-                  h2.login-title
-                    |Checkout as guest
-                  - if Spree::Config[:allow_guest_checkout] 
-                    #guest_checkout data-hook=""
-                      = render partial: 'spree/shared/error_messages', locals: {target: @order}
-                      = form_for @order, url: update_checkout_registration_path, method: :put, html: { id: 'checkout_form_registration', class: 'custom-form signup-form' } do |f|
-                        .form-group
-                          = f.label :email, Spree.t(:email), class: 'form-label'
-                          span.required 
-                          = f.email_field :email, required: "",maxlength: "50",class: 'title form-control', id: 'email',:placeholder => Spree.t(:email)
-                        .form-group
-                          = f.submit Spree.t(:continue), class: 'btn btn-lg btn-primary btn-block'
+.col-md-12#registration
+            h2.login-title
+              |Checkout as guest
+            - if Spree::Config[:allow_guest_checkout] 
+              #guest_checkout data-hook=""
+                = render partial: 'spree/shared/error_messages', locals: {target: @order}
+                = form_for @order, url: update_checkout_registration_path, method: :put, html: { id: 'checkout_form_registration', class: 'custom-form signup-form' } do |f|
+                  .form-group
+                    = f.label :email, Spree.t(:email), class: 'form-label'
+                    span.required 
+                    = f.email_field :email, required: "",maxlength: "50",class: 'title form-control', id: 'email',:placeholder => Spree.t(:email)
+                    span#invalid-email
+                  .form-group
+                    = f.submit Spree.t(:continue), class: 'btn btn-lg btn-primary btn-block'
+
+-content_for :js do
+  javascript:
+    $(document).ready(function(){
+      $('#checkout_form_registration').on('submit', function(e){
+          e.preventDefault();
+          if (!validateEmail()) {
+            $('#invalid-email').html("<p class='inline-error'> Email is Invalid </p>");
+            $('.inline-error').css("display", "block");
+          }
+          else
+          {
+             this.submit();
+          }
+      });
+    });
+
+    $('#email').on('focusout',function(){
+      console.log(validateEmail());
+      if ( $('#email').val() == null || $('#email').val() == ''){
+        $('#invalid-email').html("<p class='inline-error'> Email can not be blank </p>");
+         $('.inline-error').css("display", "block");
+         return;
+      }
+      if (validateEmail() == true){
+         $('.inline-error').css("display", "none");
+      }
+      else{
+         $('#invalid-email').html("<p class='inline-error'> Email is Invalid </p>");
+         $('.inline-error').css("display", "block");
+      }
+
+    });
+
+    function validateEmail(){
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  ;
+          console.log($('#email').val());
+          return re.test($('#email').val());
+    }
