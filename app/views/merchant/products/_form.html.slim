@@ -4,11 +4,11 @@
       .col-md-8
         .from-group
           = f.field_container :name do 
-            = f.label :name, raw(Spree.t(:name) + content_tag(:span, ' *', :class => 'required control-label'))
+            = f.label :name, raw(Spree.t(:name) + content_tag(:span, ' *',:class => 'required control-label'))
             span.input-icon.icon-right
-              = f.text_field :name, :class => 'fullwidth title form-control input-bg', maxlength: "100" 
+              = f.text_field :name, required: "true",:class => 'fullwidth title form-control input-bg', maxlength: "100" 
               .fa &#xf170;
-            = f.error_message_on :name
+            / = f.error_message_on :name
         .from-group
           = f.label :slug, class: "control-label"
           span.input-icon.icon-right
@@ -36,7 +36,7 @@
           = f.field_container :price do 
             = f.label :price, raw(Spree.t(:sale_price) + ' (USD)' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
             span.input-icon.icon-right
-              = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'numbersOnly fullwidth form-control input-bg', :required => "" 
+              = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'numbersOnly fullwidth form-control input-bg', :required => "" ,:step => "0.01"
               .fa &#xf0d6;
             = f.error_message_on :price
         .form-group

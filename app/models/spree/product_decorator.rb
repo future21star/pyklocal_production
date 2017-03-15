@@ -1,7 +1,8 @@
 module Spree
 	Product.class_eval do 
     validates :name, length: {maximum: 100}
-    validates :cost_price, :price, presence: true
+    validates :cost_price, presence: { message: "Retail price can not be blank" }, on: :update
+    validates :price, presence: { message: "price can not be blank" }, on: :update
     validate :cost_price_must_be_greater_than_price
 		belongs_to :store, class_name: "Merchant::Store"
 		has_many :order_variants, -> { order("#{::Spree::Variant.quoted_table_name}.position ASC") },

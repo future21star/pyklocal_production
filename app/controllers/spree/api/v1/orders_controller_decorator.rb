@@ -65,15 +65,12 @@ module Spree
 			  else
 			    order_params
 			  end
-			  p "*************************************************************************8"
-			  p order_params
 			  @in_wishlist_variant = @user.wishlists.where(variant_id: params[:order][:line_items_attributes].first["variant_id"])
 			  unless @in_wishlist_variant.blank?
 			  	@in_wishlist_variant.delete_all
 			  end
 			  @incomplete_order = @user.orders.where("state != ? AND state != ? AND state != ?", "complete", "canceled", "returned").last
 			  if @incomplete_order.blank?
-			  	p "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
 			 		@order = Spree::Core::Importer::Order.import(order_user, import_params)
 			 		render json: {
 	      				status: "1",
@@ -82,33 +79,29 @@ module Spree
 	      				# order_detail: to_stringify_checkout_json(@order, [])
 	      		}
 			 	else
-			 		p "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-			 		p params[:order][:line_items_attributes]
 			 		params[:order][:line_items_attributes].each do |line_item|
-			 			p "_________________________________________________________________________-"
-			 			p line_item
-			 			p line_item["variant_id"]
-			 			p line_item["quantity"].to_i
-			 			p line_item["delivery_type"]
-				 		variant = Spree::Variant.find(line_item["variant_id"])
-				 		p variant
-				 		quantity = line_item["quantity"].to_i
-				 		#p variant
-				 		#p quantity
-				 		delivery_type = line_item["delivery_type"] || "home_delivery"
-				 		p delivery_type
-          	@incomplete_order.contents.add(variant, quantity, {}, delivery_type)
-          	if line_item["in_wishlist"] == "true"
-          		@user.wishlists.where(variant_id: line_item["variant_id"]).delete_all
-          	end
-          end
-
-          render json: {
+			 			variant = Spree::Variant.find(line_item["variant_id"])
+			 			quantity = line_item["quantity"].to_i
+			 			delivery_type = line_item["delivery_type"] || "home_delivery"
+			 			already_ordered_quantity = @incomplete_order.line_items.select{|line_item| line_item.variant_id == variant.id.to_i }.try(:first).try(:quantity)
+			 			if already_ordered_quantity.nil? || (variant.total_on_hand >= (already_ordered_quantity.to_i + quantity))
+	          	@incomplete_order.contents.add(variant, quantity, {}, delivery_type)
+	          	if line_item["in_wishlist"] == "true"
+	          		@user.wishlists.where(variant_id: line_item["variant_id"]).delete_all
+	          	end
+	          	 render json: {
 	      				status: "1",
 	      				cart_count: order_user.cart_count.to_s,
 	      				message: "product added successfully"
 	      				# order_detail: to_stringify_checkout_json(@incomplete_order, [])
-	      		}
+	      			}
+	      		else
+	      			render json:{
+	      				status: "0",
+	      				message: "You already have this item in your cart. Max Quantity Available for add: " + (variant.total_on_hand - already_ordered_quantity).to_s
+	      			}
+	          end
+          end
 			 	end
 			rescue Exception => e
 				render json: {

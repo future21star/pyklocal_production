@@ -26,9 +26,10 @@ class Spree::AddressesController < Spree::StoreController
 
 	def update
 		if @address.update_attributes(addresses_params)
-			redirect_to :back, notice: "Successfully updated."
+			redirect_to edit_address_path(@address), notice: "Successfully updated."
 		else
 			render action: 'edit'
+			
 		end
 	end
 

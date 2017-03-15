@@ -219,6 +219,11 @@ module Spree
 		def get_cart
 			variant_arr = []
 			@order = @user.orders.where("state != ? AND state != ? AND state != ?","complete","canceled","returned").last
+		  @order.line_items.each do |line_item|
+        if line_item.price !=  line_item.variant.price
+          @order.contents.update_cart(line_items_attributes: {id: line_item.id, price: line_item.variant.price})
+        end
+      end
 			unless @order.blank?
 				render json: {
 					status: "1",
@@ -232,7 +237,7 @@ module Spree
 			else
 				render json: {
 					status: "0",
-					message: "Cart is empty",
+					message: "Cart is empty"
 				}
 			end
 		end

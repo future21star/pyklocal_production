@@ -27,12 +27,14 @@ section.account_page
                     .form-group
                       label.col-sm-2.control-label First Name:
                       .col-sm-10
-                        = f.text_field :first_name, class: "form-control",required: "true", id: "first-name",maxlength: "50", placeholder: "First name"
+                        = f.text_field :first_name, class: "form-control", id: "first-name",maxlength: "50", placeholder: "First name"
+                        span#first-name-error
 
                     .form-group
                       label.col-sm-2.control-label Last Name:
                       .col-sm-10
-                        = f.text_field :last_name, class: "form-control", required: "true",id: "last-name", maxlength: "50",placeholder: "Last name"
+                        = f.text_field :last_name, class: "form-control", id: "last-name", maxlength: "50",placeholder: "Last name"
+                        span#last-name-error
 
                     / .form-group
                     /   label.col-sm-2.control-label Email Address:
@@ -58,46 +60,46 @@ section.account_page
 - content_for :js do
   javascript:
     $(document).ready(function(){
+      flag = true;
       $('#new_user').on('submit', function(e){
           e.preventDefault();
-          var error_arr = validateForm();
-          if ( error_arr.length == 0) {
+          if ((validateFirstName()) * (validateLastName()) ) {
               this.submit();
-          }
-          else{
-            var error_html = '<h3>' + error_arr.length + " errors prohibited this record from being saved: </h3>";
-            error_html += "<p><i>There were Problem with follwing fields:</i></p>";
-            $.each(error_arr,function(key,value){
-              error_html += '<ul>' + value + "</ul>";
-            });
-            console.log(error_html);
-            $('#error-msz').html(error_html);
-            $('#error-msz').css("display", "block");
           }
       });
     });
 
-    function validateForm(){
-      var flag = true;
-      var error = []
-      if ($('#first-name').val().length == 0){
-        error.push("First Name can not be blank");
-        flag = false;
-      }
+    $('#first-name').on('blur',function(){
+      validateFirstName();
+    });
 
-      if ( $('#last-name').val().length == 0) {
-        error.push("Last Name can not be blank");
-        flag = false;
-      }
-      if (flag == true){
-        if ($('#first-name').val().length > 50){
-          error.push("First Name is of wrong length (Should be 50 characters or less)");
-        }
+    $('#last-name').on('blur',function(){
+        validateLastName();
+    });
 
-        if ( $('#last-name').val().length > 40) {
-          error.push("Last Name is of wrong length (Should be 50 characters or less)")
-        }
+    function validateFirstName(){
+      if($('#first-name').val().trim().length == 0){
+        $('#first-name-error').html("<p style='color:red;'> First Name can not be blank </p");
+        $('#first-name-error').show();
+        return 0;
       }
-      return error;
+      else{
+        $('#first-name-error').hide();
+         return 1 ;
+      }
     }
+
+    function validateLastName(){
+      if($('#last-name').val().trim().length == 0){
+        $('#last-name-error').html("<p style='color:red;'> Last Name can not be blank </p");
+        $('#last-name-error').show();
+         return  0;
+      }
+      else{
+        $('#last-name-error').hide();
+         return 1;
+      }
+    }
+
+    
 
