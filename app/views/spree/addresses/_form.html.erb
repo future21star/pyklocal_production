@@ -4,7 +4,7 @@
   <div class=form-group>
     <label class="col-sm-2 control-label">First Name</label>
     <div class=col-sm-10>
-      <%= form.text_field :firstname,maxlength: '50', :class => 'form-control' %>
+      <%= form.text_field :firstname,maxlength: '50', :class => 'form-control address_firstname' %>
       <span id="first-name-error"></span>
     </div>
   </div>
@@ -12,7 +12,7 @@
   <div class=form-group>
     <label class="col-sm-2 control-label">Last Name</label>
     <div class=col-sm-10>
-      <%= form.text_field :lastname,maxlength: '50', :class => 'form-control' %>
+      <%= form.text_field :lastname,maxlength: '50', :class => 'form-control address_lastname' %>
        <span id="last-name-error"></span>
     </div>
   </div>
@@ -20,7 +20,7 @@
   <div class=form-group>
     <label class="col-sm-2 control-label">Street Address:</label>
     <div class=col-sm-10>
-      <%= form.text_area :address1, maxlength: '200', :class => 'form-control' %>
+      <%= form.text_area :address1, maxlength: '200', :class => 'form-control address_address1' %>
       <p>(Maximum Limit : 200 characters)</p>
       <span id="address1-error"></span>
     </div>
@@ -29,7 +29,7 @@
   <div class=form-group>
     <label class="col-sm-2 control-label">Street Address (cont'd):</label>
     <div class=col-sm-10>
-      <%= form.text_field :address2, maxlength: '200', :class => 'form-control' %>
+      <%= form.text_field :address2, maxlength: '200', :class => 'form-control address_address2' %>
       <span id="address2-error"></span>
     </div>
   </div>
@@ -37,7 +37,7 @@
   <div class=form-group>
     <label class="col-sm-2 control-label">City:</label>
     <div class=col-sm-10>
-      <%= form.text_field :city, :class => 'form-control' %>
+      <%= form.text_field :city, :class => 'form-control address_city'  %>
       <span id="city-error"></span>
     </div>
   </div>
@@ -83,7 +83,7 @@
   <div class=form-group>
     <label class="col-sm-2 control-label">Zip:</label>
     <div class=col-sm-10>
-      <%= form.text_field :zipcode, :class => "form-control number-only #{'required' if @address.require_zipcode?}" ,maxlength: '6'%>
+      <%= form.text_field :zipcode, :class => "form-control address_zipcode number-only #{'required' if @address.require_zipcode?}" ,maxlength: '6'%>
       <span id="zipcode-error"></span>
     </div>
   </div>
@@ -91,8 +91,8 @@
   <div class=form-group>
     <label class="col-sm-2 control-label">Phone Number:</label>
     <div class=col-sm-10>
-      <%= form.phone_field :phone,:class => "form-control number-only #{'required' if @address.require_phone?}" %>
-        <span id="phone-error"></span>
+      <%= form.phone_field :phone,:class => "form-control  address_phone number-only #{'required' if @address.require_phone?}" %>
+      <span id="phone-error"></span>
     </div>
   </div>
 

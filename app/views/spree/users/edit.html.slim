@@ -79,7 +79,7 @@ section.account_page
 
     function validateFirstName(){
       if($('#first-name').val().trim().length == 0){
-        $('#first-name-error').html("<p style='color:red;'> First Name can not be blank </p");
+        $('#first-name-error').html("<p class='text-red'> First Name can not be blank </p");
         $('#first-name-error').show();
         return 0;
       }
@@ -91,7 +91,7 @@ section.account_page
 
     function validateLastName(){
       if($('#last-name').val().trim().length == 0){
-        $('#last-name-error').html("<p style='color:red;'> Last Name can not be blank </p");
+        $('#last-name-error').html("<p class='text-red'> Last Name can not be blank </p");
         $('#last-name-error').show();
          return  0;
       }

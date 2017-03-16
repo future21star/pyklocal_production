@@ -200,39 +200,53 @@ $(document).ready(function(){
           }
       });
     });
+  
 
-    $('#address_firstname').on('blur',function(){
+    $(document).ready(function(){
+      flag = true;
+      $('#checkout_form_address').on('submit', function(e){
+          e.preventDefault();
+          if ((validateFirstName()) * (validateLastName()) * (validateAddress1()) * (validateCity()) * (validateAddress2()) * ( validatePhone()) * (validateZip()) ) {
+              this.submit();
+          }
+      });
+    });
+
+
+    $('.address_firstname').on('blur',function(){
       validateFirstName();
     });
 
-    $('#address_lastname').on('blur',function(){
+    $('.address_lastname').on('blur',function(){
         validateLastName();
     });
 
-    $('#address_address1').on('blur',function(){
+    $('.address_address1').on('blur',function(){
         validateAddress1();
     });
 
 
-    $('#address_address2').on('blur',function(){
+    $('.address_address2').on('blur',function(){
         validateAddress2();
     });
 
-    $('#address_city').on('blur',function(){
+    $('.address_city').on('blur',function(){
         validateCity();
     });
 
-    $('#address_zipcode').on('blur',function(){
+    $('.address_zipcode').on('blur',function(){
         validateZip();
     });
 
-    $('#address_phone').on('blur',function(){
+    $('.address_phone').on('blur',function(){
         validatePhone();
     });
 
+
+
     function validateFirstName(){
-      if($('#address_firstname').val().trim().length == 0){
-        $('#first-name-error').html("<p style='color:red;'> First Name can not be blank </p");
+      if($('.address_firstname').val().trim().length == 0){
+        $('#first-name-error').html("<p class='text-red'> First Name can not be blank </p");
         $('#first-name-error').show();
         return 0;
       }
@@ -243,8 +257,8 @@ $(document).ready(function(){
     }
 
     function validateLastName(){
-      if($('#address_lastname').val().trim().length == 0){
-        $('#last-name-error').html("<p style='color:red;'> Last Name can not be blank </p");
+      if($('.address_lastname').val().trim().length == 0){
+        $('#last-name-error').html("<p class='text-red'> Last Name can not be blank </p");
         $('#last-name-error').show();
          return  0;
       }
@@ -255,8 +269,8 @@ $(document).ready(function(){
     }
 
     function validateAddress1(){
-      if($('#address_address1').val().trim().length == 0){
-        $('#address1-error').html("<p style='color:red;'> Street Address1 can not be blank </p");
+      if($('.address_address1').val().trim().length == 0){
+        $('#address1-error').html("<p class='text-red'> Street Address1 can not be blank </p");
         $('#address1-error').show();
          return  0;
       }
@@ -267,8 +281,8 @@ $(document).ready(function(){
     }
 
     function validateAddress2(){
-      if($('#address_address2').val().trim().length > 200){
-        $('#address2-error').html("<p style='color:red;'> Street Address2 can not be greater than 200 </p");
+      if($('.address_address2').val().trim().length > 200){
+        $('#address2-error').html("<p class='text-red'> Street Address2 can not be greater than 200 </p");
         $('#address2-error').show();
          return  0;
       }
@@ -282,17 +296,17 @@ $(document).ready(function(){
       flag = true;
       errorStr = "";
       var letters = /^[A-Za-z ]+$/;
-      if($('#address_city').val().trim().length == 0){
+      if($('.address_city').val().trim().length == 0){
         errorStr += "City can not be blank";
         flag = false;
       }
-      else if ( ($('#address_city').val()).match(letters) == null){
+      else if ( ($('.address_city').val()).match(letters) == null){
           errorStr += "only character(s) are allowed in city";
           flag = false;
       }
 
       if (flag == false){
-        OutputErrorStr = "<p style='color:red;'> " + errorStr + "</p>";
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
         $('#city-error').html(OutputErrorStr);
          $('#city-error').show();
         return 0;
@@ -307,17 +321,17 @@ $(document).ready(function(){
       flag = true;
       var letters = /^[0-9]+$/;
       errorStr = "";
-      if($('#address_zipcode').val().trim().length == 0){
+      if($('.address_zipcode').val().trim().length == 0){
         errorStr += "Zipcode can not be blank";
         flag = false;
       }
-      else if (($('#address_zipcode').val()).match(letters) == null){
+      else if (($('.address_zipcode').val()).match(letters) == null){
           errorStr += "only number(s) are allowed in zipcode";
           flag = false;
       }
 
       if (flag == false){
-        OutputErrorStr = "<p style='color:red;'> " + errorStr + "</p>";
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
         $('#zipcode-error').html(OutputErrorStr);
          $('#zipcode-error').show();
         return 0;
@@ -330,16 +344,34 @@ $(document).ready(function(){
 
 
     function validatePhone(){
+
+      flag = true;
       var letters = /^[0-9]+$/;
-      if(($('#address_phone').val()).match(letters) == null){
-        $('#phone-error').html("<p style='color:red;'>only number(s) are allowed in phone number </p");
-        $('#phone-error').show();
-         return  0;
+      errorStr = "";
+      if($('.address_phone').val().trim().length == 0){
+        errorStr += "Phone Number can not be blank";
+        flag = false;
+      }
+      else if (($('.address_phone').val()).match(letters) == null){
+          errorStr += "only number(s) are allowed in phone number";
+          flag = false;
+      }
+      else if($('.address_phone').val().trim().length < 10){
+        errorStr += "Phone Number must have 10 digits";
+        flag = false;
+      }
+
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#phone-error').html(OutputErrorStr);
+         $('#phone-error').show();
+        return 0;
       }
       else{
-        $('#phone-error').hide();
-         return 1;
+         $('#phone-error').hide();
+        return 1;
       }
+
     }
 
 

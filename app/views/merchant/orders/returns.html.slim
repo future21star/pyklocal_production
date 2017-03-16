@@ -5,8 +5,15 @@
         a href="/" 
           i.fa.fa-home
           | Home
+        li 
+          a href=merchant_path
+            | Merchant
+
+        li 
+          a href=merchant_stores_path
+            | Store
       li
-        span  Store Order History
+        span  Return Order History
     .row
       .col-sm-3
         =render :partial => "merchant/shared/seller"

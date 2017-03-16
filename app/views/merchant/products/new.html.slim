@@ -5,8 +5,15 @@
         a href="/" 
           i.fa.fa-home
           | Home
+        li 
+          a href=merchant_path
+            | Merchant
+
+        li 
+          a href=merchant_stores_path
+            | Store
       li
-        span Add Product 
+        span  Add Product
     .row  
       .col-sm-3
         =render :partial => "merchant/shared/seller"
@@ -22,8 +29,8 @@
                     = f.field_container :name do
                       = f.label :name, Spree.t(:name) + " *"
                       span.input-icon.icon-right
-                        = f.text_field :name, :class => 'form-control input-bg' 
-                      = f.error_message_on :name
+                        = f.text_field :name, :class => 'form-control input-bg' , maxlength: "100"
+                        span.product-name-error
 
                     .row data-hook="new_product_attrs" 
                       - unless @product.has_variants?
@@ -41,10 +48,10 @@
 
                         .form-group.col-md-6
                           = f.field_container :price do
-                            = f.label :price, Spree.t(:master_price) + " (USD) *", class: "control-label lable-margin-top"
+                            = f.label :price, Spree.t(:sale_price) + " (USD) *", class: "control-label lable-margin-top"
                             span.input-icon.icon-right
                               = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'form-control input-bg'
-                            = f.error_message_on :price
+                              span.product-price-error
 
                         .form-group.col-md-6
                           = f.field_container :available_on do
@@ -56,7 +63,8 @@
                           = f.field_container :shipping_category do
                             = f.label :shipping_category_id, Spree.t(:shipping_categories) + " *", class: "control-label lable-margin-top"
                             = f.collection_select(:shipping_category_id, @shipping_categories, :id, :name, { :include_blank => Spree.t('match_choices.none') }, { :class => 'select2 fullwidth form-control auto-select' })
-                            = f.error_message_on :shipping_category_id 
+                            span.product-shipping-error
+                            / = f.error_message_on :shipping_category_id 
                       .clearfix[data-hook= "product-from-prototype" id="product-from-prototype"]
                         = render :file => 'spree/admin/prototypes/show' if @prototype
                       .col-xs-12.form-group
@@ -152,5 +160,79 @@
       }
       else{
         return false;
+      }
+    }
+
+
+    $(document).ready(function(){
+      $('#new_product').on('submit', function(e){
+          e.preventDefault();
+          if( (validateProductName()) * (validateShipping()) * (validatePrice()) ){
+            this.submit();
+          }
+      });
+    });
+
+    $('#product_price').on('blur',function(){
+      validatePrice();
+    });
+
+     $('#product_name').on('blur',function(){
+      validateProductName();
+    });
+
+    $('#product_shipping_category_id').on('change',function(){
+      validateShipping();
+    });
+
+    function validateProductName(){
+      if($('#product_name').val().trim().length == 0){
+        $('.product-name-error').html("<p class='text-red'> Product Name can not be blank </p");
+        $('.product-name-error').show();
+        return 0;
+      }
+      else{
+        $('.product-name-error').hide();
+         return 1 ;
+      }
+    }
+
+
+    function validateShipping(){
+      if ($('.select2-hidden-accessible').eq(1).text() == "None"){
+        $('.product-shipping-error').html("<p class='text-red'> Shipping Category Not selected </p");
+        $('.product-shipping-error').show();
+        return 0;
+      }
+      else
+      {
+        $('.product-shipping-error').hide();
+        return 0;
+      }
+    }
+
+
+    function validatePrice(){
+      flag = true;
+      if($('#product_price').val().trim().length == 0){
+        $('.product-price-error').html("<p class='text-red'> Product sale price can not be blank </p");
+        $('.product-price-error').show();
+        flag = false;
+      }
+      else if ((parseInt($('#product_price').val())) <= 0 ){
+        $('.product-price-error').html("<p class='text-red'> Product sale price must be greater than zero </p");
+        $('.product-price-error').show();
+        flag = false;
+      }
+      else{
+        $('.product-price-error').hide();
+        flag = true;
+      }
+
+      if (flag == true){
+        return 1;
+      }
+      else{
+        return 0;
       }
     }

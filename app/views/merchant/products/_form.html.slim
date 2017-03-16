@@ -6,8 +6,9 @@
           = f.field_container :name do 
             = f.label :name, raw(Spree.t(:name) + content_tag(:span, ' *',:class => 'required control-label'))
             span.input-icon.icon-right
-              = f.text_field :name, required: "true",:class => 'fullwidth title form-control input-bg', maxlength: "100" 
+              = f.text_field :name,:class => 'fullwidth title form-control input-bg', maxlength: "100" 
               .fa &#xf170;
+            span.product-name-error
             / = f.error_message_on :name
         .from-group
           = f.label :slug, class: "control-label"
@@ -20,12 +21,12 @@
             span.input-icon.icon-right
               = f.text_area :description, {:rows => "#{unless @product.has_variants? then '20' else '13' end}", :class => 'fullwidth form-control input-bg'} 
               .fa &#xf022;
-            = f.error_message_on :description
         .form-group
           = f.field_container :taxon do 
             = f.label :taxon_ids, raw(Spree.t(:categories) + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
             br
             = f.text_field :taxon_ids, :value => @product.taxon_ids.join(',')
+            span.product-taxon-error
         .form-group
           = f.field_container :option_types do 
             = f.label :option_type_ids, Spree.t(:option_types) 
@@ -36,26 +37,27 @@
           = f.field_container :price do 
             = f.label :price, raw(Spree.t(:sale_price) + ' (USD)' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
             span.input-icon.icon-right
-              = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'numbersOnly fullwidth form-control input-bg', :required => "" ,:step => "0.01"
+              = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'numbersOnly fullwidth form-control input-bg' ,:step => "0.01",min: "0"
               .fa &#xf0d6;
-            = f.error_message_on :price
+              span.product-price-error
         .form-group
           = f.field_container :shipping_categories do 
             = f.label :shipping_category_id, Spree.t(:shipping_categories), label: "control-label lable-margin-top" 
             = f.collection_select(:shipping_category_id, @shipping_categories, :id, :name, { :include_blank => Spree.t('match_choices.none') }, { :class => 'select2 fullwidth form-control input-bg auto-select' }) 
-            = f.error_message_on :shipping_category 
+            span.product-shipping-error
         .form-group
           = f.field_container :tax_category do 
             = f.label :tax_category_id, raw(Spree.t(:tax_category) + content_tag(:span, ' *', :class => "required control-label lable-margin-top")), class: "control-label" 
             = f.collection_select(:tax_category_id, @tax_categories, :id, :name, { :include_blank => Spree.t('match_choices.none') }, { :class => 'select2 fullwidth form-control input-bg auto-select product-tax-category' }) 
-            = f.error_message_on :tax_category 
+            span.product-tax-error
         .form-group
           .col-md-6.top-margin-row.child-div
             = f.field_container :cost_price do 
               = f.label :cost_price, raw('Retail Price' + ' (USD) ' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
               span.input-icon.icon-right 
-                = f.number_field :cost_price, class: "numbersOnly form-control input-bg",:required => "" ,:min => @product.price , :step => "0.01"
+                = f.number_field :cost_price, class: "numbersOnly form-control input-bg" ,:min => @product.price , :step => "0.01"
                 .fa &#xf0d6;
+                span.product-cost-price-error
           .col-md-6.top-margin-row.child-div1
             = f.field_container :cost_currency do
               = f.label :cost_currency, class: "control-label"
@@ -128,4 +130,159 @@
   = render partial: "merchant/shared/edit_product_sidebar", locals: {product_id: @product.slug}
 - content_for :title do 
   = @product.new_record? ? "Craete Product" : "Edit Product"
+
+- content_for :js do
+  javascript:
+
+    $(document).ready(function(){
+      $('.edit_product').on('submit', function(e){
+          e.preventDefault();
+          if( (validateProductName()) * (validatePrice()) * (validateCostPrice()) * (validateTaxCategory()) * (validateShipping()) * ( validateTaxon()) ){
+            this.submit();
+          }
+      });
+    });
+
+    $('#product_price').on('blur',function(){
+      validatePrice();
+    });
+
+    $('#product_cost_price').on('blur',function(){
+      validateCostPrice();
+    });
+
+    $('#product_name').on('blur',function(){
+      validateProductName();
+    });
+
+    $('#product_shipping_category_id').on('change',function(){
+      validateShipping();
+    });
+
+    $('#product_tax_category_id').on('change',function(){
+      validateTaxCategory();
+    });
+
+    $('#product_taxon_ids').on('change',function(){
+      console.log("hello");
+      validateTaxon();
+    });
+
+    function validateProductName(){
+      if($('#product_name').val().trim().length == 0){
+        $('.product-name-error').html("<p class='text-red'> Product Name can not be blank </p");
+        $('.product-name-error').show();
+        return 0;
+      }
+      else{
+        $('.product-name-error').hide();
+         return 1 ;
+      }
+    }
+
+
+    function validateShipping(){
+      if ($('.select2-hidden-accessible').eq(0).text() == "None"){
+        $('.product-shipping-error').html("<p class='text-red'> Shipping Category Not selected </p");
+        $('.product-shipping-error').show();
+        return 0;
+      }
+      else
+      {
+        $('.product-shipping-error').hide();
+        return 0;
+      }
+    }
+
+    function validateTaxCategory(){
+      if ($('.select2-hidden-accessible').eq(1).text() == "None"){
+        $('.product-tax-error').html("<p class='text-red'> Tax Category Not selected </p");
+        $('.product-tax-error').show();
+        return 0;
+      }
+      else
+      {
+        $('.product-tax-error').hide();
+        return 0;
+      }
+    }
+
+
+    function validateTaxon(){
+      if($('#s2id_product_taxon_ids ul.select2-choices li').length <= 1){
+        console.log("jkjkjk");
+        $('.product-taxon-error').html("<p class='text-red'> Product Category Not selected </p");
+        $('.product-taxon-error').show();
+        return 0;
+      }
+      else{
+        $('.product-taxon-error').hide();
+        return 0;
+      }
+    }
+
+
+    function validatePrice(){
+      flag = true;
+      if($('#product_price').val().trim().length == 0){
+        $('.product-price-error').html("<p class='text-red'> Product sale price can not be blank </p");
+        $('.product-price-error').show();
+        flag = false;
+      }
+      else if ((parseInt($('#product_price').val())) <= 0 ){
+        $('.product-price-error').html("<p class='text-red'> Product sale price must be greater than zero </p");
+        $('.product-price-error').show();
+        flag = false;
+      }
+      else{
+        $('.product-price-error').hide();
+        flag = true;
+      }
+
+      if (flag == true){
+        return 1;
+      }
+      else{
+        return 0;
+      }
+    }
+
+
+    function validateCostPrice(){
+      flag = true;
+      if($('#product_cost_price').val().trim().length == 0){
+        $('.product-cost-price-error').html("<p class='text-red'> Product retail price can not be blank </p");
+        $('.product-cost-price-error').show();
+        flag = false;
+      }
+      else if ((parseInt($('#product_cost_price').val())) <= 0 ){
+        $('.product-cost-price-error').html("<p class='text-red'> Product retail price must be greater than zero </p");
+        $('.product-cost-price-error').show();
+        flag = false;
+      }
+      else if ( parseFloat($('#product_cost_price').val()) < parseFloat($('#product_price').val()) ){
+        $('.product-cost-price-error').html("<p class='text-red'> Product retail price must be greater than sale price </p");
+        $('.product-cost-price-error').show();
+        flag = false;
+      }
+      else{
+        $('.product-cost-price-error').hide();
+        flag = true;
+      }
+
+      if (flag == true){
+        return 1;
+      }
+      else{
+        return 0;
+      }
+    }
+
+
+
+
+
+
+
+
 
