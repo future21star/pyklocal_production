@@ -10,7 +10,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
 	def index
     @tab = params[:active_tab]
     @search = Sunspot.search(Spree::Product) do
-      fulltext params[:q][:s] if params[:q] && params[:q][:s]
+      fulltext "*#{params[:q][:s]}*" if params[:q] && params[:q][:s]
       with(:visible, true)  if params[:active_tab] == "published" || !params.key?("active_tab")
       with(:visible, false) if params[:active_tab] == "unpublished"
       with(:store_id, current_spree_user.stores.first.try(:id))

@@ -18,8 +18,8 @@ Rails.application.configure do
 
   Rails.application.config.middleware.use ExceptionNotification::Rack, email: {
     :email_prefix => "[Error 500] ",
-    :sender_address => %{"Simmpli Exception" <exception@shopfelixgray.com>},
-    :exception_recipients => %w{ishank@w3villa.com prashant.mishra@w3villa.com manish.rai@w3villa.com}
+    :sender_address => %{"PykLocal Exception" <exception@pyklocal.com>},
+    :exception_recipients => %w{ishank@w3villa.com  manish.rai@w3villa.com}
   }
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application

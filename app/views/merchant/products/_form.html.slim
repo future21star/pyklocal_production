@@ -164,7 +164,6 @@
     });
 
     $('#product_taxon_ids').on('change',function(){
-      console.log("hello");
       validateTaxon();
     });
 
@@ -210,7 +209,6 @@
 
     function validateTaxon(){
       if($('#s2id_product_taxon_ids ul.select2-choices li').length <= 1){
-        console.log("jkjkjk");
         $('.product-taxon-error').html("<p class='text-red'> Product Category Not selected </p");
         $('.product-taxon-error').show();
         return 0;
