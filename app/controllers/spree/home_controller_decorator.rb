@@ -6,6 +6,7 @@ Spree::HomeController.class_eval do
     @search = Sunspot.search(Spree::Product) do
       with(:location).in_radius(session[:lat], session[:lng], 30.to_i, bbox: true) if session[:lat].present? && session[:lng].present?
       with(:visible, :true)
+      with(:buyable, true)
       order_by(:sell_count, :desc)
     end 
 		# @searcher = build_searcher(params.merge(include_images: true))
@@ -14,6 +15,7 @@ Spree::HomeController.class_eval do
     @view_search = Sunspot.search(Spree::Product) do 
       order_by(:view_counter, :desc)
       with(:visible, :true)
+      with(:buyable, true)
       paginate page: 1, per_page: 20
     end
      @most_viewed_products = @view_search.results
@@ -22,6 +24,7 @@ Spree::HomeController.class_eval do
     @search_new_arrival = Sunspot.search(Spree::Product) do
       # with(:buyable, :true)
       with(:visible, :true)
+      with(:buyable, true)
       order_by(:created_at, :desc)
       paginate page: 1, per_page: 30
     end

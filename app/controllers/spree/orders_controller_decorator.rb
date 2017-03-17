@@ -37,10 +37,13 @@ Spree::OrdersController.class_eval do
 
     
 	def populate
-
+    if !params.key?("variant_id") || (Spree::Variant.find(params[:variant_id]).product.visible == false)
+      redirect_to spree.root_path ,notice: "Product is no longer available"
+      return
+    end
     order    = current_order(create_order_if_necessary: true)
-    @order = order
     variant  = Spree::Variant.find(params[:variant_id])
+    @order = order
     quantity = params[:quantity].to_i
     options  = params[:options] || {}
     delivery_type = params[:delivery_type] || "home_delivery"

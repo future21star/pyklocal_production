@@ -85,7 +85,6 @@ module Spree
 				@store_id = params[:store_id]
 
 				@sale_product =  Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: @store_id}).select("spree_line_items.variant_id, spree_line_items.quantity").group("spree_line_items.variant_id").sum("spree_line_items.quantity")
-				p @sale_product
 				@product_sale_arr = []
 				@return_item_arr = []
 				 @sale_product.keys.each do |variant_id|
@@ -116,8 +115,6 @@ module Spree
 						 @return_item_arr.push(return_item_hash)
 					end
 				end
-				p "((((((((((((((((((((((((((((((((((((((((((("
-				p @return_item_arr
 				render json: {
 					product: @product_sale_arr.as_json(),
 					return_items: @return_item_arr.as_json()
@@ -125,10 +122,12 @@ module Spree
 			end
 
 			def products_sale_report
-				p "999999999999999999999999999"
 				if params[:orders_completed_start].present?
 					@date1 = params[:orders_completed_start].to_date
 					@date2 = params[:orders_completed_end].to_date
+					p "*************************"
+					p @date1
+					p @date2
 				else
 					@date1 =  2.weeks.ago.to_date + 1
 					@date2 = Date.today
@@ -138,7 +137,6 @@ module Spree
 				else
 					@brand = "Select Brand"
 				end
-				p "8888888888888888"
 
 				@store = params[:store_name].present? ? Merchant::Store.find(params[:store_name]).name.to_s : "Select Store"
 				@category = params[:category_name].present? ? Spree::Taxon.find(params[:category_name]).name : "Select Category"
@@ -169,13 +167,12 @@ module Spree
 					all_of do
 						if params[:orders_completed_start].blank? && params[:orders_completed_end].blank?
 							@date_start = Date.today - 14
-							@date_end = Date.today
+							@date_end = Date.today + 1
 						else
 							@date_start = params[:orders_completed_start].to_date
-							@date_end = params[:orders_completed_end].to_date
+							@date_end = params[:orders_completed_end].to_date + 1
 						end
-						with(:updated_at).greater_than_or_equal_to(@date_start)
-						with(:updated_at).less_than_or_equal_to(@date_end)
+						with(:updated_at).between(@date_start..@date_end)
 					end
 					with(:email,params[:user_email]) if params[:user_email].present?
 					with(:taxon_ids, params[:category_name]) if params[:category_name].present?
@@ -185,9 +182,6 @@ module Spree
 					paginate(:page => @page, :per_page => @per_page)
 				end
 				@line_items = @search.results
-				p "***********************************************"
-				# p @search.results
-				# p @line_items
 				params[:q] = {} unless params[:q]
 				if params[:q][:orders_completed_at_gt].blank?
 					params[:q][:orders_completed_at_gt] = Time.zone.now.beginning_of_month

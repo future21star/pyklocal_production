@@ -14,5 +14,21 @@ module Spree
       redirect_if_legacy_path
     end
 
+    private
+      def load_product
+
+        if try_spree_current_user.try(:has_spree_role?, "admin")
+          @products = Product.with_deleted
+        else
+          @products = Product.active(current_currency)
+        end
+        @product = Spree::Product.friendly.find(params[:id])
+        if @product.visible
+          @product = @products.includes(:variants_including_master).friendly.find(params[:id])
+        else
+          redirect_to spree.root_path, notice: "Product is no longer available"
+        end
+      end
+
   end
 end

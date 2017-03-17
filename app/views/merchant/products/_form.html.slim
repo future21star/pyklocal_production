@@ -197,7 +197,7 @@
     }
 
     function validateTaxCategory(){
-      if ($('.select2-hidden-accessible').eq(1).text() == "None"){
+      if ($('.select2-hidden-accessible').eq(1).text() == "None" || ($('.select2-hidden-accessible').eq(1).text() == "")){
         $('.product-tax-error').html("<p class='text-red'> Tax Category Not selected </p");
         $('.product-tax-error').show();
         return 0;

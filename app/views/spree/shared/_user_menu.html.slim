@@ -15,8 +15,6 @@
           ul.account.orders
             li class=(current == "orders" ? 'active' : '')
               a href=spree.orders_path My Orders
-            li
-              a href="#"  Payment History (Refunds)
         .filter-box
           h5 My Stuff
           ul.account
@@ -35,3 +33,9 @@
               a href=spree.change_password_account_path Change Password
             li
               a href="#"  Profile Settings
+      -else
+        .filter-box
+          h5 Orders
+          ul.account.orders
+            li
+              a href= spree.payment_histories_path  Payment History (Refunds)

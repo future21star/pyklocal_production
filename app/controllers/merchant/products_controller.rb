@@ -11,6 +11,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
     @tab = params[:active_tab]
     @search = Sunspot.search(Spree::Product) do
       fulltext "*#{params[:q][:s]}*" if params[:q] && params[:q][:s]
+      with(:buyable, true)
       with(:visible, true)  if params[:active_tab] == "published" || !params.key?("active_tab")
       with(:visible, false) if params[:active_tab] == "unpublished"
       with(:store_id, current_spree_user.stores.first.try(:id))
@@ -85,7 +86,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   end
 
   def destroy
-    if @product.destroy
+    if @product.update_attributes(buyable: false)
       redirect_to merchant_products_path, notice: "Product deleted successfully"
     else
       redirect_to merchant_products_path, notice: @product.errors.full_messages.join(", ")
