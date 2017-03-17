@@ -57,8 +57,8 @@
                           = f.field_container :available_on do
                             = f.label :available_on, Spree.t(:available_on), class: "control-label lable-margin-top"
                             span.input-icon.icon-right
-                              = f.text_field :available_on, :class => 'datepicker form-control input-bg'
-                            = f.error_message_on :available_on
+                              = f.text_field :available_on, :class => 'datepicker_product form-control input-bg'
+                            span.product-available-date-error
                         .form-group.col-md-6
                           = f.field_container :shipping_category do
                             = f.label :shipping_category_id, Spree.t(:shipping_categories) + " *", class: "control-label lable-margin-top"
@@ -135,6 +135,11 @@
       });
     });
 
+    $(document).ready(function(){
+       $( ".datepicker_product" ).datepicker({ minDate: 0});
+    });
+
+
     $("input:file").on('change', function(){
       console.log("inside");
       if (validate() == true ){
@@ -167,7 +172,7 @@
     $(document).ready(function(){
       $('#new_product').on('submit', function(e){
           e.preventDefault();
-          if( (validateProductName()) * (validateShipping()) * (validatePrice()) ){
+          if( (validateProductName()) * (validateShipping()) * (validatePrice()) * (validateAvailableDate()) ){
             this.submit();
           }
       });
@@ -179,6 +184,10 @@
 
      $('#product_name').on('blur',function(){
       validateProductName();
+    });
+
+    $('#product_available_on').on('change',function(){
+        validateAvailableDate();
     });
 
     $('#product_shipping_category_id').on('change',function(){
@@ -196,6 +205,21 @@
          return 1 ;
       }
     }
+
+
+    function validateAvailableDate(){
+      if($('#product_available_on').val().trim().length == 0 ){
+        $('.product-available-date-error').html("<p class='text-red'> Product available on date can not be blank</p");
+        $('.product-available-date-error').show();
+        return 0;
+      }
+      else{
+        $('.product-available-date-error').hide();
+        return 1;
+      }
+    }
+
+
 
 
     function validateShipping(){

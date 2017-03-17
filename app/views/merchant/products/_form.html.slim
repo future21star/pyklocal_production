@@ -68,14 +68,16 @@
             = f.field_container :available_on do 
               = f.label :available_on, class: "control-label"
               span.input-icon.icon-right
-                = f.text_field :available_on, class: "form-control input-bg datepicker", value: @product.available_on.try(:to_date)
+                = f.text_field :available_on, class: "form-control input-bg datepicker_product", value: @product.available_on.try(:to_date)
                 .fa &#xf274;
+                span.product-available-date-error
           .form-group
             = f.field_container :discontinue_on do 
               = f.label :discontinue_on, class: "control-label"
               span.input-icon.icon-right
-                = f.text_field :discontinue_on, class: "form-control input-bg datepicker", value: @product.discontinue_on.try(:to_date)
+                = f.text_field :discontinue_on, class: "form-control input-bg datepicker_product", value: @product.discontinue_on.try(:to_date)
                 .fa &#xf274;
+                span.product-discontinue-date-error
           .form-group
             = f.field_container :sku do 
               = f.label :sku, class: "control-label"
@@ -135,9 +137,13 @@
   javascript:
 
     $(document).ready(function(){
+       $( ".datepicker_product" ).datepicker({ minDate: 0});
+    });
+
+    $(document).ready(function(){
       $('.edit_product').on('submit', function(e){
           e.preventDefault();
-          if( (validateProductName()) * (validatePrice()) * (validateCostPrice()) * (validateTaxCategory()) * (validateShipping()) * ( validateTaxon()) ){
+          if( (validateProductName()) * (validatePrice()) * (validateCostPrice()) * (validateTaxCategory()) * (validateShipping()) * ( validateTaxon()) * (validateAvailableDate()) * (validateDiscontinueDate()) ){
             this.submit();
           }
           else{
@@ -170,6 +176,14 @@
       validateTaxon();
     });
 
+    $('#product_available_on').on('change',function(){
+        validateAvailableDate();
+    });
+
+    $('#product_discontinue_on').on('change',function(){
+        validateDiscontinueDate();
+    });
+
     function validateProductName(){
       if($('#product_name').val().trim().length == 0){
         $('.product-name-error').html("<p class='text-red'> Product Name can not be blank </p");
@@ -197,7 +211,7 @@
     }
 
     function validateTaxCategory(){
-      if ($('.select2-hidden-accessible').eq(1).text() == "None" || ($('.select2-hidden-accessible').eq(1).text() == "")){
+      if ($('.select2-hidden-accessible').eq(1).text() == "None"){
         $('.product-tax-error').html("<p class='text-red'> Tax Category Not selected </p");
         $('.product-tax-error').show();
         return 0;
@@ -248,6 +262,37 @@
       }
     }
 
+    function validateAvailableDate(){
+      if($('#product_available_on').val().trim().length == 0 ){
+        $('.product-available-date-error').html("<p class='text-red'> Product available on date can not be blank</p");
+        $('.product-available-date-error').show();
+        return 0;
+      }
+      else{
+        $('.product-available-date-error').hide();
+        return 1;
+      }
+    }
+
+    function validateDiscontinueDate(){
+      if($('#product_discontinue_on').val().trim().length != 0 ){
+        var product_available_date = new Date($('#product_available_on').val());
+        var product_discontinue_date = new Date($('#product_discontinue_on').val());
+        if ( product_discontinue_date <= product_available_date){
+           $('.product-discontinue-date-error').html("<p class='text-red'> Product discontinue on date can not be less than or equal to product available on date</p");
+          $('.product-discontinue-date-error').show();
+          return 0;
+        }
+        else{
+          $('.product-discontinue-date-error').hide();
+          return 1;
+        }
+      }
+      else
+      {
+        return 1;
+      }
+    }
 
     function validateCostPrice(){
       flag = true;
