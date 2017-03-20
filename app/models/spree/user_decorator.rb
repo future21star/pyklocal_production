@@ -20,7 +20,7 @@ Spree::User.class_eval do
   has_one :payment_preference, foreign_key: :user_id, class_name: 'Spree::PaymentPreference'
   has_many :driver_orders, foreign_key: :driver_id, class_name: "Spree::DriverOrder"
   has_many :cart_orders, through: :driver_orders, class_name: "Spree::Order"
-  has_one :address, class_name: 'Spree::Address'
+  has_one  :address, class_name: 'Spree::Address'
   has_many :wishlists
   has_many :authentications
   has_many :ratings, foreign_key: :user_id

@@ -8,6 +8,7 @@ module Spree
 	      set_flash_message(:notice, :send_instructions) if is_navigational_format?
 	      respond_with resource, :location => spree.login_path
 	    else
+	    	@error_string = ""
 	    	resource.errors.messages.each do |field,errors|
 	    		errors.each do |error|
 	    			@error_string += (field.to_s.capitalize + " " + error ) 

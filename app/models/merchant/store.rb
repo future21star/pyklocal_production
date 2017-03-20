@@ -76,7 +76,7 @@ module Merchant
     end
 
     def address
-      [street_number, city, state, country].compact.join(", ")
+      # [street_number, city, state, country].compact.join(", ")
     end
 
     def is_located?

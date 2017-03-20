@@ -5,8 +5,7 @@ class Spree::AddressesController < Spree::StoreController
 	def index
 		@address = current_spree_user.address
 		if @address.blank?
-			#@address = current_spree_user.orders.first.try(:bill_address).present? ? current_spree_user.orders.first.bill_address : Spree::Address.build_default
-			@address = current_spree_user.orders.where("state = ? OR state = ?", "complete", "canceled").last.bill_address.present? ? current_spree_user.orders.where("state = ? OR state = ?", "complete", "canceled").last.bill_address :  Spree::Address.build_default
+			@address = current_spree_user.orders.where("state = ? OR state = ?", "complete", "canceled").last.try(:bill_address).present? ? current_spree_user.orders.where("state = ? OR state = ?", "complete", "canceled").last.bill_address :  Spree::Address.build_default
 		end
 		p @address
 	end
