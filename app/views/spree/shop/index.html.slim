@@ -82,6 +82,8 @@ section.product_sec
           = form_tag " ", method: :get, id: "rFilter" do
             - if params[:q]
               = render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]}
+            input id="lat" type="hidden" name="q[lat]"
+            input id="lng" type="hidden" name="q[lng]"
             - location = params[:q] && params[:q][:radius] ? params[:q][:radius] : " "
             select#radiusFilter.form-control name="q[radius]"
               option selected=(location == "") value="" Sort By Location
