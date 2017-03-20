@@ -79,6 +79,8 @@ class Merchant::ProductsController < Merchant::ApplicationController
     if @product.update_attributes(product_params)
       # Sunspot.index(@product)
       # Sunspot.commit
+      p "--------------------------"
+      p @product.available_on
       redirect_to redirect_path, notice: "Product updated successfully"
     else
       @shipping_categories = Spree::ShippingCategory.all
