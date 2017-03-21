@@ -117,7 +117,7 @@ class Merchant::StoresController < Merchant::ApplicationController
         #per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12
       store_id = Merchant::Store.where(slug: params[:id]).first.id
       @search = Sunspot.search(Spree::Product) do 
-        fulltext params[:q][:search] if params[:q] && params[:q][:search]
+        fulltext "*#{params[:q][:search]}*" if params[:q] && params[:q][:search]
         paginate(:page => params[:page], :per_page => 12)
         with(:store_id, store_id) 
         with(:buyable, :true)

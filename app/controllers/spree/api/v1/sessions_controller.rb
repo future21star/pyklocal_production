@@ -12,8 +12,8 @@ module Spree
 					if !@api_token
 						email = SecureRandom.hex(4)+"@pyklocal.com"
 						password = SecureRandom.hex(4)
-						@user = Spree::User.new(email: email, password: password, password_confirmation: password, is_guest: true, t_and_c_accepted: true)
-						if @user.save
+						@user = Spree::User.new(email: email, password: password, password_confirmation: password, is_guest: true, t_and_c_accepted: true,first_name: "guest",last_name: "guest")
+						if @user.save(validate: false)
 							@response = get_response(@user)
 							@response[:message] = "Login successfull"
 							@api_token_guest = @user.api_tokens.last
@@ -59,7 +59,7 @@ module Spree
 							@response[:message] = "User Already Sign up With this email"
 						end
 					else
-						@respone = error_response
+						@response = error_response
 						@response[:message] = "email can not be blank"
 					end 
 				end
@@ -69,56 +69,38 @@ module Spree
 				unless user.blank?
 					if user.valid_password?(params[:password])
 						if params[:token]
-							@is_guest_user = ApiToken.where(token: params[:token]).last.try(:user)
-							p "((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((("
-							p @is_guest_user
-							if @is_guest_user.is_guest == true 
-								if @is_guest_user.orders.where("state != ? AND state != ? AND state != ?","complete" ,"canceled","returned").present? || @is_guest_user.wishlists.present?
-								# 	unless user.orders.where.not(state: "complete").blank?
-								# 		@is_guest_user.orders.where.not(state: "complete").last.line_items.each do |line_item|
-								# 	 	 user.orders.last.contents.add(line_item.variant, line_item.quantity, {}, line_item.delivery_type)
-								# 	 	end
-								# 	else
-								# 	 	@is_guest_user.orders.last.update_attributes(user_id: user.id)
-								# 	end
-								# 	@response = get_response(user)
-								#   @response[:message] = "Login successfull"
-									if @is_guest_user.orders.where("state != ? AND state != ? AND state != ?","complete" ,"canceled", "returned").present?
-										unless user.orders.where("state != ? AND state != ? AND state != ?", "complete", "canceled", "returned").blank?
-											@is_guest_user.orders.where.not(state: "complete").last.line_items.each do |line_item|
-												user.orders.where("state != ? AND state != ? AND state != ?", "complete", "canceled", "returned").last.contents.add(line_item.variant, line_item.quantity, {}, line_item.delivery_type)
-								 	 		end
-								 	 		@is_guest_user.orders.delete_all
-								 	 	else
-								 	 		@is_guest_user.orders.last.update_attributes(user_id: user.id)
-										end
-									end
+							if user.confirmed_at.present?
+								@is_guest_user = ApiToken.where(token: params[:token]).last.try(:user)
 
-									if  @is_guest_user.wishlists.present?
-										# if user.wishlists.present?
-										# 	p "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-										# 	@is_guest_user.wishlists.each do |wishlist|
-										# 		@wishlist = Spree::Wishlist.new(variant_id: wishlist.variant_id, user_id: user.id)
-										# 		unless @wishlist.save
-										# 			render json:{
-										# 				status: "0",
-										# 				message: "something goes wrong while saving the wishlist"
-										# 			}
-										# 			return
-										# 		end
-										# 	end
-										# else
+								if @is_guest_user.is_guest == true 
+									if @is_guest_user.orders.where("state != ? AND state != ? AND state != ?","complete" ,"canceled","returned").present? || @is_guest_user.wishlists.present?
+										if @is_guest_user.orders.where("state != ? AND state != ? AND state != ?","complete" ,"canceled", "returned").present?
+											unless user.orders.where("state != ? AND state != ? AND state != ?", "complete", "canceled", "returned").blank?
+												@is_guest_user.orders.where.not(state: "complete").last.line_items.each do |line_item|
+													user.orders.where("state != ? AND state != ? AND state != ?", "complete", "canceled", "returned").last.contents.add(line_item.variant, line_item.quantity, {}, line_item.delivery_type)
+									 	 		end
+									 	 		@is_guest_user.orders.delete_all
+									 	 	else
+									 	 		@is_guest_user.orders.last.update_attributes(user_id: user.id)
+											end
+										end
+
+										if  @is_guest_user.wishlists.present?
 											@is_guest_user.wishlists.update_all(user_id: user.id)
+										end
+										@response = get_response(user)
+									  @response[:message] = "Login successfull"
+									else
+									  @response = get_response(user)
+									  @response[:message] = "Login successfull"
 									end
-									@response = get_response(user)
-								  @response[:message] = "Login successfull"
 								else
-								  @response = get_response(user)
-								  @response[:message] = "Login successfull"
+									@respone = error_response
+									@response[:message] = "User was not logged in as a guest user"
 								end
 							else
-								@respone = error_response
-								@response[:message] = "User was not logged in as a guest user"
+								@response = error_response
+								@response[:message] = "You have to confirm your account before continuing."
 							end
 						elsif params[:is_driver] && params[:is_driver] == "true"
 							if user.has_spree_role?('driver')
@@ -129,8 +111,13 @@ module Spree
 								@response[:message] = "User is not a driver"
 							end
 						else
-							@response = get_response(user)
-							@response[:message] = "Login successfull"
+							if user.confirmed_at.present?
+								@response = get_response(user)
+								@response[:message] = "Login successfull"
+							else
+								@response = error_response
+								@response[:message] = "You have to confirm your account before continuing."
+							end
 						end
 					else
 						@response = error_response
@@ -141,8 +128,8 @@ module Spree
 					@response[:message] = "Invalid email"
 				end
 			end
-		rescue Exception => e
-			api_exception_handler(e)
+		# rescue Exception => e
+		# 	api_exception_handler(e)
 		ensure 
 			render json: @response
 		end

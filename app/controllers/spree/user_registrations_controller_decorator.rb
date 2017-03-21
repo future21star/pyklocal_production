@@ -1,5 +1,5 @@
 module Spree
-  UserRegistrationsController.class_eval do 
+  UserRegistrationsController.class_eval do
 
     def new
       @tab = params[:active_tab]

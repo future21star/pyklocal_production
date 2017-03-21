@@ -1,6 +1,6 @@
 module Spree
 	Address.class_eval do
-    validates :firstname,:lastname,:city,:zipcode, presence: true
+    validates :phone, length: {is: 10}
 		
 		def get_address
 			address_hash = Hash.new

@@ -56,6 +56,7 @@ Spree::OrdersController.class_eval do
         if  already_ordered_quantity.nil? || (variant.total_on_hand >= (already_ordered_quantity.to_i + quantity))
            begin
             order.contents.add(variant, quantity, options, delivery_type)
+            current_spree_user.wishlists.where(variant_id: variant.id).destroy_all
           rescue ActiveRecord::RecordInvalid => e
             error = e.record.errors.full_messages.join(", ")
           end
@@ -76,6 +77,9 @@ Spree::OrdersController.class_eval do
     else
       respond_with(order) do |format|
         if params[:bunch_cart]
+          format.html { redirect_to :back, notice: "Successfully added into cart" }
+          format.js
+        elsif params[:wishlist]
           format.html { redirect_to :back, notice: "Successfully added into cart" }
           format.js
         else

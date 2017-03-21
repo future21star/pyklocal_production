@@ -12,6 +12,7 @@ module Spree
 					if @api_token
 						@user = @api_token.user
 						if @user.update_attributes(email: params[:user][:email], password: params[:user][:password], is_guest: false)
+							@response[:message] = "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account."
 							@response = get_response(@user)
 						else
 							@response = error_response
@@ -29,6 +30,7 @@ module Spree
 				@user = Spree.user_class.new(user_params)
 				if @user.save
 	      	@response = get_response(@user)
+	      	@response[:message] = "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account."
 	      else
 	      	@response = error_response
 	        @response[:message] = @user.errors.full_messages.join(", ")

@@ -4,6 +4,7 @@
     = form_for :order, :url => populate_orders_path do |f|
       = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
       = hidden_field_tag "variant_id", wish.variant_id
+      = hidden_field_tag :wishlist, true
       = hidden_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
 
       span.wl-image
