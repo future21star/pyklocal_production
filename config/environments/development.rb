@@ -6,17 +6,26 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
   # config.assets.quiet = true
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
     # :enable_starttls_auto => false,
     # :openssl_verify_mode => 'none'
-    :address => "smpt.mandrillapp.com",
+    # :address => "smpt.mandrillapp.com",
+    # :port => 587,
+    # :enable_starttls_auto => true,
+    # :user_name => "pyklocal",
+    # :password => "E7BhM0LgZKaanbD1DfaW2w",
+    # :authentication => "login"
+
+    :address => "email-smtp.us-west-2.amazonaws.com",
     :port => 587,
+    :user_name => ENV["AKIAIIF5FWQHO2TR2VUA"],
+    :password => ENV["Ag4X4Xuuhm/uXkN2dag5sequCBIWnre9hRGhBhhS2bsb"],
+    :authentication => :login,
     :enable_starttls_auto => true,
-    :user_name => "pyklocal",
-    :password => "E7BhM0LgZKaanbD1DfaW2w",
-    :authentication => "login"
   }
 
   # Do not eager load code on boot.
