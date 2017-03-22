@@ -1,6 +1,6 @@
 module Spree
 	Product.class_eval do 
-    validates :name, length: {maximum: 100}
+    # validates :name, length: {maximum: 100}
     validates :cost_price, presence: { message: "Retail price can not be blank" }, on: :update
     validates :price, presence: { message: "price can not be blank" }, on: :update
     validate :cost_price_must_be_greater_than_price
