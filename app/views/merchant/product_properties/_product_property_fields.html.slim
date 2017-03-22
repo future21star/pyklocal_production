@@ -7,4 +7,5 @@ tr.product_property.fields data-hook="product_property" id="spree_#{dom_id(produ
     = text_field_tag "product[product_properties_attributes][][value]", product_property.value, class: 'form-control', maxlength: "200"
   td.actions.actions-1
     - if product_property.persisted?
-       / = link_to merchant_product_property_path, no_text: true
+       = link_to  merchant_product_product_property_path(product_property.product, product_property), class: "btn btn-danger", title: "Cancel Order", method: :delete do 
+                          i.fa.fa-close

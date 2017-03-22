@@ -9,6 +9,15 @@ class Merchant::ProductPropertiesController < Merchant::ApplicationController
 		@product_property = Spree::ProductProperty.new
 	end
 
+	def destroy
+		p @product_property
+		if @product_property.destroy_all
+			redirect_to :back, notice: "Property deleted successfully"
+		else
+			redirect_to :back, notice: @product_property.errors.full_messages.join(', ')
+		end
+	end
+
 
 	private
 		def find_product_properties

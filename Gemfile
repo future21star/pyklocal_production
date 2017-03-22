@@ -30,6 +30,7 @@ gem 'client_side_validations'
 gem 'gibbon', git: 'git://github.com/amro/gibbon.git'
 
 
+
 gem 'spree_editor', github: 'spree-contrib/spree_editor', branch: '3-1-stable'
 #gem 'spree_promotion_tax', git: 'git://github.com/bluehandtalking/spree_promotion_tax.git', branch: '1-3-default_tax'
 
@@ -78,6 +79,7 @@ group :development, :test do
   gem 'selenium-webdriver', '2.52.0'
   gem 'byebug'
   gem 'hirb'
+  gem "rails-erd"
 end
 
 group :development do
