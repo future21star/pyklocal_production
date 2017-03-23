@@ -151,9 +151,15 @@ br
             if(data.success){
               $('.modal').modal('hide');
               storeRating(data.rating);
+              if ($('#noty_topCenter_layout_container li').length > 0){
+                  $('#noty_topCenter_layout_container ').remove();
+              }
               noty({text: data.message, type: "info"});
             } else {
               $('.modal').modal('hide');
+              if ($('#noty_topCenter_layout_container li').length > 0){
+                $('#noty_topCenter_layout_container ').remove();
+              }
               noty({text: data.message, type: "error"});
             }
           });
