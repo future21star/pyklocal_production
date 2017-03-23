@@ -57,8 +57,10 @@ class Merchant::ProductsController < Merchant::ApplicationController
       if params[:file].original_filename.split('.').second.strip != 'csv'
         redirect_to :back, notice: "Uploaded file must have .csv extension"
       else
+        my_file = params[:file]
         ImportProductWorker.perform_in(5.seconds, my_file.path, current_spree_user.email)
         redirect_to merchant_products_path, notice: "Your product importing from the csv you uploaded, we will notify you it's progress through email"
+        return
       end
      redirect_to :back, notice: "No File Selected"
    end
@@ -76,12 +78,21 @@ class Merchant::ProductsController < Merchant::ApplicationController
     if params[:product][:option_type_ids].present?
       params[:product][:option_type_ids] = params[:product][:option_type_ids].split(",")
     end
+    if params[:product][:product_properties_attributes].present?
+     if params[:product][:product_properties_attributes].map{|k| k["property_name"] if k["id"].blank?}.any? 
+       if (@product.properties.collect{|property| property.name.downcase} & params[:product][:product_properties_attributes].map{|k| k["property_name"] if k["id"].blank?}.compact).present?
+        redirect_to redirect_path, notice: "Product can not have two properties with the same name"
+        return
+       end
+     end
+    end
     if @product.update_attributes(product_params)
       # Sunspot.index(@product)
       # Sunspot.commit
       p "--------------------------"
       p @product.available_on
       redirect_to redirect_path, notice: "Product updated successfully"
+      return
     else
       @shipping_categories = Spree::ShippingCategory.all
       @tax_categories = Spree::TaxCategory.all
