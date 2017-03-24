@@ -33,9 +33,15 @@ h2 style="margin-top: 25px;" Write a review
           $.post("/api/v1/products/"+$(this).data('product_id')+"/rate_and_comment", rateParams, function(data){
             if(data.success){
               $('.modal').modal('hide');
+              if ($('#noty_topCenter_layout_container li').length > 0){
+                  $('#noty_topCenter_layout_container ').remove();
+              }
               noty({text: data.message, type: "info"});
             } else {
               $('.modal').modal('hide');
+              if ($('#noty_topCenter_layout_container li').length > 0){
+                  $('#noty_topCenter_layout_container ').remove();
+              }
               noty({text: data.message, type: "error"});
             }
           });

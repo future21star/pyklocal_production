@@ -208,8 +208,14 @@
 
 
     function validateAvailableDate(){
+      dateReg = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
       if($('#product_available_on').val().trim().length == 0 ){
         $('.product-available-date-error').html("<p class='text-red'> Product available on date can not be blank</p");
+        $('.product-available-date-error').show();
+        return 0;
+      }
+      else if($('#product_available_on').val().match(dateReg) == null){
+        $('.product-available-date-error').html("<p class='text-red'> Product available on date is invalid</p");
         $('.product-available-date-error').show();
         return 0;
       }
