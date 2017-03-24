@@ -113,18 +113,18 @@ p
           | I have read and agree to the
           = link_to "Privacy Policy", "#"
     .form-group.col-xs-12.text-center
-      = f.submit 'Sign Up', :tabindex => 3, id: "continue-btn", disabled: true
+      = f.submit 'Sign Up', :tabindex => 3, id: "continue-btn"
 
-- content_for :js do
-  javascript:
-    $(document).ready(function() {
-      $('#continue-btn').prop('disabled', true);
-      $('.t_and_c_ven').click(function() {
-        var checked = $('#spree_user_t_and_c_accepted').prop('checked');
-        if(checked){
-          $('#continue-btn').prop('disabled', false);
-        } else {
-          $('#continue-btn').prop('disabled', true);
-        }
-      });
-    })
+/ - content_for :js do
+/   javascript:
+/     $(document).ready(function() {
+/       $('#continue-btn').prop('disabled', true);
+/       $('.t_and_c_ven').click(function() {
+/         var checked = $('#spree_user_t_and_c_accepted').prop('checked');
+/         if(checked){
+/           $('#continue-btn').prop('disabled', false);
+/         } else {
+/           $('#continue-btn').prop('disabled', true);
+/         }
+/       });
+/     })

@@ -51,6 +51,7 @@ module Spree
 
       integer :store_id
 
+
       string :brand_name, references: Spree::ProductProperty, multiple: true do
         product_properties.where(property_id: properties.where(name: "Brand").first.try(:id)).collect { |p| p.value }.flatten
       end

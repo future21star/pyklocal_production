@@ -101,7 +101,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   end
 
   def destroy
-    if @product.update_attributes(buyable: false)
+    if @product.update_attribute(:buyable, false)
       redirect_to merchant_products_path, notice: "Product deleted successfully"
     else
       redirect_to merchant_products_path, notice: @product.errors.full_messages.join(", ")
