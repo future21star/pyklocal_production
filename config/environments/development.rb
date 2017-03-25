@@ -9,16 +9,16 @@ Rails.application.configure do
   # config.action_mailer.perform_deliveries = true
   # config.action_mailer.raise_delivery_errors = true
 
-  config.action_mailer.delivery_method = :smtp
-  ActionMailer::Base.smtp_settings = {
-    :enable_starttls_auto => false,
-    :openssl_verify_mode => 'none',
-    :address => "smpt.mandrillapp.com",
-    :port => 587,
-    :enable_starttls_auto => true,
-    :user_name => "pyklocal",
-    :password => "E7BhM0LgZKaanbD1DfaW2w",
-    :authentication => "login"
+  # config.action_mailer.delivery_method = :smtp
+  # ActionMailer::Base.smtp_settings = {
+  #   :enable_starttls_auto => false,
+  #   :openssl_verify_mode => 'none',
+  #   :address => "smpt.mandrillapp.com",
+  #   :port => 587,
+  #   :enable_starttls_auto => true,
+  #   :user_name => "pyklocal",
+  #   :password => "E7BhM0LgZKaanbD1DfaW2w",
+  #   :authentication => "login"
 
     # :address => "email-smtp.us-west-2.amazonaws.com",
     # :port => 587,
@@ -26,8 +26,15 @@ Rails.application.configure do
     # :password => ENV["Ag4X4Xuuhm/uXkN2dag5sequCBIWnre9hRGhBhhS2bsb"],
     # :authentication => :login,
     # :enable_starttls_auto => true
+  # }
+  config.action_mailer.smtp_settings = {
+    :address => "email-smtp.us-west-2.amazonaws.com",
+    :port => "25",
+    :user_name => "AKIAIJKINUGB6VALRKCQ",
+    :password => "AutKbcuIMh0oPjQ8HadsTyJGHGGVfGRoH0zkHcpxyd36",
+    :authentication => :login,
+    :enable_starttls_auto => true
   }
-
   # Do not eager load code on boot.
   config.eager_load = false
 

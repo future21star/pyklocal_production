@@ -81,25 +81,32 @@ Rails.application.configure do
 
   config.action_mailer.asset_host = "http://54.202.62.141"
   config.action_mailer.default_url_options = { :host => 'http://54.202.62.141' }
-  config.action_mailer.delivery_method = :smtp
-  ActionMailer::Base.smtp_settings = {
-    # :enable_starttls_auto => false,
-    # :openssl_verify_mode => 'none'
-    # :address => "smpt.mandrillapp.com",
-    # :port => 587,
-    # :enable_starttls_auto => true,
-    # :user_name => "pyklocal",
-    # :password => "E7BhM0LgZKaanbD1DfaW2w",
-    # :authentication => "login"
+  # config.action_mailer.delivery_method = :smtp
+  # ActionMailer::Base.smtp_settings = {
+  #   # :enable_starttls_auto => false,
+  #   # :openssl_verify_mode => 'none'
+  #   # :address => "smpt.mandrillapp.com",
+  #   # :port => 587,
+  #   # :enable_starttls_auto => true,
+  #   # :user_name => "pyklocal",
+  #   # :password => "E7BhM0LgZKaanbD1DfaW2w",
+  #   # :authentication => "login"
 
+  #   :address => "email-smtp.us-west-2.amazonaws.com",
+  #   :port => 587,
+  #   :user_name => ENV["AKIAIIF5FWQHO2TR2VUA"],
+  #   :password => ENV["Ag4X4Xuuhm/uXkN2dag5sequCBIWnre9hRGhBhhS2bsb"],
+  #   :authentication => :login,
+  #   :enable_starttls_auto => true
+  # }
+  config.action_mailer.smtp_settings = {
     :address => "email-smtp.us-west-2.amazonaws.com",
-    :port => 587,
-    :user_name => ENV["AKIAIIF5FWQHO2TR2VUA"],
-    :password => ENV["Ag4X4Xuuhm/uXkN2dag5sequCBIWnre9hRGhBhhS2bsb"],
+    :port => "25",
+    :user_name => "AKIAIJKINUGB6VALRKCQ",
+    :password => "AutKbcuIMh0oPjQ8HadsTyJGHGGVfGRoH0zkHcpxyd36",
     :authentication => :login,
     :enable_starttls_auto => true
   }
-
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
