@@ -386,23 +386,23 @@ $(document).ready(function(){
     });
 
 
-   $('#spree_user_password').on('blur',function(){
+   $('.reg-password').on('blur',function(){
       validatePassword();
     });
 
-    $('#spree_user_password_confirmation').on('blur',function(){
+    $('.reg-password-confrim').on('blur',function(){
         validateConfirmPassword();
     });
 
     function validatePassword(){
       flag = true;
       errorStr = "";
-      if($('#spree_user_password').val().trim().length == 0){
+      if($('.reg-password').val().trim().length == 0){
         errorStr += "Password can not be blank";
         flag = false;
       }
 
-      if (($('#spree_user_password').val().trim().length > 0) && ($('#spree_user_password').val().trim().length < 6)){
+      if (($('.reg-password').val().trim().length > 0) && ($('.reg-password').val().trim().length < 6)){
         errorStr += "Password length must be greater than 6";
         flag = false;
       }
@@ -454,7 +454,7 @@ $(document).ready(function(){
     }
 
     function validateConfirmPassword(){
-      if($('#spree_user_password').val().trim() != $('#spree_user_password_confirmation').val().trim()) {
+      if($('.reg-password').val().trim() != $('.reg-password-confirm').val().trim()) {
          $('#password-confirm-error').html("<p class='text-red'> Password does not match");
          $('#password-confirm-error').show();
          return 0;
@@ -473,7 +473,7 @@ $(document).ready(function(){
       console.log(validateEmail());
       flag = true;
       errorStr = ""
-      if ( $('#spree_user_email').val() == null || $('#spree_user_email').val() == ''){
+      if ( $('.reg-email').val() == null || $('.reg-email').val() == ''){
         errorStr = " Email can not be blank";
         flag = false;
       }
@@ -497,8 +497,8 @@ $(document).ready(function(){
 
     function validateEmail(){
       var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  ;
-          console.log($('#spree_user_email').val());
-          return re.test($('#spree_user_email').val());
+          console.log($('.reg-email').val());
+          return re.test($('.reg-email').val());
     }
 
 

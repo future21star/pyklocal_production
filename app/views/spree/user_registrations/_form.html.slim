@@ -9,13 +9,13 @@
       = f.text_field :last_name, :class => 'form-control',  maxlength: "50",:tabindex => 1, :placeholder => 'Last Name*'
       span#last-name-error
     .form-group.col-xs-12
-      = f.email_field :email, :class => 'form-control', :tabindex => 1, :placeholder => 'E-Mail*'
+      = f.email_field :email, :class => 'form-control reg-email', :tabindex => 1, :placeholder => 'E-Mail*'
       span#invalid-email
     .form-group.col-sm-6.col-xs-12
-      = f.password_field :password, :class => 'form-control', :tabindex => 2, :placeholder => 'Password*'
+      = f.password_field :password, :class => 'form-control reg-password', :tabindex => 2, :placeholder => 'Password*'
       span#password-error
     .form-group.col-sm-6.col-xs-12
-      = f.password_field :password_confirmation, :class => 'form-control', :tabindex => 2, :placeholder => 'Confirm Password*'
+      = f.password_field :password_confirmation, :class => 'form-control reg-password-confirm', :tabindex => 2, :placeholder => 'Confirm Password*'
       span#password-confirm-error
     = f.hidden_field :registration_type, :value => "customer"
     .form-group.col-xs-12
