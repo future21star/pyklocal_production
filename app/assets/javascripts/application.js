@@ -377,7 +377,7 @@ $(document).ready(function(){
 /*===================================== Registration Form Validations ============================================*/
 
 $(document).ready(function(){
-      $('#new_spree_user').on('submit', function(e){
+      $('.reg-form').on('submit', function(e){
           e.preventDefault();
           if ((validatePassword()) * (validateConfirmPassword()) * (validateFirstName()) * (validateLastName()) * ( ValidateEmail()) ) {
               this.submit();
@@ -387,6 +387,7 @@ $(document).ready(function(){
 
 
    $('.reg-password').on('blur',function(){
+      console.log("called");
       validatePassword();
     });
 

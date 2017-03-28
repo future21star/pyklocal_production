@@ -1,4 +1,4 @@
-= form_for @user, html: {class: "custom-form"}, :as => :spree_user, url: spree.registration_path do |f|
+= form_for @user, html: {class: "custom-form reg-form"}, :as => :spree_user, url: spree.registration_path do |f|
   .row
     .form-group.col-xs-12
       h4.title Your Personal Details
@@ -43,4 +43,6 @@
         }
       })
     })
+
+
 
