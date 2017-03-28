@@ -1,8 +1,8 @@
 class Merchant::StoresController < Merchant::ApplicationController
 
-	before_filter :authenticate_user!, except: [:show, :new, :create, :index]
+	before_filter :authenticate_user!, except: [:show, :new, :create, :index, :edit]
   before_action :set_store, only: [:show, :edit, :update, :destroy]
-  before_action :validate_token, only: [:edit, :update] 
+  # before_action :validate_token, only: [:edit, :update] 
   before_action :perform_search, only: [:show]
 
 	def index
@@ -41,11 +41,15 @@ class Merchant::StoresController < Merchant::ApplicationController
   # GET /stores/1/edit
   def edit
     p "edit called"
-    if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
-      raise CanCan::AccessDenied.new
+    if current_spree_user.present?
+      if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
+        raise CanCan::AccessDenied.new
+      end
+      # @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
+      @taxons = Spree::Taxon.where(parent_id: nil)
+    else
+      redirect_to spree.root_path, notice: "You are not logged in"
     end
-    # @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
-    @taxons = Spree::Taxon.where(parent_id: nil)
   end
 
   # POST /stores
@@ -70,13 +74,17 @@ class Merchant::StoresController < Merchant::ApplicationController
   # PATCH/PUT /stores/1
   # PATCH/PUT /stores/1.json
   def update
-    if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
-      raise CanCan::AccessDenied.new
+    if current_spree_user.present?
+      if @store.id != current_spree_user.stores.first.try(:id) && !current_spree_user.has_spree_role?('admin')
+        raise CanCan::AccessDenied.new
+      end
+    else
+      redirect_to spree.root_path, notice: "You are not logged in"
     end
     respond_to do |format|
       if @store.update_attributes(store_params)
         format.html { redirect_to @store, notice: 'Store was successfully updated.'  }
-        @store.email_tokens.last.update_attributes(is_valid: false)
+        # @store.email_tokens.last.update_attributes(is_valid: false)
       else
         format.html { render action: 'edit' }
       end

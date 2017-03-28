@@ -374,7 +374,132 @@ $(document).ready(function(){
 
     }
 
+/*===================================== Registration Form Validations ============================================*/
 
+$(document).ready(function(){
+      $('#new_spree_user').on('submit', function(e){
+          e.preventDefault();
+          if ((validatePassword()) * (validateConfirmPassword()) * (validateFirstName()) * (validateLastName()) * ( ValidateEmail()) ) {
+              this.submit();
+          }
+      });
+    });
+
+
+   $('#spree_user_password').on('blur',function(){
+      validatePassword();
+    });
+
+    $('#spree_user_password_confirmation').on('blur',function(){
+        validateConfirmPassword();
+    });
+
+    function validatePassword(){
+      flag = true;
+      errorStr = "";
+      if($('#spree_user_password').val().trim().length == 0){
+        errorStr += "Password can not be blank";
+        flag = false;
+      }
+
+      if (($('#spree_user_password').val().trim().length > 0) && ($('#spree_user_password').val().trim().length < 6)){
+        errorStr += "Password length must be greater than 6";
+        flag = false;
+      }
+
+
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#password-error').html(OutputErrorStr);
+         $('#password-error').show();
+        return 0;
+      }
+      else{
+         $('#password-error').hide();
+        return 1;
+      }
+    }
+
+
+    $('#spree_user_first_name').on('blur',function(){
+      validateFirstName();
+    });
+
+    $('#spree_user_last_name').on('blur',function(){
+        validateLastName();
+    });
+
+    function validateFirstName(){
+      if($('#spree_user_first_name').val().trim().length == 0){
+        $('#first-name-error').html("<p class='text-red'> First Name can not be blank </p");
+        $('#first-name-error').show();
+        return 0;
+      }
+      else{
+        $('#first-name-error').hide();
+         return 1 ;
+      }
+    }
+
+    function validateLastName(){
+      if($('#spree_user_last_name').val().trim().length == 0){
+        $('#last-name-error').html("<p class='text-red'> Last Name can not be blank </p");
+        $('#last-name-error').show();
+         return  0;
+      }
+      else{
+        $('#last-name-error').hide();
+         return 1;
+      }
+    }
+
+    function validateConfirmPassword(){
+      if($('#spree_user_password').val().trim() != $('#spree_user_password_confirmation').val().trim()) {
+         $('#password-confirm-error').html("<p class='text-red'> Password does not match");
+         $('#password-confirm-error').show();
+         return 0;
+      }
+      else{
+         $('#password-confirm-error').hide();
+        return 1;
+      }
+    }
+
+    $('#spree_user_email').on('blur',function(){
+        ValidateEmail();
+    });
+
+    function  ValidateEmail(){
+      console.log(validateEmail());
+      flag = true;
+      errorStr = ""
+      if ( $('#spree_user_email').val() == null || $('#spree_user_email').val() == ''){
+        errorStr = " Email can not be blank";
+        flag = false;
+      }
+      else if (validateEmail() == false){
+        errorStr = "Email is Invalid";
+        flag = false;
+      }
+      
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#invalid-email').html(OutputErrorStr);
+        $('#invalid-email').show();
+        return 0;
+      }
+      else{
+        $('#invalid-email').hide();
+        return 1;
+      }
+    }
+
+
+    function validateEmail(){
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  ;
+          console.log($('#spree_user_email').val());
+          return re.test($('#spree_user_email').val());
+    }
 
 
 

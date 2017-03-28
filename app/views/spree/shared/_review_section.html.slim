@@ -47,6 +47,9 @@ h2 style="margin-top: 25px;" Write a review
           });
         } else {
           window.location = "/login";
+            if($('#noty_topCenter_layout_container li').length > 0){
+                  $('#noty_topCenter_layout_container ').remove();
+            }
           noty({text: "You need to login/signup to rate a store", type: "error"});
         }
       });

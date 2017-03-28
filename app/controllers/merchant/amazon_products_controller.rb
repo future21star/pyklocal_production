@@ -33,7 +33,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 			asin_no = raw_product.asin
 			@product = Spree::Product.where(asin: raw_product.asin, store_id: current_spree_user.stores.first.try(:id)).first
 			if @product.blank?
-				@product = Spree::Product.create({name: raw_product.item_attributes.title,description: description, price: offer_price, available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url),store_id: current_spree_user.stores.first.try(:id),asin:asin_no}) 
+				@product = Spree::Product.create({name: raw_product.item_attributes.title,description: description, price: offer_price, cost_price: offer_price,available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url),store_id: current_spree_user.stores.first.try(:id),asin:asin_no}) 
 				@product.sku = sku
 				raw_product.item_attributes.each do |amazon_products_properties|
 					if amazon_products_properties[1].class.to_s == "REXMLUtiliyNodeString"
@@ -93,7 +93,7 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 				p sku
 				@product = Spree::Product.where(asin: raw_product.asin,store_id: current_spree_user.stores.first.try(:id)).first
 				if @product.blank?
-					@product = Spree::Product.create({name: raw_product.item_attributes.title, sku: sku, description: description, price: offer_price, available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url), store_id: current_spree_user.stores.first.try(:id), asin: asin_no}) 
+					@product = Spree::Product.create({name: raw_product.item_attributes.title, sku: sku, description: description, price: offer_price,cost_price: offer_price, available_on: Time.zone.now.strftime("%Y/%m/%d"), shipping_category_id: Spree::ShippingCategory.find_by_name("Default").try(:id), image_url: raw_product.large_image.try(:url), store_id: current_spree_user.stores.first.try(:id), asin: asin_no}) 
 					raw_product.item_attributes.each do |amazon_products_properties|
 						if amazon_products_properties[1].class.to_s == "REXMLUtiliyNodeString"
 		          property = Spree::Property.where(name: amazon_products_properties[0], presentation: amazon_products_properties[0].titleize).first_or_create
@@ -108,6 +108,9 @@ class Merchant::AmazonProductsController < Merchant::ApplicationController
 		        end
 		        if @product.save
 		        	success = true
+		        else
+		        	p "__________________________________________"
+		        	p @product.errors.full_messages.join(', ')
 		        end
 					end
 					raw_product.image_sets.image_set.each do |product_images|

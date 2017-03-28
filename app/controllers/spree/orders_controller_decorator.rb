@@ -56,7 +56,9 @@ Spree::OrdersController.class_eval do
         if  already_ordered_quantity.nil? || (variant.total_on_hand >= (already_ordered_quantity.to_i + quantity))
            begin
             order.contents.add(variant, quantity, options, delivery_type)
-            current_spree_user.wishlists.where(variant_id: variant.id).destroy_all
+            if current_spree_user.present?
+              current_spree_user.wishlists.where(variant_id: variant.id).destroy_all
+            end
           rescue ActiveRecord::RecordInvalid => e
             error = e.record.errors.full_messages.join(", ")
           end
@@ -90,24 +92,24 @@ Spree::OrdersController.class_eval do
     end
   end
 
-   def edit
-      @order = current_order || Order.incomplete.
-                                  includes(line_items: [variant: [:images, :option_values, :product]]).
-                                  find_or_initialize_by(guest_token: cookies.signed[:guest_token])
+   # def edit
+   #    @order = current_order || Order.incomplete.
+   #                                includes(line_items: [variant: [:images, :option_values, :product]]).
+   #                                find_or_initialize_by(guest_token: cookies.signed[:guest_token])
 
-      if @order.line_items.present?
-        @order.line_items.each do |line_item|
-          if line_item.price !=  line_item.variant.price
-            @order.contents.update_cart(line_items_attributes: {id: line_item.id, price: line_item.variant.price})
-          end
-        end
-         @order = current_order || Order.incomplete.
-                                  includes(line_items: [variant: [:images, :option_values, :product]]).
-                                  find_or_initialize_by(guest_token: cookies.signed[:guest_token])
-      end
+   #    if @order.line_items.present?
+   #      @order.line_items.each do |line_item|
+   #        if line_item.price !=  line_item.variant.price
+   #          @order.contents.update_cart(line_items_attributes: {id: line_item.id, price: line_item.variant.price})
+   #        end
+   #      end
+   #       @order = current_order || Order.incomplete.
+   #                                includes(line_items: [variant: [:images, :option_values, :product]]).
+   #                                find_or_initialize_by(guest_token: cookies.signed[:guest_token])
+   #    end
 
-      associate_user
-    end
+   #    associate_user
+   #  end
 
   # def apply_coupon_code
   #     find_order

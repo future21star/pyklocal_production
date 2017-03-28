@@ -25,7 +25,7 @@
                   tr
                     td= variant.option_values.try(:collect, &:presentation).join(", ")
                     td= @product.try(:price)
-                    td= @product.sku
+                    td= variant.try(:sku)
                     td.btn-part
                       = link_to edit_merchant_product_variant_path(product_id: @product.slug, id: variant.id), class: "btn btn-default", "data-no-turbolink" => true do 
                         span.fa.fa-edit

@@ -11,12 +11,18 @@ section.register
                 h5.modal-sub-title If you already have an account with us, please login at the Login
               .modal-body
                 ul.tabs
-                  li.active rel="tab1"  Registration As Customer
-                  li rel="tab2"  Registration As Vendor
+                  li  class=((@tab.nil? || @tab == "" || @tab == 'customer') ? 'active' : '') 
+                     a href= registration_path(active_tab: "customer") Registration As Customer
+                  li  class=((@tab.present? && @tab == 'vendor') ? 'active' : '') 
+                    a href=(registration_path(active_tab: "vendor")) Registration As Vendor
                 .tab_container
-                  h3.d_active.tab_drawer_heading rel="tab1"  Registration As Customer
-                  #tab1.tab_content
-                    = render partial: 'form'
-                  h3.tab_drawer_heading rel="tab2"  Registration As Vendor
-                  #tab2.tab_content.vender
+                  h3.d_active.tab_drawer_heading rel="tab1"  Registration As Vendor
+                  .tab_content
+                    - if @tab == 'vendor'
+                      = render partial: 'vendor_form'
+                    - else
+                      = render partial: 'form'
+
+                  / h3.tab_drawer_heading rel="tab2"  Registration As Vendor
+                  / #tab2.tab_content.vender
                     = render partial: 'vendor_form'

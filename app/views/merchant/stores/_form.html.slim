@@ -1,102 +1,230 @@
-= form_for(@store, validate: true, html: {class: "form-horizontal form-body"}) do |f|
+/ = form_for(@store, html: {class: "form-horizontal form-body"}) do |f|
+/   = hidden_field_tag :token, params[:token]
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :name, "Store Name*", class: "control-label"
+/       / span.required *
+/     .col-md-4.col-xs-12
+/       span.input-icon.icon-right
+/         = f.text_field :name, required: true, class: "form-control input-bg" 
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :logo, class: "control-label"
+/     .col-md-4.col-xs-12
+/       span
+/         = f.file_field :logo, class: "form-control" 
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :certificate_of_authority,  class: "control-label"
+/       / span.required *
+/     .col-md-4.col-xs-12
+/       span
+/         = f.file_field :certificate, required: true, class: "form-control" 
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :manager_name, class: "control-label"
+/       span.required *
+/     .col-md-2.col-xs-6
+/       span.input-icon.icon-right
+/         = f.text_field :manager_first_name, class: "form-control input-bg", placeholder: "First Name" 
+/     .col-md-2.col-xs-6
+/       span.input-icon.icon-right
+/         = f.text_field :manager_last_name, class: "form-control input-bg", placeholder: "Last Name" 
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label "Phone Number*", class: "control-label"
+/       / span.required *
+/     .col-md-4.col-xs-12
+/       span.input-icon.icon-right
+/         = f.number_field :phone_number, required: true, class: "form-control input-bg numbersOnly"
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :store_type, class: "control-label"
+/     .col-md-4.col-xs-12
+/       = f.select :store_type , options_for_select([['Physical', 'Physical' ],['Online', 'Online' ],['Both', 'Both' ]], @store.store_type), {}, class: "form-control input-bg"
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :estimated_delivery_time, class: "control-label"
+/     .col-md-4.col-xs-12
+/       = f.text_field :estimated_delivery_time, class: "form-control input-bg", placeholder: "Enter full information like 2 - 5 business hours or 1 -3 working days"
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :site_url, "Website(s)", class: "control-label"
+/     .col-md-4.col-xs-12
+/       span.input-icon.icon-right
+/         = f.text_field :site_url, class: "form-control input-bg", placeholder: "www.example.com" 
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :street_number, "Address", class: "control-label"
+/       span.required *
+/     .col-md-8.col-xs-12
+/       span.input-icon.icon-right
+/         = f.text_field :street_number, required: true, class: "form-control input-bg", placeholder: "Street Address" 
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :street_number, " ".html_safe, class: "control-label"
+/     .col-md-2.col-xs-6
+/       span.input-icon.icon-right
+/         = f.text_field :city, class: "form-control input-bg", placeholder: "City"
+/     .col-md-2.col-xs-6
+/       span.input-icon.icon-right
+/         = f.text_field :state, class: "form-control input-bg charOnly", placeholder: "State"
+/     .col-md-2.col-xs-6
+/       span.input-icon.icon-right
+/         = f.number_field :zipcode, class: "form-control input-bg numbersOnly", placeholder: "Zipcode"
+/     .col-md-2.col-xs-6
+/       span.input-icon.icon-right
+/         = f.text_field :country, class: "form-control input-bg charOnly", placeholder: "Country"
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :categories, class: "control-label" 
+/       span.required *
+/     .col-md-10.col-xs-12
+/       - store_taxon_ids = @store.store_taxons.collect(&:taxon_id)
+/       - @taxons.each do |taxon|
+/         .col-md-2.col-xs-6
+/           label.checkbox-inline title="#{taxon.name}" 
+/             = check_box_tag "merchant_store[spree_taxon_ids][]", taxon.id, store_taxon_ids.include?(taxon.id)
+/             = truncate(taxon.name, length: 22)
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :description, class: "control-label"
+/     .col-md-8.col-xs-12
+/       span.input-icon.icon-right
+/         = f.text_area :description, class: "form-control input-bg", placeholder: "Few lines about your store...", rows: 5 
+  
+/   .form-group
+/     .col-xs-offset-2.col-xs-10
+/       button.btn.btn-primary type="submit"
+/         i.fa class=(@store.new_record? ? 'fa-check' : 'fa-referesh')
+/         |  
+/         = @store.new_record? ? "Create" : "Update" 
+/       = link_to "<span class='fa fa-close'></span> Cancel".html_safe, main_app.merchant_path, class: "btn btn-default margin-left"
+
+
+h3.h3-title Sell With Us!
+p
+  i.sprite.sprite-checkmark
+  | Use our platform to sell your products.
+  br/
+  small Note: All the fields with * are Required
+= form_for(@store, html: {class: "form form-body"}) do |f|
   = hidden_field_tag :token, params[:token]
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :name, "Store Name*", class: "control-label"
-      / span.required *
-    .col-md-4.col-xs-12
-      span.input-icon.icon-right
-        = f.text_field :name, required: true, class: "form-control input-bg" 
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :logo, class: "control-label"
-    .col-md-4.col-xs-12
-      span
+  .row
+    .form-group.col-xs-12
+      - if @store.id.present?
+         h4.title Edit the form of store
+      - else
+        h4.title Fill the form for New store
+    .form-group.col-xs-12
+       = f.text_field :name, :class => 'form-control',:required => "", :tabindex => 1, :placeholder => 'Store Name*'
+    .form-group.col-xs-12
+      label
+        strong Logo*
+      .fileUpload.btn.btn-primary
         = f.file_field :logo, class: "form-control" 
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :certificate_of_authority,  class: "control-label"
-      / span.required *
-    .col-md-4.col-xs-12
-      span
+        / span Browse...
+        / input#uploadBtn.upload type="file" name = "merchant_store[logo]" /
+      / input#uploadFile.uploadFile disabled="" placeholder=("No file selected") /
+    .form-group.col-xs-12
+      label
+        strong Certificate of authority*
+      .fileUpload.btn.btn-primary
+        / span Browse...
         = f.file_field :certificate, required: true, class: "form-control" 
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :manager_name, class: "control-label"
-      span.required *
-    .col-md-2.col-xs-6
-      span.input-icon.icon-right
-        = f.text_field :manager_first_name, class: "form-control input-bg", placeholder: "First Name" 
-    .col-md-2.col-xs-6
-      span.input-icon.icon-right
-        = f.text_field :manager_last_name, class: "form-control input-bg", placeholder: "Last Name" 
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label "Phone Number*", class: "control-label"
-      / span.required *
-    .col-md-4.col-xs-12
-      span.input-icon.icon-right
-        = f.number_field :phone_number, required: true, class: "form-control input-bg numbersOnly"
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :store_type, class: "control-label"
-    .col-md-4.col-xs-12
-      = f.select :store_type , options_for_select([['Physical', 'Physical' ],['Online', 'Online' ],['Both', 'Both' ]], @store.store_type), {}, class: "form-control input-bg"
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :estimated_delivery_time, class: "control-label"
-    .col-md-4.col-xs-12
+        / input#uploadBtn1.upload type="file" name = "merchant_store[certificate]" /
+      / input#uploadFile1.uploadFile disabled="" placeholder=("No file selected") /
+    .form-group.col-xs-12
+      h4.title Manager Details
+    .form-group.col-sm-6.col-xs-12
+      = f.text_field :manager_first_name, :class => 'form-control',:required => "", :tabindex => 1, :placeholder => 'First Name*'
+    .form-group.col-sm-6.col-xs-12
+      = f.text_field :manager_last_name, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => 'Last Name*'
+    .form-group.col-sm-6.col-xs-12
+      / input.form-control name="phone-number" placeholder=("Phone number*") type="tel" /
+      = f.number_field :phone_number, required: true, class: "form-control input-bg numbersOnly",placeholder: "Phone*"
+    .form-group.col-sm-6.col-xs-12
+       = f.select :store_type , options_for_select([['Physical', 'Physical' ],['Online', 'Online' ],['Both', 'Both' ]], @store.store_type), {}, class: "form-control input-bg"
+    .form-group.col-sm-6.col-xs-12
+      / input.form-control name="edt" placeholder=("Estimated delivery time") /
       = f.text_field :estimated_delivery_time, class: "form-control input-bg", placeholder: "Enter full information like 2 - 5 business hours or 1 -3 working days"
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :site_url, "Website(s)", class: "control-label"
-    .col-md-4.col-xs-12
-      span.input-icon.icon-right
-        = f.text_field :site_url, class: "form-control input-bg", placeholder: "www.example.com" 
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :street_number, "Address", class: "control-label"
-      span.required *
-    .col-md-8.col-xs-12
-      span.input-icon.icon-right
-        = f.text_field :street_number, required: true, class: "form-control input-bg", placeholder: "Street Address" 
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :street_number, " ".html_safe, class: "control-label"
-    .col-md-2.col-xs-6
-      span.input-icon.icon-right
-        = f.text_field :city, class: "form-control input-bg", placeholder: "City"
-    .col-md-2.col-xs-6
-      span.input-icon.icon-right
-        = f.text_field :state, class: "form-control input-bg charOnly", placeholder: "State"
-    .col-md-2.col-xs-6
-      span.input-icon.icon-right
-        = f.number_field :zipcode, class: "form-control input-bg numbersOnly", placeholder: "Zipcode"
-    .col-md-2.col-xs-6
-      span.input-icon.icon-right
-        = f.text_field :country, class: "form-control input-bg charOnly", placeholder: "Country"
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :categories, class: "control-label" 
-      span.required *
-    .col-md-10.col-xs-12
-      - store_taxon_ids = @store.store_taxons.collect(&:taxon_id)
-      - @taxons.each do |taxon|
-        .col-md-2.col-xs-6
-          label.checkbox-inline title="#{taxon.name}" 
+    .form-group.col-sm-6.col-xs-12
+      / input.form-control name="Website" placeholder="Website(s)" /
+      = f.text_field :site_url, class: "form-control input-bg", placeholder: "www.example.com" 
+    .form-group.col-xs-12
+      h4.title Address
+    .form-group.col-sm-6.col-xs-12
+      / input.form-control name="address" placeholder="Address*" /
+      = f.text_field :street_number, required: true, class: "form-control input-bg", placeholder: "Address*" 
+    .form-group.col-sm-6.col-xs-12
+      / input.form-control name="city" placeholder="City*" /
+      = f.text_field :city, class: "form-control input-bg", placeholder: "City*"
+    .form-group.col-sm-4.col-xs-12
+      / select.form-control
+      /   option State*
+      /   option Rajasthan
+      /   option Madya Pradesh
+      /   option Utter Pradesh
+      = f.text_field :state, class: "form-control input-bg charOnly", placeholder: "State"
+    .form-group.col-sm-4.col-xs-12
+      / input.form-control name="zipcode" placeholder="Zipcode*" /
+      = f.number_field :zipcode, class: "form-control input-bg numbersOnly", placeholder: "Zipcode"
+    .form-group.col-sm-4.col-xs-12
+      / select.form-control
+      /   option Country*
+      /   option Rajasthan
+      /   option Madya Pradesh
+      /   option Utter Pradesh
+      = f.text_field :country, class: "form-control input-bg charOnly", placeholder: "Country"
+    .form-group.col-xs-12
+      h4.title Categories*
+    .form-group.col-xs-12
+      ul.categories
+        - store_taxon_ids = @store.store_taxons.collect(&:taxon_id)
+        - @taxons = Spree::Taxon.where(parent_id: nil)
+        - @taxons.each do |taxon|
+         .col-md-2.col-xs-6
+           label.checkbox-inline title="#{taxon.name}" 
             = check_box_tag "merchant_store[spree_taxon_ids][]", taxon.id, store_taxon_ids.include?(taxon.id)
             = truncate(taxon.name, length: 22)
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :description, class: "control-label"
-    .col-md-8.col-xs-12
-      span.input-icon.icon-right
-        = f.text_area :description, class: "form-control input-bg", placeholder: "Few lines about your store...", rows: 5 
-  
-  .form-group
-    .col-xs-offset-2.col-xs-10
-      button.btn.btn-primary type="submit"
-        i.fa class=(@store.new_record? ? 'fa-check' : 'fa-referesh')
-        |  
-        = @store.new_record? ? "Create" : "Update" 
-      = link_to "<span class='fa fa-close'></span> Cancel".html_safe, main_app.merchant_path, class: "btn btn-default margin-left"
+        / li
+        /   label for="rememberme1"
+        /     input#rememberme1 name="rememberme" type="checkbox" value="forever" /
+        /     | Electronics
+        / li
+        /   label for="rememberme2"
+        /     input#rememberme2 name="rememberme" type="checkbox" value="forever" /
+        /     | Footware
+        / li
+        /   label for="rememberme3"
+        /     input#rememberme3 name="rememberme" type="checkbox" value="forever" /
+        /     | Pharmacy
+        / li
+        /   label for="rememberme4"
+        /     input#rememberme4 name="rememberme" type="checkbox" value="forever" /
+        /     | Household supplies
+        / li
+        /   label for="rememberme5"
+        /     input#rememberme5 name="rememberme" type="checkbox" value="forever" /
+        /     | Hair Care
+        / li
+        /   label for="rememberme6"
+        /     input#rememberme6 name="rememberme" type="checkbox" value="forever" /
+        /     | Baby &amp; Children
+        / li
+        /   label for="rememberme7"
+        /     input#rememberme7 name="rememberme" type="checkbox" value="forever" /
+        /     | Nutrition
+        / li
+        /   label for="rememberme8"
+        /     input#rememberme8 name="rememberme" type="checkbox" value="forever" /
+        /     | Home Furnishing
+    .form-group.col-xs-12
+      h4.title Description
+    .form-group.col-xs-12
+      textarea.form-control
+    .form-group.col-xs-12.text-center
+      - if @store.id.present?
+         = f.submit 'Update', :tabindex => 3, id: "continue-btn"
+      - else
+        = f.submit 'Sign Up', :tabindex => 3, id: "continue-btn"

@@ -81,7 +81,7 @@ Rails.application.configure do
 
   config.action_mailer.asset_host = "http://54.202.62.141"
   config.action_mailer.default_url_options = { :host => 'http://54.202.62.141' }
-  # config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :smtp
   # ActionMailer::Base.smtp_settings = {
   #   # :enable_starttls_auto => false,
   #   # :openssl_verify_mode => 'none'
@@ -103,7 +103,7 @@ Rails.application.configure do
     :address => "email-smtp.us-west-2.amazonaws.com",
     :port => "25",
     :user_name => "AKIAIJKINUGB6VALRKCQ",
-    :password => "AutKbcuIMh0oPjQ8HadsTyJGHGGVfGRoH0zkHcpxyd36",
+    :password => "AiwxueztRqKdZdhnG9QT1O+jH8ez3y8aMXH26AcytCDx",
     :authentication => :login,
     :enable_starttls_auto => true
   }

@@ -1,6 +1,6 @@
 Spree::User.class_eval do
 
-  devise :registerable, :confirmable
+  devise :registerable
   validates :first_name, :last_name, presence: true
   # validates :password,:email, presence: true, on: :create
   validates :first_name, :last_name, length: {maximum: 40}

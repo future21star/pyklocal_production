@@ -31,7 +31,7 @@ Rails.application.configure do
     :address => "email-smtp.us-west-2.amazonaws.com",
     :port => "25",
     :user_name => "AKIAIJKINUGB6VALRKCQ",
-    :password => "AutKbcuIMh0oPjQ8HadsTyJGHGGVfGRoH0zkHcpxyd36",
+    :password => "AiwxueztRqKdZdhnG9QT1O+jH8ez3y8aMXH26AcytCDx",
     :authentication => :login,
     :enable_starttls_auto => true
   }

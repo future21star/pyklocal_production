@@ -1,5 +1,5 @@
 class CsvUploadMailer < ActionMailer::Base
-  default from: "prashant.mishra@w3villa.com"
+  default from: "sales@pyklocal.com"
 
   def start_uploading(seller)
     @seller = seller
