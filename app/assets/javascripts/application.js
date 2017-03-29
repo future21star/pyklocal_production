@@ -379,7 +379,7 @@ $(document).ready(function(){
 $(document).ready(function(){
       $('.reg-form').on('submit', function(e){
           e.preventDefault();
-          if ((validatePassword()) * (validateConfirmPassword()) * (validateFirstName()) * (validateLastName()) * ( ValidateEmail()) ) {
+          if ((validateRegPassword()) * (validateRegConfirmPassword()) * (validateRegFirstName()) * (validateRegLastName()) * ( ValidateRegEmail()) ) {
               this.submit();
           }
       });
@@ -388,14 +388,14 @@ $(document).ready(function(){
 
    $('.reg-password').on('blur',function(){
       console.log("called");
-      validatePassword();
+      validateRegPassword();
     });
 
     $('.reg-password-confrim').on('blur',function(){
-        validateConfirmPassword();
+        validateRegConfirmPassword();
     });
 
-    function validatePassword(){
+    function validateRegPassword(){
       flag = true;
       errorStr = "";
       if($('.reg-password').val().trim().length == 0){
@@ -423,14 +423,14 @@ $(document).ready(function(){
 
 
     $('#spree_user_first_name').on('blur',function(){
-      validateFirstName();
+      validateRegFirstName();
     });
 
     $('#spree_user_last_name').on('blur',function(){
-        validateLastName();
+        validateRegLastName();
     });
 
-    function validateFirstName(){
+    function validateRegFirstName(){
       if($('#spree_user_first_name').val().trim().length == 0){
         $('#first-name-error').html("<p class='text-red'> First Name can not be blank </p");
         $('#first-name-error').show();
@@ -442,7 +442,7 @@ $(document).ready(function(){
       }
     }
 
-    function validateLastName(){
+    function validateRegLastName(){
       if($('#spree_user_last_name').val().trim().length == 0){
         $('#last-name-error').html("<p class='text-red'> Last Name can not be blank </p");
         $('#last-name-error').show();
@@ -454,7 +454,7 @@ $(document).ready(function(){
       }
     }
 
-    function validateConfirmPassword(){
+    function validateRegConfirmPassword(){
       if($('.reg-password').val().trim() != $('.reg-password-confirm').val().trim()) {
          $('#password-confirm-error').html("<p class='text-red'> Password does not match");
          $('#password-confirm-error').show();
@@ -467,18 +467,17 @@ $(document).ready(function(){
     }
 
     $('#spree_user_email').on('blur',function(){
-        ValidateEmail();
+        ValidateRegEmail();
     });
 
-    function  ValidateEmail(){
-      console.log(validateEmail());
+    function  ValidateRegEmail(){
       flag = true;
       errorStr = ""
       if ( $('.reg-email').val() == null || $('.reg-email').val() == ''){
         errorStr = " Email can not be blank";
         flag = false;
       }
-      else if (validateEmail() == false){
+      else if (validateRegistrationEmail() == false){
         errorStr = "Email is Invalid";
         flag = false;
       }
@@ -496,7 +495,7 @@ $(document).ready(function(){
     }
 
 
-    function validateEmail(){
+    function validateRegistrationEmail(){
       var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  ;
           console.log($('.reg-email').val());
           return re.test($('.reg-email').val());
