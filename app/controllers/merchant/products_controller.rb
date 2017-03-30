@@ -9,7 +9,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
 
 	def index
     @tab = params[:active_tab]
-    p "*******************************************"
+    p "******************************************"
     p @tab
     @search = Sunspot.search(Spree::Product) do
       fulltext "*#{params[:q][:s]}*" if params[:q] && params[:q][:s]

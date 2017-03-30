@@ -18,7 +18,6 @@ class Merchant::ProductPropertiesController < Merchant::ApplicationController
 		end
 	end
 
-
 	private
 		def find_product_properties
 			@product_property = Spree::ProductProperty.where(id: params[:id])

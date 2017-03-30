@@ -207,7 +207,7 @@ module Spree
       {product_property_name: dynamic_filters.flatten.collect(&:value), taxon_ids: search.facet(:taxon_ids).rows.collect(&:value)}
     end
 
-    def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants,  variant_prices, categories, stock, tax_category, cost_price,upc_code)
+    def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants,  variant_prices, categories, stock, tax_category, cost_price,upc_code,errors)
       if cost_price.blank? || cost_price < master_price
         cost_price = master_price
       end
@@ -217,33 +217,43 @@ module Spree
         tax_category_id = Spree::TaxCategory.find_by_name(tax_category).try(:id)
         p tax_category_id
         product = Spree::Product.new({name: name, price: master_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id, tax_category_id: tax_category_id, cost_price: cost_price})
-        product.save
-        Sunspot.index(product)
-        Sunspot.commit
-        unless categories.blank?
-          product.build_category(product, categories)
-        end
-        unless image_url.blank?
-          product.build_image(product, image_url)
-        end
-        unless properties.blank?
-          product.build_property(product, properties)
-        end
-        unless variants.blank?
-          product.build_variant(product, variants, variant_prices, stock, master_price)
-        end
-        if stock.present? && variants.blank?
-          product.master_variant_stock_build(product, stock)
-        end
-        if upc_code.present?
-          if (Spree::Product.last.properties.collect(&:name) & ["upc"]).blank?
-            property = Spree::Property.where(name: "upc", presentation: "Upc").first_or_create
-            product_property = product.product_properties.build(value: upc_code, property_id: property.id)
-            
-            product_property.save
+        if product.save
+          Sunspot.index(product)
+          Sunspot.commit
+          unless categories.blank?
+            product.build_category(product, categories)
           end
+          unless image_url.blank?
+            product.build_image(product, image_url)
+          end
+          unless properties.blank?
+            product.build_property(product, properties)
+          end
+          unless variants.blank?
+            product.build_variant(product, variants, variant_prices, stock, master_price)
+          end
+          if stock.present? && variants.blank?
+            product.master_variant_stock_build(product, stock)
+          end
+          if upc_code.present?
+            if (Spree::Product.last.properties.collect(&:name) & ["upc"]).blank?
+              property = Spree::Property.where(name: "upc", presentation: "Upc").first_or_create
+              product_property = product.product_properties.build(value: upc_code, property_id: property.id)
+              
+              product_property.save
+            end
+          end
+        else
+          Hash error = Hash.new
+          error[name.to_sym] = product.errors.full_messages.join(', ')
+          errors.push(error)
         end
+      else
+        Hash error = Hash.new
+        error[name.to_sym] = "Already present in store"
+        errors.push(error)
       end
+      return errors
     end
 
     def build_category(product, categories)

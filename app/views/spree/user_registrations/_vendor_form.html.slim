@@ -41,6 +41,7 @@ p
     .form-group.col-sm-6.col-xs-12
       = f.password_field :password_confirmation, :class => 'form-control reg-password-confirm',:tabindex => 2, :placeholder => 'Confirm Password*'
       span#password-confirm-error
+    = hidden_field_tag :tab, tab
     / .form-group.col-xs-12
     /   h4.title Manager Details
     / .form-group.col-sm-6.col-xs-12

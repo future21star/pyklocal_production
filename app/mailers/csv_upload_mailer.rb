@@ -6,8 +6,9 @@ class CsvUploadMailer < ActionMailer::Base
     mail(to: @seller.email, subject: "Your Product Importing Has Started")
   end
 
-  def uploading_complete(seller)
+  def uploading_complete(seller,errors)
     @seller = seller
+    @errors = errors
     mail(to: @seller.email, subject: "Your Product Importing Has Completed")
   end
 

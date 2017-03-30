@@ -18,6 +18,7 @@
       = f.password_field :password_confirmation, :class => 'form-control reg-password-confirm', :tabindex => 2, :placeholder => 'Confirm Password*'
       span#password-confirm-error
     = f.hidden_field :registration_type, :value => "customer"
+    = hidden_field_tag :tab, tab
     .form-group.col-xs-12
       label Registration Type:
       span.Type Customer

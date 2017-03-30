@@ -20,6 +20,11 @@ Spree::UsersController.class_eval do
       end
   end
 
+  def edit
+    p "00000000000000"
+    @user = spree_current_user
+  end
+
   def update_profile
     if spree_current_user.update_attributes(user_profile_params)
       

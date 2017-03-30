@@ -298,3 +298,11 @@ $(document).ready(function() {
   
   var myCompany = new Store();
 });
+
+
+
+/*=================================== Store Form Validations ==================================================*/
+
+
+
+   

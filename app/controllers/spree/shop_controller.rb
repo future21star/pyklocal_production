@@ -69,7 +69,7 @@ class Spree::ShopController < Spree::StoreController
     def perform_search
       per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12
       @search = Sunspot.search(Spree::Product) do 
-        fulltext params[:q][:search] if params[:q] && params[:q][:search]
+        fulltext "*#{params[:q][:search]}*" if params[:q] && params[:q][:search]
         paginate(:page => params[:page], :per_page => per_page)
         with(:buyable, :true)
         with(:visible, :true)

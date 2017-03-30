@@ -97,22 +97,26 @@
               span.input-icon.icon-right
                 = f.number_field :weight,min: "0",max: "999999.99", step: "0.01",class: "numbersOnly form-control input-bg"
                 .fa &#xf24e;
+                span.weight-error
             .col-md-6.top-margin-row.child-div1
               = f.label :height, class: "control-label"
               span.input-icon.icon-right
                 = f.number_field :height, min: "0",max: "999999.99",step: "0.01",class: "numbersOnly form-control input-bg"
                 .fa &#xf07d;
+                span.height-error
           .form-group
             .col-md-6.top-margin-row.child-div
               = f.label :width, class: "control-label"
               span.input-icon.icon-right
                 = f.number_field :width, min: "0",max: "999999.99", step: "0.01",class: "numbersOnly form-control input-bg"
                 .fa &#xf07e;
+                span.width-error
             .col-md-6.top-margin-row.child-div1
               = f.label :depth, class: "control-label"
               span.input-icon.icon-right
                 = f.number_field :depth, min: "0", max: "999999.99",step: "0.01",class: "numbersOnly form-control input-bg"
                 .fa &#xf01c; 
+                span.depth-error
     .row.top-margin-row
       .col-md-12
         = f.label :meta_keywords, Spree.t(:meta_keywords)
@@ -143,7 +147,7 @@
     $(document).ready(function(){
       $('.edit_product').on('submit', function(e){
           e.preventDefault();
-          if( (validateProductName()) * (validatePrice()) * (validateCostPrice()) * (validateTaxCategory()) * (validateShipping()) * ( validateTaxon()) * (validateAvailableDate()) * (validateDiscontinueDate()) ){
+          if( (validateProductName()) * (validatePrice()) * (validateCostPrice()) * (validateTaxCategory()) * (validateShipping()) * ( validateTaxon()) * (validateAvailableDate()) * (validateDiscontinueDate())){
             this.submit();
           }
           else{
@@ -163,6 +167,8 @@
     $('#product_name').on('blur',function(){
       validateProductName();
     });
+
+   
 
     $('#product_shipping_category_id').on('change',function(){
       validateShipping();
@@ -196,6 +202,7 @@
       }
     }
 
+    
 
     function validateShipping(){
       if ($('.select2-hidden-accessible').eq(0).text() == "None"){

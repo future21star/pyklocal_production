@@ -212,6 +212,7 @@ $(document).ready(function(){
       });
     });
 
+/*===================================Address Book Validation ====================================================*/
 
     $('.address_firstname').on('blur',function(){
       validateFirstName();
@@ -500,6 +501,75 @@ $(document).ready(function(){
           console.log($('.reg-email').val());
           return re.test($('.reg-email').val());
     }
+
+/*=================================== Store Form Validations ==================================================*/
+
+
+
+    function validateStoreName(){
+      if ($('#merchant_store_name').val().trim().length == 0){
+        $('#store-name-error').html("<p class='text-red'> Store Name can not be blank </p");
+        $('#store-name-error').show();
+        return  0;
+      }
+      else{
+        $('#store-name-error').hide();
+        return 1;
+      }
+    }
+
+    function validateCertificate(){
+      errorStr = "";
+      flag = true;
+      if($('#merchant_store_certificate').val().trim().length == 0){
+        flag = false;
+        errorStr += "File is not selected";
+      }
+      else if (validateImageFormat() == false ){
+        flag = false;
+        errorStr += "File extension must either be jpeg, jpg or png";
+      }
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('.certificate-error').html(OutputErrorStr);
+        $('.certificate-error').show();
+        return 0;
+      }
+      else{
+        $('.certificate-error').hide();
+      }
+    } 
+
+    function validateCategory(){
+
+    }
+
+    function validateImageFormat(){
+      var file_name = $('#merchant_store_certificate').val().split('.');
+      if ( (file_name[file_name.length - 1] == 'jpeg') || (file_name[file_name.length - 1] == 'jpg') || (file_name[file_name.length - 1] == 'png') ) {
+          return true;
+      }
+      else{
+        return false;
+      }
+    }
+
+    $('#merchant_store_name').on('blur',function(){
+      console.log("called");
+      validateStoreName();
+    });
+
+    $(document).ready(function(){
+      flag = true;
+      $('#new_merchant_store').on('submit', function(e){
+          e.preventDefault();
+          if ((validateStoreName()) * (validateLastName()) * (validateAddress1()) * (validateCity()) * (validateAddress2()) * ( validatePhone()) * (validateZip()) ) {
+              this.submit();
+          }
+      });
+    });
+
+
 
 
 

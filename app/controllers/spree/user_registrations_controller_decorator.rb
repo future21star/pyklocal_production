@@ -2,15 +2,14 @@ module Spree
   UserRegistrationsController.class_eval do
 
     def new
+      p "kkkjdksdjksdjksdjkd"
       @tab = params[:active_tab]
       @user = Spree::User.new
     end
     
     def create
-      @tab = params[:active_tab]
+      @tab = params[:tab]
       @user = build_resource(spree_user_params)
-      p "8888888888888888"
-      p spree_user_params
       resource_saved = resource.save
       yield resource if block_given?
       if resource_saved
