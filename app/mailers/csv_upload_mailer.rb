@@ -3,13 +3,13 @@ class CsvUploadMailer < ActionMailer::Base
 
   def start_uploading(seller)
     @seller = seller
-    mail(to: @seller.email, subject: "Your Product Importing Has Started")
+    mail(from: "sales@pyklocal.com",to: @seller.email, subject: "Your Product Importing Has Started")
   end
 
   def uploading_complete(seller,errors)
     @seller = seller
     @errors = errors
-    mail(to: @seller.email, subject: "Your Product Importing Has Completed")
+    mail(from: "sales@pyklocal.com",to: @seller.email, subject: "Your Product Importing Has Completed")
   end
 
 end
