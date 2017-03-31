@@ -1,6 +1,7 @@
 Spree::User.class_eval do
 
   devise :registerable
+  devise :confirmable 
   validates :first_name, :last_name, presence: true
   # validates :password,:email, presence: true, on: :create
   validates :first_name, :last_name, length: {maximum: 50}
@@ -44,6 +45,10 @@ Spree::User.class_eval do
 
   def mailboxer_email(object)
     return email
+  end
+
+  def confirmation_required?
+    self.registration_type == "customer"
   end
 
   def driver_orders_list

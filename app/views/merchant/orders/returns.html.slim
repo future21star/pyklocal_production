@@ -33,7 +33,7 @@
                   - @order = Spree::Order.find(order)
                   tr  
                     td= link_to @order.try(:number),  merchant_order_customer_return_items_path(@order)
-                    td= @order.user.full_name
+                    td= @order.try(:user).try(:full_name)
                     td= @order.completed_at.strftime("%d-%m-%Y")
                     / td= link_to merchant_order_approve_path(order), class: "btn btn-danger", title: "Return Order", method: :get do 
                           i.fa.fa-reply

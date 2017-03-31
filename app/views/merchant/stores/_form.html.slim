@@ -108,7 +108,7 @@ p
   | Use our platform to sell your products.
   br/
   small Note: All the fields with * are Required
-= form_for(@store, html: {class: "form form-body"}) do |f|
+= form_for(@store, html: {class: "form form-body merchant_store"}) do |f|
   = hidden_field_tag :token, params[:token]
   .row
     .form-group.col-xs-12
@@ -117,7 +117,7 @@ p
       - else
         h4.title Fill the form for New store
     .form-group.col-xs-12
-      = f.text_field :name, :class => 'form-control', :tabindex => 1, :placeholder => 'Store Name*'
+      = f.text_field :name, :class => 'form-control ', :tabindex => 1, :placeholder => 'Store Name*'
       span#store-name-error.error-block 
     .form-group.col-xs-12
       label
@@ -134,57 +134,64 @@ p
       .fileUpload.btn.btn-primary
         / span Browse...
         = f.file_field :certificate, class: "form-control" 
+      span.certificate-name
+        = @store.certificate_file_name.present? ? @store.certificate_file_name : "No file is selected"
       span.certificate-error
         / input#uploadBtn1.upload type="file" name = "merchant_store[certificate]" /
       / input#uploadFile1.uploadFile disabled="" placeholder=("No file selected") /
     .form-group.col-xs-12
       h4.title Manager Details
-    .form-group.col-sm-6.col-xs-12
-      = f.text_field :manager_first_name, :class => 'form-control', :tabindex => 1, :placeholder => 'First Name',maxlength: "100"
-    .form-group.col-sm-6.col-xs-12
-      = f.text_field :manager_last_name, :class => 'form-control',  :tabindex => 1, :placeholder => 'Last Name',maxlength: "100"
-    .form-group.col-sm-6.col-xs-12
-      / input.form-control name="phone-number" placeholder=("Phone number*") type="tel" /
-      = f.number_field :phone_number, class: "form-control input-bg numbersOnly address_phone",placeholder: "Phone*"
-      span#phone-error.error-block
-    .form-group.col-sm-6.col-xs-12
-       = f.select :store_type , options_for_select([['Physical', 'Physical' ],['Online', 'Online' ],['Both', 'Both' ]], @store.store_type), {}, class: "form-control input-bg"
-    .form-group.col-sm-6.col-xs-12
-      / input.form-control name="edt" placeholder=("Estimated delivery time") /
-      = f.text_field :estimated_delivery_time, class: "form-control input-bg", placeholder: "Enter full information like 2 - 5 business hours or 1 -3 working days",maxlength: "100"
-    .form-group.col-sm-6.col-xs-12
-      / input.form-control name="Website" placeholder="Website(s)" /
-      = f.text_field :site_url, class: "form-control input-bg ", placeholder: "www.example.com" 
+    .row
+      .form-group.col-sm-6.col-xs-12
+        = f.text_field :manager_first_name, :class => 'form-control', :tabindex => 1, :placeholder => 'First Name',maxlength: "100"
+      .form-group.col-sm-6.col-xs-12
+        = f.text_field :manager_last_name, :class => 'form-control',  :tabindex => 1, :placeholder => 'Last Name',maxlength: "100"
+    .row
+      .form-group.col-sm-6.col-xs-12
+        / input.form-control name="phone-number" placeholder=("Phone number*") type="tel" /
+        = f.number_field :phone_number, class: "form-control input-bg numbersOnly address_phone",placeholder: "Phone*"
+        span#phone-error.error-block
+      .form-group.col-sm-6.col-xs-12
+         = f.select :store_type , options_for_select([['Physical', 'Physical' ],['Online', 'Online' ],['Both', 'Both' ]], @store.store_type), {}, class: "form-control input-bg"
+    .row
+      .form-group.col-sm-6.col-xs-12
+        / input.form-control name="edt" placeholder=("Estimated delivery time") /
+        = f.text_field :estimated_delivery_time, class: "form-control input-bg", placeholder: "Enter full information like 2 - 5 business hours or 1 -3 working days",maxlength: "100"
+      .form-group.col-sm-6.col-xs-12
+        / input.form-control name="Website" placeholder="Website(s)" /
+        = f.text_field :site_url, class: "form-control input-bg ", placeholder: "www.example.com" 
     .form-group.col-xs-12
       h4.title Address
-    .form-group.col-sm-6.col-xs-12
-      / input.form-control name="address" placeholder="Address*" /
-      = f.text_field :street_number, class: "form-control input-bg address_address1", placeholder: "Address*" , maxlength: "200"
-      span#address1-error.error-block
-    .form-group.col-sm-6.col-xs-12
-      / input.form-control name="city" placeholder="City*" /
-      = f.text_field :city, class: "form-control input-bg address_city", placeholder: "City*",maxlength: "100"
-      span#city-error.error-block
-    .form-group.col-sm-4.col-xs-12
-      / select.form-control
-      /   option State*
-      /   option Rajasthan
-      /   option Madya Pradesh
-      /   option Utter Pradesh
-      = f.text_field :state, class: "form-control input-bg charOnly address_state", placeholder: "State*",maxlength: "100"
-      span#state-error.error-block
-    .form-group.col-sm-4.col-xs-12
-      / input.form-control name="zipcode" placeholder="Zipcode*" /
-      = f.number_field :zipcode, class: "form-control input-bg numbersOnly address_zipcode", placeholder: "Zipcode*",maxlength: "6"
-      span#zipcode-error.error-block
-    .form-group.col-sm-4.col-xs-12
-      / select.form-control
-      /   option Country*
-      /   option Rajasthan
-      /   option Madya Pradesh
-      /   option Utter Pradesh
-      = f.text_field :country, class: "form-control input-bg charOnly address_country", placeholder: "Country*"
-      span#country-error
+    .row
+      .form-group.col-sm-6.col-xs-12
+        / input.form-control name="address" placeholder="Address*" /
+        = f.text_field :street_number, class: "form-control input-bg address_address1", placeholder: "Address*" , maxlength: "200"
+        span#address1-error.error-block
+      .form-group.col-sm-6.col-xs-12
+        / input.form-control name="city" placeholder="City*" /
+        = f.text_field :city, class: "form-control input-bg address_city", placeholder: "City*",maxlength: "100"
+        span#city-error.error-block
+    .row
+      .form-group.col-sm-4.col-xs-12
+        / select.form-control
+        /   option State*
+        /   option Rajasthan
+        /   option Madya Pradesh
+        /   option Utter Pradesh
+        = f.text_field :state, class: "form-control input-bg charOnly address_state", placeholder: "State*",maxlength: "100"
+        span#state-error.error-block
+      .form-group.col-sm-4.col-xs-12
+        / input.form-control name="zipcode" placeholder="Zipcode*" /
+        = f.number_field :zipcode, class: "form-control input-bg numbersOnly address_zipcode", placeholder: "Zipcode*",maxlength: "6"
+        span#zipcode-error.error-block
+      .form-group.col-sm-4.col-xs-12
+        / select.form-control
+        /   option Country*
+        /   option Rajasthan
+        /   option Madya Pradesh
+        /   option Utter Pradesh
+        = f.text_field :country, class: "form-control input-bg charOnly address_country", placeholder: "Country*"
+        span#country-error
     .form-group.col-xs-12
       h4.title Categories*
     .form-group.col-xs-12
@@ -255,17 +262,24 @@ p
       }
     }
 
+
     function validateCertificate(){
+      console.log("called");
       errorStr = "";
       flag = true;
-      if($('#merchant_store_certificate').val().trim().length == 0){
+
+      if( ($('.certificate-name').html().length > 0) && ($('.certificate-name').html() != "No file is selected")){
+        flag = true;
+      }
+      if($('.certificate-name').html() == "No file is selected"){
         flag = false;
         errorStr += "File is not selected";
       }
-      else if (validateImageFormat("merchant_store_certificate") == false ){
+      else if ($('#merchant_store_certificate').val().length > 0 && validateImageFormat("merchant_store_certificate") == false )                                             {
         flag = false;
         errorStr += "File extension must either be jpeg, jpg or png";
       }
+      $('.certificate-name').html("");
       if (flag == false){
         OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
         $('.certificate-error').html(OutputErrorStr);
@@ -274,8 +288,11 @@ p
       }
       else{
         $('.certificate-error').hide();
+        return 1;
       }
-    } 
+    }
+
+    
 
 
     function validateLogo(){
@@ -526,9 +543,9 @@ p
 
     $(document).ready(function(){
       flag = true;
-      $('#new_merchant_store').on('submit', function(e){
+      $('.merchant_store').on('submit', function(e){
           e.preventDefault();
-          if ((validateStoreName()) * (validateCertificate()) * (validateAddress1()) * (validateCity()) * (validateCountry()) * ( validatePhone()) * (validateZip()) * (validateState()) * (validateCategory())) {
+          if ((validateStoreName()) * (validateAddress1()) * (validateCity()) * (validateCountry()) * ( validatePhone()) * (validateZip()) * (validateState()) * (validateCertificate()) * (validateCategory())) {
               this.submit();
           }
       });

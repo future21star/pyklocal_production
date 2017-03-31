@@ -1,6 +1,6 @@
 class Merchant::StoresController < Merchant::ApplicationController
 
-	before_filter :authenticate_user!, except: [:show, :new, :create, :index, :edit]
+	before_filter :authenticate_user!, except: [:show, :new, :create, :index,:edit,:update]
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   # before_action :validate_token, only: [:edit, :update] 
   before_action :perform_search, only: [:show]
