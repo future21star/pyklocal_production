@@ -4,7 +4,7 @@ class Spree::ShopController < Spree::StoreController
     before_filter :perform_search, only: [:index, :show]
 
   def index 
-    @price_array = params[:q][:price].to_s if params[:q] && params[:q][:price]
+    @price_array = params[:q][:price].to_s if params[:q] && params[:q][:price] && params[:q][:price].kind_of?(Array)
     @products = @search.results
     @taxons = Spree::Taxon.where.not(name: "categories") 
     @taxonomies = Spree::Taxonomy.includes(root: :children) 
@@ -102,9 +102,11 @@ class Spree::ShopController < Spree::StoreController
           end
         end
         if params[:q] && params[:q][:price]
-          any_of do 
-            params[:q][:price].each do |price|
-              with(:price, Range.new(*price.split("..").map(&:to_i)))
+          if params[:q][:price].kind_of?(Array)
+            any_of do 
+              params[:q][:price].each do |price|
+                with(:price, Range.new(*price.split("..").map(&:to_i)))
+              end
             end
           end
         end

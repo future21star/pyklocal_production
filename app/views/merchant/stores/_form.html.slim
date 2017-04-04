@@ -267,6 +267,9 @@ p
       console.log("called");
       errorStr = "";
       flag = true;
+      if ($('#merchant_store_certificate').val() != ""){
+         $('.certificate-name').html("");
+      }
 
       if( ($('.certificate-name').html().length > 0) && ($('.certificate-name').html() != "No file is selected")){
         flag = true;
@@ -279,7 +282,7 @@ p
         flag = false;
         errorStr += "File extension must either be jpeg, jpg or png";
       }
-      $('.certificate-name').html("");
+      
       if (flag == false){
         OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
         $('.certificate-error').html(OutputErrorStr);
