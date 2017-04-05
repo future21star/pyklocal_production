@@ -22,7 +22,7 @@
 
             #collapse-checkout-option.panel-collapse.collapse.in
               .panel-body
-                - if current_spree_user.address.present?
+                - if current_spree_user.bill_address.present?
                   table.table.table-striped
                     tr
                       td First Name

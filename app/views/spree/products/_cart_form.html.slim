@@ -1,9 +1,27 @@
-= form_for :order, :url => populate_orders_path do |f|
+= form_for :order, :url => populate_orders_path,:html => {:class => "add-cart" } do |f|
   #inside-product-cart-form data-hook="inside_product_cart_form" itemprop="offers" itemscope="" itemtype="https://schema.org/Offer"
     h3.item-title #{@product.name}
     hr.dotted/
-    h4 Brand:
-    h4 UPC Code: #{@product.upc_code}
+    h4 
+      | Brand:
+      - if @product.product_properties.present?
+        - if  @product.product_properties.where(property_id: @product.properties.where(name: "Brand").first.try(:id)).present?
+          | &nbsp;
+          =  @product.product_properties.where(property_id: @product.properties.where(name: "Brand").first.try(:id)).first.value
+        - else
+          = ' NA'
+      - else
+        = ' NA'
+    h4 
+      | UPC Code:
+      - if @product.product_properties.present?
+        - if  @product.product_properties.where(property_id: @product.properties.where(name: "UPC").first.try(:id)).present?
+          | &nbsp;
+          =  @product.product_properties.where(property_id: @product.properties.where(name: "UPC").first.try(:id)).first.value
+        - else
+          = ' NA'
+      - else
+        = ' NA'
     h4 In-Stock: #{@product.total_on_hand}
     hr.dotted/
     h3.pro-price #{number_to_currency(@product.price.to_s)}
@@ -67,12 +85,13 @@
           = text_field_tag :quantity, 1, :class => 'numberOnly qty', :min => 1, :id =>'input-quantity'
           input.qtyplus field="quantity" type="button" value="+" /
           input.qtyminus field="quantity" type="button" value="-" min=1 /
+        span.qty-error
       /-unless  @product.store.blank?
        /= render partial: 'spree/shared/wish_form', locals: {product: @product}
 
       -unless @product.store.blank?
         - button_text =  @product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"
-        = button_tag"#{button_text}" , :id => 'add-to-cart-button', :type => :submit, disabled: @product.total_on_hand <= 0 , class: "#{button_text == "Out Of Stock" ? 'out-of-stock' : 'add-to-cart'} but btn" , data: { disable_with: "Please wait..." }
+        = button_tag"#{button_text}" , :id => 'add-to-cart-button', :type => :submit, disabled: @product.total_on_hand <= 0 , class: "#{button_text == "Out Of Stock" ? 'out-of-stock' : 'add-to-cart'} but btn" 
     hr.dotted/
     = social_share_button_tag(@product.name, 'data-twitter-title' => 'TheTitleForTwitter', :url => request.url)
 -unless  @product.store.blank?
@@ -90,4 +109,39 @@
       $('.social-share-button .ssb-google_plus').removeClass().addClass('fa fa-google-plus');
       $('.social-share-button .ssb-linkedin').removeClass().addClass('fa fa-linkedin');
     });
+
+    $('#input-quantity').on('blur',function(){
+      validateQty();
+    });
+
+
+    function validateQty(){
+      if($('#input-quantity').val() == "" || $('#input-quantity').val() == null){
+        $('.qty-error').html("<p class='text-red'> Quantity can not be blank");
+        $('.qty-error').show();
+        return 0;
+      }
+      else if($('#input-quantity').val().indexOf('.') != -1){
+        $('.qty-error').html("<p class='text-red'> Quantity must be integer");
+        $('.qty-error').show();
+        return 0;
+      }
+      else{
+        $('.qty-error').hide();
+        return 1;
+      }
+    }
+
+
+    $('.add-cart').on('submit',function(e){
+      e.preventDefault();
+      if(validateQty()){
+        this.submit();
+      }
+    });
+
+
+
+
+
 

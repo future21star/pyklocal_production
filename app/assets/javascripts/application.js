@@ -102,7 +102,8 @@ var pyklocal = {
 
 	filterProducts: function() {
 		$('.filter-field').click(function() {
-			$('#facet-filter').submit();
+      $('#facet-filter').submit();
+      $('#facet-filter input[type= "checkbox"]').attr('disabled','disabled');
 		});
 	},
 

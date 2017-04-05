@@ -10,13 +10,17 @@ class Spree::WishlistsController < Spree::StoreController
   end
 
   def create
-    unless current_spree_user.wishlists.collect(&:variant_id).include?(params[:wishlist][:variant_id].to_i)
-      @wishlist = Spree::Wishlist.new wishlist_params
-      @wishlist.user = current_spree_user
-      @wishlist.save
-      redirect_to :back, notice: "Product added into your wishlist"
+    if Spree::Variant.find(params[:wishlist][:variant_id]).total_on_hand > 0
+      unless current_spree_user.wishlists.collect(&:variant_id).include?(params[:wishlist][:variant_id].to_i)
+        @wishlist = Spree::Wishlist.new wishlist_params
+        @wishlist.user = current_spree_user
+        @wishlist.save
+        redirect_to :back, notice: "Product added into your wishlist"
+      else
+         redirect_to :back, notice: "Product already present in wishlist"
+      end
     else
-       redirect_to :back, notice: "Product already present in wishlist"
+      redirect_to :back, notice: "Out Of Stock Product can not be added to wishlist"
     end
   end
 

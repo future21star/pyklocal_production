@@ -123,7 +123,9 @@ p
       label
         strong Logo
       .fileUpload.btn.btn-primary
-        = f.file_field :logo, class: "form-control" 
+        = f.file_field :logo,  accept: "image/png,image/jpeg,image/jpg",class: "form-control" 
+      span.logo-name
+        = @store.logo_file_name.present? ? @store.logo_file_name : ""
       span.logo-error
         / span Browse...
         / input#uploadBtn.upload type="file" name = "merchant_store[logo]" /
@@ -133,7 +135,7 @@ p
         strong Certificate of authority*
       .fileUpload.btn.btn-primary
         / span Browse...
-        = f.file_field :certificate, class: "form-control" 
+        = f.file_field :certificate,  accept: "image/png,image/jpeg,image/jpg",class: "form-control" 
       span.certificate-name
         = @store.certificate_file_name.present? ? @store.certificate_file_name : "No file is selected"
       span.certificate-error
@@ -301,23 +303,21 @@ p
     function validateLogo(){
       errorStr = "";
       flag = true;
-      if($('#merchant_store_logo').val().trim().length == 0){
-        flag = false;
-        errorStr += "File is not selected";
+     
+      if ($('#merchant_store_logo').val().length > 0) {
+        $('.logo-name').html("");
+        if (validateImageFormat("merchant_store_logo") == false ){
+          flag = false;
+          $('.logo-error').html("<p class='text-red'>File extension must either be jpeg, jpg or png </p>");
+          $('.logo-error').show();
+          return 0;
+        }
+        else{
+          $('.logo-error').hide();
+          return 1;
+        }
       }
-      else if (validateImageFormat("merchant_store_logo") == false ){
-        flag = false;
-        errorStr += "File extension must either be jpeg, jpg or png";
-      }
-      if (flag == false){
-        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
-        $('.logo-error').html(OutputErrorStr);
-        $('.logo-error').show();
-        return 0;
-      }
-      else{
-        $('.logo-error').hide();
-      }
+      return 1;
     } 
 
     function validateAddress1(){
@@ -544,11 +544,16 @@ p
         validateCategory();
     });
 
+    $('#merchant_store_logo').on('change',function(){
+      validateLogo();
+    });
+
+
     $(document).ready(function(){
       flag = true;
       $('.merchant_store').on('submit', function(e){
           e.preventDefault();
-          if ((validateStoreName()) * (validateAddress1()) * (validateCity()) * (validateCountry()) * ( validatePhone()) * (validateZip()) * (validateState()) * (validateCertificate()) * (validateCategory())) {
+          if ((validateStoreName()) * (validateAddress1()) * (validateCity()) * (validateCountry()) * ( validatePhone()) * (validateZip()) * (validateState()) * (validateCertificate()) * (validateLogo()) * (validateCategory())) {
               this.submit();
           }
       });
