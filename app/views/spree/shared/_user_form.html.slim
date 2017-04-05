@@ -19,7 +19,7 @@
     .form-group.required.clearfix
       label.col-sm-3.control-label for="input-email"  E-Mail
       .col-sm-9
-        = f.email_field :email, :class => 'form-control', :required => "", :tabindex => 1, :placeholder => Spree.t(:email)
+        = f.email_field :email, :class => 'form-control', maxlength: "50",:required => "", :tabindex => 1, :placeholder => Spree.t(:email)
     .form-group.required.clearfix
       label.col-sm-3.control-label for="input-password"  Password
       .col-sm-9

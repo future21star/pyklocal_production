@@ -12,10 +12,10 @@
       = f.email_field :email, :class => 'form-control reg-email', :tabindex => 1, :placeholder => 'E-Mail*'
       span#invalid-email
     .form-group.col-sm-6.col-xs-12
-      = f.password_field :password, :class => 'form-control reg-password', :tabindex => 2, :placeholder => 'Password*'
+      = f.password_field :password, :class => 'form-control reg-password', maxlength: "30",:tabindex => 2, :placeholder => 'Password*'
       span#password-error
     .form-group.col-sm-6.col-xs-12
-      = f.password_field :password_confirmation, :class => 'form-control reg-password-confirm', :tabindex => 2, :placeholder => 'Confirm Password*'
+      = f.password_field :password_confirmation, :class => 'form-control reg-password-confirm',maxlength: "30", :tabindex => 2, :placeholder => 'Confirm Password*'
       span#password-confirm-error
     = f.hidden_field :registration_type, :value => "customer"
     = hidden_field_tag :tab, tab
