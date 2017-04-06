@@ -18,6 +18,7 @@ class Spree::AddressesController < Spree::StoreController
 		@addresses.attributes = {country_id: country = Spree::Country.find(Spree::Config[:default_country_id]).id}
 		if @addresses.save
 			current_spree_user.update_attributes(bill_address_id: @addresses.id)
+			current_spree_user.update_attributes(ship_address_id: @addresses.id)
 			redirect_to spree.addresses_path, notice: "Address created successfully"
 		else
 			render action: 'index'
@@ -25,11 +26,22 @@ class Spree::AddressesController < Spree::StoreController
 	end
 
 	def update
-		if 	current_spree_user.bill_address.update_attributes(addresses_params)
-			redirect_to edit_address_path(@address), notice: "Successfully updated."
+		if current_spree_user.bill_address.present?
+			if 	current_spree_user.bill_address.update_attributes(addresses_params)
+				redirect_to edit_address_path(@address), notice: "Successfully updated."
+			else
+				render action: 'edit'
+			end
 		else
-			render action: 'edit'
-			
+			@addresses = Spree::Address.new(addresses_params)
+			@addresses.attributes = {country_id: country = Spree::Country.find(Spree::Config[:default_country_id]).id}
+			if @addresses.save
+				current_spree_user.update_attributes(bill_address_id: @addresses.id)
+				current_spree_user.update_attributes(ship_address_id: @addresses.id)
+				redirect_to spree.addresses_path, notice: "Address created successfully"
+			else
+				render action: 'index'
+			end
 		end
 	end
 

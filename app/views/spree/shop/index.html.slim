@@ -55,7 +55,7 @@ section.product_sec
                     - selected = (params[:q][:brand].include?(brand_row.value.to_s)) rescue false
                     li.filter-field
                       = check_box_tag "q[brand][]", brand_row.value, selected, class: "filters"
-                      = "#{brand_row.value} (#{brand_row.try(:count).to_i})"
+                      = "#{truncate(brand_row.value,:length=> 30)} (#{brand_row.try(:count).to_i})"
               .filter-box
                 h5 Store
                 ul
@@ -64,7 +64,7 @@ section.product_sec
                     - selected = (params[:q][:store].include?(store_row.value.to_s)) rescue false
                     li.filter-field
                       = check_box_tag "q[store][]", store_row.value, selected, class: "filters"
-                      = "#{store_row.value} (#{store_row.try(:count).to_i})"
+                      = "#{truncate(store_row.value,:length=>30)} (#{store_row.try(:count).to_i})"
               .filter-box
                 h5 Category
                 ul
@@ -73,7 +73,7 @@ section.product_sec
                     - selected = (params[:q][:categories].include?(taxon_row.value.to_s)) rescue false
                     li.filter-field
                       = check_box_tag "q[categories][]", taxon_row.value, selected, class: "filters"
-                      = "#{taxon_row.value} (#{taxon_row.try(:count).to_i})"
+                      = "#{truncate(taxon_row.value,:length=> 20)} (#{taxon_row.try(:count).to_i})"
       .col-md-9.col-sm-8.col-xs-12
         .sort-bar
           a data-no-turbolink="true" href="#"

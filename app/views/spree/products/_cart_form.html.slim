@@ -7,7 +7,7 @@
       - if @product.product_properties.present?
         - if  @product.product_properties.where(property_id: @product.properties.where(name: "Brand").first.try(:id)).present?
           | &nbsp;
-          =  @product.product_properties.where(property_id: @product.properties.where(name: "Brand").first.try(:id)).first.value
+          =  truncate(@product.product_properties.where(property_id: @product.properties.where(name: "Brand").first.try(:id)).first.value, :length =>30 )
         - else
           = ' NA'
       - else
@@ -17,7 +17,7 @@
       - if @product.product_properties.present?
         - if  @product.product_properties.where(property_id: @product.properties.where(name: "UPC").first.try(:id)).present?
           | &nbsp;
-          =  @product.product_properties.where(property_id: @product.properties.where(name: "UPC").first.try(:id)).first.value
+          =  truncate(@product.product_properties.where(property_id: @product.properties.where(name: "UPC").first.try(:id)).first.value, :length =>30) 
         - else
           = ' NA'
       - else

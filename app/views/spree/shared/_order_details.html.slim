@@ -59,7 +59,7 @@ table.table.table-bordered.table-hover
   h4 Shipping Address
   - if order.has_step?("address")
     = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
-    = render 'spree/shared/address', address: order.bill_address
+    = render 'spree/shared/address', address: order.ship_address
 
 
 

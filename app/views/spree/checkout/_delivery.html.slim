@@ -18,7 +18,7 @@
                     span.delilebel Delivery
                     span.type= (item.line_item.delivery_type == 'home_delivery' ? ' Home Delivery' : 'Pick Up')
                     a href="/cart"  Edit
-                  = link_to 'X REMOVE', '#', class: 'remove delete', id: "delete_#{dom_id(item.line_item)}"
+                  / = link_to 'X REMOVE', '#', class: 'remove delete', id: "delete_#{dom_id(item.line_item)}"
                 td
                   = item.quantity
                 td

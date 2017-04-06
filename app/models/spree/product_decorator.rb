@@ -213,11 +213,15 @@ module Spree
       end
       # tax_category_id = Spree::TaxCategory.find_by_name("clothing").try(:id)
       # p tax_category_id
+      p "================="
       unless Spree::Product.where(name: name, store_id: store_id).present?
         tax_category_id = Spree::TaxCategory.find_by_name(tax_category).try(:id)
         p tax_category_id
         product = Spree::Product.new({name: name, price: master_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id, tax_category_id: tax_category_id, cost_price: cost_price})
+        p "8888888888666666"
+        p product
         if product.save
+          p "99999999999"
           Sunspot.index(product)
           Sunspot.commit
           unless categories.blank?
@@ -244,15 +248,18 @@ module Spree
             end
           end
         else
+          p "333333"
           Hash error = Hash.new
-          error[name.to_sym] = product.errors.full_messages.join(', ')
+          error[name.to_sym] = name.to_s + " Errors " + product.errors.full_messages.join(', ')
           errors.push(error)
+          p "666666666"
         end
       else
         Hash error = Hash.new
-        error[name.to_sym] = "Already present in store"
+        error[name.to_sym] = name.to_s + " Already present in store"
         errors.push(error)
       end
+      p "5555555555555555"
       return errors
     end
 

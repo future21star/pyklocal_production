@@ -14,14 +14,11 @@
         table.table.table-responsive.table-bordered border="1px"
           thead
             tr
-              th.text-center Product Name
-              th.text-center Error
+              th.text-center Error(s)
           tbody
             - @errors.each do |error|
               - error.each do |product_name,err|
                 tr
-                  td.text-center 
-                    = product_name
                   td.text-center 
                     = err
     br
