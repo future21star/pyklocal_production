@@ -9,8 +9,7 @@ Bundler.require(*Rails.groups)
 
 module Pyklocal
   class Application < Rails::Application
-  	config.web_console.whitelisted_ips = '192.168.0.195'
-  	config.web_console.whitelisted_ips = '192.168.0.150'
+  	
     config.to_prepare do
       # Load application's model / class decorators
       Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")) do |c|
