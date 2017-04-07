@@ -27,13 +27,13 @@ p
     .form-group.col-xs-12
       h4.title Your Personal Details
     .form-group.col-sm-6.col-xs-12
-      = f.text_field :first_name, :class => 'form-control',maxlength: "50",:tabindex => 1, :placeholder => 'First Name*'
+      = f.text_field :first_name, :class => 'form-control',maxlength: "100",:tabindex => 1, :placeholder => 'First Name*'
       span#first-name-error
     .form-group.col-sm-6.col-xs-12
-      = f.text_field :last_name, :class => 'form-control', maxlength: "50",:tabindex => 1, :placeholder => 'Last Name*'
+      = f.text_field :last_name, :class => 'form-control', maxlength: "100",:tabindex => 1, :placeholder => 'Last Name*'
       span#last-name-error
     .form-group.col-xs-12
-      = f.email_field :email, :class => 'form-control reg-email',maxlength: "50",:tabindex => 1, :placeholder => 'E-Mail*'
+      = f.email_field :email, :class => 'form-control reg-email',maxlength: "100",:tabindex => 1, :placeholder => 'E-Mail*'
       span#invalid-email
     .form-group.col-sm-6.col-xs-12
       = f.password_field :password, :class => 'form-control reg-password',maxlength: "30",:tabindex => 2, :placeholder => 'Password*'
@@ -146,5 +146,6 @@ p
         }
       });
     })
+
 
 

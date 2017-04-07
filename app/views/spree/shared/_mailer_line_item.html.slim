@@ -50,7 +50,7 @@
                 strong= label
               td.total style="padding: 10px 0; text-align: right;" colspan="2"
                 span= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency)
-    tfoot#shipment-total
+    / tfoot#shipment-total
       - @order.shipments.group_by { |s| s.selected_shipping_rate.name }.each do |name, shipments|
         tr.total data-hook="shipment-row" 
           td.text-muted style="padding: 10px 0;" colspan="3" 
