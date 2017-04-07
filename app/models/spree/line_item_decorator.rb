@@ -76,7 +76,12 @@ module Spree
   	end
 
   	def tax_rate
-  		variant.tax_category_id.present? ? variant.tax_category.tax_rates.first.amount.to_f : product.tax_category.tax_rates.first.amount.to_f 
+  		# variant.tax_category_id.present? ? variant.tax_category.tax_rates.first.amount.to_f : product.tax_category.tax_rates.first.amount.to_f 
+      if self.tax_category.present?
+        self.tax_category.tax_rates.first.amount.to_f
+      else
+        0
+      end
   	end
 
 		def seller_name
