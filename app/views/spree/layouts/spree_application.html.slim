@@ -1,28 +1,31 @@
 doctype html
-html lang="#{I18n.locale}" 
+html lang="#{I18n.locale}"
   head[data-hook="inside_head"]
-    = yield :meta_tags 
+    = yield :meta_tags
     = render :partial => 'spree/shared/head'
     / link[rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"]
     = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => false
-  body
-    .container-fluid style = ("padding-left: 0;padding-right: 0;")
-      = render :partial => 'spree/shared/header'
-      div class=(params["controller"] == "spree/checkout" || params["controller"] == "spree/orders" ? "container" : "")
-        #wrapper.main-body[data-hook]
-          = render :partial => 'spree/shared/sidebar' if content_for? :sidebar
-          #content[data-hook]
-            = yield
-          = yield :templates
-    = render :partial => 'spree/shared/custome_feature' 
+  body#home
+    .onloadimg
+      = image_tag(asset_path('new_design/loading.gif'), height: 128, width: 128, class: 'loader' )
+    = render :partial => 'spree/shared/header'
+
+    = yield
+
+    = yield :templates
+    .container
+      .custom-feature-box.row
+        = render :partial => 'spree/shared/custome_feature'
+
     = render :partial => 'spree/shared/footer'
+    = render 'spree/shared/login_modal'
     = javascript_include_tag 'application'
     = javascript_include_tag 'jquery.raty'
     script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5799d7abbbb1ae8a"
     script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.3.8/packaged/jquery.noty.packaged.min.js"
-    
+
     script type="text/javascript"
-      | var noty_option = 
+      | var noty_option =
       = flash_message.to_json.html_safe
-      |; 
+      |;
     = yield :js

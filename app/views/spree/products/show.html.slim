@@ -1,111 +1,94 @@
 - ratings_count = @product.try(:ratings).try(:count) > 0 ? @product.try(:ratings).try(:count) : 1
 - overall_ratings = @product.try(:ratings).try(:sum, :rating).to_f / ratings_count
-#container
-  .container
-    ul.breadcrumb
-      li
-        a href="/"
-          i.fa.fa-home
-          | Home
-      li
-        a href=shop_path Shop  
-      li
-        a href=shop_path Categories
-      - if !@product.taxons.blank?  
+.container-fluid
+  .row
+    .col-xs-12
+      ol.breadcrumb
         li
-          a href=shop_path(@product.try(:taxons).first.try(:name))
-            = @product.try(:taxons).first.try(:name)
-
-      li 
-        span =@product.name
+          a href="/"  Home
+        li
+          a href=shop_path  Shop
+        li
+          a href=shop_path  Categories
+        - if !@product.taxons.blank?
+          li
+            a href=shop_path(@product.try(:taxons).first.try(:name))
+              = @product.try(:taxons).first.try(:name)
+        li.active =@product.name
+section.product_sec
+  .container-fluid
     .row
-      #content.col-sm-9
-        div itemscope="" itemtype="http://schema.org/Product" 
-          h1  
-          .row.product-info
-            .col-sm-5
-              #product-images data-hook="product_images"
-                #main-image 
-                  - image_path = @product.images.present? ? @product.images.first.try(:attachment).try(:url) : "/images/no-img.jpg"
-                  .image.table-center style=("height: 0px;min-height: 330px;max-height: 330px;") data-hook="product_images"
-                    a.img-center href="#" 
-                      = image_tag image_path,id:"zoom_01", class: "img-responsive img_center",data: { 'zoom-image' => @product.images.first.try(:attachment).try(:url, :large)}
-                .center-block.text-center
-                  span.zoom-gallery
-                    i.fa.fa-search
-                    | Click image for Zoom
-                #gallery_01.image-additional
-                  -@product.images.each do |thumb_images|
-                    a.thumbnail style=("min-height: 58px;max-height: 58px; border: 1px; height:0px;") data-zoom-image=thumb_images.try(:attachment).try(:url,:large) data-image=thumb_images.try(:attachment).try(:url,:large) href="#"
-                      = image_tag thumb_images.try(:attachment).try(:url, :mini), class: "img-responsive img_center", id: "zoom_01"
-   
-            .col-sm-7
-              #product
-                div
-                  = render :partial => 'cart_form'
-                
-              /! AddThis Button END
-          ul.nav.nav-tabs
-            li.active
-              a data-toggle="tab" href="#tab-description"  Description
-            li
-              a data-toggle="tab" href="#tab-review"  Reviews
-          .tab-content
-            #tab-description.tab-pane.active itemprop="description" 
-              .cpt_product_description
-                = product_description(@product) rescue Spree.t(:product_has_no_description)
-            #tab-review.tab-pane
+      .col-md-3.col-sm-4.col-xs-12.pull-right
+        .store-box
+          h4 Order Fulfilled By:
+          = render :partial => 'spree/shared/seller'
+      .col-md-9.col-sm-8.col-xs-12
+        .row
+          .col-md-6.col-xs-12
+            #slider.flexslider
+              ul.slides
+                - @product.images.each do |image|
+                  li
+                    = image_tag image.try(:attachment).try(:url), width: 234, height: 311
+            #carousel.flexslider
+              ul.slides
+                - @product.images.each do |image|
+                  li
+                    = image_tag image.try(:attachment).try(:url), width: 234, height: 311
+
+          .col-md-6.col-xs-12.product-info
+            = render 'cart_form'
+
+    .row
+      .container-fluid
+        .descwithratting
+          ul.tabs
+            li.active rel="tab1"  Description
+            li rel="tab2"  Reviews
+          .tab_container
+            h3.d_active.tab_drawer_heading rel="tab1"  Description
+            #tab1.tab_content2
+              p= product_description(@product) rescue Spree.t(:product_has_no_description)
+            h3.tab_drawer_heading rel="tab2"  Reviews
+            #tab2.tab_content2
               .rating-info
                 label Overall Ratings
                 span#overall-rating.ratings-info
               #ratings style="margin-top: 15px;"
                 = render partial: "spree/shared/previous_rate_and_comment"
               = render partial: "spree/shared/review_section"
-      column#column-right.col-sm-3.hidden-xs
-        h4 Sold by :
-        = render :partial => 'spree/shared/seller'
-      
-    h3 Related Products
-    .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")
-      - @product.similar.each do |similar_product|
-        = render :partial => 'spree/shared/product', locals: {product: similar_product}
-- content_for :js do        
+section.product_part.related
+  .container-fluid
+    .row
+      .col-xs-12
+        .product_box
+          h3
+            | Related Products &nbsp;
+            a href="#"
+              | View All
+              i.fa.fa-angle-right aria-hidden="true"
+
+          ul.content-slider
+            - if @product.similar.blank?
+              No Product Found
+            - else
+              - @product.similar.each do |similar_product|
+                = render :partial => 'spree/shared/product', locals: {product: similar_product}
+
+
+      /column#column-right.col-sm-3.hidden-xs
+      /  h4 Product Sold by :
+      /  = render :partial => 'spree/shared/seller'
+
+    / -if !@product.taxons.first.blank?
+    /   h3 Related Products
+    /   .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")
+    /     - @product.taxons.first.products.each do |similar_product|
+    /       = render :partial => 'spree/shared/product', locals: {product: similar_product}
+    / -else
+
+- content_for :js do
   javascript:
-   //initiate the plugin and pass the id of the div containing gallery images
-    $("#zoom_01").elevateZoom({
-      gallery:'gallery_01',
-      zoomWindowFadeIn: 500,
-      zoomWindowFadeOut: 500,
-      lensFadeIn: 500,
-      lensFadeOut: 500,
-      easing : true,
-    }); 
-
-    //pass the images to Fancybox
-    $("#zoom_01").bind("click", function(e) {  
-      var ez =   $('#zoom_01').data('elevateZoom'); 
-      $.fancybox(ez.getGalleryList());
-      return false;
-    });
-
-
-    $('#slideshow0').owlCarousel({
-      items: 1,
-      autoPlay: 3000,
-      singleItem: true,
-      navigation: true,
-      navigationText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
-      pagination: true  
-    });
-
-
-    $("#content .owl-carousel.bestseller_carousel").owlCarousel({
-      itemsCustom : [[320, 1],[600, 2],[768, 3],[992, 5],[1199, 5]],                         
-      lazyLoad : true,
-      navigation : true,
-      navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-      scrollPerPage : true
-    });
 
     $(document).ready(function() {
       $('#overall-rating').raty({

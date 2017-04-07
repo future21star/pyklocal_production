@@ -1,4 +1,5 @@
-Pyklocal::Application.routes.draw do 
+Pyklocal::Application.routes.draw do
+
 
 
   namespace :merchant do
@@ -7,14 +8,14 @@ Pyklocal::Application.routes.draw do
     get "stores/products/:product_id/variants", to: "variants#index", as: "stores_products_variants"
     get "stores/products/:product_id/variants/new", to: "variants#new", as: "stores_products_variants_new"
     get "stores/:store_id/orders", to: "orders#index", as: :store_orders
-    
+
     resources :stores do
       collection do
         resources :amazon_products do
           collection do
             post :import_collection
           end
-        end 
+        end
         resources :products do
           resources :images
           resources :variants
@@ -29,9 +30,18 @@ Pyklocal::Application.routes.draw do
           get :customer
           get :adjustments
           get :payments
-          get :returns
-          put :approve
+          get :approve
           put :cancel
+          post :return_item_accept_reject
+          resources :customer_return_items do
+            collection do
+              get :eligible_item
+              post :return_multiple_item
+            end
+          end
+          collection do
+            get :returns
+          end
         end
       end
     end
@@ -52,43 +62,73 @@ Pyklocal::Application.routes.draw do
   # We ask that you don't use the :as option here, as Spree relies on it being the default of "spree"
   mount Spree::Core::Engine, at: '/'
 
-  Spree::Core::Engine.routes.draw do 
+  Spree::Core::Engine.routes.draw do
     get "new_store_application", to: "home#new_store_application"
     get "orders" => "home#orders"
     get "order_placed/:id", to: "orders#order_placed", as: "order_placed"
-    resources :addresses 
+    resources :addresses
     resources :payment_histories
-    resources :wishlists 
+    resources :wishlists
+    resources :users_feedbacks
     #Applications routes
     resources :shop , :only => [:index,:show]
-    resources :orders do 
+    resources :orders do
       put :ready_to_pick
       put :cancel
-    end
-    resources :payment_preferences
-    resources :customer_returns, only: [:index, :new, :edit, :create, :update] do
-        member do
-          put :refund
+      put :apply_coupon_code
+      resources :customer_returns
+      # resources :return_authorizations
+      resources :customer_return_items do
+        collection do
+          post :return_multiple_item
+          get :eligible_item
         end
       end
-    
+
+    end
+    resources :return_authorizations
+    resources :payment_preferences
+
+    resource :account, :controller => 'users', except: [:index, :new, :edit, :create, :update, :destroy] do
+      member do
+        get :change_password
+      end
+    end
+
+    # resources :customer_returns, only: [:index, :new, :edit, :create, :update] do
+    #     member do
+    #       put :refund
+    #     end
+    #   end
+
+
     #Api routes
-    namespace :api do 
+    namespace :api do
       namespace :v1 do
 
         resources :home
-        resources :wishlists , :only => [:index,:destroy,:create]
+        resources :pages, only: [:index]
+        resources :client_tokens, only: [:show]
+        resources :user_addresses, only: [:show, :update, :create, :destroy]
+        resources :wishlists , :only => [:index, :destroy, :create]
 
-        resources :search do 
+        resources :search do
           get :filters, on: :collection
         end
 
         resources :categories
+        resources :customer_return_items do
+          get :eligible_item, on: :collection
+        end
 
         resources :store_sessions
+        resources :users_feedbacks
 
-        resources :products do 
+        resources :ratings_reviews, only: [:index, :create]
+
+        resources :products do
           post :rate_and_comment
+          get :related_product
         end
 
         concern :order_routes do
@@ -97,7 +137,14 @@ Pyklocal::Application.routes.draw do
             put :cancel
             put :empty
             put :apply_coupon_code
+            post :add_to_cart
+            get :refresh_order_summary
+            put :cancel_coupon
+            post :populate
+            put :cancel_coupon_code
+            get :get_adjustments
           end
+
 
           resources :line_items
           resources :payments do
@@ -121,14 +168,21 @@ Pyklocal::Application.routes.draw do
           end
         end
 
+        resources :countries do
+          member do
+            get :states
+          end
+        end
 
-        resources :merchant_stores do 
+        resources :merchant_stores do
           put :update_location
           post :rate
         end
-        resources :registrations 
+        resources :registrations, only: [:create]
         resources :sessions
-        resources :password
+        resources :password do
+          post :change_password, on: :collection
+        end
         resources :users do
           post :user_devices
           get :my_pickup_list
@@ -139,6 +193,9 @@ Pyklocal::Application.routes.draw do
           put :remove_from_cart
           put :mark_as_deliver
           get :my_delivery_list
+          get :profile
+          get :get_cart
+          get :get_orders
         end
         resources :orders, concerns: :order_routes
 
@@ -146,10 +203,14 @@ Pyklocal::Application.routes.draw do
     end
 
     #Admin routes
-    namespace :admin do 
+    namespace :admin do
       resources :commissions
+      resources :feedbacks
       resources :carousel_images
-      resources :sellers do 
+      resources :static_images
+      resources :cancel_orders
+
+      resources :sellers do
         resources :payment_preferences
         get :stores
         resources :payment_histories
@@ -160,6 +221,10 @@ Pyklocal::Application.routes.draw do
         collection do
           get :products_sale_report
           post :products_sale_report
+          get :store_sale_product
+          post :products_sale_report
+          get :store_details_report
+          post :store_details_report
         end
       end
     end

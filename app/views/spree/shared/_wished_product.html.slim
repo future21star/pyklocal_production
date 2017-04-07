@@ -1,25 +1,45 @@
-- product = wish.variant.product
-.item style=("overflow:hidden; min-height:350px;")
-  = form_for :order, :url => populate_orders_path do |f|
-    = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
-    = hidden_field_tag "variant_id", wish.variant_id
-    = hidden_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
-    .product-thumb.clearfix
-      .image.table-center style=("min-height: 244px; max-height: 244px;")
+-unless wish.variant.blank?
+  - product = wish.variant.product
+  .item style=("overflow:hidden;")
+    = form_for :order, :url => populate_orders_path do |f|
+      = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
+      = hidden_field_tag "variant_id", wish.variant_id
+      = hidden_field_tag :wishlist, true
+      = hidden_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
+
+      span.wl-image
         - image_path = product.images.present? ? product.images.first.try(:attachment).try(:url) : "/images/no-img.jpg"
-        a.img-center href=product_path(product) data-no-turbolink="true" 
-        	= image_tag(image_path, class: "img-responsive" )
-      div
-        .caption
-          h4
-            a href=product_path(product) data-no-turbolink="true" 
-            	= truncate(product.name, :length =>16)
-          p.price
+        = image_tag(image_path, class: "img-responsive" )
+
+      .wl-info
+        .title-box
+          h5.wl-title
+            a href=product_path(product) data-no-turbolink=true
+              = truncate(product.name, :length =>160)
+
+          -unless product.store.blank?
+            h6.wl-sub-title
+              a href=main_app.merchant_store_url(product.store) data-no-turbolink=true
+                = truncate(product.store.name, :length =>50)
+          -else
+            h4
+              a href="#" data-no-turbolink=true
+                | No Store Available
+
+        .wl-price-sec
+          span.wl-price
+            - unless product.cost_price.nil? && product.price != product.cost_price
+              small=number_to_currency(product.cost_price)
             = number_to_currency(product.price)
-        
-          - button_text = product.master.can_supply? ? "Add To Cart" : "Out Of Stock"
-          button.custom-button type="submit" disabled=(button_text == "Out Of Stock")
+          span.wl-offer
+            = product.discount
+            | % off
+
+        .addtocart
+          - button_text = product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"
+          button.add-to-cart type="submit" disabled=(button_text == "Out Of Stock")
             span= button_text
-  .wish-list-section
-    = link_to wishlist_path(wish), class: "btn btn-danger wish-btn", method: :delete, title: "Remove from wish list" do 
-      span.fa.fa-trash
+
+          = link_to wishlist_path(wish), title: "Remove from wish list", class: "remove", method: :delete do
+            strong X
+            |  REMOVE

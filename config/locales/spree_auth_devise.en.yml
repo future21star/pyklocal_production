@@ -2,5 +2,18 @@ en:
   devise:
     registrations:
       spree_user:
-        inactive_store: PYKLOCAL is currently reviewing the registration request and will approve in next 24-48 hours
-        accept_privacy_policy: Please accept privecy policy before continue
+        inactive_store: "PYKLOCAL is currently reviewing the registration request and will approve in next 24-48 hours"
+        accept_privacy_policy: "Please accept privecy policy before continue"
+        destroyed: Bye! Your account was successfully cancelled. We hope to see you again soon.
+        inactive_signed_up: 'You have signed up successfully. However, we could not sign you in because your account is %{reason}.'
+        signed_up: Welcome! You have signed up successfully.
+        updated: You updated your account successfully.
+  errors:
+    messages:
+      already_confirmed: was already confirmed
+      email_is_invalid: Email address cannot be blank
+      not_found: not found
+      not_locked: was not locked
+      not_saved:
+        one: '1 error prohibited this %{resource} from being saved:'
+        other: '%{count} errors prohibited this %{resource} from being saved:'

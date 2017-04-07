@@ -35,7 +35,7 @@
       = render partial: 'spree/shared/order_details', locals: { order: @order }
       br.clear
       p.pull-right data-hook="links" 
-        = link_to Spree.t(:continue), spree.root_path, class: "button btn btn-info"
+        = link_to Spree.t(:continue), spree.root_path, class: "button btn btn-info",id: "continue"
         - unless order_just_completed?(@order)
           - if try_spree_current_user && respond_to?(:spree_account_path)
             = link_to Spree.t(:my_account), spree_account_path, class: "button"

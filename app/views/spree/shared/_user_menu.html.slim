@@ -1,15 +1,44 @@
-#content
-  h2 My Account
-  ul.list-item
-    li
-      a class=(current == "account" ? 'active-link' : '') href=spree.edit_account_path Edit your account information
-    li
-      a class=(current == "address" ? 'active-link' : '') href=spree.addresses_path Address Book
-    li
-      a class=(current == "orders" ? 'active-link' : '') href=spree.orders_path View your order history
-    li
-      a class=(current == "payment_histories" ? 'active-link' : '') href=spree.payment_histories_path Payment History(Refunds)
-    li
-      a class=(current == "payment_preferences" ? 'active-link' : '') href=spree.payment_preferences_path Payment Preferences
-    li
-      a class=(current == "wishlist" ? 'active-link' : '') href=spree.wishlists_url Wish List
+.col-lg-3.col-md-4.col-sm-4.col-xs-12
+  .filter
+    h4.hidden-xs My Account
+    h4.navbar-toggle.collapsed aria-expanded="false" data-target="#filters" data-toggle="collapse"
+      span My Account
+      span.button
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+    #filters.collapse.navbar-collapse
+      -unless current_spree_user.has_spree_role?("merchant")
+        .filter-box
+          h5 Orders
+          ul.account.orders
+            li class=(current == "orders" ? 'active' : '')
+              a href=spree.orders_path My Orders
+        .filter-box
+          h5 My Stuff
+          ul.account
+            - if current_spree_user.address.present?
+                li class=(current == "address" ? 'active' : '')
+                  a href=edit_address_path(current_spree_user.address) Address Book
+            -else
+              li class=(current == "address" ? 'active' : '')
+                  a href=spree.addresses_path Address Book
+            li class=(current == "wishlist" ? 'active' : '')
+              a href=spree.wishlists_url Wish List
+        .filter-box
+          h5 Settings
+          ul.account
+            li class=(current == "account" ? 'active' : '')
+              a href=spree.edit_account_path Personal Information
+            -unless current_spree_user.has_spree_role?("merchant")
+            li class=(current == "change_password" ? 'active' : '')
+              a href=spree.change_password_account_path Change Password
+            li
+              a href="#"  Profile Settings
+      -else
+        .filter-box
+          h5 Orders
+          ul.account.orders
+            li
+              a href= spree.payment_histories_path  Payment History (Refunds)

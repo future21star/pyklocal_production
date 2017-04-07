@@ -1,130 +1,34 @@
   - product = @product.name
-  - store = @product.store  
+  - store = @product.store
   - if store == nil
     h5.store
       b  Store is not available
-  - else 
-    .row
-      .container.bootstrap.snippet style=("width:100%;")
-        .panel-body.inf-content
-          .row
-            .col-md-12
-              = link_to main_app.merchant_store_url(store) do 
-                = image_tag store.try(:logo).try(:url,:large),:class=>"img_center img-responsive"
-              .list-inline.ratings.text-center style=("margin-top:10px;") title="Ratings"
-                - num_user = store.ratings.count > 0 ? store.ratings.count : 1
-                - rate_count = (store.ratings.try(:sum, :rating) / num_user).round(2)
-                span#rate
-                |  
-                a style="color: blue; text-decoration: underline;" href="#" id="rateUs" Rate Us
-          .row
-            br
-          .row
-            .col-md-12
-              strong Information
-              br 
-              .table-responsive
-                table.table.table-condensed.table-responsive.table-user-information
-                  tbody
-                    tr
-                      td
-                        strong
-                          span.glyphicon.glyphicon-user.text-primary
-                          | &nbsp; Store Name
-                      td.text-primary
-                        = link_to store.try(:name).titleize, main_app.merchant_store_url(store)
-                    tr
-                      td
-                        strong
-                          span.glyphicon.glyphicon-envelope.text-primary
-                          | &nbsp;Website
-                      td.text-primary
-                        = store.try(:site_url)
-                    tr
-                      td
-                        strong
-                          span.glyphicon.glyphicon-calendar.text-primary
-                          | &nbsp;delivery Est.
-                      td.text-primary
-                        = store.try(:estimated_delivery_time)
-                    tr
-                      td
-                        strong
-                          span.glyphicon.glyphicon-phone-alt.text-primary
-                          |&nbsp; Contact no:
-                      td.text-primary
-                        = store.try(:phone_number)
-                    tr
-                      td colspan=2
-                        strong
-                          span.glyphicon.glyphicon-home.text-primary
-                          |&nbsp; Address
-                        span.text-primary style="margin-left: 36px;"
-                          = store.try(:street_number).titleize
-
-    #rating.modal.fade role="dialog" style=("margin-top: 45px;") 
-      .modal-dialog
-        .modal-content
-          .modal-header
-            button.close data-dismiss="modal" type="button"  ×
-            h4.modal-title Rate Us
-          .modal-body
-            .form-group
-              = label_tag :rating, "Ratings", class: "control-label"
-              .form-group
-                - for i in 0..5
-                  i#star
-              = hidden_field_tag "point", 0, id: "point"
-            .form-group
-              = label_tag :comment, "Comment", class: "control-label"
-              = text_area_tag "comment", current_spree_user.try(:comments).try(:where, commentable_id: store.id).try(:first).try(:comment), class: "form-control", rows: 7, id: "review"
-          .modal-footer
-            button#save-rating.btn.btn-primary data-store_id="#{store.slug}" data-user_id="#{current_spree_user.try(:id)}"  Save
-            button#cancel-rating.btn.btn-default data-dismiss="modal" type="button"  Close
-
-    - content_for :js do 
-      javascript:
-        $('#rateUs').click(function() {
-          $('#rating').modal('show');
-          return false;
-        });
-
-        $(document).ready(function(){
-          $('#star').raty({
-            halfShow: true,
-            half: true,
-            score : parseFloat("#{current_spree_user.try(:ratings).try(:first).try(:rating).to_f}")
-          });
-
-          $('#save-rating').click(function() {
-            var userId = $(this).data('user_id');
-            if(!!userId){
-              rateParams = { rating: $('#star').children("input[name=score]").val(), user_id: userId, comment: $('#review').val() };
-              $.post("/api/v1/merchant_stores/"+$(this).data('store_id')+"/rate", rateParams, function(data){
-                if(data.success){
-                  $('.modal').modal('hide');
-                  storeRating(data.rating);
-                  noty({text: data.message, type: "info"});
-                } else {
-                  $('.modal').modal('hide');
-                  noty({text: data.message, type: "error"});
-                }
-              });
-            } else {
-              window.location = "/login";
-              noty({text: "You need to login/signup to rate a store", type: "error"});
-            }
-          });
-
-          storeRating("#{rate_count}");
-
-          function storeRating(n) {
-            $('#rate').raty({
-              halfShow: true,
-              half: true,
-              score: n,
-              readOnly: true
-            });
-          }
-
-        });
+  - else
+    .store-logo
+      = image_tag store.try(:logo).try(:url,:large), width: 159, height: 99
+    .store-rating
+      span.rating
+        - num_user = store.ratings.count > 0 ? store.ratings.count : 1
+        - rate_count = (store.ratings.try(:sum, :rating) / num_user).to_i
+        - (1..5).each do |i|
+          - rate_image_path = (i <= rate_count ? "new_design/rate-star.png" : "new_design/blank-star.png")
+          = image_tag asset_path(rate_image_path), height: 17, width: 18
+      span.lable Rate Store
+    h5 Store Information
+    ul.store-info
+      li
+        span Store Name:
+        | #{store.try(:name).titleize}
+      li
+        span Website:
+        | #{store.try(:site_url)}
+      li
+        span Delivery Est.
+        | #{store.try(:estimated_delivery_time)}
+      li
+        span Contact no:
+        | #{store.try(:phone_number)}
+      li
+        span Address:
+        | #{store.try(:street_number).titleize}
+    = link_to truncate("Continue Shopping at #{store.name}", :length =>32),  main_app.merchant_store_url(store), class: "continue-but"

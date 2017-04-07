@@ -10,10 +10,15 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
-
- *= require_tree .
- *= require_self
- *= require font-awesome
+ *= require new_design/fonts
+ *= require new_design/flexslider
+ *= require new_design/lightslider
+ *= require new_design/animate.min
+ *= require new_design/font-awesome.min
+ *= require new_design/bootstrap.min
+ *= require new_design/style
+ *= require new_design/custom
+ *= require social-share-button
  *= stub merchant_section.css.less
  */
 
@@ -21,6 +26,39 @@
   vertical-align: middle !important;
 }
 
+.social-share-button {
+  .ssb-icon {
+    background-size: 40px 40px !important;
+    height: 40px !important;
+    width: 40px !important;
+  }
+}
+
+.merchant_store .row{
+  margin: 0px;
+}
+.text-red{
+  color: red !important;
+}
+
+#checkout_form_address .row{
+  margin: 0px;
+}
+.error-block p{
+  display: block;
+}
+
+.inline-error{
+  color: red;
+  display: none;
+}
+
+#forget-password-email{
+  margin-bottom: 5px;
+}
+#error-msz {
+  display: none;
+}
 .margin-left {
   margin-left: 15px;
 }
@@ -54,7 +92,7 @@
       border: 1px solid #eee;
     }
   }
-  
+
   .menu {
     position: relative;
     float: right;
@@ -65,7 +103,7 @@
       float: left;
       margin-left: 13px;
       padding: 2px;
-      
+
       &:hover{
         border-radius: 3px;
       }
@@ -243,9 +281,11 @@ span.wish-section {
     .filter-body {
       padding: 5px;
       list-style: none;
+      max-height: 250px;
+      overflow: auto;
     }
     .filter-field {
-      padding-top: 7px; 
+      padding-top: 7px;
     }
   }
 }
@@ -315,3 +355,61 @@ span.wish-section {
   text-align: justify;
   font-size: 13px;
 }
+
+span.story-container {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+
+/*============================== Client Side validation gem ===============================================*/
+
+.field_with_errors .message{
+  color: #D00;
+  font-size: 12px;
+  padding-top: 5px;
+}
+
+/*================================ New Design Vendor Form ======================================================*/
+
+.vendor-form{
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.vendor-form .form-control{
+  border:1px solid #bebebe;
+  box-shadow:inset 0 0 8px rgba(0,0,0,0.13);
+  height:35px;
+}
+
+.vendor-form input[type=submit]{
+  background:#db2e2e;border:none;
+  border-radius:3px;
+  padding:0 40px;
+  line-height:42px;
+  font-size:16px;
+  color:#fff;
+  margin-top:10px
+}
+
+.vendor-form label{
+  color:#403a3a;
+  font-weight:400;
+  margin-bottom:0;
+}
+.vendor-form textarea.form-control{
+  height:80px;
+}
+
+.vendor-form input[type=submit]:hover{
+  background:#1a2d60;
+}
+
+.vendor-from input[type=number]{-webkit-appearance:textfield;-moz-appearance:textfield;appearance:textfield}
+
+

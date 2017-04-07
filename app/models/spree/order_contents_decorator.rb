@@ -5,7 +5,7 @@ module Spree
       @order = order
     end
 
-		def add(variant, quantity = 1, options = {}, delivery_type)
+		def add(variant, quantity = 1, options = {}, delivery_type = "home_delivery")
       timestamp = Time.current
       line_item = add_to_line_item(variant, quantity, options, delivery_type)
       options[:line_item_created] = true if timestamp <= line_item.created_at
@@ -37,6 +37,27 @@ module Spree
       line_item.save!
       line_item
     end
+
+
+    def filter_order_items(params)
+      p "============================================================================="
+      p params
+      p params["line_items_attributes"]
+      filtered_params = params.symbolize_keys
+      return filtered_params if filtered_params["line_items_attributes"].nil? || filtered_params["line_items_attributes"]["id"]
+      p "********************************************************************************************"
+      p filtered_params
+      p params
+      line_item_ids = order.line_items.pluck(:id)
+
+      params["line_items_attributes"].each_pair do |id, value|
+        unless line_item_ids.include?(value[:id].to_i) || value[:variant_id].present?
+          filtered_params["line_items_attributes"].delete(id)
+        end
+      end
+      filtered_params
+    end
+
 
     def remove_from_line_item(variant, quantity, options = {}, delivery_type)
       line_item = grab_line_item_by_variant(variant, true, options)

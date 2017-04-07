@@ -1,95 +1,147 @@
-= form_for :order, :url => populate_orders_path do |f|
-  #inside-product-cart-form data-hook="inside_product_cart_form" itemprop="offers" itemscope="" itemtype="https://schema.org/Offer" 
-    ul.list-unstyled.description
-      li.active
-        h5 itemprop="brand"
-          = @product.name
-
-      li
-        b Brand:
-        span itemprop="brand"
-          |&nbsp;
-          
-      li
-        b Product Code:
-        span itemprop="mpn"  
-          |&nbsp;
-          = @product.try(:asin)
-    .addthis_sharing_toolbox
-    ul.price-box
-      li.price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" 
-        span itemprop="price"  
-          = number_to_currency(@product.price.to_s)
-        span content=("In Stock") itemprop="availability" 
-      li
-      / li Ex Tax: $00.00
-
+= form_for :order, :url => populate_orders_path,:html => {:class => "add-cart" } do |f|
+  #inside-product-cart-form data-hook="inside_product_cart_form" itemprop="offers" itemscope="" itemtype="https://schema.org/Offer"
+    h3.item-title #{@product.name}
+    hr.dotted/
+    h4 
+      | Brand:
+      - if @product.product_properties.present?
+        - if  @product.product_properties.where(property_id: @product.properties.where(name: "Brand").first.try(:id)).present?
+          | &nbsp;
+          =  truncate(@product.product_properties.where(property_id: @product.properties.where(name: "Brand").first.try(:id)).first.value, :length =>30 )
+        - else
+          = ' NA'
+      - else
+        = ' NA'
+    h4 
+      | UPC Code:
+      - if @product.product_properties.present?
+        - if  @product.product_properties.where(property_id: @product.properties.where(name: "UPC").first.try(:id)).present?
+          | &nbsp;
+          =  truncate(@product.product_properties.where(property_id: @product.properties.where(name: "UPC").first.try(:id)).first.value, :length =>30) 
+        - else
+          = ' NA'
+      - else
+        = ' NA'
+    h4 In-Stock: #{@product.total_on_hand}
+    hr.dotted/
+    h3.pro-price #{number_to_currency(@product.price.to_s)}
+    hr.dotted/
+    - if @product.price.to_f >= 35
+      p This product qualifies for FREE Shipping
+      hr.dotted/
     - if @product.variants_and_option_values(current_currency).any?
       .cart
         ul.list-group
           - @product.variants_and_option_values(current_currency).each_with_index do |variant, index|
-            .btn.btn.default
-              = radio_button_tag "variant_id", variant.id, index == 0, 'data-price' => variant.price_in(current_currency).money
-              | &nbsp;&nbsp;
-              = label_tag "variant_id_#{ variant.id }" do
-                span.variant-description
-                  = variant_options variant
-                - if variant_price variant
-                  span.price.diff= variant_price variant
+            -if variant.total_on_hand > 0
+                .btn.btn.default
+                  = radio_button_tag "variant_id", variant.id, index == 0, 'data-price' => variant.price_in(current_currency).money
+                  | &nbsp;&nbsp;
+                  = label_tag "variant_id_#{ variant.id }" do
+                    p.variant-description
+                      = variant_options variant
+                      / |&nbsp;(
+                      / =variant.total_on_hand
+                      / |)
+
+                    - if variant_price variant
+                      span.price.diff= variant_price variant
     - else
+      / b Max Quantity Available:
+      / span itemprop="master_variant_quantity"
+      /   |&nbsp;
+      /   =  @product.master.total_on_hand
+      / br
       = hidden_field_tag "variant_id", @product.master.id
 
     - if @product.price_in(current_currency) and !@product.price.nil?
-       
-        #product-price data-hook="product_price" 
-          / - if @product.master.can_supply?
-          /   link href="https://schema.org/InStock" itemprop="availability" /
-          / - elsif @product.variants.empty?
-          /   br 
-          /   span.out-of-stock= Spree.t(:out_of_stock)
-        
+
+      #product-price data-hook="product_price"
+        / - if @product.master.can_supply?
+        /   link href="https://schema.org/InStock" itemprop="availability" /
+        / - elsif @product.variants.empty?
+        /   br
+        /   span.out-of-stock= Spree.t(:out_of_stock)
+
     - else
       #product-price
-        br 
+        br
         div
           span.price.selling itemprop="price" = Spree.t('product_not_available_in_this_currency')
-    - if @product.price.to_f >= 35
-      .free-shipping class="alert alert-success" role="alert"
-          span  This product qualifies for FREE Shipping
-    .delivery_item.cart.rating
-      h4 Delivery Option :
-      label.control-label.delivery-li data-value="home_delivery"
+
+    .delivery-option
+      h4 Delivery Option:
+      label
         = radio_button_tag :delivery_type , "home_delivery" ,:checked => true
-        |&nbsp;
-        b Home Delivery
-      br
-      label.control-label data-value="pickup"
+        | Home Delivery
+      label
         = radio_button_tag :delivery_type , "pickup"
-        |&nbsp;
-        b Pickup
-    #product
-      .cart
-        div
-          .qty
-            label.control-label for="input-quantity"  Qty
-            = text_field_tag :quantity, 1, :class => 'numberOnly form-control', :min => 1, :id =>'input-quantity'
-            a.qtyBtn.plus.text-center href="javascript:void(0);" 
-              span.fa.fa-plus
-            br
-            a.qtyBtn.mines.text-center href="javascript:void(0);" 
-              span.fa.fa-minus
-            input name="product_id" type="hidden" value="41" 
-            .clear
-        div
-          - button_text = @product.master.can_supply? ? "Add To Cart" : "Out Of Stock"
-          = button_tag :class => 'btn btn-primary', :id => 'add-to-cart-button', :type => :submit, disabled: !@product.master.can_supply? do
-              = button_text
-span.wish-section
-  = render partial: 'spree/shared/wish_form', locals: {product: @product}
-      
-  
--content_for :js 
+        | Pickup
+    hr.dotted/
+    .qty-action
+      #myform
+        label Qty:
+        span.quantity
+          = text_field_tag :quantity, 1, :class => 'numberOnly qty', :min => 1, :id =>'input-quantity'
+          input.qtyplus field="quantity" type="button" value="+" /
+          input.qtyminus field="quantity" type="button" value="-" min=1 /
+        span.qty-error
+      /-unless  @product.store.blank?
+       /= render partial: 'spree/shared/wish_form', locals: {product: @product}
+
+      -unless @product.store.blank?
+        - button_text =  @product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"
+        = button_tag"#{button_text}" , :id => 'add-to-cart-button', :type => :submit, disabled: @product.total_on_hand <= 0 , class: "#{button_text == "Out Of Stock" ? 'out-of-stock' : 'add-to-cart'} but btn" 
+    hr.dotted/
+    = social_share_button_tag(@product.name, 'data-twitter-title' => 'TheTitleForTwitter', :url => request.url)
+-unless  @product.store.blank?
+        = render partial: 'spree/shared/wish_form', locals: {product: @product}
+
+-content_for :js
   javascript:
-    jQuery('.numberOnly').keyup(function () { 
-      this.value = this.value.replace(/[^0-9\.]/g,'');
-    }); 
+    $(document).ready(function() {
+      jQuery('.numberOnly').keyup(function () {
+        this.value = this.value.replace(/[^0-9\.]/g,'');
+      });
+      $('.social-share-button').addClass('social-share');
+      $('.social-share-button .ssb-twitter').removeClass().addClass('fa fa-twitter');
+      $('.social-share-button .ssb-facebook').removeClass().addClass('fa fa-facebook');
+      $('.social-share-button .ssb-google_plus').removeClass().addClass('fa fa-google-plus');
+      $('.social-share-button .ssb-linkedin').removeClass().addClass('fa fa-linkedin');
+    });
+
+    $('#input-quantity').on('blur',function(){
+      validateQty();
+    });
+
+
+    function validateQty(){
+      if($('#input-quantity').val() == "" || $('#input-quantity').val() == null){
+        $('.qty-error').html("<p class='text-red'> Quantity can not be blank");
+        $('.qty-error').show();
+        return 0;
+      }
+      else if($('#input-quantity').val().indexOf('.') != -1){
+        $('.qty-error').html("<p class='text-red'> Quantity must be integer");
+        $('.qty-error').show();
+        return 0;
+      }
+      else{
+        $('.qty-error').hide();
+        return 1;
+      }
+    }
+
+
+    $('.add-cart').on('submit',function(e){
+      e.preventDefault();
+      if(validateQty()){
+        this.submit();
+      }
+    });
+
+
+
+
+
+

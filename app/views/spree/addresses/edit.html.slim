@@ -1,26 +1,20 @@
-#container
-  .container
-    ul.breadcrumb
-      li
-        a href="/" 
-          i.fa.fa-home
-          | Home
-      li
-        a href=spree.account_path  Account
-      li
-        span  Update Address
-    .row     
-      #content.col-sm-3
-        =render :partial => "spree/shared/user_menu", locals: {current: "address"}
-      .col-sm-9
-      	h1 Update Address
-      	#accordion.panel-group
-        	.panel.panel-default
-            .panel-heading
-              h4.panel-title
-                  |  Your Current Address Is: 
-                  i.fa.fa-caret-down
-            #collapse-checkout-option.panel-collapse.collapse.in
-              .panel-body
-              	.col-xs-12
-									= render partial: "form"
+section.account_page
+  .container-fluid
+    .row
+      .col-md-10.col-md-offset-1.col-xs-12.account_page_wrap
+        .row
+          .col-xs-12
+            ol.breadcrumb
+              li
+                a href="/"  Home
+              li
+                a href=spree.account_path  Account
+              li
+                span Address Book
+        .row
+          =render :partial => "spree/shared/user_menu", locals: {current: "address"}
+
+          .col-lg-9.col-md-8.col-sm-8.col-xs-12
+            h3 Add a New Address
+            .address-from
+              = render partial: "form"

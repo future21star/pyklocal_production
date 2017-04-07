@@ -1,82 +1,59 @@
-#container  
-  .container  
-    = render partial: "spree/shared/slider1"
-    .category-module style=("max-height:450px; overflow:hidden;")
-      h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Bestsellers
-      .category-module-content 
-        .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
-          - @products.each do |product|
-            = render :partial => 'spree/shared/product', locals: {product: product}
+section#banner
+  = render partial: "spree/shared/slider1"
+section.product_part
+  .container-fluid
+    .row
+      .col-xs-12
+        .product_box
+          h3
+            | Best Sellers &nbsp;
+            a href="#"
+              | View All
+              i.fa.fa-angle-right aria-hidden="true"
+          ul.content-slider
+            - @products.each do |product|
+              = render :partial => 'spree/shared/product', locals: {product: product}
 
-    .category-module style=("max-height:450px; overflow:hidden;")
-      h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") New Arrivals
-      .category-module-content 
-        .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
+= render 'spree/shared/advertising'
+
+section.product_part
+  .container-fluid
+    .row
+      .col-xs-12
+        .product_box
+          h3
+            | New Arrivals &nbsp;
+            a href="#"
+              | View All
+              i.fa.fa-angle-right aria-hidden="true"
+          ul.content-slider
             - @new_arrival.each do |product|
               = render :partial => 'spree/shared/product', locals: {product: product}
 
-    #marketshop-banner1.marketshop-banner.margin-top
-      .row
-        .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
-          a href="#" 
-            = image_tag "sample-banner-3-360x360.jpg", class: "img-responsive" 
-        .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
-          a href="#" 
-            = image_tag "sample-banner-1-360x360.jpg", class: "img-responsive" 
-        .col-lg-4.col-md-4.col-sm-6.col-xs-12.moderns
-          a href="#" 
-            = image_tag "sample-banner-2-360x360.jpg", class: "img-responsive" 
-    .category-module style=("max-height:450px; overflow:hidden;")
-      h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Bags
-      .category-module-content 
-        .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
-            - @bag_categories.each do |product|
+= render 'spree/shared/advertising'
+
+section.product_part
+  .container-fluid
+    .row
+      .col-xs-12
+        .product_box
+          h3
+            | Most Viewed &nbsp;
+            a href="#"
+              | View All
+              i.fa.fa-angle-right aria-hidden="true"
+          ul.content-slider
+            - @most_viewed_products.each do |product|
               = render :partial => 'spree/shared/product', locals: {product: product}
 
-    .category-module style=("max-height:450px; overflow:hidden;")
-      h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Mugs
-      .category-module-content 
-        .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
-            - @clothing_categories.each do |product|
-              = render :partial => 'spree/shared/product', locals: {product: product}
+.advertise-big
+  .container-fluid
+    .row
+      .col-sm-6.col-xs-12.text-center.wow.fadeInLeft data-wow-delay="0.3s"
+        a href="#"
+          = image_tag(asset_path('new_design/add-big-1.jpg'), height: 303, width: 585 )
+      .col-sm-6.col-xs-12.text-center.wow.fadeInRight data-wow-delay="0.3s"
+        a href="#"
+          = image_tag(asset_path('new_design/add-big-2.jpg'), height: 303, width: 585 )
 
-    #marketshop-banner2.marketshop-banner
-      .row
-        .col-lg-12.col-md-12.col-sm-12.col-xs-12.moderns
-          a href="#" 
-            = image_tag "1blockbanner-1140x75.jpg", class: "img-responsive"
 
-    .category-module style=("max-height:450px; overflow:hidden;")
-      h3 style=("font-size: 20px;color: #000;border-bottom: 2px solid #ddd;") Most Viewed Products
-      .category-module-content 
-        .owl-carousel.bestseller_carousel.owl-theme style=("opacity: 1; display: block;")  
-          - @most_viewed_products.each do |product|
-            = render :partial => 'spree/shared/product', locals: {product: product}
-
-- content_for :js do
-  javascript:  
-    $('#slideshow0').owlCarousel({
-      items: 1,
-      autoPlay: 3000,
-      singleItem: true,
-      navigation: true,
-      navigationText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
-      pagination: true  
-    });
-
-    $("#content .owl-carousel.bestseller_carousel").owlCarousel({
-      itemsCustom : [[320, 1],[600, 2],[768, 3],[992, 5],[1199, 5]],                         
-      lazyLoad : true,
-      navigation : true,
-      navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-      scrollPerPage : true
-    }); 
-
-    $("#content #latest_category0 .owl-carousel.latest_category_tabs").owlCarousel({
-      itemsCustom : [[320, 1],[600, 2],[768, 3],[992, 5],[1199, 5]],                         
-      lazyLoad : true,
-      navigation : true,
-      navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-      scrollPerPage : true,
-    });
-    

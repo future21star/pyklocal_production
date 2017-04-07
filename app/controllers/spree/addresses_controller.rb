@@ -1,21 +1,24 @@
 class Spree::AddressesController < Spree::StoreController
 	before_filter :authenticate_spree_user!
 	before_action :find_address, only: [:create, :edit, :update, :destroy]
-	
+
 	def index
-		@address = current_spree_user.address
+		@address = current_spree_user.bill_address
 		if @address.blank?
-			@address = current_spree_user.orders.first.try(:bill_address).present? ? current_spree_user.orders.first.bill_address : Spree::Address.build_default
+			@address = current_spree_user.orders.where("state = ? OR state = ?", "complete", "canceled").last.try(:bill_address).present? ? current_spree_user.orders.where("state = ? OR state = ?", "complete", "canceled").last.bill_address :  Spree::Address.build_default
 		end
+		p @address
 	end
 
-	def edit			
-	end	
+	def edit
+	end
 
 	def create
 		@addresses = Spree::Address.new(addresses_params)
 		@addresses.attributes = {country_id: country = Spree::Country.find(Spree::Config[:default_country_id]).id}
 		if @addresses.save
+			current_spree_user.update_attributes(bill_address_id: @addresses.id)
+			current_spree_user.update_attributes(ship_address_id: @addresses.id)
 			redirect_to spree.addresses_path, notice: "Address created successfully"
 		else
 			render action: 'index'
@@ -23,10 +26,22 @@ class Spree::AddressesController < Spree::StoreController
 	end
 
 	def update
-		if @address.update_attributes(addresses_params)
-			redirect_to spree.addresses_path, notice: "Successfully updated."
+		if current_spree_user.bill_address.present?
+			if 	current_spree_user.bill_address.update_attributes(addresses_params)
+				redirect_to edit_address_path(@address), notice: "Successfully updated."
+			else
+				render action: 'edit'
+			end
 		else
-			render action: 'edit'
+			@addresses = Spree::Address.new(addresses_params)
+			@addresses.attributes = {country_id: country = Spree::Country.find(Spree::Config[:default_country_id]).id}
+			if @addresses.save
+				current_spree_user.update_attributes(bill_address_id: @addresses.id)
+				current_spree_user.update_attributes(ship_address_id: @addresses.id)
+				redirect_to spree.addresses_path, notice: "Address created successfully"
+			else
+				render action: 'index'
+			end
 		end
 	end
 

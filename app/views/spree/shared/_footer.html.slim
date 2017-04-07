@@ -1,86 +1,60 @@
-footer#footer
-  .fpart-first
-    .container
-      .row
-        .contact.col-lg-4.col-md-4.col-sm-12.col-xs-12
-          h5 Contact Details
+section.benefits
+  .container-fluid
+    .row
+      .col-sm-4.col-xs-12.wow.fadeInLeft data-wow-delay="0.3s"
+        i.sprite.sprite-benefit-1
+        h2 Free Shipping
+        h4 Free shipping on order over $1000
+      .col-sm-4.col-xs-12.wow.fadeInDown data-wow-delay="0.3s"
+        i.sprite.sprite-benefit-2
+        h2 Gift Cards
+        h4 Give the special perfect gift
+      .col-sm-4.col-xs-12.wow.fadeInRight data-wow-delay="0.3s"
+        i.sprite.sprite-benefit-3
+        h2 Reward Points
+        h4 Earn and spend with ease
+footer
+  .container-fluid
+    .row
+      .col-xs-12
+        .col-one-five.wow.fadeInDown data-wow-delay="0.3s"
+          h4 Contact Details
+          p
+            | Address: 8th floor, 379 Hudson St,
+            br/
+            | New York, NY 10018
+            br/
+            | Phone: (+1) 222-1444-444
+            br/
+            | Email: hello@pykgroup.com
+        .col-one-five.wow.fadeInDown data-wow-delay="0.4s"
+          h4 My Account
           ul
-            li.address
-              i.fa.fa-map-marker
-              
-            li.mobile
-              i.fa.fa-phone
-              
-            li.email
-              i.fa.fa-envelope
-              
-        .column.col-lg-2.col-md-2.col-sm-3.col-xs-12
-          h5 Information
+            li
+              = link_to 'Account', spree_user_signed_in? ? spree.edit_account_path : spree.login_path, "data-no-turbolink" => true
+            li
+              = link_to 'Order History', spree_user_signed_in? ? spree.orders_path : spree.login_path, class: " store-link", "data-no-turbolink" => true
+            li
+              a href="#"  Refer a Friend
+        .col-one-five.wow.fadeInDown data-wow-delay="0.5s"
+          h4 Customer Service
+          ul
+            li
+              a href="#"  Live Chat
+            li
+              a href="#"  Phone Support
+            li
+              a href="#"  Email Support
+            li
+              a href="#"  Social Media
+        .col-one-five.wow.fadeInDown data-wow-delay="0.6s"
+          h4 Company Info
           ul
             - unless static_contents.blank?
               - static_contents.each do |static_content|
                 li
                   = link_to static_content.title, spree.static_url(static_content.slug)
-            
-        .column.col-lg-2.col-md-2.col-sm-3.col-xs-12
-          h5 Customer Service
-          ul
-            
-        .column.col-lg-2.col-md-2.col-sm-3.col-xs-12
-          h5 Extras
-          ul
-            
-        .column.col-lg-2.col-md-2.col-sm-3.col-xs-12
-          h5 My Account
-          ul
-            li
-              a
-                = link_to spree_user_signed_in? ? spree.edit_account_path : spree.login_path, class: " store-link", "data-no-turbolink" => true do
-                  |  My Account
-            li
-              a 
-                = link_to spree_user_signed_in? ? spree.orders_path : spree.login_path, class: " store-link", "data-no-turbolink" => true do
-                  |  Order History
-
-
-  .fpart-second
-    .container
-      #powered.clearfix
-        .powered_text.pull-left.flip
-          p
-            | PYKlocal Theme © 2016, Powered by
-            a href="http://opencart.com/" target="_blank"  OpenCart
-            | | Theme By
-            a href="http://harnishdesign.net/" target="_blank"  Harnish Design
-        .social.pull-right.flip
-          a href="#" target="_blank" 
-            = image_tag "facebook.png", class: "img-responsive"
-          a href="#" target="_blank" 
-            = image_tag "google_plus.png", class: "img-responsive"
-          a href="#" target="_blank" 
-            = image_tag "twitter.png", class: "img-responsive"
-          a href="#" target="_blank" 
-            = image_tag "pinterest.png", class: "img-responsive"
-          a href="#" target="_blank" 
-            = image_tag "rss.png", class: "img-responsive"
-          
-      .bottom-row
-        .custom-text.text-center
-          p This is a CMS block edited from theme admin panel. Here, You can insert any content (HTML, Text, Images).
-        .payments_types
-          a href="#" target="_blank" 
-            = image_tag "payment_2checkout.png", class: "img-responsive"
-          a href="#" target="_blank" 
-            = image_tag "payment_american.png", class: "img-responsive"
-          a href="#" target="_blank" 
-            = image_tag "payment_discover.png", class: "img-responsive"
-          a href="#" target="_blank" 
-            = image_tag "payment_mastercard.png", class: "img-responsive"
-          a href="#" target="_blank" 
-            = image_tag "payment_paypal.png", class: "img-responsive"
-          a href="#" target="_blank" 
-          	= image_tag "payment_maestro.png", class: "img-responsive" 
-  #back-top style=("display: none;") 
-    a.backtotop data-original-title=("Back to Top") data-toggle="tooltip" href="javascript:void(0)" title="" 
-      i.fa.fa-chevron-up
-
+.copright ©Copyright 2016 PYKLocal, Inc. All rights reserved.
+.top-button
+  a href="#home"
+    i.fa.fa-arrow-circle-up aria-hidden="true"

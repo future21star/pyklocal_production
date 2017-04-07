@@ -4,15 +4,19 @@ font_style = {
 }
 
 prawn_document(force_download: true) do |pdf|
-  pdf.define_grid(columns: 5, rows: 8, gutter: 10)
+  pdf.define_grid(columns: 5, rows: 8, gutter: 20)
   pdf.font font_style[:face], size: font_style[:size]
 
-  pdf.repeat(:all) do
+  if pdf.page_number == 1
     render 'spree/printables/shared/header', pdf: pdf, printable: doc
   end
 
+  pdf.stroke do
+    pdf.horizontal_rule
+  end
   # CONTENT
-  pdf.grid([1,0], [6,4]).bounding_box do
+
+  pdf.grid([2,0], [6,4]).bounding_box do
 
     # address block on first page only
     if pdf.page_number == 1
@@ -23,7 +27,7 @@ prawn_document(force_download: true) do |pdf|
 
     render 'spree/printables/shared/invoice/items', pdf: pdf, invoice: doc
 
-    pdf.move_down 10
+    pdf.move_down 20
 
     render 'spree/printables/shared/totals', pdf: pdf, invoice: doc
 

@@ -5,6 +5,13 @@
         a href="/" 
           i.fa.fa-home
           | Home
+        li 
+          a href=merchant_path
+            | Merchant
+
+        li 
+          a href=merchant_stores_path
+            | Store
       li
         span  Fetch Amazon product
     .row
@@ -30,7 +37,7 @@
                   = submit_tag "Search", class:"pull-right btn btn-default  "
         - if @amazon_products.present?
           .row
-            = form_tag import_collection_merchant_amazon_products_path,{method: :post} do 
+            = form_tag import_collection_merchant_amazon_products_path,{method: :post, id: 'product-fetch-amazon'} do 
               .col-xs-12
                 label
                   input type="checkbox" id="select-all"
@@ -38,9 +45,15 @@
               - @amazon_products.each do |item|
                 .col-md-3.product-item 
                   .thumbnail style=("min-height:280px;")
-                    .thumb-image-container.product-img.table-center
-                      a.aligner.img-center href=item.detail_page_url target="_blank"
-                        = image_tag item.medium_image.try(:url) ,class:"img-responsive  "
+                    -if !item.medium_image.blank?
+                      .thumb-image-container.product-img.table-center
+                        a.aligner.img-center href= new_merchant_amazon_product_path(asin: item.asin) target="_blank"
+                          = image_tag item.medium_image.try(:url) ,class:"img-responsive  "
+                    -else 
+                      .thumb-image-container.product-img.table-center
+                        a.aligner.img-center href= new_merchant_amazon_product_path(asin: item.asin) target="_blank"
+                        -unless item.image_sets.blank?
+                          = image_tag item.image_sets.image_set.first.try(:medium_image).try(:url) ,class:"img-responsive  "
                     .product-details.trim-text
                       = link_to  "#{item.item_attributes.title} ", new_merchant_amazon_product_path(asin: item.asin), target: "_blank"
                     .text-center
@@ -59,3 +72,20 @@
                 = hidden_field_tag :keywords, params[:keywords]
                 = hidden_field_tag :serch_index, params[:serch_index]
                 = submit_tag "Next Page >", class:"pull-right btn btn-default margin-bottom"
+
+-content_for :js do 
+  javascript:
+    $(document).ready(function(){
+      $('#product-fetch-amazon').on('submit', function(e){
+          e.preventDefault();
+          if ($("#product-fetch-amazon input:checkbox:checked").length > 0)
+          {
+              this.submit();
+          }
+          else
+          {
+            alert("No Product is selected");
+          }
+      });
+    });
+

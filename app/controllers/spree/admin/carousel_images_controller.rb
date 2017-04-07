@@ -1,5 +1,7 @@
 class Spree::Admin::CarouselImagesController < Spree::Admin::ResourceController
 
+  before_filter :find_carousel_image, only: [:edit, :update, :destroy]
+
   def index
     @carousel_images = Spree::CarouselImage.all
   end
@@ -40,7 +42,7 @@ class Spree::Admin::CarouselImagesController < Spree::Admin::ResourceController
   private
 
     def carousel_image_params
-      params.require(:carousel_image).permit(:image, :active)
+      params.require(:carousel_image).permit(:image, :active, :resource_id, :resource_type)
     end
 
     def find_carousel_image

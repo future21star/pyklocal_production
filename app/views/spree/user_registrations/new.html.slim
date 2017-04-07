@@ -1,27 +1,29 @@
-#container
-  .container
-    ul.breadcrumb
-      li
-        = link_to spree.root_path , "data-no-turbolink" => true do
-          i.fa.fa-home
-      li
-        = link_to "Home", root_path 
-      li.active Authentication
+hr/
+section.register
+  .container-fluid
     .row
-      #content.col-sm-9
-        h1 Register Account
-        p
-          | If you already have an account with us, please login at the
-          | &nbsp;
-          = link_to "Login page" ,spree.login_path
-        = render partial: 'form'
-      column#column-right.col-sm-3.hidden-xs
-        h3 Account
-        .list-group
-          ul.list-item
-            li
-              a href=spree.login_path  Login
-            li
-              a href=spree.signup_path  Register
-            li
-              a href=spree.recover_password_path  Forgotten Password
+      .col-xs-12
+        #register
+          .modal-dialog role="document"
+            .modal-content
+              .modal-header.text-center
+                = @tab
+                h2.modal-title Register Account
+                h5.modal-sub-title If you already have an account with us, please login at the Login
+              .modal-body
+                ul.tabs
+                  li  class=((@tab.nil? || @tab == "" || @tab == 'customer') ? 'active' : '') 
+                     a href= registration_path(active_tab: "customer") Registration As Customer
+                  li  class=((@tab.present? && @tab == 'vendor') ? 'active' : '') 
+                    a href=(registration_path(active_tab: "vendor")) Registration As Vendor
+                .tab_container
+                  h3.d_active.tab_drawer_heading rel="tab1"  Registration As Vendor
+                  .tab_content
+                    - if @tab == 'vendor'
+                      = render partial: 'vendor_form', locals: { tab: @tab}
+                    - else
+                      = render partial: 'form', locals: { tab: @tab}
+
+                  / h3.tab_drawer_heading rel="tab2"  Registration As Vendor
+                  / #tab2.tab_content.vender
+                    = render partial: 'vendor_form'

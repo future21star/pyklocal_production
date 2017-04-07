@@ -10,18 +10,20 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
+//= require new_design/jquery.min
 //= require jquery_ujs
+//= require new_design/bootstrap.min
 //= require spree/frontend/all
-//= require twitter/bootstrap
-//= require_tree .
+//= require new_design/wow.min
+//= require new_design/lightslider
+//= require new_design/jquery.flexslider
+//= require new_design/custom
+
 //= stub merchant.js
 //= stub chatbox.min.js
-//= require noty/jquery.noty
-//= require noty/layouts/topCenter
-//= require noty/themes/default
-//= require spree/frontend/spree_braintree_vzero
-//= require spree/frontend/spree_auth
+//= require social-share-button
+//= require spree/backend/report
+
 
 $.ajaxSetup({
   headers: {
@@ -32,8 +34,7 @@ $.ajaxSetup({
 var pyklocal = {
 
 	init: function() {
-    this.retrictNumber();
-    this.retrictChar();
+    this.restrictNumber();
 		this.showNoty();
 		this.setDeliveryType();
 		this.filterByRadius();
@@ -44,17 +45,11 @@ var pyklocal = {
     this.configurePhoneField();
 	},
 
-  retrictNumber: function() {
-    jQuery('.numbersOnly').keyup(function () { 
+  restrictNumber: function() {
+    jQuery('.numbersOnly').keyup(function () {
       this.value = this.value.replace(/[^0-9\.]/g,'');
     });
-  }
-
-  retrictChar: function() {
-    jQuery('.charOnly').keyup(function () { 
-      this.value = this.value.replace(/[^a-z]/, '');
-    });
-  }
+  },
 
 	showNoty: function() {
 		$.noty.defaults = {
@@ -70,7 +65,7 @@ var pyklocal = {
 	        easing: 'swing',
 	        speed: 500 // opening & closing animation speed
 	    },
-	    timeout: 5000, // delay for closing event. Set false for sticky notifications
+	    timeout: 35000, // delay for closing event. Set false for sticky notifications
 	    force: false, // adds notification to the beginning of queue when set to true
 	    modal: false,
 	    maxVisible: 5, // you can set max visible notification for dismissQueue true option,
@@ -107,7 +102,8 @@ var pyklocal = {
 
 	filterProducts: function() {
 		$('.filter-field').click(function() {
-			$('#facet-filter').submit();
+      $('#facet-filter').submit();
+      $('#facet-filter input[type= "checkbox"]').attr('disabled','disabled');
 		});
 	},
 
@@ -125,6 +121,8 @@ var pyklocal = {
 
   applyCoupon: function() {
     $('#apply-coupon-code').click(function () {
+      var order_id = $(this).data('order_id');
+      var order_token = $(this).data('order_token');
       var couponStatus = $("#coupon-response");
       couponStatus.removeClass();
       $.ajax({
@@ -133,15 +131,17 @@ var pyklocal = {
         headers: {"X-Spree-Order-Token": $(this).data('order_token')},
         data: {coupon_code: $('#coupon-code').val(), order_token: $(this).data('order_token')},
         success: function(data) {
-          if(data.success) {
+          if(data.status == "1") {
             couponStatus.addClass('alert-success').text(data.message);
+            location.reload();
+            // refreshOrderSummary(order_id, order_token);
           } else {
             couponStatus.addClass('alert-error').text(data.message);
           }
         }
       });
     });
-  }, 
+  },
 
   configurePhoneField: function() {
     $('.number-only').keypress(function(e){
@@ -173,3 +173,406 @@ window.onload = function() {
   };
   navigator.geolocation.getCurrentPosition(geoSuccess);
 };
+
+
+function refreshOrderSummary(order_id, order_token){
+ // $.get("/api/v1/orders/"+order_id+"/refresh_order_summary", order_token, function(data){});4
+ console.log(order_id)
+  $.ajax({
+    url: "/api/v1/orders/"+order_id+"/refresh_order_summary.js",
+    method: 'get',
+    success: function(data) {
+      console.log(data);
+      data = data.toString().replace(/\\\//g,"");
+      console.log(data)
+      $("#checkout-summary").html(data);
+    }
+    //headers: {"X-Spree-Order-Token": order_token},
+    // data: {order_token: order_token},
+  })
+}
+
+$(document).ready(function(){
+      flag = true;
+      $('.user_address_form').on('submit', function(e){
+          e.preventDefault();
+          if ((validateFirstName()) * (validateLastName()) * (validateAddress1()) * (validateCity()) * (validateAddress2()) * ( validatePhone()) * (validateZip()) ) {
+              this.submit();
+          }
+      });
+    });
+  
+
+    $(document).ready(function(){
+      flag = true;
+      $('#checkout_form_address').on('submit', function(e){
+          e.preventDefault();
+          if ((validateFirstName()) * (validateLastName()) * (validateAddress1()) * (validateCity()) * (validateAddress2()) * ( validatePhone()) * (validateZip()) ) {
+              this.submit();
+          }
+      });
+    });
+
+/*===================================Address Book Validation ====================================================*/
+
+    $('.address_firstname').on('blur',function(){
+      validateFirstName();
+    });
+
+    $('.address_lastname').on('blur',function(){
+        validateLastName();
+    });
+
+    $('.address_address1').on('blur',function(){
+        validateAddress1();
+    });
+
+
+    $('.address_address2').on('blur',function(){
+        validateAddress2();
+    });
+
+    $('.address_city').on('blur',function(){
+        validateCity();
+    });
+
+    $('.address_zipcode').on('blur',function(){
+        validateZip();
+    });
+
+    $('.address_phone').on('blur',function(){
+        validatePhone();
+    });
+
+
+
+    function validateFirstName(){
+      if($('.address_firstname').val().trim().length == 0){
+        $('#first-name-error').html("<p class='text-red'> First Name can not be blank </p");
+        $('#first-name-error').show();
+        return 0;
+      }
+      else{
+        $('#first-name-error').hide();
+         return 1 ;
+      }
+    }
+
+    function validateLastName(){
+      if($('.address_lastname').val().trim().length == 0){
+        $('#last-name-error').html("<p class='text-red'> Last Name can not be blank </p");
+        $('#last-name-error').show();
+         return  0;
+      }
+      else{
+        $('#last-name-error').hide();
+         return 1;
+      }
+    }
+
+    function validateAddress1(){
+      if($('.address_address1').val().trim().length == 0){
+        $('#address1-error').html("<p class='text-red'> Street Address1 can not be blank </p");
+        $('#address1-error').show();
+         return  0;
+      }
+      else{
+        $('#address1-error').hide();
+         return 1;
+      }
+    }
+
+    function validateAddress2(){
+      if($('.address_address2').val().trim().length > 200){
+        $('#address2-error').html("<p class='text-red'> Street Address2 can not be greater than 200 </p");
+        $('#address2-error').show();
+         return  0;
+      }
+      else{
+        $('#address2-error').hide();
+         return 1;
+      }
+    }
+
+    function validateCity(){
+      flag = true;
+      errorStr = "";
+      var letters = /^[A-Za-z ]+$/;
+      if($('.address_city').val().trim().length == 0){
+        errorStr += "City can not be blank";
+        flag = false;
+      }
+      else if ( ($('.address_city').val()).match(letters) == null){
+          errorStr += "only character(s) are allowed in city";
+          flag = false;
+      }
+
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#city-error').html(OutputErrorStr);
+         $('#city-error').show();
+        return 0;
+      }
+      else{
+         $('#city-error').hide();
+        return 1;
+      }
+    }
+
+    function validateZip(){
+      flag = true;
+      var letters = /^[0-9]+$/;
+      errorStr = "";
+      if($('.address_zipcode').val().trim().length == 0){
+        errorStr += "Zipcode can not be blank";
+        flag = false;
+      }
+      else if (($('.address_zipcode').val()).match(letters) == null){
+          errorStr += "only number(s) are allowed in zipcode";
+          flag = false;
+      }
+
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#zipcode-error').html(OutputErrorStr);
+         $('#zipcode-error').show();
+        return 0;
+      }
+      else{
+         $('#zipcode-error').hide();
+        return 1;
+      }
+    }
+
+
+    function validatePhone(){
+
+      flag = true;
+      var letters = /^[0-9]+$/;
+      errorStr = "";
+      if($('.address_phone').val().trim().length == 0){
+        errorStr += "Phone Number can not be blank";
+        flag = false;
+      }
+      else if (($('.address_phone').val()).match(letters) == null){
+          errorStr += "only number(s) are allowed in phone number";
+          flag = false;
+      }
+      else if($('.address_phone').val().trim().length < 10){
+        errorStr += "Phone Number must have 10 digits";
+        flag = false;
+      }
+
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#phone-error').html(OutputErrorStr);
+         $('#phone-error').show();
+        return 0;
+      }
+      else{
+         $('#phone-error').hide();
+        return 1;
+      }
+
+    }
+
+/*===================================== Registration Form Validations ============================================*/
+
+$(document).ready(function(){
+      $('.reg-form').on('submit', function(e){
+          e.preventDefault();
+          if ((validateRegPassword()) * (validateRegConfirmPassword()) * (validateRegFirstName()) * (validateRegLastName()) * ( ValidateRegEmail()) ) {
+              this.submit();
+          }
+      });
+    });
+
+
+   $('.reg-password').on('blur',function(){
+      console.log("called");
+      validateRegPassword();
+    });
+
+    $('.reg-password-confrim').on('blur',function(){
+        validateRegConfirmPassword();
+    });
+
+    function validateRegPassword(){
+      flag = true;
+      errorStr = "";
+      if($('.reg-password').val().trim().length == 0){
+        errorStr += "Password can not be blank";
+        flag = false;
+      }
+
+      if (($('.reg-password').val().trim().length > 0) && ($('.reg-password').val().trim().length < 6)){
+        errorStr += "Password length must be greater than 6";
+        flag = false;
+      }
+
+
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#password-error').html(OutputErrorStr);
+         $('#password-error').show();
+        return 0;
+      }
+      else{
+         $('#password-error').hide();
+        return 1;
+      }
+    }
+
+
+    $('#spree_user_first_name').on('blur',function(){
+      validateRegFirstName();
+    });
+
+    $('#spree_user_last_name').on('blur',function(){
+        validateRegLastName();
+    });
+
+    function validateRegFirstName(){
+      if($('#spree_user_first_name').val().trim().length == 0){
+        $('#first-name-error').html("<p class='text-red'> First Name can not be blank </p");
+        $('#first-name-error').show();
+        return 0;
+      }
+      else{
+        $('#first-name-error').hide();
+         return 1 ;
+      }
+    }
+
+    function validateRegLastName(){
+      if($('#spree_user_last_name').val().trim().length == 0){
+        $('#last-name-error').html("<p class='text-red'> Last Name can not be blank </p");
+        $('#last-name-error').show();
+         return  0;
+      }
+      else{
+        $('#last-name-error').hide();
+         return 1;
+      }
+    }
+
+    function validateRegConfirmPassword(){
+      if($('.reg-password').val().trim() != $('.reg-password-confirm').val().trim()) {
+         $('#password-confirm-error').html("<p class='text-red'> Password does not match");
+         $('#password-confirm-error').show();
+         return 0;
+      }
+      else{
+         $('#password-confirm-error').hide();
+        return 1;
+      }
+    }
+
+    $('#spree_user_email').on('blur',function(){
+        ValidateRegEmail();
+    });
+
+    function  ValidateRegEmail(){
+      flag = true;
+      errorStr = ""
+      if ( $('.reg-email').val() == null || $('.reg-email').val() == ''){
+        errorStr = " Email can not be blank";
+        flag = false;
+      }
+      else if (validateRegistrationEmail() == false){
+        errorStr = "Email is Invalid";
+        flag = false;
+      }
+      
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#invalid-email').html(OutputErrorStr);
+        $('#invalid-email').show();
+        return 0;
+      }
+      else{
+        $('#invalid-email').hide();
+        return 1;
+      }
+    }
+
+
+    function validateRegistrationEmail(){
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  ;
+          console.log($('.reg-email').val());
+          return re.test($('.reg-email').val());
+    }
+
+/*=================================== Store Form Validations ==================================================*/
+
+
+
+    function validateStoreName(){
+      if ($('#merchant_store_name').val().trim().length == 0){
+        $('#store-name-error').html("<p class='text-red'> Store Name can not be blank </p");
+        $('#store-name-error').show();
+        return  0;
+      }
+      else{
+        $('#store-name-error').hide();
+        return 1;
+      }
+    }
+
+    function validateCertificate(){
+      errorStr = "";
+      flag = true;
+      if($('#merchant_store_certificate').val().trim().length == 0){
+        flag = false;
+        errorStr += "File is not selected";
+      }
+      else if (validateImageFormat() == false ){
+        flag = false;
+        errorStr += "File extension must either be jpeg, jpg or png";
+      }
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('.certificate-error').html(OutputErrorStr);
+        $('.certificate-error').show();
+        return 0;
+      }
+      else{
+        $('.certificate-error').hide();
+      }
+    } 
+
+    function validateCategory(){
+
+    }
+
+    function validateImageFormat(){
+      var file_name = $('#merchant_store_certificate').val().split('.');
+      if ( (file_name[file_name.length - 1] == 'jpeg') || (file_name[file_name.length - 1] == 'jpg') || (file_name[file_name.length - 1] == 'png') ) {
+          return true;
+      }
+      else{
+        return false;
+      }
+    }
+
+    $('#merchant_store_name').on('blur',function(){
+      console.log("called");
+      validateStoreName();
+    });
+
+    $(document).ready(function(){
+      flag = true;
+      $('#new_merchant_store').on('submit', function(e){
+          e.preventDefault();
+          if ((validateStoreName()) * (validateLastName()) * (validateAddress1()) * (validateCity()) * (validateAddress2()) * ( validatePhone()) * (validateZip()) ) {
+              this.submit();
+          }
+      });
+    });
+
+
+
+
+
+
+

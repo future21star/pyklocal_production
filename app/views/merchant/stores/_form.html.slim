@@ -1,99 +1,562 @@
-= form_for(@store, html: {class: "form-horizontal form-body"}) do |f|
+/ = form_for(@store, html: {class: "form-horizontal form-body"}) do |f|
+/   = hidden_field_tag :token, params[:token]
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :name, "Store Name*", class: "control-label"
+/       / span.required *
+/     .col-md-4.col-xs-12
+/       span.input-icon.icon-right
+/         = f.text_field :name, class: "form-control input-bg" 
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :logo, class: "control-label"
+/     .col-md-4.col-xs-12
+/       span
+/         = f.file_field :logo, class: "form-control" 
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :certificate_of_authority,  class: "control-label"
+/       / span.required *
+/     .col-md-4.col-xs-12
+/       span
+/         = f.file_field :certificate, class: "form-control" 
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :manager_name, class: "control-label"
+/       span.required *
+/     .col-md-2.col-xs-6
+/       span.input-icon.icon-right
+/         = f.text_field :manager_first_name, class: "form-control input-bg", placeholder: "First Name" 
+/     .col-md-2.col-xs-6
+/       span.input-icon.icon-right
+/         = f.text_field :manager_last_name, class: "form-control input-bg", placeholder: "Last Name" 
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label "Phone Number*", class: "control-label"
+/       / span.required *
+/     .col-md-4.col-xs-12
+/       span.input-icon.icon-right
+/         = f.number_field :phone_number, class: "form-control input-bg numbersOnly"
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :store_type, class: "control-label"
+/     .col-md-4.col-xs-12
+/       = f.select :store_type , options_for_select([['Physical', 'Physical' ],['Online', 'Online' ],['Both', 'Both' ]], @store.store_type), {}, class: "form-control input-bg"
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :estimated_delivery_time, class: "control-label"
+/     .col-md-4.col-xs-12
+/       = f.text_field :estimated_delivery_time, class: "form-control input-bg", placeholder: "Enter full information like 2 - 5 business hours or 1 -3 working days"
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :site_url, "Website(s)", class: "control-label"
+/     .col-md-4.col-xs-12
+/       span.input-icon.icon-right
+/         = f.text_field :site_url, class: "form-control input-bg", placeholder: "www.example.com" 
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :street_number, "Address", class: "control-label"
+/       span.required *
+/     .col-md-8.col-xs-12
+/       span.input-icon.icon-right
+/         = f.text_field :street_number, class: "form-control input-bg", placeholder: "Street Address" 
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :street_number, " ".html_safe, class: "control-label"
+/     .col-md-2.col-xs-6
+/       span.input-icon.icon-right
+/         = f.text_field :city, class: "form-control input-bg", placeholder: "City"
+/     .col-md-2.col-xs-6
+/       span.input-icon.icon-right
+/         = f.text_field :state, class: "form-control input-bg charOnly", placeholder: "State"
+/     .col-md-2.col-xs-6
+/       span.input-icon.icon-right
+/         = f.number_field :zipcode, class: "form-control input-bg numbersOnly", placeholder: "Zipcode"
+/     .col-md-2.col-xs-6
+/       span.input-icon.icon-right
+/         = f.text_field :country, class: "form-control input-bg charOnly", placeholder: "Country"
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :categories, class: "control-label" 
+/       span.required *
+/     .col-md-10.col-xs-12
+/       - store_taxon_ids = @store.store_taxons.collect(&:taxon_id)
+/       - @taxons.each do |taxon|
+/         .col-md-2.col-xs-6
+/           label.checkbox-inline title="#{taxon.name}" 
+/             = check_box_tag "merchant_store[spree_taxon_ids][]", taxon.id, store_taxon_ids.include?(taxon.id)
+/             = truncate(taxon.name, length: 22)
+/   .form-group
+/     .col-md-2.col-xs-12
+/       = f.label :description, class: "control-label"
+/     .col-md-8.col-xs-12
+/       span.input-icon.icon-right
+/         = f.text_area :description, class: "form-control input-bg", placeholder: "Few lines about your store...", rows: 5 
+  
+/   .form-group
+/     .col-xs-offset-2.col-xs-10
+/       button.btn.btn-primary type="submit"
+/         i.fa class=(@store.new_record? ? 'fa-check' : 'fa-referesh')
+/         |  
+/         = @store.new_record? ? "Create" : "Update" 
+/       = link_to "<span class='fa fa-close'></span> Cancel".html_safe, main_app.merchant_path, class: "btn btn-default margin-left"
+
+
+h3.h3-title Sell With Us!
+p
+  i.sprite.sprite-checkmark
+  | Use our platform to sell your products.
+  br/
+  small Note: All the fields with * are Required
+= form_for(@store, html: {class: "form form-body merchant_store"}) do |f|
   = hidden_field_tag :token, params[:token]
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :name, "Store Name", class: "control-label"
-      span.required *
-    .col-md-4.col-xs-12
-      span.input-icon.icon-right
-        = f.text_field :name, required: true, class: "form-control input-bg" 
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :logo, class: "control-label"
-    .col-md-4.col-xs-12
-      span
-        = f.file_field :logo, class: "form-control" 
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :certificate_of_authority,  class: "control-label"
-      span.required *
-    .col-md-4.col-xs-12
-      span
-        = f.file_field :certificate, required: true, class: "form-control" 
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :manager_name, class: "control-label"
-    .col-md-2.col-xs-6
-      span.input-icon.icon-right
-        = f.text_field :manager_first_name, class: "form-control input-bg", placeholder: "First Name" 
-    .col-md-2.col-xs-6
-      span.input-icon.icon-right
-        = f.text_field :manager_last_name, class: "form-control input-bg", placeholder: "Last Name" 
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :phone_number, class: "control-label"
-      span.required *
-    .col-md-4.col-xs-12
-      span.input-icon.icon-right
-        = f.number_field :phone_number, required: true, class: "form-control input-bg numbersOnly"
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :store_type, class: "control-label"
-    .col-md-4.col-xs-12
-      = f.select :store_type , options_for_select([['Physical', 'Physical' ],['Online', 'Online' ],['Both', 'Both' ]], @store.store_type), {}, class: "form-control input-bg"
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :estimated_delivery_time, class: "control-label"
-    .col-md-4.col-xs-12
-      = f.text_field :estimated_delivery_time, class: "form-control input-bg", placeholder: "Enter full information like 2 - 5 business hours or 1 -3 working days"
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :site_url, "Website(s)", class: "control-label"
-    .col-md-4.col-xs-12
-      span.input-icon.icon-right
-        = f.text_field :site_url, class: "form-control input-bg", placeholder: "www.example.com" 
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :street_number, "Address", class: "control-label"
-      span.required *
-    .col-md-8.col-xs-12
-      span.input-icon.icon-right
-        = f.text_field :street_number, required: true, class: "form-control input-bg", placeholder: "Street Address" 
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :street_number, " ".html_safe, class: "control-label"
-    .col-md-2.col-xs-6
-      span.input-icon.icon-right
-        = f.text_field :city, class: "form-control input-bg", placeholder: "City"
-    .col-md-2.col-xs-6
-      span.input-icon.icon-right
-        = f.text_field :state, class: "form-control input-bg charOnly", placeholder: "State"
-    .col-md-2.col-xs-6
-      span.input-icon.icon-right
-        = f.number_field :zipcode, class: "form-control input-bg numbersOnly", placeholder: "Zipcode"
-    .col-md-2.col-xs-6
-      span.input-icon.icon-right
-        = f.text_field :country, class: "form-control input-bg charOnly", placeholder: "Country"
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :catogories, class: "control-label" 
-      span.required *
-    - store_taxon_ids = @store.store_taxons.collect(&:taxon_id)
-    - @taxons.each do |taxon|
-      .col-md-2.col-xs-6
-        label.checkbox-inline title="#{taxon.name}" 
-          = check_box_tag "merchant_store[spree_taxon_ids][]", taxon.id, store_taxon_ids.include?(taxon.id)
-          = truncate(taxon.name, length: 22)
-  .form-group
-    .col-md-2.col-xs-12
-      = f.label :description, class: "control-label"
-    .col-md-8.col-xs-12
-      span.input-icon.icon-right
-        = f.text_area :description, class: "form-control input-bg", placeholder: "Few lines about your store...", rows: 5 
-  .form-group
-    .col-xs-offset-2.col-xs-10
-      button.btn.btn-primary type="submit"
-        i.fa class=(@store.new_record? ? 'fa-check' : 'fa-referesh')
-        |  
-        = @store.new_record? ? "Create" : "Update" 
-      = link_to "<span class='fa fa-close'></span> Cancel".html_safe, main_app.merchant_path, class: "btn btn-default margin-left"
+  .row
+    .form-group.col-xs-12
+      - if @store.id.present?
+         h4.title Edit the form of store
+      - else
+        h4.title Fill the form for New store
+    .form-group.col-xs-12
+      = f.text_field :name, :class => 'form-control ', :tabindex => 1, :placeholder => 'Store Name*'
+      span#store-name-error.error-block 
+    .form-group.col-xs-12
+      label
+        strong Logo
+      .fileUpload.btn.btn-primary
+        = f.file_field :logo,  accept: "image/png,image/jpeg,image/jpg",class: "form-control" 
+      span.logo-name
+        = @store.logo_file_name.present? ? @store.logo_file_name : ""
+      span.logo-error
+        / span Browse...
+        / input#uploadBtn.upload type="file" name = "merchant_store[logo]" /
+      / input#uploadFile.uploadFile disabled="" placeholder=("No file selected") /
+    .form-group.col-xs-12
+      label
+        strong Certificate of authority*
+      .fileUpload.btn.btn-primary
+        / span Browse...
+        = f.file_field :certificate,  accept: "image/png,image/jpeg,image/jpg",class: "form-control" 
+      span.certificate-name
+        = @store.certificate_file_name.present? ? @store.certificate_file_name : "No file is selected"
+      span.certificate-error
+        / input#uploadBtn1.upload type="file" name = "merchant_store[certificate]" /
+      / input#uploadFile1.uploadFile disabled="" placeholder=("No file selected") /
+    .form-group.col-xs-12
+      h4.title Manager Details
+    .row
+      .form-group.col-sm-6.col-xs-12
+        = f.text_field :manager_first_name, :class => 'form-control', :tabindex => 1, :placeholder => 'First Name',maxlength: "100"
+      .form-group.col-sm-6.col-xs-12
+        = f.text_field :manager_last_name, :class => 'form-control',  :tabindex => 1, :placeholder => 'Last Name',maxlength: "100"
+    .row
+      .form-group.col-sm-6.col-xs-12
+        / input.form-control name="phone-number" placeholder=("Phone number*") type="tel" /
+        = f.number_field :phone_number, class: "form-control input-bg numbersOnly address_phone",placeholder: "Phone*"
+        span#phone-error.error-block
+      .form-group.col-sm-6.col-xs-12
+         = f.select :store_type , options_for_select([['Physical', 'Physical' ],['Online', 'Online' ],['Both', 'Both' ]], @store.store_type), {}, class: "form-control input-bg"
+    .row
+      .form-group.col-sm-6.col-xs-12
+        / input.form-control name="edt" placeholder=("Estimated delivery time") /
+        = f.text_field :estimated_delivery_time, class: "form-control input-bg", placeholder: "Enter full information like 2 - 5 business hours or 1 -3 working days",maxlength: "100"
+      .form-group.col-sm-6.col-xs-12
+        / input.form-control name="Website" placeholder="Website(s)" /
+        = f.text_field :site_url, class: "form-control input-bg ", placeholder: "www.example.com" 
+    .form-group.col-xs-12
+      h4.title Address
+    .row
+      .form-group.col-sm-6.col-xs-12
+        / input.form-control name="address" placeholder="Address*" /
+        = f.text_field :street_number, class: "form-control input-bg address_address1", placeholder: "Address*" , maxlength: "200"
+        span#address1-error.error-block
+      .form-group.col-sm-6.col-xs-12
+        / input.form-control name="city" placeholder="City*" /
+        = f.text_field :city, class: "form-control input-bg address_city", placeholder: "City*",maxlength: "100"
+        span#city-error.error-block
+    .row
+      .form-group.col-sm-4.col-xs-12
+        / select.form-control
+        /   option State*
+        /   option Rajasthan
+        /   option Madya Pradesh
+        /   option Utter Pradesh
+        = f.text_field :state, class: "form-control input-bg charOnly address_state", placeholder: "State*",maxlength: "100"
+        span#state-error.error-block
+      .form-group.col-sm-4.col-xs-12
+        / input.form-control name="zipcode" placeholder="Zipcode*" /
+        = f.number_field :zipcode, class: "form-control input-bg numbersOnly address_zipcode", placeholder: "Zipcode*",maxlength: "6"
+        span#zipcode-error.error-block
+      .form-group.col-sm-4.col-xs-12
+        / select.form-control
+        /   option Country*
+        /   option Rajasthan
+        /   option Madya Pradesh
+        /   option Utter Pradesh
+        = f.text_field :country, class: "form-control input-bg charOnly address_country", placeholder: "Country*"
+        span#country-error
+    .form-group.col-xs-12
+      h4.title Categories*
+    .form-group.col-xs-12
+      ul.categories
+        - store_taxon_ids = @store.store_taxons.collect(&:taxon_id)
+        - @taxons = Spree::Taxon.where(parent_id: nil)
+        - @taxons.each do |taxon|
+         .col-md-2.col-xs-6
+           label.checkbox-inline title="#{taxon.name}" 
+            = check_box_tag "merchant_store[spree_taxon_ids][]", taxon.id, store_taxon_ids.include?(taxon.id)
+            = truncate(taxon.name, length: 22)
+      span#category-error.error-block
+        / li
+        /   label for="rememberme1"
+        /     input#rememberme1 name="rememberme" type="checkbox" value="forever" /
+        /     | Electronics
+        / li
+        /   label for="rememberme2"
+        /     input#rememberme2 name="rememberme" type="checkbox" value="forever" /
+        /     | Footware
+        / li
+        /   label for="rememberme3"
+        /     input#rememberme3 name="rememberme" type="checkbox" value="forever" /
+        /     | Pharmacy
+        / li
+        /   label for="rememberme4"
+        /     input#rememberme4 name="rememberme" type="checkbox" value="forever" /
+        /     | Household supplies
+        / li
+        /   label for="rememberme5"
+        /     input#rememberme5 name="rememberme" type="checkbox" value="forever" /
+        /     | Hair Care
+        / li
+        /   label for="rememberme6"
+        /     input#rememberme6 name="rememberme" type="checkbox" value="forever" /
+        /     | Baby &amp; Children
+        / li
+        /   label for="rememberme7"
+        /     input#rememberme7 name="rememberme" type="checkbox" value="forever" /
+        /     | Nutrition
+        / li
+        /   label for="rememberme8"
+        /     input#rememberme8 name="rememberme" type="checkbox" value="forever" /
+        /     | Home Furnishing
+    .form-group.col-xs-12
+      h4.title Description
+    .form-group.col-xs-12
+      textarea.form-control
+    .form-group.col-xs-12.text-center
+      - if @store.id.present?
+         = f.submit 'Update', :tabindex => 3, id: "continue-btn",class: "store-reg"
+      - else
+        = f.submit 'Sign Up', :tabindex => 3, id: "continue-btn",class: "store-reg"
+
+
+- content_for :js do
+  javascript:
+
+     function validateStoreName(){
+      if ($('#merchant_store_name').val().trim().length == 0){
+        $('#store-name-error').html("<p class='text-red'> Store Name can not be blank </p");
+        $('#store-name-error').show();
+        return  0;
+      }
+      else{
+        $('#store-name-error').hide();
+        return 1;
+      }
+    }
+
+
+    function validateCertificate(){
+      console.log("called");
+      errorStr = "";
+      flag = true;
+      if ($('#merchant_store_certificate').val() != ""){
+         $('.certificate-name').html("");
+      }
+
+      if( ($('.certificate-name').html().length > 0) && ($('.certificate-name').html() != "No file is selected")){
+        flag = true;
+      }
+      if($('.certificate-name').html() == "No file is selected"){
+        flag = false;
+        errorStr += "File is not selected";
+      }
+      else if ($('#merchant_store_certificate').val().length > 0 && validateImageFormat("merchant_store_certificate") == false )                                             {
+        flag = false;
+        errorStr += "File extension must either be jpeg, jpg or png";
+      }
+      
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('.certificate-error').html(OutputErrorStr);
+        $('.certificate-error').show();
+        return 0;
+      }
+      else{
+        $('.certificate-error').hide();
+        return 1;
+      }
+    }
+
+    
+
+
+    function validateLogo(){
+      errorStr = "";
+      flag = true;
+     
+      if ($('#merchant_store_logo').val().length > 0) {
+        $('.logo-name').html("");
+        if (validateImageFormat("merchant_store_logo") == false ){
+          flag = false;
+          $('.logo-error').html("<p class='text-red'>File extension must either be jpeg, jpg or png </p>");
+          $('.logo-error').show();
+          return 0;
+        }
+        else{
+          $('.logo-error').hide();
+          return 1;
+        }
+      }
+      return 1;
+    } 
+
+    function validateAddress1(){
+      if($('.address_address1').val().trim().length == 0){
+        $('#address1-error').html("<p class='text-red'> Street Address can not be blank </p");
+        $('#address1-error').show();
+         return  0;
+      }
+      else{
+        $('#address1-error').hide();
+         return 1;
+      }
+    }
+
+    function validateAddress2(){
+      if($('.address_address2').val().trim().length > 200){
+        $('#address2-error').html("<p class='text-red'> Street Address2 can not be greater than 200 </p");
+        $('#address2-error').show();
+         return  0;
+      }
+      else{
+        $('#address2-error').hide();
+         return 1;
+      }
+    }
+
+    function validateCity(){
+      flag = true;
+      errorStr = "";
+      var letters = /^[A-Za-z ]+$/;
+      if($('.address_city').val().trim().length == 0){
+        errorStr += "City can not be blank";
+        flag = false;
+      }
+      else if ( ($('.address_city').val()).match(letters) == null){
+          errorStr += "only character(s) are allowed in city";
+          flag = false;
+      }
+
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#city-error').html(OutputErrorStr);
+         $('#city-error').show();
+        return 0;
+      }
+      else{
+         $('#city-error').hide();
+        return 1;
+      }
+    }
+
+    function validateState(){
+      flag = true;
+      errorStr = "";
+      var letters = /^[A-Za-z ]+$/;
+      if($('.address_state').val().trim().length == 0){
+        errorStr += "State can not be blank";
+        flag = false;
+      }
+      else if ( ($('.address_state').val()).match(letters) == null){
+          errorStr += "only character(s) are allowed in state";
+          flag = false;
+      }
+
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#state-error').html(OutputErrorStr);
+         $('#state-error').show();
+        return 0;
+      }
+      else{
+         $('#state-error').hide();
+        return 1;
+      }
+    }
+
+    function validateCountry(){
+      flag = true;
+      errorStr = "";
+      var letters = /^[A-Za-z ]+$/;
+      if($('.address_country').val().trim().length == 0){
+        errorStr += "City can not be blank";
+        flag = false;
+      }
+      else if ( ($('.address_country').val()).match(letters) == null){
+          errorStr += "only character(s) are allowed in country";
+          flag = false;
+      }
+
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#country-error').html(OutputErrorStr);
+         $('#country-error').show();
+        return 0;
+      }
+      else{
+         $('#country-error').hide();
+        return 1;
+      }
+    }
+
+    function validateZip(){
+      flag = true;
+      var letters = /^[0-9]+$/;
+      errorStr = "";
+      if($('.address_zipcode').val().trim().length == 0){
+        errorStr += "Zipcode can not be blank";
+        flag = false;
+      }
+      else if (($('.address_zipcode').val()).match(letters) == null){
+          errorStr += "only number(s) are allowed in zipcode";
+          flag = false;
+      }
+
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#zipcode-error').html(OutputErrorStr);
+        $('#zipcode-error').show();
+        return 0;
+      }
+      else{
+         $('#zipcode-error').hide();
+        return 1;
+      }
+    }
+
+
+    function validatePhone(){
+
+      flag = true;
+      var letters = /^[0-9]+$/;
+      errorStr = "";
+      if($('.address_phone').val().trim().length == 0){
+        errorStr += "Phone Number can not be blank";
+        flag = false;
+      }
+      else if (($('.address_phone').val()).match(letters) == null){
+          errorStr += "only number(s) are allowed in phone number";
+          flag = false;
+      }
+      else if($('.address_phone').val().trim().length < 10){
+        errorStr += "Phone Number must have 10 digits";
+        flag = false;
+      }
+
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#phone-error').html(OutputErrorStr);
+         $('#phone-error').show();
+        return 0;
+      }
+      else{
+         $('#phone-error').hide();
+        return 1;
+      }
+
+    }
+
+    function validateCategory(){
+      if($('input[type="checkbox"]:checked').length == 0){
+        $('#category-error').html("<p class='text-red'> No category is selected </p");
+        $('#category-error').show();
+        return 0;
+      }
+      else
+      {
+        $('#category-error').hide();
+        return 1;
+      }
+    }
+
+    function validateImageFormat(id){
+      var file_name = $('#'+ id).val().split('.');
+      if ( (file_name[file_name.length - 1] == 'jpeg') || (file_name[file_name.length - 1] == 'jpg') || (file_name[file_name.length - 1] == 'png') ) {
+          return true;
+      }
+      else{
+        return false;
+      }
+    }
+
+    $('#merchant_store_name').on('blur',function(){
+      validateStoreName();
+    });
+
+    $('#merchant_store_certificate').on('change',function(){
+      console.log("called");
+      validateCertificate();
+    });
+
+    $('#merchant_store_logo').on('change',function(){
+      console.log("called");
+      validateLogo();
+    });
+
+    $('.address_city').on('blur',function(){
+        validateCity();
+    });
+
+
+    $('.address_state').on('blur',function(){
+        validateState();
+    });
+
+
+    $('.address_country').on('blur',function(){
+        validateCountry();
+    });
+
+    $('.address_zipcode').on('blur',function(){
+        validateZip();
+    });
+
+    $('.address_phone').on('blur',function(){
+        validatePhone();
+    });
+
+
+    $('.address_address1').on('blur',function(){
+        validateAddress1();
+    });
+
+    $('input[type=checkbox]').on('change',function(){
+        validateCategory();
+    });
+
+    $('#merchant_store_logo').on('change',function(){
+      validateLogo();
+    });
+
+
+    $(document).ready(function(){
+      flag = true;
+      $('.merchant_store').on('submit', function(e){
+          e.preventDefault();
+          if ((validateStoreName()) * (validateAddress1()) * (validateCity()) * (validateCountry()) * ( validatePhone()) * (validateZip()) * (validateState()) * (validateCertificate()) * (validateLogo()) * (validateCategory())) {
+              this.submit();
+          }
+      });
+    });
+
+

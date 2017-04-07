@@ -1,0 +1,22 @@
+<table class="row header">
+  <tr>
+    <td>
+      <p class="lede">
+        Dear <%= @line_items.first.order.try(:full_name) %>
+      </p>
+      <p>
+        Following Item(s) are Out For Delivery 
+      </p>
+     
+      <%= render partial: 'spree/shared/mailer_home_delivery_line_item', locals: {line_items: @line_items} %>
+      <br>
+      <p>
+        <%= Spree.t('order_mailer.confirm_email.thanks') %>
+      </p>
+    </td>
+    <td class="expander"></td>
+  </tr>
+  <!-- <tr>
+    <a href="users_feedbacks/new?<%= @order.try(:full_name) %>"> Share your Shopping Experience</a>
+  </tr> -->
+</table>

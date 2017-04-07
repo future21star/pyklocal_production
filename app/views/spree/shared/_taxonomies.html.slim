@@ -1,6 +1,8 @@
 - max_level = Spree::Config[:max_level_in_taxons_menu]
-- unless Spree::Taxonomy.where(name: "Categories").blank?
-  - Spree::Taxonomy.where(name: "Categories").first.taxons.where(name: "Categories").first.children.each do |taxon| 
+- @taxon = Spree::Taxon.where(parent_id: nil)
+- unless @taxon.blank?
+  / - Spree::Taxonomy.where(name: "Categories").first.taxons.where(name: "Categories").first.children.each do |taxon| 
+  - @taxon.each do|taxon|
     .column
       / = taxons_tree(taxonomy.root, @taxon, max_level)
       a data-no-turbolink=true href= spree.shop_path(id: taxon.permalink)
@@ -17,4 +19,18 @@
                 a data-no-turbolink=true href=spree.shop_path(id: sub_taxon.permalink)
                   |&nbsp;
                   = sub_taxon.name
-            
+                 
+
+
+/ - max_level = Spree::Config[:max_level_in_taxons_menu]
+/ - @taxon = Spree::Taxon.where(parent_id: nil)
+/ ul
+/   - @taxon.each do |taxon|
+/     li
+/       a data-no-turbolink=true href= spree.shop_path(id: taxon.permalink)
+/         = taxon.name
+/         - unless taxon.children.blank?
+/           = render partial: "spree/shared/taxon_line_item", locals: {category_child: taxon}
+
+    
+  

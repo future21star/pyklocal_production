@@ -1,8 +1,9 @@
 .row data-hook="admin_image_form_fields"
   .col-md-6
     .form-group data-hook="file" 
-      = f.label :attachment, Spree.t(:filename), class: "control-label"
-      = f.file_field :attachment, class: "form-control"
+      = f.label :attachment, Spree.t(:filename),class: "control-label"
+      = f.file_field :attachment, accept: "image/png,image/jpeg,image/jpg", class: "form-control"
+      span#file-upload
     .form-group data-hook="variant"
       = f.label :viewable_id, Spree::Variant.model_name.human, class: "control-label"
       = f.select :viewable_id, @variants, {}, {:class => 'form-control'}
@@ -10,4 +11,59 @@
   .col-md-6 data-hook="alt_text"
     .form-group
       = f.label :alt, Spree.t(:alt_text), class: "control-label"
-      = f.text_area :alt, :rows => 4, :class => 'form-control'
+      = f.text_area :alt, :rows => 4, :class => 'form-control', maxlength: "200"
+
+-content_for :js do 
+  javascript:
+    $(document).ready(function(){
+      $('#new_image').on('submit', function(e){
+          e.preventDefault();
+          if (($('#image_attachment').val() == '') || ($('#image_attachment').val() == null)){
+             $('#file-upload').html("<p class='inline-error'> No file selected</p>");
+             $('.inline-error').css("display", "block");
+             return;
+          }
+          if (validate() == true ){
+            this.submit();
+          }
+          else{
+            if  ($('#file-upload').html().length == 0){
+              console.log($('#file-upload').html().length);
+              $('#file-upload').html("<p class='inline-error'> File extension must either be jpeg, jpg or png</p>");
+              $('.inline-error').css("display", "block");
+            }
+            else{
+              $('.inline-error').css("display", "block");
+            }
+          }
+      });
+    });
+
+    $("input:file").on('change', function(){
+      if (validate() == true ){
+       $('.inline-error').css("display", "none");
+      }
+      else{
+        if  ($('#file-upload').html().length == 0){
+          console.log($('#file-upload').html().length);
+          $('#file-upload').html("<p class='inline-error'> File extension must either be jpeg, jpg or png</p>");
+          $('.inline-error').css("display", "block");
+        }
+        else{
+          $('#file-upload').html("<p class='inline-error'> File extension must either be jpeg, jpg or png</p>");
+          $('.inline-error').css("display", "block");
+        }
+      }
+    });
+   
+    function validate(){
+      var file_name = $('#image_attachment').val().split('.');
+      if ( (file_name[file_name.length - 1] == 'jpeg') || (file_name[file_name.length - 1] == 'jpg') || (file_name[file_name.length - 1] == 'png') ) {
+          return true;
+      }
+      else{
+        return false;
+      }
+    }
+
+    

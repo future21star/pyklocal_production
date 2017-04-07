@@ -1,14 +1,15 @@
 .col-md-9
-  = form_for [:merchant, @product], html: {multipart: true} do |f|
+  = form_for [:merchant, @product],html: {multipart: true} do |f|
     .row.top-margin-row
       .col-md-8
         .from-group
           = f.field_container :name do 
-            = f.label :name, raw(Spree.t(:name) + content_tag(:span, ' *', :class => 'required control-label'))
+            = f.label :name, raw(Spree.t(:name) + content_tag(:span, ' *',:class => 'required control-label'))
             span.input-icon.icon-right
-              = f.text_field :name, :class => 'fullwidth title form-control input-bg' 
+              = f.text_field :name,:class => 'fullwidth title form-control input-bg', maxlength: "100" 
               .fa &#xf170;
-            = f.error_message_on :name
+            span.product-name-error
+            / = f.error_message_on :name
         .from-group
           = f.label :slug, class: "control-label"
           span.input-icon.icon-right
@@ -20,12 +21,12 @@
             span.input-icon.icon-right
               = f.text_area :description, {:rows => "#{unless @product.has_variants? then '20' else '13' end}", :class => 'fullwidth form-control input-bg'} 
               .fa &#xf022;
-            = f.error_message_on :description
         .form-group
-          = f.field_container :taxons do 
-            = f.label :taxon_ids, Spree.t(:taxons) 
+          = f.field_container :taxon do 
+            = f.label :taxon_ids, raw(Spree.t(:categories) + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
             br
-            = f.hidden_field :taxon_ids, :value => @product.taxon_ids.join(',')
+            = f.text_field :taxon_ids, :value => @product.taxon_ids.join(',')
+            span.product-taxon-error
         .form-group
           = f.field_container :option_types do 
             = f.label :option_type_ids, Spree.t(:option_types) 
@@ -34,28 +35,29 @@
       .col-md-4
         .form-group
           = f.field_container :price do 
-            = f.label :price, raw(Spree.t(:master_price) + ' (USD)' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
+            = f.label :price, raw(Spree.t(:sale_price) + ' (USD)' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
             span.input-icon.icon-right
-              = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'numbersOnly fullwidth form-control input-bg'
+              = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'numbersOnly fullwidth form-control input-bg' ,:step => "0.01",min: "0"
               .fa &#xf0d6;
-            = f.error_message_on :price
+              span.product-price-error
         .form-group
           = f.field_container :shipping_categories do 
             = f.label :shipping_category_id, Spree.t(:shipping_categories), label: "control-label lable-margin-top" 
             = f.collection_select(:shipping_category_id, @shipping_categories, :id, :name, { :include_blank => Spree.t('match_choices.none') }, { :class => 'select2 fullwidth form-control input-bg auto-select' }) 
-            = f.error_message_on :shipping_category 
+            span.product-shipping-error
         .form-group
           = f.field_container :tax_category do 
-            = f.label :tax_category_id, Spree.t(:tax_category), class: "control-label" 
-            = f.collection_select(:tax_category_id, @tax_categories, :id, :name, { :include_blank => Spree.t('match_choices.none') }, { :class => 'select2 fullwidth form-control input-bg auto-select' }) 
-            = f.error_message_on :tax_category 
+            = f.label :tax_category_id, raw(Spree.t(:tax_category) + content_tag(:span, ' *', :class => "required control-label lable-margin-top")), class: "control-label" 
+            = f.collection_select(:tax_category_id, @tax_categories, :id, :name, { :include_blank => Spree.t('match_choices.none') }, { :class => 'select2 fullwidth form-control input-bg auto-select product-tax-category' }) 
+            span.product-tax-error
         .form-group
           .col-md-6.top-margin-row.child-div
             = f.field_container :cost_price do 
-              = f.label :cost_price, class: "control-label"
-              span.input-icon.icon-right
-                = f.number_field :cost_price, class: "numbersOnly form-control input-bg"
+              = f.label :cost_price, raw('Retail Price' + ' (USD) ' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
+              span.input-icon.icon-right 
+                = f.number_field :cost_price, class: "numbersOnly form-control input-bg" ,:min => @product.price , :step => "0.01"
                 .fa &#xf0d6;
+                span.product-cost-price-error
           .col-md-6.top-margin-row.child-div1
             = f.field_container :cost_currency do
               = f.label :cost_currency, class: "control-label"
@@ -66,14 +68,16 @@
             = f.field_container :available_on do 
               = f.label :available_on, class: "control-label"
               span.input-icon.icon-right
-                = f.text_field :available_on, class: "form-control input-bg datepicker", value: @product.available_on.try(:to_date)
+                = f.text_field :available_on, class: "form-control input-bg datepicker_product", value: @product.available_on.try(:to_date)
                 .fa &#xf274;
+                span.product-available-date-error
           .form-group
             = f.field_container :discontinue_on do 
               = f.label :discontinue_on, class: "control-label"
               span.input-icon.icon-right
-                = f.text_field :discontinue_on, class: "form-control input-bg datepicker", value: @product.discontinue_on.try(:to_date)
+                = f.text_field :discontinue_on, class: "form-control input-bg datepicker_product", value: @product.discontinue_on.try(:to_date)
                 .fa &#xf274;
+                span.product-discontinue-date-error
           .form-group
             = f.field_container :sku do 
               = f.label :sku, class: "control-label"
@@ -91,24 +95,28 @@
             .col-md-6.top-margin-row.child-div
               = f.label :weight, class: "control-label"
               span.input-icon.icon-right
-                = f.number_field :weight, class: "numbersOnly form-control input-bg"
+                = f.number_field :weight,min: "0",max: "999999.99", step: "0.01",class: "numbersOnly form-control input-bg"
                 .fa &#xf24e;
+                span.weight-error
             .col-md-6.top-margin-row.child-div1
               = f.label :height, class: "control-label"
               span.input-icon.icon-right
-                = f.number_field :height, class: "numbersOnly form-control input-bg"
+                = f.number_field :height, min: "0",max: "999999.99",step: "0.01",class: "numbersOnly form-control input-bg"
                 .fa &#xf07d;
+                span.height-error
           .form-group
             .col-md-6.top-margin-row.child-div
               = f.label :width, class: "control-label"
               span.input-icon.icon-right
-                = f.number_field :width, class: "numbersOnly form-control input-bg"
+                = f.number_field :width, min: "0",max: "999999.99", step: "0.01",class: "numbersOnly form-control input-bg"
                 .fa &#xf07e;
+                span.width-error
             .col-md-6.top-margin-row.child-div1
               = f.label :depth, class: "control-label"
               span.input-icon.icon-right
-                = f.number_field :depth, class: "numbersOnly form-control input-bg"
+                = f.number_field :depth, min: "0", max: "999999.99",step: "0.01",class: "numbersOnly form-control input-bg"
                 .fa &#xf01c; 
+                span.depth-error
     .row.top-margin-row
       .col-md-12
         = f.label :meta_keywords, Spree.t(:meta_keywords)
@@ -127,4 +135,219 @@
 .col-md-3
   = render partial: "merchant/shared/edit_product_sidebar", locals: {product_id: @product.slug}
 - content_for :title do 
-  = @product.new_record? ? "Craete Product" : "Edit Product"
+  = @product.new_record? ? "Create Product" : "Edit Product"
+
+- content_for :js do
+  javascript:
+
+    $(document).ready(function(){
+       $( ".datepicker_product" ).datepicker({ minDate: 0, dateFormat: 'yy-mm-dd' });
+    });
+
+    $(document).ready(function(){
+      $('.edit_product').on('submit', function(e){
+          e.preventDefault();
+          if( (validateProductName()) * (validatePrice()) * (validateCostPrice()) * (validateTaxCategory()) * (validateShipping()) * ( validateTaxon()) * (validateAvailableDate()) * (validateDiscontinueDate())){
+            this.submit();
+          }
+          else{
+            console.log("something went wrong");
+          }
+      });
+    });
+
+    $('#product_price').on('blur',function(){
+      validatePrice();
+    });
+
+    $('#product_cost_price').on('blur',function(){
+      validateCostPrice();
+    });
+
+    $('#product_name').on('blur',function(){
+      validateProductName();
+    });
+
+   
+
+    $('#product_shipping_category_id').on('change',function(){
+      validateShipping();
+    });
+
+    $('#product_tax_category_id').on('change',function(){
+      validateTaxCategory();
+    });
+
+    $('#product_taxon_ids').on('change',function(){
+      validateTaxon();
+    });
+
+    $('#product_available_on').on('change',function(){
+        validateAvailableDate();
+    });
+
+    $('#product_discontinue_on').on('change',function(){
+        validateDiscontinueDate();
+    });
+
+    function validateProductName(){
+      if($('#product_name').val().trim().length == 0){
+        $('.product-name-error').html("<p class='text-red'> Product Name can not be blank </p");
+        $('.product-name-error').show();
+        return 0;
+      }
+      else{
+        $('.product-name-error').hide();
+         return 1 ;
+      }
+    }
+
+    
+
+    function validateShipping(){
+      if ($('.select2-hidden-accessible').eq(0).text() == "None"){
+        $('.product-shipping-error').html("<p class='text-red'> Shipping Category Not selected </p");
+        $('.product-shipping-error').show();
+        return 0;
+      }
+      else
+      {
+        $('.product-shipping-error').hide();
+        return 1;
+      }
+    }
+
+    function validateTaxCategory(){
+      if ($('.select2-hidden-accessible').eq(1).text() == "None"){
+        $('.product-tax-error').html("<p class='text-red'> Tax Category Not selected </p");
+        $('.product-tax-error').show();
+        return 0;
+      }
+      else
+      {
+        $('.product-tax-error').hide();
+        return 1;
+      }
+    }
+
+
+    function validateTaxon(){
+      if($('#s2id_product_taxon_ids ul.select2-choices li').length <= 1){
+        $('.product-taxon-error').html("<p class='text-red'> Product Category Not selected </p");
+        $('.product-taxon-error').show();
+        return 0;
+      }
+      else{
+        $('.product-taxon-error').hide();
+        return 1;
+      }
+    }
+
+
+    function validatePrice(){
+      flag = true;
+      if($('#product_price').val().trim().length == 0){
+        $('.product-price-error').html("<p class='text-red'> Product sale price can not be blank </p");
+        $('.product-price-error').show();
+        flag = false;
+      }
+      else if ((parseInt($('#product_price').val())) <= 0 ){
+        $('.product-price-error').html("<p class='text-red'> Product sale price must be greater than zero </p");
+        $('.product-price-error').show();
+        flag = false;
+      }
+      else{
+        $('.product-price-error').hide();
+        flag = true;
+      }
+
+      if (flag == true){
+        return 1;
+      }
+      else{
+        return 0;
+      }
+    }
+
+    function validateAvailableDate(){
+      dateReg = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
+      if($('#product_available_on').val().trim().length == 0 ){
+        $('.product-available-date-error').html("<p class='text-red'> Product available on date can not be blank</p");
+        $('.product-available-date-error').show();
+        return 0;
+      }
+      else if($('#product_available_on').val().match(dateReg) == null){
+        $('.product-available-date-error').html("<p class='text-red'> Product available on date is invalid</p");
+        $('.product-available-date-error').show();
+        return 0;
+      }
+      else{
+        $('.product-available-date-error').hide();
+        return 1;
+      }
+    }
+
+    function validateDiscontinueDate(){
+      dateReg = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
+      if($('#product_discontinue_on').val().trim().length != 0 ){
+        if($('#product_discontinue_on').val().match(dateReg) == null){
+           $('.product-discontinue-date-error').html("<p class='text-red'> Product discontinue on date is invalid</p");
+          $('.product-discontinue-date-error').show();
+          return 0;
+        }
+        var product_available_date = new Date($('#product_available_on').val());
+        var product_discontinue_date = new Date($('#product_discontinue_on').val());
+        if ( product_discontinue_date <= product_available_date){
+           $('.product-discontinue-date-error').html("<p class='text-red'> Product discontinue on date can not be less than or equal to product available on date</p");
+          $('.product-discontinue-date-error').show();
+          return 0;
+        }
+        else{
+          $('.product-discontinue-date-error').hide();
+          return 1;
+        }
+      }
+      else
+      {
+        return 1;
+      }
+    }
+
+    function validateCostPrice(){
+      flag = true;
+      if($('#product_cost_price').val().trim().length == 0){
+        $('.product-cost-price-error').html("<p class='text-red'> Product retail price can not be blank </p");
+        $('.product-cost-price-error').show();
+        flag = false;
+      }
+      else if ((parseInt($('#product_cost_price').val())) <= 0 ){
+        $('.product-cost-price-error').html("<p class='text-red'> Product retail price must be greater than zero </p");
+        $('.product-cost-price-error').show();
+        flag = false;
+      }
+      else if ( parseFloat($('#product_cost_price').val()) < parseFloat($('#product_price').val()) ){
+        $('.product-cost-price-error').html("<p class='text-red'> Product retail price must be greater than sale price </p");
+        $('.product-cost-price-error').show();
+        flag = false;
+      }
+      else{
+        $('.product-cost-price-error').hide();
+        flag = true;
+      }
+
+      if (flag == true){
+        return 1;
+      }
+      else{
+        return 0;
+      }
+    }
+
+
+
+
+
+
+
+
+

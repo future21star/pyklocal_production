@@ -15,26 +15,27 @@
           |  Use our platform to sell your products.
         p 
           b Note:  
-          span All the fields with * is compulsory
-        = form_for Spree::User.new, html: {class: "form-horizontal form-body", multipart: true}, :as => :spree_user, url: spree.registration_path do |user_form|
+          span All the fields with * are Required
+        = form_for @user, html: {class: "form-horizontal form-body", multipart: true}, :as => :spree_user, url: spree.registration_path do |user_form|
+          = hidden_field_tag :registration_type, "vender"
           .form-group
             .col-md-2.col-xs-12
               = user_form.label :email, class: "control-label"
               span.required *
             .col-md-4.col-xs-12
-              = user_form.email_field :email, class: "form-control input-bg required"
+              = user_form.email_field :email,required: true, class: "form-control input-bg required"
           .form-group
             .col-md-2.col-xs-12
               = user_form.label :password, class: "control-label"
               span.required *
             .col-md-4.col-xs-12
-              = user_form.password_field :password, class: "form-control input-bg"
+              = user_form.password_field :password,required: true, class: "form-control input-bg"
           .form-group
             .col-md-2.col-xs-12
               = user_form.label :password_confirmation, class: "control-label"
               span.required *
             .col-md-4.col-xs-12
-              = user_form.password_field :password_confirmation, class: "form-control input-bg"
+              = user_form.password_field :password_confirmation,required: true, class: "form-control input-bg"
           hr
           .form-group
             .col-md-2.col-xs-12
@@ -42,7 +43,7 @@
               span.required *
             .col-md-4.col-xs-12
               span.input-icon.icon-right
-                = text_field_tag "spree_user[stores_attributes][][name]", "", class: "form-control input-bg" 
+                = text_field_tag "spree_user[stores_attributes][][name]", "", required: true, class: "form-control input-bg" 
           .form-group
             .col-md-2.col-xs-12
               = label_tag :logo, "Logo", class: "control-label"
@@ -55,7 +56,7 @@
               span.required *
             .col-md-4.col-xs-12
               span
-                = file_field_tag "spree_user[stores_attributes][][certificate]",class: "form-control" 
+                = file_field_tag "spree_user[stores_attributes][][certificate]", required: true, class: "form-control" 
           .form-group
             .col-md-2.col-xs-12
               = label_tag :manager_name, "Manager Name", class: "control-label"
@@ -71,7 +72,7 @@
               span.required *
             .col-md-4.col-xs-12
               span.input-icon.icon-right
-                = text_field_tag "spree_user[stores_attributes][][phone_number]", "", class: "form-control input-bg" 
+                = text_field_tag "spree_user[stores_attributes][][phone_number]", "", required: true, class: "form-control input-bg" 
           .form-group
             .col-md-2.col-xs-12
               = label_tag :store_type, "Store Type", class: "control-label"
@@ -95,7 +96,7 @@
               span.required *
             .col-md-8.col-xs-12
               span.input-icon.icon-right
-                = text_field_tag "spree_user[stores_attributes][][street_number]", "", class: "form-control input-bg", placeholder: "Street Address" 
+                = text_field_tag "spree_user[stores_attributes][][street_number]", "", class: "form-control input-bg",required: true, placeholder: "Street Address" 
           .form-group
             .col-md-2.col-xs-12
               = label_tag :street_number, " ", class: "control-label"
@@ -126,6 +127,15 @@
             .col-md-8.col-xs-12
               span.input-icon.icon-right
                 = text_area_tag "spree_user[stores_attributes][][description]", "", class: "form-control input-bg", placeholder: "Few lines about your store...", rows: 5 
+
+          .form-group
+            .col-md-3.col-xs-12
+              label.t_and_c
+                = user_form.check_box :t_and_c_accepted, class: "t_and_c"
+                |  I have read and agree to the 
+                = link_to "Privacy Policy", "#", class: "agree"
+              br
+              br
           .form-group
             .col-xs-offset-2.col-xs-10
               button.btn.btn-primary type="submit"

@@ -1,3 +1,4 @@
+
 @font-face{
   font-family:OpenSansRegular;
   src:url(../fonts/OpenSans-Regular-webfont.eot);
@@ -532,9 +533,9 @@ div.required .control-label:before {
   right: auto;
 }
 
-// #header.style3 #cart {
-//   text-align: right;
-// }
+#header.style3 #cart {
+  text-align: right;
+}
 
 #menu .navbar-collapse {
   padding-left: 0;
@@ -715,7 +716,7 @@ div.required .control-label:before {
 }
 
 #menu .nav > li.categories > div > .column a span,
-#menu .nav > li.categories_hor > div > .column a span,
+/*#menu .nav > li.categories_hor > div > .column a span,*/
 #menu .nav > li > div > ul li a span {
   float: right;
   font-size: 18px;
@@ -1774,12 +1775,22 @@ div.required .control-label:before {
 }
 
 .product-thumb .price {
-  margin: 10px 0;
+  margin: 5px 0;
   color: #3e7cb4;
   font-size: 13px;
   font-weight: 700;
+  display: inline-block;
+  margin-left: 5px;
 }
 
+.product-thumb .cost_price {
+  margin: 5px 0;
+  color: #999;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: line-through;
+  display: inline-block;
+}
 .product-thumb .price-new {
   font-weight: 700;
 }
@@ -1840,6 +1851,10 @@ div.required .control-label:before {
   border: 3px solid transparent;
   margin-bottom: 15px;
   
+}
+
+.min-height{
+  min-height: 380px;
 }
 
 .product-grid:hover {
@@ -1909,12 +1924,12 @@ div.required .control-label:before {
 }
 
 .product-list .product-thumb h4 {
-  margin-bottom: 8px;
+  margin-bottom: 0px;
 }
 
 .product-list .product-thumb h4 a {
-  font-weight: 700;
-  font-size: 15px;
+  //  font-weight: 700; 
+  // font-size: 15px;
 }
 
 .product-list .product-thumb .description {
@@ -2041,11 +2056,11 @@ div.required .control-label:before {
 }
 
 .product-info .price-box {
-  background: #F4F3F3;
-  border: 1px solid #eee;
+  /*background: #F4F3F3;
+  border: 1px solid #eee;*/
   overflow: auto;
   padding: 10px 5px;
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
 }
 
 .product-info .price {
@@ -2063,7 +2078,7 @@ div.required .control-label:before {
 
 .product-info .cart {
   border-bottom: 1px solid #eae9e9;
-  padding: 0 0 20px;
+  padding: 0 0 10px;
   margin-bottom: 15px;
   color: #4D4D4D;
   overflow: auto;
@@ -2951,3 +2966,47 @@ form#adv_ajaxfilter {
   min-height: 39px;
   margin-bottom: 20px;
 }
+
+.button-primary{
+  background-color: #c30505;
+  border: 0;
+  color: #fff;
+  max-height: 42px;
+  margin-top: 0px;
+  font-size: 14px;
+  min-height: 42px;
+}
+button:hover{
+  background-color: #555;
+}
+
+#order #continue:hover{
+  background:green !important;
+}
+
+#order #continue{
+  margin: 2px;
+}
+
+#order #cancel_order{
+  margin: 2px;
+  background-color: red;
+}
+
+
+
+#return_item td{
+  vertical-align: middle;
+  text-align: center;
+}
+
+#return_item .return_item_td{
+  width: 7%;
+  max-width: 10%;
+}
+
+
+
+
+
+

@@ -1,25 +1,37 @@
-bill_address = printable.bill_address
-ship_address = printable.ship_address
+if printable.get_order_home_delivery_line_items_ids.count == 0
+	ship_address = printable.bill_address
+else
+	ship_address = printable.ship_address
+end
 
-pdf.move_down 2
-address_cell_billing  = pdf.make_cell(content: Spree.t(:billing_address), font_style: :bold)
-address_cell_shipping = pdf.make_cell(content: Spree.t(:shipping_address), font_style: :bold)
+data = [ ["Invoice Number #", "#{printable.number}"],
+ ["Invoice Date:", "#{printable.completed_at}"],
+ ["Order Total:", "#{printable.display_total.to_s}"]
+ ]
 
-billing =  "#{bill_address.firstname} #{bill_address.lastname}"
-billing << "\n#{bill_address.address1}"
-billing << "\n#{bill_address.address2}" unless bill_address.address2.blank?
-billing << "\n#{bill_address.city}, #{bill_address.state_text} #{bill_address.zipcode}"
-billing << "\n#{bill_address.country.name}"
-billing << "\n#{bill_address.phone}"
+pdf.table(data, header: true, position: :right) do
+ row(2).style background_color: "F0F0F0"
+ cells.padding = 12
+ cells.borders = []
+ row(0..2).borders = [:bottom]
+ row(0..2).border_width = 1
+ row(0..2).font_style = :bold
+ row(0..2).columns(0..4).borders = [:bottom]
+end
 
-shipping =  "#{ship_address.firstname} #{ship_address.lastname}"
-shipping << "\n#{ship_address.address1}"
-shipping << "\n#{ship_address.address2}" unless ship_address.address2.blank?
-shipping << "\n#{ship_address.city}, #{ship_address.state_text} #{ship_address.zipcode}"
-shipping << "\n#{ship_address.country.name}"
-shipping << "\n#{ship_address.phone}"
-shipping << "\n\n#{Spree.t(:via, scope: :print_invoice)} #{printable.shipments.first.shipping_method.admin_name}"
+pdf.grid([0,1], [1,0]).bounding_box do
+	if printable.get_order_home_delivery_line_items_ids.count == 0
+ 	  pdf.text Spree.t(:billing_address), align: :left , :style => :bold
+ 	else
+ 		pdf.text Spree.t(:shipping_address), align: :left , :style => :bold
+ 	end
+  pdf.text "#{ship_address.firstname} #{ship_address.lastname}"
+  pdf.text "#{ship_address.address1}"
+  pdf.text "#{ship_address.address2}" unless ship_address.address2.blank?
+  pdf.text "#{ship_address.city}, #{ship_address.state_text} #{ship_address.zipcode}"
+  pdf.text "#{ship_address.country.name}"
+  pdf.text "#{ship_address.phone}"
+  pdf.text "#{printable.email}"
+end
 
-data = [[address_cell_billing, address_cell_shipping], [billing, shipping]]
 
-pdf.table(data, position: :center, column_widths: [pdf.bounds.width / 2, pdf.bounds.width / 2])

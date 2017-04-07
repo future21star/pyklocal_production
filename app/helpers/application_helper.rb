@@ -10,7 +10,7 @@ module ApplicationHelper
 
   def flash_message
     message = ""
-    [:notice, :alert, :success, :error, :warning, :information, :confirm].each do |type| 
+    [:notice, :alert, :success, :error, :warning, :information, :confirm].each do |type|
       if(!flash[type].blank?)
         return {
           text: flash[type],
@@ -65,7 +65,7 @@ module ApplicationHelper
   end
 
   def goto_merchant_path
-    if current_spree_user 
+    if current_spree_user
       if (current_spree_user.has_spree_role?("merchant") && current_spree_user.has_store)
         if current_spree_user.active_store
           link_to "Go to store", main_app.merchant_store_path(current_spree_user.stores.first), "data-no-turbolink" => true
@@ -79,6 +79,14 @@ module ApplicationHelper
       end
     else
       link_to "Sell with us", spree.new_store_application_path, "data-no-turbolink" => true
+    end
+  end
+
+  def change_states(state, i, order_state, states)
+    if state == order_state
+      'active'
+    elsif i < states.index(order_state)
+      'completed'
     end
   end
 

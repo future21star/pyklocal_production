@@ -1,15 +1,18 @@
-.new-brand-header
-  .middle-align
-    .container
-      h1.b-header-title Sell With Us!
-      p.b-header-subtitle 
-        i.fa &#xf00c;
-        |  Use our platform to sell your products.
-      p 
-        b Note:  
-        span All the fields with * is compulsory
+hr/
+section.register
+  .container-fluid
+    .row
+      .col-xs-12
+        #register
+          .modal-dialog role="document"
+            .modal-content
+              / .modal-header.text-center
+              /   h2.modal-title Register Account
+              /   h5.modal-sub-title If you already have an account with us, please login at the Login
+              .modal-body.vendor-form
+                 = render 'form'
 
-.container.new-form-wrapper
-  span.form-title 
-    legend Fill the form for New store
-  = render 'form'
+/ .container.new-form-wrapper
+/   span.form-title 
+/     legend Fill the form for New store
+/   = render 'form'

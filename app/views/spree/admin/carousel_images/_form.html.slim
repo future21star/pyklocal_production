@@ -9,6 +9,12 @@
   .col-md-6.col-xs-12
     = form_for [:admin, @carousel_image], html: {class: 'horizontal-form'} do |f|
       .form-group
+        = f.label 'resource_id' , "Resource ID", class: 'control-label'
+        = f.text_field :resource_id, class: 'form-control'
+      .form-group
+        = f.label 'resource_type' , "Resource Type", class: 'control-label'
+        = f.text_field :resource_type, class: 'form-control'
+      .form-group
         = f.label Spree.t(:image), class: 'control-label'
         = f.file_field :image, class: 'form-control'
       .form-group

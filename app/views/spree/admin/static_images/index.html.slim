@@ -1,0 +1,30 @@
+- content_for :page_title do
+  = Spree.t(:static_images)
+- content_for :page_actions do
+  = button_link_to Spree.t(:new_static_image), new_admin_static_image_url, :class => "btn-success", :icon => 'add', :id => 'admin_new_order'
+
+table.table.table-stripped
+  thead
+    tr
+      td Image
+      td Text
+      td Url
+      td Position
+      td Active
+      td Actions
+  tbody
+    - unless @static_images.blank?
+      - @static_images.each do |static_image|
+        tr
+          td= image_tag static_image.image.url(:mini), class: 'img-responsive'
+          td= static_image.story.try(:limit, 20)
+          td= static_image.url
+          td= static_image.position.try(:humanize)
+          td= static_image.active
+          td
+            = button_link_to "", edit_admin_static_image_url(static_image), class: "btn-default", icon: 'edit'
+            = button_link_to "", admin_static_image_path(static_image), class: "btn-danger margin-left", icon: 'remove', method: :delete
+    - else
+      tr
+        td colspan="3"
+          span No record found

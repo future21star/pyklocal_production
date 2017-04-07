@@ -1,18 +1,27 @@
 class UserMailer < ActionMailer::Base
 
-  default from: 'admin@pyklocal.com'
+  default from: 'sales@pyklocal.com'
  
  	def edit_store(user, store, token)
  		@store = store
  		@token = token
  		@user = user
- 		mail(to: user.email,from: 'admin@pyklocal.com', subject: 'Edit store instruction')
+ 		mail(to: user.email,from: 'sales@pyklocal.com', subject: 'Edit store instruction')
  	end
 
  	def notify_store_save(store)
  		@store = store
  		mail(to: "gopal.sharma@w3villa.com", subject: "#{store.name} is created/updated")
  	end
+
+  def notify_out_of_stock_product(variant)
+    @variant = variant
+    @product = variant.product
+    @seller = @product.store.try(:spree_users).try(:first)
+    if @seller
+      mail(to: @seller.email, subject: "Product Out Of Stock")
+    end
+  end
 
   def password_changed_notification(user)
     @user = user
@@ -23,6 +32,11 @@ class UserMailer < ActionMailer::Base
     @store = store
     mail(to: @store.spree_users.first.email, subject: "#{store.name} Is Created")
   end  
+
+  def notify_user_store_destroy(user)
+    @user = user
+    mail(to: @user.email, subject: "Store Remove Notification")
+  end
 
  	def notify_store_approval(user)
  		@store = user.stores.first
@@ -50,5 +64,17 @@ class UserMailer < ActionMailer::Base
     @store = store
     @seller = @store.try(:spree_users).try(:first)
     mail(to: @seller.try(:email), subject: "Delivery Confirmation")
+  end
+
+  def notify_items_out_for_delivery(line_items)
+    @user = line_items.first.order.user
+    @line_items = line_items
+    mail(to: @user.email, subject: "Out For Delivery")
+  end
+
+  def notify_order_items_delivered(order)
+    @order = order
+    @user = order.user
+    mail(to: @user.email , subject: "PykLocal Order Delivered Confirmation")
   end
 end

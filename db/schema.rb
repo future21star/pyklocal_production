@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160920080356) do
+ActiveRecord::Schema.define(version: 20170209055334) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(version: 20160920080356) do
     t.string   "user_device_id", limit: 255
   end
 
+  create_table "authentications", force: :cascade do |t|
+    t.string   "provider",   limit: 255
+    t.string   "uid",        limit: 255
+    t.string   "user_id",    limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "carousel_images", force: :cascade do |t|
     t.string   "image_file_name",    limit: 255
     t.string   "image_content_type", limit: 255
@@ -32,6 +40,12 @@ ActiveRecord::Schema.define(version: 20160920080356) do
     t.boolean  "active"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_static",                        default: false
+    t.text     "story",              limit: 65535
+    t.string   "url",                limit: 255
+    t.string   "position",           limit: 255
+    t.string   "resource_type",      limit: 255
+    t.string   "resource_id",        limit: 255
   end
 
   create_table "comments", force: :cascade do |t|
@@ -47,6 +61,20 @@ ActiveRecord::Schema.define(version: 20160920080356) do
     t.float    "percentage", limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "customer_return_items", force: :cascade do |t|
+    t.integer  "order_id",           limit: 4
+    t.integer  "line_item_id",       limit: 4
+    t.integer  "return_quantity",    limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "item_return_amount", limit: 24
+    t.float    "tax_amount",         limit: 24
+    t.float    "total",              limit: 24
+    t.integer  "store_id",           limit: 4
+    t.string   "status",             limit: 255
+    t.string   "transaction_id",     limit: 255
   end
 
   create_table "drivers_orders", force: :cascade do |t|
@@ -66,6 +94,16 @@ ActiveRecord::Schema.define(version: 20160920080356) do
     t.boolean  "is_valid"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+  end
+
+  create_table "feedbacks", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.text     "comment",    limit: 65535
+    t.string   "email",      limit: 255
+    t.integer  "user_id",    limit: 4
+    t.integer  "value",      limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -159,7 +197,10 @@ ActiveRecord::Schema.define(version: 20160920080356) do
     t.integer  "certificate_file_size",    limit: 4
     t.datetime "certificate_updated_at"
     t.string   "estimated_delivery_time",  limit: 255,   default: "5 - 6 working hours"
+    t.datetime "deleted_at"
   end
+
+  add_index "pyklocal_stores", ["deleted_at"], name: "index_pyklocal_stores_on_deleted_at", using: :btree
 
   create_table "pyklocal_stores_taxons", force: :cascade do |t|
     t.integer  "store_id",   limit: 4
@@ -296,14 +337,13 @@ ActiveRecord::Schema.define(version: 20160920080356) do
   add_index "spree_calculators", ["id", "type"], name: "index_spree_calculators_on_id_and_type", using: :btree
 
   create_table "spree_countries", force: :cascade do |t|
-    t.string   "iso_name",         limit: 255
-    t.string   "iso",              limit: 255
-    t.string   "iso3",             limit: 255
-    t.string   "name",             limit: 255
-    t.integer  "numcode",          limit: 4
-    t.boolean  "states_required",              default: false
+    t.string   "iso_name",        limit: 255
+    t.string   "iso",             limit: 255
+    t.string   "iso3",            limit: 255
+    t.string   "name",            limit: 255
+    t.integer  "numcode",         limit: 4
+    t.boolean  "states_required",             default: false
     t.datetime "updated_at"
-    t.boolean  "zipcode_required",             default: true
   end
 
   create_table "spree_credit_cards", force: :cascade do |t|
@@ -651,6 +691,8 @@ ActiveRecord::Schema.define(version: 20160920080356) do
     t.string   "meta_title",           limit: 255
     t.integer  "store_id",             limit: 4
     t.string   "asin",                 limit: 255
+    t.integer  "view_counter",         limit: 4
+    t.boolean  "buyable",                            default: true
   end
 
   add_index "spree_products", ["available_on"], name: "index_spree_products_on_available_on", using: :btree
@@ -798,6 +840,12 @@ ActiveRecord::Schema.define(version: 20160920080356) do
     t.datetime "updated_at",                                                          null: false
     t.integer  "refund_reason_id", limit: 4
     t.integer  "reimbursement_id", limit: 4
+    t.integer  "order_id",         limit: 4
+    t.string   "type",             limit: 255
+    t.string   "card_type",        limit: 255
+    t.string   "status",           limit: 255
+    t.integer  "last_card_digits", limit: 4
+    t.string   "expiration",       limit: 255
   end
 
   add_index "spree_refunds", ["refund_reason_id"], name: "index_refunds_on_refund_reason_id", using: :btree
@@ -1251,8 +1299,8 @@ ActiveRecord::Schema.define(version: 20160920080356) do
     t.string   "persistence_token",      limit: 255
     t.string   "reset_password_token",   limit: 255
     t.string   "perishable_token",       limit: 255
-    t.integer  "sign_in_count",          limit: 4,   default: 0,     null: false
-    t.integer  "failed_attempts",        limit: 4,   default: 0,     null: false
+    t.integer  "sign_in_count",          limit: 4,                  default: 0,     null: false
+    t.integer  "failed_attempts",        limit: 4,                  default: 0,     null: false
     t.datetime "last_request_at"
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -1265,19 +1313,21 @@ ActiveRecord::Schema.define(version: 20160920080356) do
     t.string   "unlock_token",           limit: 255
     t.datetime "locked_at"
     t.datetime "reset_password_sent_at"
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.datetime "created_at",                                                        null: false
+    t.datetime "updated_at",                                                        null: false
     t.string   "spree_api_key",          limit: 48
     t.datetime "remember_created_at"
     t.datetime "deleted_at"
     t.string   "confirmation_token",     limit: 255
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.string   "first_name",             limit: 255, default: ""
-    t.string   "last_name",              limit: 255, default: ""
+    t.string   "first_name",             limit: 255,                default: ""
+    t.string   "last_name",              limit: 255,                default: ""
     t.string   "mobile_number",          limit: 255
-    t.boolean  "is_guest",                           default: false
-    t.boolean  "t_and_c_accepted",                   default: false
+    t.boolean  "is_guest",                                          default: false
+    t.boolean  "t_and_c_accepted",                                  default: false
+    t.decimal  "amount_due",                         precision: 10
+    t.string   "registration_type",      limit: 255
   end
 
   add_index "spree_users", ["bill_address_id"], name: "index_spree_users_on_bill_address_id", using: :btree

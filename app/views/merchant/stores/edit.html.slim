@@ -1,4 +1,4 @@
-#container
+/ #container
   .container
     ul.breadcrumb
       li
@@ -11,5 +11,18 @@
       li
         span  Edit store
 
-	  legend Editing store
-	  = render 'form' 
+	  / legend Editing store
+	  / = render 'form' 
+hr/
+section.register
+  .container-fluid
+    .row
+      .col-xs-12
+        #register
+          .modal-dialog role="document"
+            .modal-content
+              / .modal-header.text-center
+              /   h2.modal-title Register Account
+              /   h5.modal-sub-title If you already have an account with us, please login at the Login
+              .modal-body.vendor-form
+                 = render 'form'

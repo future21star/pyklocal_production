@@ -1,0 +1,109 @@
+#login.modal.fade role="dialog" tabindex="-1"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header.text-center
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"  &times;
+        h2.modal-title User Login
+        h5.modal-sub-title
+          | Please enter Your
+          strong Email ID
+          | and
+          strong Password
+          | to Login!
+      .modal-body
+        = form_for Spree::User.new,html: {class: "login-form"}, :as => :spree_user, :url => spree.create_new_session_path do |f|
+          .form-group.col-xs-12
+            = f.email_field :email, :class => 'form-control',maxlength: "100", :tabindex => 1, :placeholder => Spree.t(:email)
+            span#invalid-login-email
+          .form-group.col-xs-12
+            = f.password_field :password, :class => 'form-control', maxlength: "30",:tabindex => 2, :placeholder => Spree.t(:password)
+            span#password-login-error
+          .form-group.col-xs-12
+            .row
+              .col-sm-6.col-xs-12
+                = link_to "Forgot Password", spree.recover_password_path, class: 'forgot'
+              .col-sm-6.col-xs-12.text-right
+                = f.label :remember_me do
+                  = f.check_box :remember_me
+                  = Spree.t(:remember_me)
+          .form-group.col-xs-12.text-center
+            = f.submit Spree.t(:login)
+          .form-group.col-xs-12.text-center
+            h4.New New to PykLocal?
+          .form-group.col-xs-12.text-center
+            = link_to "Create your PykLocal account", spree.signup_path, class: 'Create-accoount'
+
+
+-content_for :js do
+  javascript:
+
+   $(document).ready(function(){
+      $('.login-form').on('submit', function(e){
+          e.preventDefault();
+          if ((validateLoginEmail()) * (validatePassword())) {
+            this.submit();
+          }
+      });
+    });
+
+    $('#spree_user_email').on('focusout',function(){
+       validateLoginEmail();
+    });
+
+    $('#spree_user_password').on('focusout',function(){
+       validatePassword();
+    });
+
+
+    function validateLoginEmail(){
+      if ($('#spree_user_email').val().trim().length == 0){
+        $('#invalid-login-email').html("<p class='text-red'> Email can not be blank</p>");
+        $('#invalid-login-email').show();
+        return 0;
+      }
+      else if(!validateEmail()){
+         $('#invalid-login-email').html("<p class='text-red'> Email is invalid</p>");
+         $('#invalid-login-email').show();
+        return 0;
+      }
+      else{
+         $('#invalid-login-email').hide();
+         return 1;
+      }
+
+    }
+
+
+    function validatePassword(){
+      flag = true;
+      errorStr = "";
+      if($('#spree_user_password').val().trim().length == 0){
+        errorStr += "Password can not be blank";
+        flag = false;
+      }
+
+      if (($('#spree_user_password').val().trim().length > 0) && ($('#spree_user_password').val().trim().length < 6)){
+        errorStr += "Password length must be greater than 6";
+        flag = false;
+      }
+
+
+      if (flag == false){
+        OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
+        $('#password-login-error').html(OutputErrorStr);
+         $('#password-login-error').show();
+        return 0;
+      }
+      else{
+         $('#password-login-error').hide();
+        return 1;
+      }
+    }
+
+
+    function validateEmail(){
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  ;
+          console.log($('#spree_user_email').val());
+          return re.test($('#spree_user_email').val());
+    }

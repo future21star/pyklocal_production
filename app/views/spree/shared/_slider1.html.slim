@@ -1,24 +1,40 @@
-.row
-  .col-sm-8 style=("overflow:hidden; max-height:400px") 
-    #slideshow0.owl-carousel.slideshowhome.owl-theme style=("opacity: 1; display: block; ") 
-      - unless @carousel_images.blank?
-        - @carousel_images.each do |carousel_image|
-          .item
-            = image_tag carousel_image.image.url, class: 'img-responsive'
-      - else
-        .item
-          = image_tag "banner1-750x400.jpg", class: "img-responsive"
-        .item
-          = image_tag "banner2-750x400.jpg", class: "img-responsive" 
-        .item
-          = image_tag "banner4-750x400.jpg", class: "img-responsive"
-  .col-sm-4.pull-right.flip
-    #marketshop-banner0.marketshop-banner
-      .row
-        .col-lg-12.col-md-12.col-sm-12.col-xs-12.moderns
-          a href="#" 
-            = image_tag "sp-small-banner-360x185.jpg", class: "img-responsive" 
-        .col-lg-12.col-md-12.col-sm-12.col-xs-12.moderns
-          a href="#" 
-            = image_tag "sp-small-banner1-360x185.jpg", class: "img-responsive"
-
+.container-fluid
+  .row
+    .col-xs-12.text-center.free-shipping
+      h5.wow.fadeInDown data-wow-delay="0.3s"
+        | Get
+        strong FREE SHIPPING
+        | when you order
+        strong $50
+        | or more!
+#carousel-example-generic.carousel.slide data-ride="carousel"
+  .carousel-inner role="listbox"
+    - unless @carousel_images.blank?
+      - @carousel_images.each_with_index do |carousel_image, index|
+        .item class=('active' if index <= 0)
+          .carousel-caption
+            .col-sm-6.col-xs-12.text-center.caption-ir
+              h1.wow.fadeInDown data-wow-delay="0.3s"
+                | SAVE
+                strong up TO 25%
+              p.wow.fadeInLeft data-wow-delay="0.3s"  Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+              a.wow.fadeInUp data-wow-delay="0.3s" href="/shop"  shop now!
+            .col-sm-6.col-xs-12.text-center.hidden-xs.wow.fadeInRight data-wow-delay="0.3s"
+              img alt="pyk" height="289" src="#{carousel_image.image.url}" width="507" /
+    - else
+      .item.active
+        .carousel-caption
+          .col-sm-6.col-xs-12.text-center.caption-ir
+            h1.wow.fadeInDown data-wow-delay="0.3s"
+              | SAVE
+              strong up TO 25%
+            p.wow.fadeInLeft data-wow-delay="0.3s"  Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+            a.wow.fadeInUp data-wow-delay="0.3s" href="/shop"  shop now!
+          .col-sm-6.col-xs-12.text-center.hidden-xs.wow.fadeInRight data-wow-delay="0.3s"
+            = image_tag("new_design/banner-img.png", height: 289, width: 507, alt: "pyk")
+  a.left.carousel-control data-slide="prev" href="#carousel-example-generic" role="button"
+    span.fa.fa-angle-left.fa-2x aria-hidden="true"
+    span.sr-only Previous
+  a.right.carousel-control data-slide="next" href="#carousel-example-generic" role="button"
+    span.fa.fa-angle-right.fa-2x aria-hidden="true"
+    span.sr-only Next

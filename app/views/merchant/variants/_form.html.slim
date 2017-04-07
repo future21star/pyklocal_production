@@ -14,41 +14,40 @@
             = f.text_field :sku, class: "form-control input-bg"
             i.fa &#xf02a;
         .form-group
-          = f.label :price, class: "control-label"
+          = f.label :Sale_Price, class: "control-label"
           span.input-icon.icon-right
-            = f.text_field :price, class: "form-control input-bg", value: @product.price
+            = f.text_field :price, class: "form-control input-bg", :required => "", value: @product.price
             i.fa &#xf0d6;
         .form-group
-          = f.label :cost_price, class: "control-label"
+          = f.label :Retail_Price, class: "control-label"
           span.input-icon.icon-right
-           = f.number_field :cost_price, class: "numbersOnly form-control input-bg"
+           = f.number_field :cost_price, class: "numbersOnly form-control input-bg", :required => "", :min => @product.price, :step => "0.01"
            i.fa &#xf0d6;
         .form-group
           = f.label :tax_category_id, class: "control-label"
           span.input-icon.icon-right
-            = f.text_field :tax_category_id, class: "select2 fullwidth form-control input-bg"
-            i.fa &#xf0e3;
+            = f.collection_select(:tax_category_id, Spree::TaxCategory.all, :id, :name, { :include_blank => Spree.t('match_choices.none') }, { :class => 'select2 fullwidth form-control input-bg auto-select' })
     .col-md-6
       .form-content-right
         .form-group
           = f.label :weight, class: "control-label"
           span.input-icon.icon-right
-           = f.number_field :weight, class: "numbersOnly form-control input-bg"
+           = f.number_field :weight,min: "0",max: "999999.99",step: "0.01", class: "numbersOnly form-control input-bg"
            i.fa &#xf24e;
         .form-group
           = f.label :height, class: "control-label"
           span.input-icon.icon-right
-            = f.number_field :height, class: "numbersOnly form-control input-bg"
+            = f.number_field :height, min: "0",max: "999999.99",step: "0.01",class: "numbersOnly form-control input-bg"
             i.fa &#xf07d;
         .form-group
           = f.label :width, class: "control-label"
           span.input-icon.icon-right
-            = f.number_field :width, class: "numbersOnly form-control input-bg"
+            = f.number_field :width,min: "0",max: "999999.99",step: "0.01", class: "numbersOnly form-control input-bg"
             i.fa &#xf07e;
         .form-group
           = f.label :depth, class: "control-label"
           span.input-icon.icon-right
-            = f.number_field :depth, class: "form-control input-bg numbersOnly"
+            = f.number_field :depth, min: "0",max: "999999.99",step: "0.01",class: "form-control input-bg numbersOnly"
             i.fa &#xf01c;
     .col-md-12.top-margin-row
       .col-md-6.update-btn

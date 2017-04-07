@@ -9,8 +9,8 @@ module Spree
       if params[:category_id]
         @taxon = Spree::Taxon.where(id: params[:category_id]).first
         if @taxon
-          @products = @taxon.products
-          if @products
+          @products = is_pagination_require ? @taxon.products.paginate(:page => params[:page], :per_page => @per_page ): @taxon.products
+          unless @products.blank?
             render json: {
               status: "1",
               message: "Home Screen",
@@ -21,7 +21,7 @@ module Spree
           else
             render json: {
               status: "0",
-              message: "No product founud in this category"
+              message: "No product found in this category"
             }
           end
         else
@@ -31,32 +31,70 @@ module Spree
           }
         end
       else
-        @products = Spree::Product.all
+        @products = is_pagination_require ? Spree::Product.all.where(buyable: true).paginate(:page => params[:page], :per_page => @per_page) : Spree::Product.all
         render json: {
           status: "1",
           message: "Home Screen",
           total_count: @products.count.to_s,
-          details: to_stringify_product_json(@products, [])
+          details: to_stringify_product_json(@products,  [])
         }
       end
     end
 
     def show
-      @product = Spree::Product.where(id: params[:id])
-      if @product
-        render json: {
-          status: "1" ,
-          message: "Product Detail",
-          details: to_stringify_product_json(@product ,[])
-        }
+      if params[:token]
+        @api_token = ApiToken.where(token: params[:token],expire: nil).last
+        unless @api_token.blank?
+          @user = @api_token.user
+          @product = Spree::Product.where(id: params[:id])
+          if @product
+            render json: {
+              status: "1" ,
+              message: "Product Detail",
+              details: to_stringify_product_json(@product, @user, [])
+            }
+          else
+            render json: {
+              status: "0",
+              message: "Invalid Product Id"
+            }
+          end
+        else
+          render json:{
+            status: "0",
+            message: "Invalid Token Or User Already Logout"
+          }
+        end
       else
-        render json: {
+        render json:{
           status: "0",
-          message: "Invalid Product Id"
+          message: "Token Missing"
         }
       end
     end
       
+    def related_product
+      @user = Spree::ApiToken.where(token: params[:token]).last.user
+      if Spree::Product.exists?(params[:product_id])
+        similar_product = Spree::Product.find(params[:product_id]).similar
+        if similar_product.present?
+          render json:{
+            status: 1,
+            details: to_stringify_product_json(similar_product, @user, [])
+          }
+        else
+          render json:{
+          status: 0,
+          message: "No product found"
+          }
+        end
+      else
+        render json:{
+          status: 0,
+          message: "No product found with this product id"
+        }
+      end
+    end
 
     def rate_and_comment
       @rating = Rating.new(user_id: @user.id, rateable_id: @product.id, rateable_type: "Spree::Product", rating: params[:rating]) if params[:rating].present?
@@ -84,7 +122,13 @@ module Spree
 
     private
 
-    
+      def is_pagination_require
+        if params[:page]
+          @per_page = params[:per_page] ? params[:per_page] : 12
+        else
+         false
+        end
+      end
 
       def get_product
         @product = Spree::Product.find_by_slug(params[:product_id])

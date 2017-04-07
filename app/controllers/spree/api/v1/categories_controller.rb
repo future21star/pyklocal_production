@@ -7,9 +7,12 @@ module Spree
       render json: {
         status: "1",
         message: "Categories Listing",
-        details: to_stringify_json(Spree::Taxonomy.first.root.children).as_json({
+        # details: to_stringify_json(Spree::Taxonomy.first.root.children).as_json({
+        #   only: [:id, :parent_id, :name, :position, :level, :sub_category]
+        # })
+        details: to_stringify_json(Spree::Taxon.where(parent_id: nil)).as_json({
           only: [:id, :parent_id, :name, :position, :level, :sub_category]
-        })
+          })
       }
     end
 

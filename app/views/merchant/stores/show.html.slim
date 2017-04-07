@@ -10,7 +10,7 @@
             | Merchant
 
         li 
-          a href=new_merchant_store_path
+          a href=merchant_store_path(@store)
             | Store
         li
           span 
@@ -21,6 +21,13 @@
               / = link_to "Contact Seller", new_message_path(to_user_id: @store.store_spree_users.first.spree_user_id), class: "store-link"
       .col-sm-9
         br
+        #seller-search.input-group
+          = form_tag '', :method => 'get', id: "seller-search-box" do 
+            input id="seller-search-input" class="form-control" autocomplete="off" name="q[search]" placeholder="Search for..." value=(params[:q][:search] rescue "")
+            button.button-search type="submit" 
+              i.fa.fa-search
+        br 
+        br       
         h2 Store Product
         = render partial: "merchant/shared/products", locals: {products: @products}
         hr

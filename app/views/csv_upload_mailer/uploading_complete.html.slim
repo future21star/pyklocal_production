@@ -6,6 +6,23 @@
     p style="text-align: justify"
       | Your product importing from csv file has completed.
       br
+      br
+      - if @errors.present?
+        p style="text-align: justify"
+          | Following error occured while uploading the csv file
+          br
+        table.table.table-responsive.table-bordered border="1px"
+          thead
+            tr
+              th.text-center Error(s)
+          tbody
+            - @errors.each do |error|
+              - error.each do |product_name,err|
+                tr
+                  td.text-center 
+                    = err
+    br
+    br
       | You can see your products on your dashboard.
     br
     p 

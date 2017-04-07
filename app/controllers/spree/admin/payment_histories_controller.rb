@@ -4,7 +4,7 @@ class Spree::Admin::PaymentHistoriesController < Spree::Admin::ResourceControlle
 	before_filter :find_payment_history, only: [:edit, :update, :destroy]
 
 	def index
-		@payment_histories = @seller.payment_histories
+		@payment_histories = @seller.payment_histories.order('created_at desc')
 	end
 
 	def new
@@ -40,7 +40,7 @@ class Spree::Admin::PaymentHistoriesController < Spree::Admin::ResourceControlle
 	private
 
 		def load_seller
-			@seller = Spree::Seller.find_by_id(params[:seller_id])
+			@seller = Spree::User.find_by_id(params[:seller_id])
 		end
 
 		def find_payment_history

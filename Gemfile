@@ -13,7 +13,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-
+gem 'social-share-button'
 gem 'exception_notification'
 gem 'aws-sdk', '< 2.0'
 gem 'slim'
@@ -21,11 +21,19 @@ gem 'slim-rails'
 gem "less-rails"
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 gem "font-awesome-rails" 
-
+gem 'quiet_assets', group: :development
 gem 'sunspot_rails'
 gem 'sunspot_solr'
 gem 'progress_bar'
 gem 'noty-rails'
+gem 'client_side_validations'
+gem 'gibbon', git: 'git://github.com/amro/gibbon.git'
+
+
+
+gem 'spree_editor', github: 'spree-contrib/spree_editor', branch: '3-1-stable'
+#gem 'spree_promotion_tax', git: 'git://github.com/bluehandtalking/spree_promotion_tax.git', branch: '1-3-default_tax'
+
 
 gem 'active_model_serializers', '~> 0.10.0'
 # Use geokit gem to calculate distance
@@ -55,6 +63,7 @@ gem 'impressionist'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem "letter_opener"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -69,6 +78,8 @@ group :development, :test do
   gem 'zip-zip'
   gem 'selenium-webdriver', '2.52.0'
   gem 'byebug'
+  gem 'hirb'
+  gem "rails-erd"
 end
 
 group :development do
@@ -100,3 +111,7 @@ end
 group :production do
 	gem 'puma'
 end
+
+# group :assets do
+#   gem 'jquery-ui-rails'
+# end

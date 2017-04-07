@@ -18,8 +18,8 @@ Rails.application.configure do
 
   Rails.application.config.middleware.use ExceptionNotification::Rack, email: {
     :email_prefix => "[Error 500] ",
-    :sender_address => %{"Simmpli Exception" <exception@shopfelixgray.com>},
-    :exception_recipients => %w{ishank@w3villa.com prashant.mishra@w3villa.com}
+    :sender_address => %{"PykLocal Exception" <exception@pyklocal.com>},
+    :exception_recipients => %w{ishank@w3villa.com  manish.rai@w3villa.com}
   }
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
@@ -79,12 +79,33 @@ Rails.application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
-  config.action_mailer.asset_host = "http://54.186.114.27"
-  config.action_mailer.default_url_options = { :host => 'http://54.186.114.27' }
+  config.action_mailer.asset_host = "http://54.202.62.141"
+  config.action_mailer.default_url_options = { :host => 'http://54.202.62.141' }
   config.action_mailer.delivery_method = :smtp
-  ActionMailer::Base.smtp_settings = {
-    :enable_starttls_auto => false,
-    :openssl_verify_mode => 'none'
+  # ActionMailer::Base.smtp_settings = {
+  #   # :enable_starttls_auto => false,
+  #   # :openssl_verify_mode => 'none'
+  #   # :address => "smpt.mandrillapp.com",
+  #   # :port => 587,
+  #   # :enable_starttls_auto => true,
+  #   # :user_name => "pyklocal",
+  #   # :password => "E7BhM0LgZKaanbD1DfaW2w",
+  #   # :authentication => "login"
+
+  #   :address => "email-smtp.us-west-2.amazonaws.com",
+  #   :port => 587,
+  #   :user_name => ENV["AKIAIIF5FWQHO2TR2VUA"],
+  #   :password => ENV["Ag4X4Xuuhm/uXkN2dag5sequCBIWnre9hRGhBhhS2bsb"],
+  #   :authentication => :login,
+  #   :enable_starttls_auto => true
+  # }
+  config.action_mailer.smtp_settings = {
+    :address => "email-smtp.us-west-2.amazonaws.com",
+    :port => "25",
+    :user_name => "AKIAIJKINUGB6VALRKCQ",
+    :password => "AiwxueztRqKdZdhnG9QT1O+jH8ez3y8aMXH26AcytCDx",
+    :authentication => :login,
+    :enable_starttls_auto => true
   }
 
   # Use default logging formatter so that PID and timestamp are not suppressed.

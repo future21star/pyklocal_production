@@ -1,13 +1,16 @@
 im = Rails.application.assets.find_asset(Spree::PrintInvoice::Config[:logo_path])
+bill_address = printable.store
 
 if im && File.exist?(im.pathname)
-  pdf.image im.filename, vposition: :top, height: 40, scale: Spree::PrintInvoice::Config[:logo_scale]
+  pdf.image im.filename, position: :right, height: 60, scale: Spree::PrintInvoice::Config[:logo_scale]
 end
 
-pdf.grid([0,3], [1,4]).bounding_box do
+pdf.grid([0,0], [1,2]).bounding_box do
   pdf.move_down 4
-
-  pdf.text Spree.t(:invoice_number, scope: :print_invoice, number: printable.number), align: :right
-  pdf.move_down 2
-  pdf.text Spree.t(:invoice_date, scope: :print_invoice, date: I18n.l(printable.created_at)), align: :right
+  pdf.text "Bill From:", align: :left , :style => :bold
+  pdf.text "#{bill_address.name}"
+  pdf.text "#{bill_address.address}"
+  pdf.text "#{bill_address.country}"
+  pdf.text "#{bill_address.phone_number}"
+  pdf.text "#{bill_address.try(:site_url)}"
 end

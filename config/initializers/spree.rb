@@ -15,6 +15,10 @@ Spree.config do |config|
   # config.track_inventory_levels = false
   config.logo = "/images/pyc-logo.png"
 end
+# CONSTANT
+FREE_DELIVERY_ORDER_PRICE = 35
+PRODUCT_SHARE_LINK = 'http://54.202.62.141/products/'
+
 
 Spree::Store.current.name = "Pyklocal"
 
@@ -26,7 +30,7 @@ Spree::PrintInvoice::Config.set(store_pdf: true)
 Spree::PrintInvoice::Config.set(storage_path: 'pdfs/orders')
 
 Spree.user_class = "Spree::LegacyUser"
-Spree::PermittedAttributes.line_item_attributes.push :delivery_type
+Spree::PermittedAttributes.line_item_attributes.push :delivery_type, :in_wishlist
 Spree::PermittedAttributes.user_attributes.push :is_guest, :first_name, :last_name ,:mobile_number, :t_and_c_accepted, stores_attributes: [:name, :certificate, :estimated_delivery_time, :active, :payment_mode, :description, :manager_first_name, :manager_last_name, :phone_number, :store_type, :street_number, :city, :state, :zipcode, :country, :site_url, :terms_and_condition, :payment_information, :logo, spree_taxon_ids: [], store_users_attributes: [:spree_user_id, :store_id, :id]]
 Spree::PermittedAttributes.product_attributes.push :asin
 Spree::PermittedAttributes.address_attributes.push :user_id
@@ -34,4 +38,7 @@ Spree::BackendConfiguration.class_eval do
 	SELLER_TAB			||= [:merchants]
   COMMISSION_TAB      ||= [:commission]
   CAROUSEL_IMAGE_TAB  ||= [:carousel_image]
+  FEEDBACK_TAB  ||= [:feedback]
+  STATIC_IMAGE_TAB  ||= [:static_image]
+  CANCEL_ORDER_TAB ||= [:cancel_order]
 end

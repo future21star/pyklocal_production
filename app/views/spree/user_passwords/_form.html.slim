@@ -12,16 +12,17 @@
       #content.col-sm-9
         h1 Forgot Your Password?
         p Enter the e-mail address associated with your account. Click submit to have your password e-mailed to you.
-        = form_for Spree::User.new, :as => :spree_user, :html => { class: "custom-form"}, :url => spree.reset_password_path do |f|
+        = form_for Spree::User.new,:as => :spree_user, :html => { class: "custom-form"}, :url => spree.reset_password_path do |f|
           fieldset
             legend Your E-Mail Address
             .form-group.required.clearfix
               label.col-sm-2.control-label for="input-email"  E-Mail Address
               .col-sm-10
-                = f.email_field :email, class: "form-control", id: "#exampleInputEmail1", placeholder: "Enter Email"
+                = f.email_field :email, class: "form-control",maxlength: "50",id: "forget-password-email", placeholder: "Enter Email"
+                span#invalid-email
           .buttons.clearfix
             .pull-left
-              a.btn.btn-default href="#"  Back
+              a.btn.btn-default href=spree.root_path  Back
             .pull-right
               input.btn.btn-primary type="submit" value="Continue" 
       column#column-right.col-sm-3.hidden-xs
@@ -34,3 +35,43 @@
               a href=spree.signup_path  Register
             li
               a href=spree.recover_password_path  Forgotten Password
+
+    
+-content_for :js do
+  javascript:
+    $(document).ready(function(){
+      $('#new_spree_user').on('submit', function(e){
+          e.preventDefault();
+          if (!validateEmail()) {
+            $('#invalid-email').html("<p class='inline-error'> Email is Invalid </p>");
+            $('.inline-error').css("display", "block");
+          }
+          else
+          {
+             this.submit();
+          }
+      });
+    });
+
+    $('#forget-password-email').on('focusout',function(){
+      console.log(validateEmail());
+      if ( $('#forget-password-email').val() == null || $('#forget-password-email').val() == ''){
+        $('#invalid-email').html("<p class='inline-error'> Email can not be blank </p>");
+         $('.inline-error').css("display", "block");
+         return;
+      }
+      if (validateEmail() == true){
+         $('.inline-error').css("display", "none");
+      }
+      else{
+         $('#invalid-email').html("<p class='inline-error'> Email is Invalid </p>");
+         $('.inline-error').css("display", "block");
+      }
+
+    });
+
+    function validateEmail(){
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  ;
+          console.log($('#forget-password-email').val());
+          return re.test($('#forget-password-email').val());
+    }

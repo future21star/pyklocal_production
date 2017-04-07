@@ -49,13 +49,13 @@ br
               |&nbsp; Address:
               '
             span.text-primary style="margin-left: 36px;"
-              = @store.try(:street_number).titleize
+              = @store.try(:address).titleize
 
   - if @is_owner
     - title_text = current_spree_user.has_spree_role?("merchant") ? "" : "Approval pending"
     .s-link-wrap
         
-      = link_to edit_store_email_tokens_path(id: @store.id, type: "Merchant::Store"), class: "btn-default btn-lg btn-block text-left btn-border-radius store-btn ", "data-no-turbolink" => true, title: title_text do
+      = link_to edit_merchant_store_path(@store), class: "btn-default btn-lg btn-block text-left btn-border-radius store-btn ", "data-no-turbolink" => true, title: title_text do
         .fa.fw &#xf044;
         | Edit Store Information
       - if current_spree_user.has_spree_role?("merchant")
@@ -71,9 +71,13 @@ br
           .fa.fw &#xf07a;
           | View Orders
 
-        = link_to merchant_return_authorization_reasons_path, class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
+        / = link_to merchant_return_authorization_reasons_path, class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
           .fa.fw.fa-reply
           | Return Authorization Reason
+
+        = link_to returns_merchant_orders_path, class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
+          .fa.fw.fa-reply
+          | Return Order
 
         = link_to merchant_store_amazon_product_path, class: "store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
           .fa.fw &#xf270;
@@ -147,14 +151,23 @@ br
             if(data.success){
               $('.modal').modal('hide');
               storeRating(data.rating);
+              if ($('#noty_topCenter_layout_container li').length > 0){
+                  $('#noty_topCenter_layout_container ').remove();
+              }
               noty({text: data.message, type: "info"});
             } else {
               $('.modal').modal('hide');
+              if ($('#noty_topCenter_layout_container li').length > 0){
+                $('#noty_topCenter_layout_container ').remove();
+              }
               noty({text: data.message, type: "error"});
             }
           });
         } else {
           window.location = "/login";
+          if($('#noty_topCenter_layout_container li').length > 0){
+                  $('#noty_topCenter_layout_container ').remove();
+          }
           noty({text: "You need to login/signup to rate a store", type: "error"});
         }
       });

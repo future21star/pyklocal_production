@@ -1,35 +1,43 @@
 - variant = line_item.variant
 = order_form.fields_for :line_items, line_item do |item_form|
   tr.line-item
-    td.text-center data-hook="cart_item_image" 
+    td data-hook="cart_item_image"
       - if variant.images.length == 0
         = link_to small_image(variant.product), variant.product,class:"img-thumbnail"
       - else
         = link_to image_tag(variant.images.first.attachment.url(:mini)), variant.product,class:"img-thumbnail"
-    td.text-left data-hook="cart_item_description" 
-      h4= link_to line_item.try(:name), product_path(variant.product)
+    td.text-left data-hook="cart_item_description cart_item_delete"
+      h5= link_to line_item.try(:name), product_path(variant.product)
       = variant.options_text
       - if line_item.insufficient_stock?
         span.out-of-stock
           = Spree.t(:out_of_stock)
           |   
           br
-      span.line-item-description data-hook="line_item_description" 
-       
-    td.text-center data-hook="cart_item_total"
-      = line_item.try(:name) 
-    td.text-center data-hook="cart_item_quantity"
-      .input-group.btn-block style=("max-width: 100px;") 
+      - else
+        = link_to 'X REMOVE', '#', class: 'remove delete', id: "delete_#{dom_id(line_item)}"
+
+      span.line-item-description data-hook="line_item_description"
+
+    td data-hook="cart_item_total"
+      = line_item.try(:name)
+
+    td data-hook="cart_item_quantity" style="min-width: 100px"
+      .input-group.btn-block style=("max-width: 100px;")
         = item_form.number_field :quantity, min: 0, class: "form-control text-center line_item_quantity", size: 5
-    td.text-center style="min-width: 200px;"
+
+    td style="min-width: 180px;"
       = item_form.select :delivery_type, DELIVERY_TYPE.invert, {}, class: 'form-control'
       / = line_item.delivery_type.try(:humanize)
-    td.text-center data-hook="cart_item_price" 
-      = line_item.single_money.to_html
-    td.text-center data-hook="cart_item_total" 
-      = line_item.display_amount.to_html unless line_item.quantity.nil?
-    td.text-center data-hook="cart_item_delete" 
-      = link_to content_tag(:span, '', class: 'glyphicon glyphicon-minus-sign'), '#', class: 'delete', id: "delete_#{dom_id(line_item)}"
+
+    td data-hook="cart_item_price"
+      strong= line_item.single_money.to_html
+
+    td data-hook="cart_item_total"
+      strong.price= line_item.display_amount.to_html unless line_item.quantity.nil?
+
+    /td data-hook="cart_item_delete"
+      /= link_to content_tag(:span, '', class: 'glyphicon glyphicon-minus-sign'), '#', class: 'delete', id: "delete_#{dom_id(line_item)}"
 
 
-    
+

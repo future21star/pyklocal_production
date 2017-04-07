@@ -5,8 +5,15 @@
         a href="/" 
           i.fa.fa-home
           | Home
+        li 
+          a href=merchant_path
+            | Merchant
+
+        li 
+          a href=merchant_stores_path
+            | Store
       li
-        span Add Product 
+        span  Add Product
     .row  
       .col-sm-3
         =render :partial => "merchant/shared/seller"
@@ -22,8 +29,8 @@
                     = f.field_container :name do
                       = f.label :name, Spree.t(:name) + " *"
                       span.input-icon.icon-right
-                        = f.text_field :name, :class => 'form-control input-bg' 
-                      = f.error_message_on :name
+                        = f.text_field :name, :class => 'form-control input-bg' , maxlength: "100"
+                        span.product-name-error
 
                     .row data-hook="new_product_attrs" 
                       - unless @product.has_variants?
@@ -41,22 +48,23 @@
 
                         .form-group.col-md-6
                           = f.field_container :price do
-                            = f.label :price, Spree.t(:master_price) + " (USD) *", class: "control-label lable-margin-top"
+                            = f.label :price, Spree.t(:sale_price) + " (USD) *", class: "control-label lable-margin-top"
                             span.input-icon.icon-right
                               = f.number_field :price, :value => number_to_currency(@product.price, :unit => ''), :class => 'form-control input-bg'
-                            = f.error_message_on :price
+                              span.product-price-error
 
                         .form-group.col-md-6
                           = f.field_container :available_on do
                             = f.label :available_on, Spree.t(:available_on), class: "control-label lable-margin-top"
                             span.input-icon.icon-right
-                              = f.text_field :available_on, :class => 'datepicker form-control input-bg'
-                            = f.error_message_on :available_on
+                              = f.text_field :available_on, :class => 'datepicker_product form-control input-bg'
+                            span.product-available-date-error
                         .form-group.col-md-6
                           = f.field_container :shipping_category do
                             = f.label :shipping_category_id, Spree.t(:shipping_categories) + " *", class: "control-label lable-margin-top"
                             = f.collection_select(:shipping_category_id, @shipping_categories, :id, :name, { :include_blank => Spree.t('match_choices.none') }, { :class => 'select2 fullwidth form-control auto-select' })
-                            = f.error_message_on :shipping_category_id 
+                            span.product-shipping-error
+                            / = f.error_message_on :shipping_category_id 
                       .clearfix[data-hook= "product-from-prototype" id="product-from-prototype"]
                         = render :file => 'spree/admin/prototypes/show' if @prototype
                       .col-xs-12.form-group
@@ -72,9 +80,10 @@
               br
               label Bulk Upload
               br
-              = form_tag bulk_upload_merchant_products_path, method: :post, multipart: true do 
+              = form_tag bulk_upload_merchant_products_path, id: 'bulk-upload',method: :post, multipart: true do 
                 .form-group
-                  = file_field_tag :file, class: "form-control"
+                  = file_field_tag :file, accept: "text/csv",class: "form-control"
+                span#bulk-upload-error
                 .form-group
                   = submit_tag "Import", class: "btn btn-primary"
                   span
@@ -101,3 +110,159 @@
         prototype_select.change();
       }
     });(jQuery); 
+
+
+    $(document).ready(function(){
+      $('#bulk-upload').on('submit', function(e){
+          e.preventDefault();
+          if (($('#file').val() == '') || ($('#file').val() == null)){
+             $('#bulk-upload-error').html("<p class='inline-error'> No file is selected </p>");
+             $('.inline-error').css("display", "block");
+             return;
+          }
+          if (validate() == true ){
+            this.submit();
+          }
+          else{
+            if  ($('#bulk-upload-error').html().length == 0){
+              $('#bulk-upload-error').html("<p class='inline-error'> File extension must be csv </p>");
+              $('.inline-error').css("display", "block");
+            }
+            else{
+              $('.inline-error').css("display", "block");
+            }
+          }
+      });
+    });
+
+    $(document).ready(function(){
+       $( ".datepicker_product" ).datepicker({ minDate: 0, dateFormat: 'yy-mm-dd'});
+    });
+
+
+    $("input:file").on('change', function(){
+      console.log("inside");
+      if (validate() == true ){
+       $('.inline-error').css("display", "none");
+      }
+      else{
+        if  ($('#bulk-upload-error').html().length == 0){
+          console.log($('#bulk-upload-error').html().length);
+          $('#bulk-upload-error').html("<p class='inline-error'> File extension must be csv</p>");
+          $('.inline-error').css("display", "block");
+        }
+        else{
+          $('#bulk-upload-error').html("<p class='inline-error'> File extension must be csv</p>");
+          $('.inline-error').css("display", "block");
+        }
+      }
+    });
+
+    function validate(){
+      var file_name = $('#file').val().split('.');
+      if ( (file_name[file_name.length - 1] == 'CSV') || (file_name[file_name.length - 1] == 'csv') ) {
+          return true;
+      }
+      else{
+        return false;
+      }
+    }
+
+
+    $(document).ready(function(){
+      $('#new_product').on('submit', function(e){
+          e.preventDefault();
+          if( (validateProductName()) * (validateShipping()) * (validatePrice()) * (validateAvailableDate()) ){
+            this.submit();
+          }
+      });
+    });
+
+    $('#product_price').on('blur',function(){
+      validatePrice();
+    });
+
+     $('#product_name').on('blur',function(){
+      validateProductName();
+    });
+
+    $('#product_available_on').on('change',function(){
+        validateAvailableDate();
+    });
+
+    $('#product_shipping_category_id').on('change',function(){
+      validateShipping();
+    });
+
+    function validateProductName(){
+      if($('#product_name').val().trim().length == 0){
+        $('.product-name-error').html("<p class='text-red'> Product Name can not be blank </p");
+        $('.product-name-error').show();
+        return 0;
+      }
+      else{
+        $('.product-name-error').hide();
+         return 1 ;
+      }
+    }
+
+
+    function validateAvailableDate(){
+      dateReg = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
+      if($('#product_available_on').val().trim().length == 0 ){
+        $('.product-available-date-error').html("<p class='text-red'> Product available on date can not be blank</p");
+        $('.product-available-date-error').show();
+        return 0;
+      }
+      else if($('#product_available_on').val().match(dateReg) == null){
+        $('.product-available-date-error').html("<p class='text-red'> Product available on date is invalid</p");
+        $('.product-available-date-error').show();
+        return 0;
+      }
+      else{
+        $('.product-available-date-error').hide();
+        return 1;
+      }
+    }
+
+
+
+
+    function validateShipping(){
+      if ($('.select2-hidden-accessible').eq(1).text() == "None" || ($('.select2-hidden-accessible').eq(1).text() == "")){
+        $('.product-shipping-error').html("<p class='text-red'> Shipping Category Not selected </p");
+        $('.product-shipping-error').show();
+        return 0;
+      }
+      else
+      {
+        $('.product-shipping-error').hide();
+        return 1;
+      }
+    }
+
+
+    function validatePrice(){
+      flag = true;
+      if($('#product_price').val().trim().length == 0){
+        $('.product-price-error').html("<p class='text-red'> Product sale price can not be blank </p");
+        $('.product-price-error').show();
+        flag = false;
+      }
+      else if ((parseInt($('#product_price').val())) <= 0 ){
+        $('.product-price-error').html("<p class='text-red'> Product sale price must be greater than zero </p");
+        $('.product-price-error').show();
+        flag = false;
+      }
+      else{
+        $('.product-price-error').hide();
+        flag = true;
+      }
+
+      if (flag == true){
+        return 1;
+      }
+      else{
+        return 0;
+      }
+    }

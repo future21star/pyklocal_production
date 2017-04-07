@@ -5,20 +5,36 @@ Spree::HomeController.class_eval do
 	def index
     @search = Sunspot.search(Spree::Product) do
       with(:location).in_radius(session[:lat], session[:lng], 30.to_i, bbox: true) if session[:lat].present? && session[:lng].present?
+      with(:visible, :true)
+      with(:buyable, true)
       order_by(:sell_count, :desc)
     end 
 		# @searcher = build_searcher(params.merge(include_images: true))
-    # @products = @searcher.retrieve_products.includes(:possible_promotions)
+  #   @products = @searcher.retrieve_products.includes(:possible_promotions)
     @products = @search.results
     @view_search = Sunspot.search(Spree::Product) do 
-      order_by(:view_count, :desc)
+      order_by(:view_counter, :desc)
+      with(:visible, :true)
+      with(:buyable, true)
       paginate page: 1, per_page: 20
     end
-    @most_viewed_products = @view_search.results
-    @new_arrival = Spree::Product.all.limit(30).order('created_at DESC')
-		@bag_categories = Spree::Taxon.where(name: "Bags").first.products
-		@clothing_categories = Spree::Taxon.where(name: "Mugs").first.products
-    @carousel_images = Spree::CarouselImage.active
+     @most_viewed_products = @view_search.results
+      #@most_viewed_products =  Spree::Product.all.where(buyable: true).limit(30).order('view_counter desc')
+    # @new_arrival = Spree::Product.all.where(buyable: true).limit(30).order('created_at DESC')
+    @search_new_arrival = Sunspot.search(Spree::Product) do
+      # with(:buyable, :true)
+      with(:visible, :true)
+      with(:buyable, true)
+      order_by(:created_at, :desc)
+      paginate page: 1, per_page: 30
+    end
+    @new_arrival = @search_new_arrival.results
+		@bag_categories = Spree::Taxon.root.children.first.try(:products)
+		@clothing_categories = Spree::Taxon.root.children.last.try(:products)
+    @carousel_images = Spree::CarouselImage.where(is_static: false).active
+    @top_static_images = Spree::StaticImage.where(is_static: true, position: "top").active.limit(2)
+    @middle_static_images = Spree::StaticImage.where(is_static: true, position: "middle").active.limit(3)
+    @bottom_static_image = Spree::StaticImage.where(is_static: true, position: "bottom").active.last
 	end
 
 	def orders
@@ -64,6 +80,7 @@ Spree::HomeController.class_eval do
 	end
 
   def new_store_application
+    @user = Spree::User.new
     @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)
   end
 

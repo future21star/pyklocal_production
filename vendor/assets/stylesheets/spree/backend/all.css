@@ -8,8 +8,24 @@
  *= require_self
  *= require_tree .
  *= require spree/backend/spree_braintree_vzero
+ *= require spree/backend/spree_editor
 */
 
 .margin-left {
   margin-left: 10px;
+}
+
+.merchant-products{
+	background: rgba(3, 169, 244, 0.25);
+}
+
+.no-sale-product{
+	background: rgba(3, 133, 244, 0.37);
+}
+.return-products{
+	background: rgba(3, 169, 200, 0.64);
+}
+
+.merge-column{
+	column-span: 4;
 }

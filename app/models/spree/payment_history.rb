@@ -9,13 +9,14 @@ module Spree
 
 		belongs_to :user
 
-		# before_create :add_due_amount
-		# validate :transection_amount
+		before_create :add_due_amount
+		validate :transection_amount
 
 		private
 
 			def add_due_amount
-				self.amount_due = user.amount_due - self.amount.to_f
+				self.amount_due = user.amount_due.to_f - self.amount.to_f
+				user.update_attributes(amount_due: user.amount_due.to_f - self.amount.to_f)
 			end
 
 			def transection_amount

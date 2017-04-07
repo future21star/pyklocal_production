@@ -8,9 +8,7 @@ $.ajaxSetup({
     'X-Spree-Token': $('meta[name="csrf-token"]').attr('content')
   }
 });
-$(document).ready(function(){
-  
-});
+
 
 $(document).ready(function() {
   var Store = function(){
@@ -51,7 +49,7 @@ $(document).ready(function() {
             easing: 'swing',
             speed: 500 // opening & closing animation speed
         },
-        timeout: 5000, // delay for closing event. Set false for sticky notifications
+        timeout: 35000, // delay for closing event. Set false for sticky notifications
         force: false, // adds notification to the beginning of queue when set to true
         modal: false,
         maxVisible: 5, // you can set max visible notification for dismissQueue true option,
@@ -244,11 +242,12 @@ $(document).ready(function() {
           geocoder.geocode({ 'latLng': latlng }, function (results, status) {
               if (status == google.maps.GeocoderStatus.OK) {
                   if (results[1]) {
-                    var array = console.log(results[1].formatted_address.split(","));
+                    var string =[];
+                    var array = results[1].formatted_address.split(",");
                     $.ajax({
                       url: "/api/v1/merchant_stores/"+$this.data("store_id")+"/update_location",
                       method: "put",
-                      data: { "merchant_store[latitude]": myCompany.lastMarker.position.lat(), "merchant_store[longitude]": myCompany.lastMarker.position.lng(), "merchant_store[street_number]": results[1].formatted_address},
+                      data: { "merchant_store[latitude]": myCompany.lastMarker.position.lat(), "merchant_store[longitude]": myCompany.lastMarker.position.lng(),"merchant_store[street_number]": array[array.length-4], "merchant_store[city]": array[array.length-3],"merchant_store[state]": array[array.length-2], "merchant_store[country]": array[array.length-1]},
                       success: function(data, status) {
                         if(data.success) {
                           $("#map-preview").data("latitude", myCompany.lastMarker.position.lat());
@@ -257,6 +256,8 @@ $(document).ready(function() {
                           myCompany.previewMap();
                           noty({text: "Location updated successfully", type: "information"});
                           $('.modal').modal('hide');
+                          var x = location.pathname;
+                          location.assign(x);
                         } else {
                           noty({text: data.message, type: "error"});
                         }
@@ -297,3 +298,11 @@ $(document).ready(function() {
   
   var myCompany = new Store();
 });
+
+
+
+/*=================================== Store Form Validations ==================================================*/
+
+
+
+   

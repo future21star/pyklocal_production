@@ -1,52 +1,69 @@
-h3= Spree.t(:order_summary)
-table.table data-hook="order_summary" 
-  tbody
-    tr data-hook="item_total" 
-      td
-        strong
-          = Spree.t(:item_total)
-          | :
-      td
-        strong= order.display_item_total.to_html
-    - if order.line_item_adjustments.nonzero.exists?
-      tbody data-hook="order_details_promotion_adjustments" 
-        - order.line_item_adjustments.nonzero.promotion.eligible.group_by(&:label).each do |label, adjustments|
-          tr.total
-            td= label
-            td= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency).to_html
-  tbody data-hook="order_details_tax_adjustments" 
-    - order.all_adjustments.nonzero.tax.eligible.group_by(&:label).each do |label, adjustments|
-      tr.total
-        td= label
-        td= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency).to_html
+h4= Spree.t(:order_summary)
+.orders
+  h5
+    | Your Boxed Order
+    span (2)
+    button.order-toggle
+      span.plus +
+  ul.orderlist
+    - order.line_items.each do |line_item|
+      li class=(line_item.delivery_type == 'home_delivery' ? 'hd' : 'pick-up')
+        .img
+          = mini_image(line_item.variant)
+        .title
+          = link_to line_item.variant.name, product_path(line_item.variant.product)
+        .dl-type= (line_item.delivery_type == 'home_delivery' ? ' Home Delivery' : 'Pick Up')
+        .order-qty
+          strong Qty:= line_item.quantity
+        .order-price
+          strong= display_price(line_item.variant)
+
+ul.amount
+  li
+    label Subtotal
+    span
+      strong= order.display_item_total.to_html
   - if order.passed_checkout_step?("delivery") && order.shipments.any?
-    tr data-hook="shipping_total" 
-      td
-        = Spree.t(:shipping_total)
-        | :
-      td= Spree::Money.new(order.shipments.to_a.sum(&:cost), currency: order.currency).to_html
-    - if order.shipment_adjustments.nonzero.exists?
-      tbody data-hook="order_details_shipment_promotion_adjustments" 
-        - order.shipment_adjustments.nonzero.promotion.eligible.group_by(&:label).each do |label, adjustments|
-          tr.total
-            td
-              = label
-              | :
-            td= Spree::Money.new(adjustments.sum(&:amount), currency: order.currency).to_html
+    li
+      label
+        | Shipping :
+        small= 'Free Delivery' if order.shipments.to_a.sum(&:cost).to_f <= 0
+      span= Spree::Money.new(order.shipments.to_a.sum(&:cost), currency: order.currency).to_html
+  li
+    label Sales Tax
+    span= Spree::Money.new(order.all_adjustments.nonzero.tax.eligible.sum(:amount), currency: order.currency).to_html
+
   - if order.adjustments.nonzero.eligible.exists?
-    tbody#summary-order-charges data-hook="" 
+    tbody#summary-order-charges data-hook=""
       - order.adjustments.nonzero.eligible.each do |adjustment|
         - next if (adjustment.source_type == 'Spree::TaxRate') and (adjustment.amount == 0)
-        tr.total
-          td
-            = adjustment.label
-            | :
-          td= adjustment.display_amount.to_html
-  tr data-hook="order_total" 
-    td
-      strong
-        = Spree.t(:order_total)
-        | :
-    td
-      strong
-        span#summary-order-total.lead.text-primary= order.display_total.to_html
+        li.total
+          label
+            | #{adjustment.label} :
+          span
+            = adjustment.display_amount.to_html
+            = link_to cancel_coupon_api_v1_order_path(order), class: "btn btn-danger", title: "Cancel Coupon", style: "width: 25px;height: 25px;padding: 3px;margin: -1px 5px;", method: :put do
+              i.fa.fa-close
+  li
+    label Total
+    span
+      strong= order.display_total.to_html
+  li
+    -if @order.state == 'address'
+      label Coupon Code
+      #checkout-summary data-hook="checkout_summary_box"
+        = form_for @order, url: update_checkout_path(@order.state), html: { id: "checkout_form_#{@order.state}" } do |f|
+          p.field data-hook="coupon_code"
+            /= f.label :coupon_code
+            input#coupon-code.form-control type='text'
+            / = form.text_field :coupon_code, :class => 'form-control'
+            #coupon-response
+            button name="apply" type="button" id='apply-coupon-code' data-order_id=@order.number data-order_token=(@order.guest_token) Apply
+
+  / -if order.passed_checkout_step?("delivery")
+  /   p.field data-hook="coupon_code"
+  /     = form.label :coupon_code
+  /       input#coupon-code.form-control type='text'
+  /       / = form.text_field :coupon_code, :class => 'form-control'
+  /       #coupon-response
+  /       a#apply-coupon-code.pay-btn.btn-success.btn data-order_id=(order.number) data-order_token=(order.guest_token) Apply

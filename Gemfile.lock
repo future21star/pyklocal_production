@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/amro/gibbon.git
+  revision: 5058ad64c9462148a4f245ead090026b6cad18da
+  specs:
+    gibbon (3.0.1)
+      faraday (>= 0.9.1)
+      multi_json (>= 1.11.0)
+
+GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
   revision: d3776ddd0b89d28fdebfd6e1c1541348cc90e5cc
   specs:
@@ -19,6 +27,16 @@ GIT
       spree_core (>= 3.1.0, < 4.0)
       spree_frontend (>= 3.1.0, < 4.0)
       whenever
+
+GIT
+  remote: git://github.com/spree-contrib/spree_editor.git
+  revision: 702db404e959d6c4fa42fc7c7ea48a28f6bd2d1e
+  branch: 3-1-stable
+  specs:
+    spree_editor (3.1.0)
+      ckeditor (~> 4.1.2)
+      spree_backend (~> 3.1.0.beta)
+      tinymce-rails (~> 4.2.5)
 
 GIT
   remote: git://github.com/spree-contrib/spree_print_invoice.git
@@ -139,7 +157,14 @@ GEM
       ffi (~> 1.0, >= 1.0.11)
     choice (0.2.0)
     chronic (0.10.2)
+    ckeditor (4.1.6)
+      cocaine
+      orm_adapter (~> 0.5.0)
     cldr-plurals-runtime-rb (1.0.1)
+    client_side_validations (4.2.12)
+      jquery-rails (>= 3.1.2, < 5.0.0)
+      js_regex (~> 1.0, >= 1.0.19)
+      rails (>= 4.0.0, < 4.3.0)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
@@ -211,6 +236,8 @@ GEM
     factory_girl_rails (4.7.0)
       factory_girl (~> 4.7.0)
       railties (>= 3.0.0)
+    faraday (0.11.0)
+      multipart-post (>= 1.2, < 3)
     ffaker (2.2.0)
     ffi (1.9.14)
     font-awesome-rails (4.6.3.1)
@@ -222,6 +249,7 @@ GEM
       activesupport (>= 4.1.0)
     hashie (3.4.4)
     highline (1.6.21)
+    hirb (0.7.3)
     htmlentities (4.3.4)
     httpclient (2.8.2.3)
     httpi (2.4.2)
@@ -240,6 +268,8 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
+    js_regex (1.2.1)
+      regexp_parser (>= 0.3.6, <= 0.4.2)
     json (1.8.3)
     jsonapi (0.1.1.beta2)
       json (~> 1.8)
@@ -255,6 +285,8 @@ GEM
       less (~> 2.6.0)
       sprockets (> 2, < 4)
       tilt
+    letter_opener (1.4.1)
+      launchy (~> 2.2)
     libv8 (3.16.14.15)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
@@ -273,6 +305,7 @@ GEM
       sixarm_ruby_unaccent (>= 1.1.1, < 2)
     multi_json (1.12.1)
     multi_test (0.1.2)
+    multipart-post (2.0.0)
     mysql2 (0.4.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -320,6 +353,8 @@ GEM
       highline (~> 1.6)
       options (~> 2.3.0)
     puma (3.6.0)
+    quiet_assets (1.1.0)
+      railties (>= 3.1, < 5.0)
     rabl (0.12.0)
       activesupport (>= 2.3.14)
     rack (1.6.4)
@@ -367,6 +402,7 @@ GEM
       json (~> 1.4)
     redis (3.3.1)
     ref (2.0.0)
+    regexp_parser (0.4.2)
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
     rsolr (1.1.2)
@@ -436,6 +472,9 @@ GEM
       slim (~> 3.0)
     snake_case_hash (1.0.4)
       hashie (~> 3.0)
+    social-share-button (0.8.0)
+      coffee-rails
+      sass-rails
     socksify (1.7.0)
     spree (3.1.0)
       spree_api (= 3.1.0)
@@ -530,6 +569,8 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
+    tinymce-rails (4.2.8)
+      railties (>= 3.1.1)
     truncate_html (0.9.3)
     ttfunk (1.4.0)
     turbolinks (5.0.1)
@@ -574,6 +615,7 @@ DEPENDENCIES
   capistrano (= 2.15.5)
   capistrano-unicorn
   capybara
+  client_side_validations
   coffee-rails
   cucumber-rails
   cucumber-websteps
@@ -581,14 +623,18 @@ DEPENDENCIES
   exception_notification
   factory_girl_rails (~> 4.0)
   font-awesome-rails
+  gibbon!
+  hirb
   impressionist
   jbuilder (~> 2.0)
   jquery-rails
   less-rails
+  letter_opener
   mysql2 (>= 0.3.13, < 0.5)
   noty-rails
   progress_bar
   puma
+  quiet_assets
   rails (= 4.2.6)
   rails-erd
   rspec-rails (~> 3.0)
@@ -601,9 +647,11 @@ DEPENDENCIES
   simplecov
   slim
   slim-rails
+  social-share-button
   spree (~> 3.1.0)
   spree_auth_devise (~> 3.1.0)
   spree_braintree_vzero!
+  spree_editor!
   spree_gateway (~> 3.1.0)
   spree_print_invoice!
   spree_static_content!
@@ -619,4 +667,4 @@ DEPENDENCIES
   zip-zip
 
 BUNDLED WITH
-   1.12.5
+   1.13.6
