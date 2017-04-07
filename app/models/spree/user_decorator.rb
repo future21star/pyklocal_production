@@ -4,7 +4,7 @@ Spree::User.class_eval do
   devise :confirmable 
   validates :first_name, :last_name, presence: true
   # validates :password,:email, presence: true, on: :create
-  validates :first_name, :last_name, length: {maximum: 50}
+  validates :first_name, :last_name, length: {maximum: 100}
   before_destroy :notify_store_destroy, :destroy_store
   #------------------------ Associations------------------------------
   has_many :store_users, foreign_key: :spree_user_id, class_name: 'Merchant::StoreUser'
