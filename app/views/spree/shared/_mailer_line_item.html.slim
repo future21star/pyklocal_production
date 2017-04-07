@@ -2,26 +2,26 @@
   table.table.table-bordered.table-hover
     thead
       tr style="border-bottom: 1px solid #eee; background: #eee;"
-        td.text-center style="padding: 10px 0; min-width: 80px;" Item Image
-        td.text-center style="padding: 10px 0; min-width: 280px;" Name
-        td.text-center style="padding: 10px 0; min-width: 105px;" Delivery Type
-        td.text-center style="padding: 10px 0; min-width: 60px;" Quantity
-        td.text-center style="padding: 10px 0; width: 75px; text-align: right;" Total 
+        td.text-center style="padding: 10px 0; width: 20%;" Item Image
+        td.text-center style="padding: 10px 0; width: 30%;" Name
+        td.text-center style="padding: 10px 0; width: 15%;" Delivery Type
+        td.text-center style="padding: 10px 0; width: 20%; text-align: center;" Quantity
+        td.text-center style="padding: 10px 0; width: 20%;" Total 
     tbody
       - @order.line_items.each do |item|
         - bg_color = item.delivery_type == "pickup" ? '#ffe2e2' : '#fff'
         tr data-hook="order_details_line_item_row" style="border-bottom: 1px solid #eee; background: #{bg_color};"
-          td.text-center style="padding: 10px 0;" data-hook="order_item_image"
+          td.text-center style="padding: 10px 0; width: 15%;" data-hook="order_item_image"
             - if item.variant.images.length == 0
               = image_tag(item.product.images.first.try(:attachment).try(:url, :mini))
             - else
               = image_tag(item.variant.product.images.first.attachment.url(:mini))
-          td.text-center style="padding: 10px 0;" data-hook="order_item_description"
+          td.text-center style="padding: 10px 0;width: 30%;" data-hook="order_item_description"
             b= item.variant.product.name
-          td.text-center style="padding: 10px 0;"= item.delivery_type.humanize
-          td.text-center style="padding: 10px 0;" data-hook="order_item_qty" = item.quantity
+          td.text-center style="padding: 10px 0; width: 15%;"= item.delivery_type.humanize
+          td.text-center style="padding: 10px 0;width: 20%;text-align: center;" data-hook="order_item_qty" = item.quantity
             span= item.single_money.to_html
-          td.text-center style="padding: 10px 0; text-align: right;" data-hook="order_item_total" 
+          td.text-center style="padding: 10px 0;width: 20%;" data-hook="order_item_total" 
             span= item.display_amount.to_html
     tfoot#order-total data-hook="order_details_total" 
       tr.warning.total
