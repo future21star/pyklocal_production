@@ -5,8 +5,8 @@
     .input-group-btn.search-panel
       button.btn.btn-default.dropdown-toggle data-toggle="dropdown" type="button"
         span#search_concept All
-        i.fa.fa-angle-down aria-hidden="true"
-      ul.dropdown-menu role="menu"
+        / i.fa.fa-angle-down aria-hidden="true"
+      / ul.dropdown-menu role="menu"
         - @taxons.each do |taxon|
           li
             = link_to taxon.name, taxon.name
