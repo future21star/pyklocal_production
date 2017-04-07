@@ -1,5 +1,8 @@
-
-ship_address = printable.ship_address
+if printable.get_order_home_delivery_line_items_ids.count == 0
+	ship_address = printable.bill_address
+else
+	ship_address = printable.ship_address
+end
 
 data = [ ["Invoice Number #", "#{printable.number}"],
  ["Invoice Date:", "#{printable.completed_at}"],
@@ -17,7 +20,11 @@ pdf.table(data, header: true, position: :right) do
 end
 
 pdf.grid([0,1], [1,0]).bounding_box do
-  pdf.text Spree.t(:shipping_address), align: :left , :style => :bold
+	if printable.get_order_home_delivery_line_items_ids.count == 0
+ 	  pdf.text Spree.t(:billing_address), align: :left , :style => :bold
+ 	else
+ 		pdf.text Spree.t(:shipping_address), align: :left , :style => :bold
+ 	end
   pdf.text "#{ship_address.firstname} #{ship_address.lastname}"
   pdf.text "#{ship_address.address1}"
   pdf.text "#{ship_address.address2}" unless ship_address.address2.blank?
