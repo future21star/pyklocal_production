@@ -14,11 +14,11 @@
         = "Not Available"
     = render 'spree/shared/shipment_tracking', order: order if order.shipped?
 
-  - if !order.self_pickup
-    h4 Billing Address
-    - if order.has_step?("address")
-      = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
-      = render 'spree/shared/address', address: order.bill_address
+    / - if !order.self_pickup
+  h4 Billing Address
+  - if order.has_step?("address")
+    = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
+    = render 'spree/shared/address', address: order.bill_address
 
 .col-sm-6.col-xs-12.shipping_info
   .shipping_box
