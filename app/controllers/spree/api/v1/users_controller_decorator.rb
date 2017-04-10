@@ -219,12 +219,12 @@ module Spree
 		def get_cart
 			variant_arr = []
 			@order = @user.orders.where("state != ? AND state != ? AND state != ?","complete","canceled","returned").last
-		  @order.line_items.each do |line_item|
-        if line_item.price !=  line_item.variant.price
-          @order.contents.update_cart(line_items_attributes: {id: line_item.id, price: line_item.variant.price})
-        end
-      end
 			unless @order.blank?
+				@order.line_items.each do |line_item|
+	        if line_item.price !=  line_item.variant.price
+	          @order.contents.update_cart(line_items_attributes: {id: line_item.id, price: line_item.variant.price})
+	        end
+	      end
 				render json: {
 					status: "1",
 					message: "Cart",
