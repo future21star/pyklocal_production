@@ -35,35 +35,36 @@ header.header
         a href="/"
           img.hidden-xs alt="pyk" height="78" src=asset_path("new_design/logo.png") width="125" /
           img.visible-xs alt="pyk" height="34" src=asset_path("new_design/logo-mobile.png") width="125" /
-      .col-md-2.col-sm-3.col-xs-5.visible-xs
-        .cart-favorite
-          .cart
-            span.cart-icon
-              = link_to spree.cart_path, "data-no-turbolink" => true do
-                i.fa.fa-shopping-cart aria-hidden="true"
-                small= simple_current_order.item_count
-            h5 CART
-          .favorite
-            span.favorite-icon
-              a href="#"
-                i.fa.fa-heart aria-hidden="true"
-                small 0
-      .col-md-8.col-sm-6.col-xs-12
-        = render 'spree/shared/search'
-      .col-md-2.col-sm-3.col-xs-12.hidden-xs
-        .cart-favorite
-          .cart
-            span.cart-icon
-              = link_to spree.cart_path, "data-no-turbolink" => true do
-                i.fa.fa-shopping-cart aria-hidden="true"
+      - unless current_spree_user.present? && current_spree_user.has_spree_role?("merchant")
+        .col-md-2.col-sm-3.col-xs-5.visible-xs
+          .cart-favorite
+            .cart
+              span.cart-icon
+                = link_to spree.cart_path, "data-no-turbolink" => true do
+                  i.fa.fa-shopping-cart aria-hidden="true"
                   small= simple_current_order.item_count
-            h5 CART
-          .favorite
-            span.favorite-icon
-              a href=spree.wishlists_path
-                i.fa.fa-heart aria-hidden="true"
-                small 
-                  - if current_spree_user.present?
-                    = current_spree_user.wishlists.count
-                  -else
-                    = 0
+              h5 CART
+            .favorite
+              span.favorite-icon
+                a href="#"
+                  i.fa.fa-heart aria-hidden="true"
+                  small 0
+        .col-md-8.col-sm-6.col-xs-12
+          = render 'spree/shared/search'
+        .col-md-2.col-sm-3.col-xs-12.hidden-xs
+          .cart-favorite
+            .cart
+              span.cart-icon
+                = link_to spree.cart_path, "data-no-turbolink" => true do
+                  i.fa.fa-shopping-cart aria-hidden="true"
+                    small= simple_current_order.item_count
+              h5 CART
+            .favorite
+              span.favorite-icon
+                a href=spree.wishlists_path
+                  i.fa.fa-heart aria-hidden="true"
+                  small 
+                    - if current_spree_user.present?
+                      = current_spree_user.wishlists.count
+                    -else
+                      = 0
