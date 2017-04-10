@@ -117,7 +117,7 @@ p
       - else
         h4.title Fill the form for New store
     .form-group.col-xs-12
-      = f.text_field :name, :class => 'form-control ', :tabindex => 1, :placeholder => 'Store Name*'
+      = f.text_field :name, :class => 'form-control ', :tabindex => 1, maxlength: "100",:placeholder => 'Store Name*'
       span#store-name-error.error-block 
     .form-group.col-xs-12
       label
@@ -192,7 +192,7 @@ p
         /   option Rajasthan
         /   option Madya Pradesh
         /   option Utter Pradesh
-        = f.text_field :country, class: "form-control input-bg charOnly address_country", placeholder: "Country*"
+        = f.text_field :country, class: "form-control input-bg charOnly address_country",  maxlength: "100",placeholder: "Country*"
         span#country-error
     .form-group.col-xs-12
       h4.title Categories*
@@ -399,7 +399,7 @@ p
       errorStr = "";
       var letters = /^[A-Za-z ]+$/;
       if($('.address_country').val().trim().length == 0){
-        errorStr += "City can not be blank";
+        errorStr += "Country can not be blank";
         flag = false;
       }
       else if ( ($('.address_country').val()).match(letters) == null){
@@ -458,7 +458,7 @@ p
           errorStr += "only number(s) are allowed in phone number";
           flag = false;
       }
-      else if($('.address_phone').val().trim().length < 10){
+      else if($('.address_phone').val().trim().length != 10){
         errorStr += "Phone Number must have 10 digits";
         flag = false;
       }

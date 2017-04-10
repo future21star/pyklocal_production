@@ -55,7 +55,7 @@
             = f.field_container :cost_price do 
               = f.label :cost_price, raw('Retail Price' + ' (USD) ' + content_tag(:span, ' *', :class => "required control-label lable-margin-top"))
               span.input-icon.icon-right 
-                = f.number_field :cost_price, class: "numbersOnly form-control input-bg" ,:min => @product.price , :step => "0.01"
+                = f.number_field :cost_price, class: "numbersOnly form-control input-bg" , :step => "0.01"
                 .fa &#xf0d6;
                 span.product-cost-price-error
           .col-md-6.top-margin-row.child-div1

@@ -393,7 +393,7 @@ $(document).ready(function(){
       validateRegPassword();
     });
 
-    $('.reg-password-confrim').on('blur',function(){
+    $('.reg-password-confirm').on('blur',function(){
         validateRegConfirmPassword();
     });
 

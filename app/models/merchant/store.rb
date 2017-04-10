@@ -8,6 +8,8 @@ module Merchant
     before_destroy :deactive_store_products
 
     validates :name, :manager_first_name, :manager_last_name, :phone_number, :certificate,presence: true
+    validates :name,:manager_last_name,:manager_first_name, length: {maximum: 100}
+    validates :phone_number,length: {is: 100}
     # validates :phone_number, numericality: { only_integer: true }
     # validates :terms_and_condition, acceptance: { accept: true }
     
