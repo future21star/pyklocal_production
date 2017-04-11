@@ -14,7 +14,7 @@ class Merchant::VariantsController < Merchant::ApplicationController
 	end
 
 	def edit
-		
+		@variant = Spree::Variant.find(params[:id])
 	end
 
 	def create

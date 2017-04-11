@@ -16,7 +16,7 @@ header.header
                   = link_to "Wish List",spree.wishlists_path
               li.dropdown
                 a href= spree.edit_account_path class='dropdown-toggle' data-toggle="dropdown"
-                  = current_spree_user.try(:full_name)
+                  = truncate(current_spree_user.try(:full_name),:length => 20)
                   |&nbsp;
                   i.fa.fa-caret-down
                 ul.dropdown-menu role="menu"

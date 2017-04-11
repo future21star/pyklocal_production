@@ -24,7 +24,7 @@ table.table.table-bordered.admin-report data-hook="sales_total"
         tr
           td= line_item.order.number
           td= line_item.product.name
-          td= number_to_currency(line_item.price)
+          td= number_to_currency(line_item.variant.price)
           td= line_item.quantity
           -if line_item.product.store.present?
             td= line_item.product.store.name

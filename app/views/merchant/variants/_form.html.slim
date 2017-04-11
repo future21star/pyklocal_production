@@ -7,7 +7,7 @@
         - @product.option_types.each do |option_type|
           .form-group
             = f.label option_type.presentation, class: "control-label"
-            = select_tag "variant[option_value_ids][]", options_for_select(Spree::OptionValue.where(option_type_id: option_type.id).collect {|s| [s.presentation, s.id]}, option_type.presentation), class: "select2 fullwidth form-control input-bg auto-select"
+            = select_tag "variant[option_value_ids][]", options_for_select(Spree::OptionValue.where(option_type_id: option_type.id).collect {|s| [s.presentation, s.id]}, @variant.option_values.first.id), class: "select2 fullwidth form-control input-bg auto-select"
         .form-group
           = f.label :sku, class: "control-label"
           span.input-icon.icon-right

@@ -180,11 +180,12 @@ module Spree
 					with(:email,params[:user_email]) if params[:user_email].present?
 					with(:taxon_ids, params[:category_name]) if params[:category_name].present?
 					with(:brand_names,params[:brand_name]) if params[:brand_name].present?
-					with(:product_names, params[:product_name]) if params[:product_name].present?
+					# with(:product_names, params[:product_name]) if params[:product_name].present?
 					with(:product_price, params[:min_price]..params[:max_price]) if params[:max_price].present? && params[:max_price].to_i > 0 && params[:min_price].present? && params[:min_price].to_i > 0
 					paginate(:page => @page, :per_page => @per_page)
 				end
 				@line_items = @search.results
+				@line_items = @line_items.select{ |line_item| line_item.name.downcase.include?(params[:product_name].downcase)} if params[:product_name].present?
 				params[:q] = {} unless params[:q]
 				if params[:q][:orders_completed_at_gt].blank?
 					params[:q][:orders_completed_at_gt] = Time.zone.now.beginning_of_month

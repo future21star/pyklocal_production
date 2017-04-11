@@ -18,7 +18,8 @@ html lang="#{I18n.locale}"
         = render :partial => 'spree/shared/custome_feature'
 
     = render :partial => 'spree/shared/footer'
-    = render 'spree/shared/login_modal'
+    - unless request.original_url.include?('login')
+      = render 'spree/shared/login_modal'
     = javascript_include_tag 'application'
     = javascript_include_tag 'jquery.raty'
     script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5799d7abbbb1ae8a"

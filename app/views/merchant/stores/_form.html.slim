@@ -161,13 +161,13 @@ p
         = f.text_field :estimated_delivery_time, class: "form-control input-bg", placeholder: "Enter full information like 2 - 5 business hours or 1 -3 working days",maxlength: "100"
       .form-group.col-sm-6.col-xs-12
         / input.form-control name="Website" placeholder="Website(s)" /
-        = f.text_field :site_url, class: "form-control input-bg ", placeholder: "www.example.com" 
+        = f.text_field :site_url, class: "form-control input-bg ", placeholder: "www.example.com",maxlength: "50" 
     .form-group.col-xs-12
       h4.title Address
     .row
       .form-group.col-sm-6.col-xs-12
         / input.form-control name="address" placeholder="Address*" /
-        = f.text_field :street_number, class: "form-control input-bg address_address1", placeholder: "Address*" , maxlength: "200"
+        = f.text_field :street_number, class: "form-control input-bg address_address1", placeholder: "Address*" , maxlength: "150"
         span#address1-error.error-block
       .form-group.col-sm-6.col-xs-12
         / input.form-control name="city" placeholder="City*" /

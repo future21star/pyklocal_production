@@ -331,6 +331,10 @@ $(document).ready(function(){
           errorStr += "only number(s) are allowed in zipcode";
           flag = false;
       }
+      else if($('.address_zipcode').val().trim().length > 6){
+        errorStr += "zipcode can have 6 digits";
+        flag = false;
+      }
 
       if (flag == false){
         OutputErrorStr = "<p class='text-red'> " + errorStr + "</p>";
@@ -389,7 +393,7 @@ $(document).ready(function(){
 
 
    $('.reg-password').on('blur',function(){
-      console.log("called");
+      console.log("called gjgg");
       validateRegPassword();
     });
 
