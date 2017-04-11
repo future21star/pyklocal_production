@@ -2,16 +2,20 @@ require 'uri'
 class Merchant::AmazonProductsController < Merchant::ApplicationController
 
 	def fetch
-		@is_owner = true
-		if  ["keyword", nil].include?(params[:by])
-			
-			if params[:keywords].present?
-				@amazon_products, @total_results = AMAZON_CLIENT.search_keywords(params[:keywords], {SearchIndex: (params[:serch_index] || "All"), ResponseGroup: (params[:response_type] || "Medium"), ItemPage: (params[:item_page] || 1)})
-			elsif params[:node].present?
-				@amazon_products = AMAZON_CLIENT.browse_node(params[:node])
+		begin
+			@is_owner = true
+			if  ["keyword", nil].include?(params[:by])
+				
+				if params[:keywords].present?
+					@amazon_products, @total_results = AMAZON_CLIENT.search_keywords(params[:keywords], {SearchIndex: (params[:serch_index] || "All"), ResponseGroup: (params[:response_type] || "Medium"), ItemPage: (params[:item_page] || 1)})
+				elsif params[:node].present?
+					@amazon_products = AMAZON_CLIENT.browse_node(params[:node])
+				end
+			else
+				URI.parse(params[:url])
 			end
-		else
-			URI.parse(params[:url])
+		rescue Exception => e
+			redirect_to :back, notice: "Something went wrong. Please try after some time"
 		end
 		# render json: @amazon_products
 	end
