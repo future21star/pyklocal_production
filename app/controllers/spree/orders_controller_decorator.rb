@@ -63,7 +63,7 @@ Spree::OrdersController.class_eval do
             error = e.record.errors.full_messages.join(", ")
           end
         else
-          error ="You already have this item in your cart. Max Quantity Available for add: " + (variant.total_on_hand - already_ordered_quantity).to_s
+          error ="You already have this item in your cart. Max Quantity Available to add: " + (variant.total_on_hand - already_ordered_quantity).to_s
         end
       else
        # error = 'Max Available: "#{variant.total_on_hand}"'
