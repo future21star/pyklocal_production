@@ -6,9 +6,11 @@ module Spree
 
 		def create 
 			unless @user.blank?
-				if @user.address.blank?
+				if @user.bill_address.blank?
 					@address = Spree::Address.new(addresses_params.merge({user_id: @user.id}))
 					if @address.save
+						@user.update_attributes(bill_address_id: @address.id)
+						@user.update_attributes(ship_address_id: @address.id)
 						render json:{
 							status: "1",
 							message: "Address saved successfully"
@@ -20,7 +22,7 @@ module Spree
 						}
 					end
 				else
-					if @user.address.update_attributes(addresses_params)
+					if @user.bill_address.update_attributes(addresses_params) 
 						render json: {
 							status: "1",
 							message: "Address updated successfully"
@@ -28,7 +30,7 @@ module Spree
 					else
 						render json:{
 							status: "0",
-							message: @user.address.errors.full_messages.join(", ")
+							message: @user.bill_address.errors.full_messages.join(", ")
 						}
 					end
 				end
@@ -42,11 +44,11 @@ module Spree
 
 		def show
 			unless @user.blank? 
-				unless @user.address.blank?
+				unless @user.bill_address.blank?
 						render json:{
 							status: "1",
 							message: "user address",
-							details: to_stringify_address(@user.address)
+							details: to_stringify_address(@user.bill_address)
 						}
 				else
 					render json:{
@@ -64,8 +66,8 @@ module Spree
 
 		def update
 			unless @user.blank?
-				unless @user.address.blank?
-					if @user.address.update_attributes(addresses_params)
+				unless @user.bill_address.blank?
+					if @user.bill_address.update_attributes(addresses_params)
 						render json: {
 							status: "1",
 							message: "Address updated successfully"

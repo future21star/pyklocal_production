@@ -9,6 +9,10 @@ invoice.adjustments.each do |adjustment|
   totals << [pdf.make_cell(content: adjustment.label), adjustment.display_amount.to_s]
 end
 
+invoice.all_adjustments.each do |adjustment|
+  totals << [pdf.make_cell(content: adjustment.label), ActionController::Base.helpers.number_to_currency(adjustment.amount.to_f)]
+end
+
 # Shipments
 invoice.shipments.each do |shipment|
   unless shipment.shipping_method.name == "Free Delivery"

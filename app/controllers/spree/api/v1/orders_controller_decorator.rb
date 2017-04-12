@@ -51,7 +51,7 @@ module Spree
 		end
 
 		def create
-			begin
+			# begin
 			  authorize! :create, Order
 			  order_user = if @current_user_roles.include?('admin') && order_params[:user_id]
 			    Spree.user_class.find(order_params[:user_id])
@@ -103,12 +103,12 @@ module Spree
 	          end
           end
 			 	end
-			rescue Exception => e
-				render json: {
-					status: 0,
-					message: e.message
-				}		  	
-		  end
+			# rescue Exception => e
+			# 	render json: {
+			# 		status: 0,
+			# 		message: e.message
+			# 	}		  	
+		 #  end
 		end    
 
 

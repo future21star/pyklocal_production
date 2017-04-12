@@ -92,26 +92,26 @@ Spree::OrdersController.class_eval do
     end
   end
 
-   def edit
+  def edit
     if current_order.present? || Spree::Order.incomplete.present?
-        @order = current_order || Spree::Order.incomplete.
-                                    includes(line_items: [variant: [:images, :option_values, :product]]).
-                                    find_or_initialize_by(guest_token: cookies.signed[:guest_token])
+      @order = current_order || Spree::Order.incomplete.
+                                  includes(line_items: [variant: [:images, :option_values, :product]]).
+                                  find_or_initialize_by(guest_token: cookies.signed[:guest_token])
 
-        if @order.line_items.present?
-          @order.line_items.each do |line_item|
-            if line_item.price !=  line_item.variant.price
-              @order.contents.update_cart(line_items_attributes: {id: line_item.id, price: line_item.variant.price})
-            end
+      if @order.line_items.present?
+        @order.line_items.each do |line_item|
+          if line_item.price !=  line_item.variant.price
+            @order.contents.update_cart(line_items_attributes: {id: line_item.id, price: line_item.variant.price})
           end
-           @order = current_order || Order.incomplete.
-                                    includes(line_items: [variant: [:images, :option_values, :product]]).
-                                    find_or_initialize_by(guest_token: cookies.signed[:guest_token])
         end
-
-        associate_user
+         @order = current_order || Order.incomplete.
+                                  includes(line_items: [variant: [:images, :option_values, :product]]).
+                                  find_or_initialize_by(guest_token: cookies.signed[:guest_token])
       end
+
+      associate_user
     end
+  end
 
   # def apply_coupon_code
   #     find_order
@@ -159,11 +159,29 @@ Spree::OrdersController.class_eval do
     if @order.present?
       if @order.state != 'canceled'
         @line_items = @order.line_items.where(id: params[:item_ids])
-        @line_items.find_each {|line_item| line_item.update_attributes(delivery_state: params[:option])}
-        if params[:option] == "out_for_delivery"
-          UserMailer.notify_items_out_for_delivery(@line_items).deliver
+        if params[:option] == "ready"
+          if @line_items.first.delivery_state == "ready_to_pick"
+             redirect_to :back, notice: "No Driver has confirmed your order till yet!"
+          else
+            redirect_to :back, notice: "Driver has already confirmed your order"
+          end
+        elsif params[:option] == "out"
+          if @line_items.first.delivery_state == "delivered"
+            redirect_to :back, notice: "Driver has already delivered your order"
+          else
+            redirect_to :back, notice: "Driver is on his way to deliver your order"
+          end
+        else
+          if @line_items.first.delivery_state != "ready_to_pick"
+            @line_items.find_each {|line_item| line_item.update_attributes(delivery_state: params[:option])}
+            if params[:option] == "out_for_delivery"
+              UserMailer.notify_items_out_for_delivery(@line_items).deliver
+            end
+            redirect_to :back, notice: "Notified successfully."
+          else
+            redirect_to :back, notice: "Driver has cancel your order"
+          end
         end
-        redirect_to :back, notice: "Notified successfully."
       else
         redirect_to :back, notice: "Order is already canceled."
       end
