@@ -26,7 +26,7 @@ gem 'sunspot_rails'
 gem 'sunspot_solr'
 gem 'progress_bar'
 gem 'noty-rails'
-gem 'client_side_validations'
+# gem 'client_side_validations'
 gem 'gibbon', git: 'git://github.com/amro/gibbon.git'
 
 

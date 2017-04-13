@@ -17,7 +17,7 @@ class ImportProductWorker
         number_of_rows = number_of_rows + 1 ;
        unless row[0].blank? 
           sku = row[0][0..2].upcase+SecureRandom.hex(5).upcase
-          Spree::Product.analize_and_create(row[0], row[2], sku, Time.zone.now.strftime("%Y/%m/%d"), row[1], shipping_category_id, row[6], store_id, row[7], row[8], row[9], row[4], row[10], row[5], row[3],row[11],errors)
+          Spree::Product.analize_and_create(row[0], row[2], sku, Time.zone.now.strftime("%Y/%m/%d"), row[1], shipping_category_id, row[6], store_id, row[7], row[8], row[9], row[4], row[10], row[5], row[3],row[11],errors, number_of_rows)
         else
           Hash error = Hash.new
           error["CSV Error".to_sym] = "row " + number_of_rows.to_s + " does not have product name"

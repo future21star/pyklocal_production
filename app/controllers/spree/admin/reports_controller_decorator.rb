@@ -159,9 +159,9 @@ module Spree
 				# else
 				# 	@date2 = Date.today
 				# end
-				@merchants = Merchant::Store.all
+				@merchants = Merchant::Store.all.select{|x| x.name.length < 50}
 				@taxons = Spree::Taxon.where(parent_id: nil)
-				@brand_names = Spree::Property.where(name: "Brand").first.product_properties
+				@brand_names = Spree::Property.where(name: "Brand").first.product_properties.select{|x| x.value.length < 50}
 
 				@search = Sunspot.search(Spree::LineItem) do
 					@page = params[:page].present? ? params[:page] : 1

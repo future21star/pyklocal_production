@@ -40,9 +40,9 @@ module Spree
         end
       end
 
-      double :product_price, references: Spree::Product , multiple: true do
-        unless product.blank?
-          product.price
+      double :product_price, references: Spree::Variant , multiple: true do
+        unless variant.blank?
+          variant.price
         end
       end
     end

@@ -16,7 +16,7 @@
       = select_tag 'category_name',options_from_collection_for_select(@taxons,"id","name"),include_blank: true ,prompt: @category,class: "select2"
     .col-md-4.form-group
       = label_tag nil, Spree.t(:brand_name)
-      = select_tag 'brand_name',options_from_collection_for_select(@brand_names,"value","value"),include_blank: true,prompt: @brand ,class: "select2"
+      = select_tag 'brand_name',options_from_collection_for_select(@brand_names,"value","value"),include_blank: true,prompt: @brand ,class: "select2", style: 'width: 100% !imporatant;'
     .col-md-4.form-group
       = label_tag nil, Spree.t(:user_email)
       = text_field_tag :user_email,@email, class: "form-control"

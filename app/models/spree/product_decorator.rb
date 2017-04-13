@@ -207,37 +207,60 @@ module Spree
       {product_property_name: dynamic_filters.flatten.collect(&:value), taxon_ids: search.facet(:taxon_ids).rows.collect(&:value)}
     end
 
-    def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants,  variant_prices, categories, stock, tax_category, cost_price,upc_code,errors)
+    def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants,  variant_prices, categories, stock, tax_category, cost_price,upc_code,errors, number_of_rows)
       if cost_price.blank? || cost_price < master_price
         cost_price = master_price
+      end
+
+      if master_price.blank?
+        Hash error = Hash.new
+        error[name.to_sym] = "rows #{number_of_rows} : Price was blank."
+        errors.push(error)
+        return
       end
       # tax_category_id = Spree::TaxCategory.find_by_name("clothing").try(:id)
       # p tax_category_id
       p "================="
       unless Spree::Product.where(name: name, store_id: store_id).present?
         tax_category_id = Spree::TaxCategory.find_by_name(tax_category).try(:id)
+        unless tax_category_id.present?
+          Hash error = Hash.new
+          error[name.to_sym] = "rows #{number_of_rows} : does not have tax category"
+          errors.push(error)
+          return
+        end
         p tax_category_id
         product = Spree::Product.new({name: name, price: master_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id, tax_category_id: tax_category_id, cost_price: cost_price})
         p "8888888888666666"
         p product
         if product.save
+          if product.price.to_f == 0
+            Hash error = Hash.new
+            error[name.to_sym] = "rows #{number_of_rows} : Product created with sell price zero"
+            errors.push(error)
+          end
+          if product.cost_price.to_f == 0
+            Hash error = Hash.new
+            error[name.to_sym] = "rows #{number_of_rows} : Product created with retail price zero"
+            errors.push(error)
+          end
           p "99999999999"
           Sunspot.index(product)
           Sunspot.commit
           unless categories.blank?
-            product.build_category(product, categories)
+            product.build_category(product, categories,errors, number_of_rows)
           end
           unless image_url.blank?
-            product.build_image(product, image_url)
+            product.build_image(product, image_url,errors, number_of_rows)
           end
           unless properties.blank?
-            product.build_property(product, properties)
+            product.build_property(product, properties,errors, number_of_rows)
           end
           unless variants.blank?
-            product.build_variant(product, variants, variant_prices, stock, master_price)
+            product.build_variant(product, variants, variant_prices, stock, master_price,errors, number_of_rows)
           end
           if stock.present? && variants.blank?
-            product.master_variant_stock_build(product, stock)
+            product.master_variant_stock_build(product, stock,errors)
           end
           if upc_code.present?
             if (Spree::Product.last.properties.collect(&:name) & ["upc"]).blank?
@@ -250,104 +273,133 @@ module Spree
         else
           p "333333"
           Hash error = Hash.new
-          error[name.to_sym] = name.to_s + " Errors " + product.errors.full_messages.join(', ')
+          error[name.to_sym] = name.to_s + " : " + product.errors.full_messages.join(', ')
           errors.push(error)
           p "666666666"
         end
       else
         Hash error = Hash.new
-        error[name.to_sym] = name.to_s + " Already present in store"
+        error[name.to_sym] = "row " + name.to_s + " Already present in store"
         errors.push(error)
       end
       p "5555555555555555"
       return errors
     end
 
-    def build_category(product, categories)
-      taxon_ids = []
-      categories.split(",").each do |category|
-        taxon = Spree::Taxon.where(name: category.strip).first
-        if taxon.present?
-          taxon_ids << taxon.id
-        end
-      end
-      product.update_attributes(taxon_ids: taxon_ids)
-    end
-
-    def build_image(product, image_url)
-      image_url.split(",").each do |url|
-        image = product.images.build(attachment: url.strip)
-        image.save
-      end
-    end
-
-    def build_property(product, properties)
-      properties.split(",").each do |item|
-        property_hash = item.split(":")
-        property = Spree::Property.where(name: property_hash[0].strip, presentation: property_hash[0].strip.titleize).first_or_create
-        product_property = product.product_properties.build(value: property_hash[1].strip.titleize, property_id: property.id)
-        product_property.save
-      end
-    end
-
-    def build_variant(product, variants, variant_prices, stock, master_price)
-      variant_price_arr = variant_prices.split(',')
-      variant_stock_arr = stock.split(',')
-      p variant_price_arr
-      p variant_stock_arr
-      i = 0
-      variants.split(';').each do |variant|
-        option_type_ids = []
-        option_value_ids = []
-        variant.split(",").each do |item|
-          option_fields = item.split(":")
-          option_type = Spree::OptionType.where(name: option_fields[0].strip, presentation: option_fields[0].strip.titleize).first_or_create
-          option_type_ids << option_type.id
-          option_value = Spree::OptionValue.where(name: option_fields[1].strip, presentation: option_fields[1].strip.titleize, option_type_id: option_type.try(:id)).first_or_create
-          option_value_ids << option_value.id
-        end
-        product.update_attributes(option_type_ids: option_type_ids)
-        if variant_price_arr.present? && variant_price_arr[i].present?
-          variant = product.variants.build(option_value_ids: option_value_ids,price: variant_price_arr[i])
-        else
-          variant = product.variants.build(option_value_ids: option_value_ids,price: master_price)
-        end
-        variant.save
-        if variant_stock_arr.present? && variant_stock_arr[i].present?
-          stock_location = Spree::StockLocation.find(1)
-          stock_movement = stock_location.stock_movements.build(quantity: variant_stock_arr[i].to_i)
-          stock_movement.stock_item = stock_location.set_up_stock_item(variant)
-          p "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
-          p stock_location
-          p stock_movement
-          p stock_movement.stock_item
-          p variant_stock_arr[i].to_i
-        
-          if stock_movement.save
-            p "yes saved"
-          else
-            p "sorry not saved"
-            p "***********error*******************"
-            p stock_movement.errors.full_messages.to_s
+    def build_category(product, categories,errors, number_of_rows)
+      begin
+        taxon_ids = []
+        categories.split(",").each do |category|
+          taxon = Spree::Taxon.where(name: category.strip).first
+          if taxon.present?
+            taxon_ids << taxon.id
           end
         end
-        p variant
-        i = i + 1;
+        product.update_attributes(taxon_ids: taxon_ids)
+      rescue Exception => e
+        Hash error = Hash.new
+        error[name.to_sym] = "rows #{number_of_rows} : #{e.message}"
+        errors.push(error)
       end
     end
 
-    def master_variant_stock_build(product, stock)
+    def build_image(product, image_url,errors, number_of_rows)
+      begin
+        image_url.split(",").each do |url|
+          image = product.images.build(attachment: url.strip)
+          image.save
+        end
+      rescue Exception => e
+        Hash error = Hash.new
+        error[name.to_sym] = "rows #{number_of_rows} : #{e.message}"
+        errors.push(error)
+      end
+    end
+
+    def build_property(product, properties,errors, number_of_rows)
+      begin
+        properties.split(",").each do |item|
+          property_hash = item.split(":")
+          property = Spree::Property.where(name: property_hash[0].strip, presentation: property_hash[0].strip.titleize).first_or_create
+          product_property = product.product_properties.build(value: property_hash[1].strip.titleize, property_id: property.id)
+          product_property.save
+        end
+      rescue Exception => e
+        Hash error = Hash.new
+        error[name.to_sym] = "rows #{number_of_rows} : #{e.message}"
+        errors.push(error)
+      end
+    end
+
+    def build_variant(product, variants, variant_prices, stock, master_price,errors, number_of_rows)
+      begin
+        variant_price_arr = variant_prices.split(',')
+        variant_stock_arr = stock.split(',')
+        p variant_price_arr
+        p variant_stock_arr
+        i = 0
+        variants.split(';').each do |variant|
+          option_type_ids = []
+          option_value_ids = []
+          variant.split(",").each do |item|
+            option_fields = item.split(":")
+            option_type = Spree::OptionType.where(name: option_fields[0].strip, presentation: option_fields[0].strip.titleize).first_or_create
+            option_type_ids << option_type.id
+            option_value = Spree::OptionValue.where(name: option_fields[1].strip, presentation: option_fields[1].strip.titleize, option_type_id: option_type.try(:id)).first_or_create
+            option_value_ids << option_value.id
+          end
+          product.update_attributes(option_type_ids: option_type_ids)
+          if variant_price_arr.present? && variant_price_arr[i].present?
+            variant = product.variants.build(option_value_ids: option_value_ids,price: variant_price_arr[i])
+          else
+            variant = product.variants.build(option_value_ids: option_value_ids,price: master_price)
+          end
+          variant.save
+          if variant_stock_arr.present? && variant_stock_arr[i].present?
+            stock_location = Spree::StockLocation.find(1)
+            stock_movement = stock_location.stock_movements.build(quantity: variant_stock_arr[i].to_i)
+            stock_movement.stock_item = stock_location.set_up_stock_item(variant)
+            p "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+            p stock_location
+            p stock_movement
+            p stock_movement.stock_item
+            p variant_stock_arr[i].to_i
+          
+            if stock_movement.save
+              p "yes saved"
+            else
+              p "sorry not saved"
+              p "***********error*******************"
+              p stock_movement.errors.full_messages.to_s
+            end
+          end
+          p variant
+          i = i + 1;
+        end
+      rescue Exception => e
+        Hash error = Hash.new
+        error[name.to_sym] = "rows #{number_of_rows} : #{e.message}"
+      end
+    end
+
+    def master_variant_stock_build(product, stock,errors, number_of_rows)
       p "555555555555555555"
       p stock
-      stock_location = Spree::StockLocation.find(1)
-      stock_movement = stock_location.stock_movements.build(quantity: stock)
-      stock_movement.stock_item = stock_location.set_up_stock_item(product.master)
-      if stock_movement.save
-        p "yes saved"
-      else
-        p "sorry not saved"
-        p "***********error*******************"
-        p stock_movement.errors.full_messages.to_s
+      begin
+        stock_location = Spree::StockLocation.find(1)
+        stock_movement = stock_location.stock_movements.build(quantity: stock)
+        stock_movement.stock_item = stock_location.set_up_stock_item(product.master)
+        if stock_movement.save
+          p "yes saved"
+        else
+          p "sorry not saved"
+          p "***********error*******************"
+          p stock_movement.errors.full_messages.to_s
+        end
+      rescue Exception => e
+        Hash error = Hash.new
+        error[name.to_sym] = "rows #{number_of_rows} : #{e.message}"
+        errors.push(error)
       end
     end
 

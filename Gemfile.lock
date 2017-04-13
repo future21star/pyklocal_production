@@ -161,10 +161,6 @@ GEM
       cocaine
       orm_adapter (~> 0.5.0)
     cldr-plurals-runtime-rb (1.0.1)
-    client_side_validations (4.2.12)
-      jquery-rails (>= 3.1.2, < 5.0.0)
-      js_regex (~> 1.0, >= 1.0.19)
-      rails (>= 4.0.0, < 4.3.0)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
@@ -268,8 +264,6 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    js_regex (1.2.1)
-      regexp_parser (>= 0.3.6, <= 0.4.2)
     json (1.8.3)
     jsonapi (0.1.1.beta2)
       json (~> 1.8)
@@ -402,7 +396,6 @@ GEM
       json (~> 1.4)
     redis (3.3.1)
     ref (2.0.0)
-    regexp_parser (0.4.2)
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
     rsolr (1.1.2)
@@ -615,7 +608,6 @@ DEPENDENCIES
   capistrano (= 2.15.5)
   capistrano-unicorn
   capybara
-  client_side_validations
   coffee-rails
   cucumber-rails
   cucumber-websteps
