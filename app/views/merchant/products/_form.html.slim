@@ -92,18 +92,19 @@
                 = Spree.t(:promotionable)
 
           .form-group
-            .col-md-6.top-margin-row.child-div
-              = f.label :weight, class: "control-label"
-              span.input-icon.icon-right
-                = f.number_field :weight,min: "0",max: "999999.99", step: "0.01",class: "numbersOnly form-control input-bg"
-                .fa &#xf24e;
-                span.weight-error
-            .col-md-6.top-margin-row.child-div1
-              = f.label :height, class: "control-label"
-              span.input-icon.icon-right
-                = f.number_field :height, min: "0",max: "999999.99",step: "0.01",class: "numbersOnly form-control input-bg"
-                .fa &#xf07d;
-                span.height-error
+            .row style="margin: 0px;"
+              .col-md-6.top-margin-row.child-div
+                = f.label :weight, class: "control-label"
+                span.input-icon.icon-right
+                  = f.number_field :weight,min: "0",max: "999999.99", step: "0.01",class: "numbersOnly form-control input-bg"
+                  .fa &#xf24e;
+                  span.weight-error
+              .col-md-6.top-margin-row.child-div1
+                = f.label :height, class: "control-label"
+                span.input-icon.icon-right
+                  = f.number_field :height, min: "0",max: "999999.99",step: "0.01",class: "numbersOnly form-control input-bg"
+                  .fa &#xf07d;
+                  span.height-error
           .form-group
             .col-md-6.top-margin-row.child-div
               = f.label :width, class: "control-label"
@@ -147,7 +148,7 @@
     $(document).ready(function(){
       $('.edit_product').on('submit', function(e){
           e.preventDefault();
-          if( (validateProductName()) * (validatePrice()) * (validateCostPrice()) * (validateTaxCategory()) * (validateShipping()) * ( validateTaxon()) * (validateAvailableDate()) * (validateDiscontinueDate())){
+          if( (validateProductName()) * (validateWidth()) * (validateHeight()) * (validateDepth()) * (validateWeight()) *(validatePrice()) * (validateCostPrice()) * (validateTaxCategory()) * (validateShipping()) * ( validateTaxon()) * (validateAvailableDate()) * (validateDiscontinueDate())){
             this.submit();
           }
           else{
@@ -168,7 +169,24 @@
       validateProductName();
     });
 
-   
+    $('#product_height').on('blur',function(){
+      validateHeight();
+    });
+
+    $('#product_weight').on('blur',function(){
+      validateWeight();
+    });
+
+    $('#product_depth').on('blur',function(){
+      validateDepth();
+    });
+
+    $('#product_width').on('blur',function(){
+      validateWidth();
+    });
+
+
+
 
     $('#product_shipping_category_id').on('change',function(){
       validateShipping();
@@ -309,6 +327,196 @@
       }
       else
       {
+        return 1;
+      }
+    }
+
+    function validateHeight(){
+      flag = true;
+      errorStr = "";
+      if ($('#product_height').val().trim().toString() > 0){
+        if($('#product_height').val().trim().indexOf == -1){
+          if( (parseFloat($('#product_height').val().trim()) > 999999.99)) {
+            errorStr += "height value must be less than or equal to 999999.99";
+            flag = false;
+          }
+        }
+        else{
+          if ($('#product_height').val().trim() != ""){
+            heightVal = $('#product_height').val().trim().toString().split('.');
+            if (heightVal[1] != null){
+              if (heightVal[1].length > 2){
+                errorStr += "height can have only 2 digits after decimal point";
+                flag = false;
+              }
+            }
+
+            if (heightVal[0] != null){
+              if (heightVal[0].length > 6){
+                errorStr += "height value must be less than or equal to 999999.99";
+                flag = false;
+              }
+            }
+
+          }
+          else{
+            errorStr += "Invalid Number";
+            flag = false;
+          }
+        }
+      }
+        
+      if(flag == false){
+        outputError = "<p class='text-red'>" + errorStr + "</p>";
+        $('.height-error').html(outputError);
+        $('.height-error').show();
+       return 0;
+      }
+      else{
+        $('.height-error').hide();
+        return 1;
+      }
+    }
+
+    function validateWeight(){
+      flag = true;
+      errorStr = "";
+      if ($('#product_weight').val().trim().toString() > 0){
+        if($('#product_weight').val().trim().indexOf == -1){
+          if( (parseFloat($('#product_weight').val().trim()) > 999999.99)) {
+            errorStr += "weight value must be less than or equal to 999999.99";
+            flag = false;
+          }
+        }
+        else{
+          if ($('#product_weight').val().trim() != ""){
+            weightVal = $('#product_weight').val().trim().toString().split('.');
+            if (weightVal[1] != null){
+              if (weightVal[1].length > 2){
+                errorStr += "weight can have only 2 digits after decimal point";
+                flag = false;
+              }
+            }
+
+            if (weightVal[0] != null){
+              if (weightVal[0].length > 6){
+                errorStr += "weight value must be less than or equal to 999999.99";
+                flag = false;
+              }
+            }
+
+          }
+          else{
+            errorStr += "Invalid Number";
+            flag = false;
+          }
+        }
+      }
+        
+      if(flag == false){
+        outputError = "<p class='text-red'>" + errorStr + "</p>";
+        $('.weight-error').html(outputError);
+        $('.weight-error').show();
+       return 0;
+      }
+      else{
+        $('.weight-error').hide();
+        return 1;
+      }
+    }
+
+
+    function validateDepth(){
+      flag = true;
+      errorStr = "";
+      if ($('#product_depth').val().trim().toString() > 0){
+        if($('#product_depth').val().trim().indexOf == -1){
+          if( (parseFloat($('#product_depth').val().trim()) > 999999.99)) {
+            errorStr += "depth value must be less than or equal to 999999.99";
+            flag = false;
+          }
+        }
+        else{
+          if ($('#product_depth').val().trim() != ""){
+            depthVal = $('#product_depth').val().trim().toString().split('.');
+            if (depthVal[1] != null){
+              if (depthVal[1].length > 2){
+                errorStr += "depth can have only 2 digits after decimal point";
+                flag = false;
+              }
+            }
+
+            if (depthVal[0] != null){
+              if (depthVal[0].length > 6){
+                errorStr += "depth value must be less than or equal to 999999.99";
+                flag = false;
+              }
+            }
+
+          }
+          else{
+            errorStr += "Invalid Number";
+            flag = false;
+          }
+        }
+      }
+        
+      if(flag == false){
+        outputError = "<p class='text-red'>" + errorStr + "</p>";
+        $('.depth-error').html(outputError);
+        $('.depth-error').show();
+       return 0;
+      }
+      else{
+        $('.depth-error').hide();
+        return 1;
+      }
+    }
+
+
+    function validateWidth(){
+      flag = true;
+      errorStr = "";
+      if ($('#product_width').val().trim().toString() > 0){
+        if($('#product_width').val().trim().indexOf == -1){
+          if( (parseFloat($('#product_width').val().trim()) > 999999.99)) {
+            errorStr += "width value must be less than or equal to 999999.99";
+            flag = false;
+          }
+        }
+        else{
+          if ($('#product_width').val().trim() != ""){
+            widthVal = $('#product_width').val().trim().toString().split('.');
+            if (widthVal[1] != null){
+              if (widthVal[1].length > 2){
+                errorStr += "width can have only 2 digits after decimal point";
+                flag = false;
+              }
+            }
+
+            if (widthVal[0] != null){
+              if (widthVal[0].length > 6){
+                errorStr += "width value must be less than or equal to 999999.99";
+                flag = false;
+              }
+            }
+
+          }
+          else{
+            errorStr += "Invalid Number";
+            flag = false;
+          }
+        }
+      }
+        
+      if(flag == false){
+        outputError = "<p class='text-red'>" + errorStr + "</p>";
+        $('.width-error').html(outputError);
+        $('.width-error').show();
+       return 0;
+      }
+      else{
+        $('.width-error').hide();
         return 1;
       }
     }

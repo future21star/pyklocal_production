@@ -58,7 +58,7 @@ br
       = link_to edit_merchant_store_path(@store), class: "btn-default btn-lg btn-block text-left btn-border-radius store-btn ", "data-no-turbolink" => true, title: title_text do
         .fa.fw &#xf044;
         | Edit Store Information
-      - if current_spree_user.has_spree_role?("merchant")
+      - if current_spree_user.has_spree_role?("merchant") && current_spree_user.stores.first.latitude.present? && current_spree_user.stores.first.longitude.present?
         = link_to new_merchant_product_path, class: " store-link btn-default btn-lg btn-block text-left btn-border-radius store-btn", "data-no-turbolink" => true, title: title_text do
           .fa.fw &#xf055;
           | Add Products
