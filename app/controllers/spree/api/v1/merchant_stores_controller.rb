@@ -21,18 +21,25 @@ module Spree
 		end
 
 		def rate
-			@rating = Rating.new(user_id: @user.id, rateable_id: @store.id, rating: params[:rating], rateable_type: "Merchant::Store")
-			@comment = Comment.new(user_id: @user.id, commentable_id: @store.id, comment: params[:comment], commentable_type: "Merchant::Store")
-			if @rating.save && @comment.save
-				render json: {
-					success: true,
-					message: "Submitted successfully",
-					rating: (@store.ratings.sum(:rating) / @store.ratings.count).round(2)
-				}
+			if params[:rating].present?
+				@rating = Rating.new(user_id: @user.id, rateable_id: @store.id, rating: params[:rating], rateable_type: "Merchant::Store")
+				@comment = Comment.new(user_id: @user.id, commentable_id: @store.id, comment: params[:comment], commentable_type: "Merchant::Store")
+				if @rating.save && @comment.save
+					render json: {
+						success: true,
+						message: "Submitted successfully",
+						rating: (@store.ratings.sum(:rating) / @store.ratings.count).round(2)
+					}
+				else
+					render json: {
+						success: false,
+						message: @rating.errors.full_messages.join(", ")
+					}
+				end
 			else
 				render json: {
 					success: false,
-					message: @rating.errors.full_messages.join(", ")
+					message: "Rating can not be blank"
 				}
 			end
 		end
