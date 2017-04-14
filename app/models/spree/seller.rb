@@ -14,7 +14,8 @@ module Spree
 
 	  def destroy_store
 	   # if stores.present?
-	      stores.first.destroy
+	    p "----------------------------------"
+	    stores.first.destroy
     	#end
  		end
 
