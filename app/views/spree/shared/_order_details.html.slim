@@ -20,6 +20,12 @@
     = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
     = render 'spree/shared/address', address: order.bill_address
 
+  - if order.pickable_line_items.present?
+    h4 Pickup Address
+    .address.vcard
+      - order.pickable_line_items.each do |pickable_item|
+          = pickable_item.pickup_address || "No address"
+          br /
 .col-sm-6.col-xs-12.shipping_info
   .shipping_box
     span.ship_icon.same
@@ -56,11 +62,10 @@ table.table.table-bordered.table-hover
         = render 'spree/shared/shipment_tracking', order: order if order.shipped?
      
 
-
-  h4 Shipping Address
-  - if order.has_step?("address")
-    = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
-    = render 'spree/shared/address', address: order.ship_address
-
+  - if !order.self_pickup
+    h4 Shipping Address
+    - if order.has_step?("address")
+      = link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless order.completed?
+      = render 'spree/shared/address', address: order.ship_address
 
 
