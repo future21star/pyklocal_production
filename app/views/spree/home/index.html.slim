@@ -8,8 +8,8 @@ section.product_part
           h3
             | Best Sellers &nbsp;
             a href="#"
-              | View All
-              i.fa.fa-angle-right aria-hidden="true"
+              /| View All
+              /i.fa.fa-angle-right aria-hidden="true"
           ul.content-slider
             - @products.each do |product|
               = render :partial => 'spree/shared/product', locals: {product: product}
@@ -24,8 +24,8 @@ section.product_part
           h3
             | New Arrivals &nbsp;
             a href="#"
-              | View All
-              i.fa.fa-angle-right aria-hidden="true"
+              /| View All
+              /i.fa.fa-angle-right aria-hidden="true"
           ul.content-slider
             - @new_arrival.each do |product|
               = render :partial => 'spree/shared/product', locals: {product: product}
@@ -40,8 +40,8 @@ section.product_part
           h3
             | Most Viewed &nbsp;
             a href="#"
-              | View All
-              i.fa.fa-angle-right aria-hidden="true"
+              /| View All
+              /i.fa.fa-angle-right aria-hidden="true"
           ul.content-slider
             - @most_viewed_products.each do |product|
               = render :partial => 'spree/shared/product', locals: {product: product}
