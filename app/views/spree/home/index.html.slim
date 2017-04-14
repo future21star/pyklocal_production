@@ -14,7 +14,7 @@ section.product_part
             - @products.each do |product|
               = render :partial => 'spree/shared/product', locals: {product: product}
 
-= render 'spree/shared/advertising'
+/= render 'spree/shared/advertising'
 
 section.product_part
   .container-fluid
@@ -30,7 +30,7 @@ section.product_part
             - @new_arrival.each do |product|
               = render :partial => 'spree/shared/product', locals: {product: product}
 
-= render 'spree/shared/advertising'
+/= render 'spree/shared/advertising'
 
 section.product_part
   .container-fluid
