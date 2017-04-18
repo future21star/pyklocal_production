@@ -12,6 +12,7 @@ class Spree::ShopController < Spree::StoreController
   end
 
   def show 
+    @taxon_name = params[:id]
     @price_array = params[:q][:price].to_s if params[:q] && params[:q][:price]
     @products = @search.results
   end

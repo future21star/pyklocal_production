@@ -16,16 +16,24 @@ table.table.table-bordered.admin-report data-hook="sales_total"
       / th= sort_link @search, :master_default_price_amount, Spree.t(:master_price), {}, {title: 'admin_products_listing_price_title'} 
       th= Spree.t(:price)
       th= Spree.t(:quantity)
+      th= "Tax Category"
+      th= "Brand"
       / th= sort_link @search, :line_items_count, Spree.t(:sales_total), {}, {title: 'line_items_count'}
       th= Spree.t(:store)
   tbody
     - if @line_items.present?
       - @line_items.each do |line_item|
+        - @brand = line_item.product.product_properties.where(property_id: line_item.product.properties.where(name: "Brand").first.try(:id))
         tr
           td= line_item.order.number
-          td= line_item.product.name
+          td= truncate(line_item.product.name,:length => 100)
           td= number_to_currency(line_item.variant.price)
           td= line_item.quantity
+          td= line_item.tax_category.name
+          -if @brand.present?
+            td= truncate(@brand.first.value, :length => 30)
+          -else
+            td= "NA"
           -if line_item.product.store.present?
             td= line_item.product.store.name
           - else
@@ -37,3 +45,5 @@ table.table.table-bordered.admin-report data-hook="sales_total"
 .pull-right
   - if @line_items.respond_to?(:num_pages)
     = paginate @line_items
+
+

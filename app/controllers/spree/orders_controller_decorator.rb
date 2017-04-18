@@ -104,7 +104,7 @@ Spree::OrdersController.class_eval do
             @order.contents.update_cart(line_items_attributes: {id: line_item.id, price: line_item.variant.price})
           end
         end
-         @order = current_order || Order.incomplete.
+         @order = current_order || Spree::Order.incomplete.
                                   includes(line_items: [variant: [:images, :option_values, :product]]).
                                   find_or_initialize_by(guest_token: cookies.signed[:guest_token])
       end

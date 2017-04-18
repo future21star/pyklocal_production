@@ -8,13 +8,18 @@ table.table.table-striped
 			th Name
 			th Products Count
 			th
+			th
 	tbody
 		- unless @store.blank?
 			tr
 				th= link_to @store.name, main_app.merchant_store_url(@store)
 				th= @products.count
-				th= link_to admin_seller_delete_store_url, class: "btn btn-danger", method: :delete do 
-					i.icon-close Delete
+				- if @store.deleted_at.present?
+					th=  link_to  admin_seller_activate_store_url, class: "btn btn-primary", method: :put do 
+						i.icon-close Activate
+				-else
+					th= link_to admin_seller_delete_store_url, class: "btn btn-danger", method: :delete do 
+						i.icon-close Deactivate
 		- else
 			tr
 				td colspan="2"

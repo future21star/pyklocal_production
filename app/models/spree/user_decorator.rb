@@ -5,7 +5,7 @@ Spree::User.class_eval do
   validates :first_name, :last_name, presence: true
   # validates :password,:email, presence: true, on: :create
   validates :first_name, :last_name, length: {maximum: 100}
-  before_destroy :notify_store_destroy, :destroy_store
+  before_destroy :destroy_store
   #------------------------ Associations------------------------------
   has_many :store_users, foreign_key: :spree_user_id, class_name: 'Merchant::StoreUser'
   has_many :stores, through: :store_users, class_name: 'Merchant::Store'
@@ -189,11 +189,11 @@ Spree::User.class_eval do
     end
 
 
-    def notify_store_destroy
-      if self.has_store
-        UserMailer.notify_user_store_destroy(self).deliver_now
-      end
-    end
+    # def notify_store_destroy
+    #   if self.has_store
+    #     UserMailer.notify_user_store_destroy(self).deliver_now
+    #   end
+    # end
 
     def notify_user
       if self.has_spree_role?('merchant') && stores.present? && !stores.first.try(:active)

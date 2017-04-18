@@ -65,6 +65,7 @@ Pyklocal::Application.routes.draw do
   Spree::Core::Engine.routes.draw do
     get "new_store_application", to: "home#new_store_application"
     get "orders" => "home#orders"
+    get "refunds" => "home#refund"
     get "order_placed/:id", to: "orders#order_placed", as: "order_placed"
     resources :addresses
     resources :payment_histories
@@ -143,6 +144,7 @@ Pyklocal::Application.routes.draw do
             post :populate
             put :cancel_coupon_code
             get :get_adjustments
+            get :refunds
           end
 
 
@@ -216,6 +218,7 @@ Pyklocal::Application.routes.draw do
         resources :payment_histories
         get :store_orders
         delete :delete_store
+        put :activate_store
       end
       resources :reports, only: [:index] do
         collection do

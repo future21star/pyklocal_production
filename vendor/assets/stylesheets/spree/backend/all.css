@@ -29,3 +29,17 @@
 .merge-column{
 	column-span: 4;
 }
+
+.store-product-report{
+  width: 100%;
+}
+
+.store-product-report th{
+ text-align: center;
+ font-size: 20px;
+}
+
+.store-product-report td{
+ text-align: center;
+ font-size: 17px;
+}

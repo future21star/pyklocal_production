@@ -11,13 +11,14 @@ module Spree
 
 			def store_details_report
 				per_page = 25
-				p params[:page]
-				unless params[:page].blank?
-					page = params[:page].to_i
-					start = per_page * ( params[:page].to_i - 1)
-				else
-					start = 0
-				end
+				page  =  params[:page] || 0
+				# unless params[:page].blank?
+				# 	page = params[:page].to_i
+				# 	start = per_page * ( params[:page].to_i - 1)
+				# else
+				# 	start = 0
+				# end
+				@all_merchants = Kaminari.paginate_array(Merchant::Store.all).page(page).per(per_page)
 
 				if params[:download_excel]
 					@date1 = params[:orders_completed_start].to_date
@@ -49,7 +50,7 @@ module Spree
 						@store_sale_array.push(merchant_hash)
 					end
 				else
-					Merchant::Store.all.offset(start).limit(per_page).each do |merchant|
+					@all_merchants.each do |merchant|
 						Hash merchant_hash = Hash.new
 						merchant_hash["id".to_sym] = merchant.id
 						merchant_hash["name".to_sym] = merchant.name
@@ -64,11 +65,12 @@ module Spree
 					end
 				end
 
-				@total_merchant_count = Merchant::Store.all.count / per_page
-				if (Merchant::Store.all.count % per_page) != 0
-					@total_merchant_count = @total_merchant_count + 1
-				end
+				# @total_merchant_count = Merchant::Store.all.count / per_page
+				# if (Merchant::Store.all.count % per_page) != 0
+				# 	@total_merchant_count = @total_merchant_count + 1
+				# end
 
+				
 				if params[:download_excel] && eval(params[:download_excel])
 					request.format = "xls"
 					respond_to do |format|
@@ -83,6 +85,7 @@ module Spree
 				@date1 = params[:orders_completed_start].to_date
 				@date2 = params[:orders_completed_end].to_date
 				@store_id = params[:store_id]
+				@store = Merchant::Store.find(params[:store_id])
 
 				@sale_product =  Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: @store_id})
 					# .select("spree_line_items.variant_id, spree_line_items.quantity").group("spree_line_items.variant_id").sum("spree_line_items.quantity")
@@ -119,6 +122,7 @@ module Spree
 					end
 				end
 				render json: {
+					store: @store.name.as_json(),
 					product: @product_sale_arr.as_json(),
 					return_items: @return_item_arr.as_json()
 				}

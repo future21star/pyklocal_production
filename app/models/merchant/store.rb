@@ -5,7 +5,7 @@ module Merchant
     acts_as_paranoid
    
 
-    before_destroy :deactive_store_products
+    before_destroy :notify_store_destroy, :deactive_store_products
 
     validates :name, :manager_first_name, :manager_last_name, :phone_number, :certificate,presence: true
     validates :name,:manager_last_name,:manager_first_name, length: {maximum: 100}
@@ -13,9 +13,9 @@ module Merchant
     # validates :phone_number, numericality: { only_integer: true }
     # validates :terms_and_condition, acceptance: { accept: true }
     
-  	has_many :store_users, dependent: :delete_all, foreign_key: :store_id, class_name: "Merchant::StoreUser"
+  	has_many :store_users, dependent: :destroy, foreign_key: :store_id, class_name: "Merchant::StoreUser"
     has_many :spree_users, through: :store_users
-    has_many :store_taxons, dependent: :delete_all, foreign_key: :store_id, class_name: "Merchant::StoreTaxon"
+    has_many :store_taxons, dependent: :destroy, foreign_key: :store_id, class_name: "Merchant::StoreTaxon"
     has_many :spree_taxons , through: :store_taxons
     has_many :spree_products, foreign_key: :store_id, class_name: 'Spree::Product'
     has_many :orders, through: :spree_products
@@ -154,6 +154,12 @@ module Merchant
         unless self.changes.include?(:active)
           UserMailer.notify_store_save(self).deliver
         end
+      end
+
+      def notify_store_destroy
+        # if self.has_store
+        UserMailer.notify_user_store_destroy(self.spree_users.first).deliver_now
+        # end
       end
 
       def notify_user

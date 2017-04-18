@@ -1,0 +1,52 @@
+section.account_page
+  .container-fluid
+    .row
+      .col-md-10.col-md-offset-1.col-xs-12.account_page_wrap
+        .row
+          .col-xs-12
+            ol.breadcrumb
+              li
+                a href="/"  Home
+              li.active My Refund
+        .row
+          = render :partial => "spree/shared/user_menu" ,locals: {current: "refunds"}
+          .col-lg-9.col-md-8.col-sm-8.col-xs-12
+            h3 My Refunds
+            .table-responsive
+              table.order
+                tr
+                  th Order Number
+                  th style="width:400px;"
+                    | Item Name 
+                  th Quantity
+                  th Amount 
+                  / th Canceled At
+                  th Tax 
+                  th Total
+                  th Return Date
+                  / th colspan="2"  Detail
+                - unless @refunds.blank?
+                  - @refunds.each do |refund|
+                    tr
+                      td= refund.order.number
+                      td= truncate(refund.line_item.product.name, :length => 100)
+                      td= refund.return_quantity
+                      td= ActionController::Base.helpers.number_to_currency(refund.item_return_amount)
+                      / -if order.canceled_at.present?
+                      /   td= order.canceled_at.strftime("%m-%d-%Y")
+                      / -else
+                      /   td NA
+                      td= ActionController::Base.helpers.number_to_currency(refund.tax_amount)
+                      td= ActionController::Base.helpers.number_to_currency(refund.total)
+                      td= refund.created_at.strftime("%m-%d-%Y")
+                      / td
+                        = link_to spree.order_path(order), title: "View", class: "view" do
+                          | view
+                - else
+                  tr
+                    th.text-center colspan="7"
+                      | You do not have any Refund!
+
+            .pull-right
+              - if @all_refunds.respond_to?(:num_pages)
+                = paginate @refunds

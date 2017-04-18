@@ -79,6 +79,14 @@ Spree::HomeController.class_eval do
     params[:q][:created_at_lt] = created_at_lt
 	end
 
+
+  def refund
+    page = params[:page].present? ? params[:page] : 1
+   
+    @all_refunds = Spree::CustomerReturnItem.where("status = ?" ,"refunded").joins(:order).where(spree_orders:{user_id: current_spree_user.id}).order("created_at desc")
+    @refunds = Kaminari.paginate_array(@all_refunds).page(page).per(20)
+  end
+  
   def new_store_application
     @user = Spree::User.new
     @taxons = Spree::Taxon.where(depth: 1, parent_id: Spree::Taxon.where(name: "Categories").first.id)

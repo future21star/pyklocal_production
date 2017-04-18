@@ -8,7 +8,8 @@
       li
         a href=shop_index_path Shop  
       li
-        span  Categories
+        span 
+          = @taxon_name 
     .row
       column#column-left.col-sm-3.hidden-xs
          = form_tag("", :method => :get, :id => "facet-filter") do

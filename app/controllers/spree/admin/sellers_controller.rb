@@ -1,7 +1,7 @@
 module Spree
 	class Admin::SellersController < Admin::ResourceController
 
-    before_filter :find_seller, only: [:edit, :update, :delete, :stores, :store_orders, :delete_store]
+    before_filter :find_seller, only: [:edit, :update, :delete, :stores, :store_orders, :delete_store,:activate_store]
 
 		def index
 			respond_with(@collection) do |format|
@@ -28,16 +28,32 @@ module Spree
     end
 
     def stores
-      @store = @seller.stores.first
+      @store = @seller.stores.with_deleted.first
       @products = @store.spree_products if @store.present?
     end
 
     def delete_store
       @store = @seller.stores.first
       if @store.destroy
-        redirect_to admin_seller_stores_path(@seller), notice: "Store deleted successfully"
+        redirect_to admin_seller_stores_path(@seller), notice: "Store Deactivated successfully"
       else
         redirect_to admin_seller_stores_path(@seller), notice: "Something went wrong"
+      end
+    end
+
+    def activate_store
+      begin
+        @store = @seller.stores.with_deleted.first
+        @store.update_attributes(deleted_at: nil)
+        @store.store_taxons.with_deleted.each do |taxon|
+          taxon.update_attributes(deleted_at: nil)
+        end
+        @store.store_users.with_deleted.each do |user|
+          user.update_attributes(deleted_at: nil)
+        end
+        redirect_to admin_seller_stores_path(@seller), notice: "Store Activated successfully"
+      rescue Exception => e
+        redirect_to admin_seller_stores_path(@seller), notice: e.message
       end
     end
 

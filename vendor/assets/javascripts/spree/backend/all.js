@@ -12,21 +12,21 @@
 //= require spree/backend/spree_print_invoice
 //= require spree/backend/spree_braintree_vzero
 
-$(document).ajaxStart(function(){
-        $("#wait").css("display", "block");
-    });
-    $(document).ajaxComplete(function(){
-        $("#wait").css("display", "none");
-    });
+// $(document).ajaxStart(function(){
+//         $("#wait").css("display", "block");
+//     });
+//     $(document).ajaxComplete(function(){
+//         $("#wait").css("display", "none");
+//     });
   $(document).on('click','.icon-plus',function(){
-    $('.icon-minus').attr('class', 'icon icon-plus');
-    $(this).attr('class', 'icon icon-minus');
+    // $('.icon-minus').attr('class', 'icon icon-plus');
+    // $(this).attr('class', 'icon icon-minus');
     var id = $(this).attr('id');
-    setTimeout(function(){
-      $('.sale-products').not('#'+id).each(function(){
-      $(this).remove();
-    });
-    },500);
+    // setTimeout(function(){
+    //   $('.sale-products').not('#'+id).each(function(){
+    //   $(this).remove();
+    // });
+    // },500);
         
     
     var trHTML = '';
@@ -34,10 +34,13 @@ $(document).ajaxStart(function(){
       date_from = $('#orders_completed_start').val();
       date_to = $('#orders_completed_end').val();
       $.get('/admin/reports/store_sale_product',{orders_completed_start: date_from, orders_completed_end: date_to, store_id: id},function(response){
+          // console.log(response);
+          $(".store-name").empty();
+          $(".store-name").append(response.store);
           if (response["product"].length || response["return_items"].length){
             if (response["product"].length){
               trHTML = 
-                    '<tr id="'+ id +'" class="sale-products"><td></td><th>Name</th><th>Price(USD)</th><th>Quantity</th><th>Tax Rate(%)</th></tr>'; 
+                    '<tr id="'+ id +'" class="sale-products"><td></td><th>Name</th><th>Price(USD)</th><th>Quantity</th><th>Tax Rate(%)</th><th>Status</th></tr>'; 
               // $('tr').filter('#'+id).css("display","");
               $.each(response["product"],function(index){
                 // console.log(response["product"][index]);
@@ -47,6 +50,7 @@ $(document).ajaxStart(function(){
                     '</td><td>' +  product.price + 
                     '</td><td>' +  product.qty + 
                     '</td><td>' + ( product.tax_rate * 100 )+ 
+                    '</td><td>' + "Purchased"
                     '</td></tr>';     
                 
               });
@@ -61,6 +65,7 @@ $(document).ajaxStart(function(){
                     '</td><td>' +  product.price + 
                     '</td><td>' +  product.qty + 
                     '</td><td>' + ( product.tax_rate * 100 )+ 
+                    '</td><td>' + "Return"
                     '</td></tr>';     
                 
               });
@@ -71,23 +76,25 @@ $(document).ajaxStart(function(){
             trHTML += 
                   '<tr id="'+ id +'" class="sale-products no-sale-product"><td></td><th>No Product Found</th>'
           }
-          $('tr').filter('#'+id).after(trHTML);
-          $('.sale-products').fadeIn();
+          // $('tr').filter('#'+id).after(trHTML);
+          $(".store-product-report").empty();
+          $('.store-product-report').append(trHTML);
+          // $('.sale-products').fadeIn();
       });
   });
-  $(document).on('click','.icon-minus',function(){
-    $(this).attr('class', 'icon icon-plus');
-    var id = $(this).attr('id');
-    // console.log($('.sale-products').filter('#'+id));
-    $('.sale-products').filter('#'+id).fadeOut();
-    setTimeout(function(){
-      if ($('.sale-products').filter('#'+id).length){
-        $('.sale-products').filter('#'+id).each(function(){
-          $(this).remove();
-        });
-      }
-    },500);     
-  });
+  // $(document).on('click','.icon-minus',function(){
+  //   $(this).attr('class', 'icon icon-plus');
+  //   var id = $(this).attr('id');
+  //   // console.log($('.sale-products').filter('#'+id));
+  //   $('.sale-products').filter('#'+id).fadeOut();
+  //   setTimeout(function(){
+  //     if ($('.sale-products').filter('#'+id).length){
+  //       $('.sale-products').filter('#'+id).each(function(){
+  //         $(this).remove();
+  //       });
+  //     }
+  //   },500);     
+  // });
   window.onload = function () {
     $('#orders_completed_start').datepicker({ dateFormat: 'dd-mm-yy' });
      $('#orders_completed_end').datepicker({ dateFormat: 'dd-mm-yy' });
