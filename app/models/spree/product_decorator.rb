@@ -214,11 +214,28 @@ module Spree
           cost_price = master_price
         end
 
+        cost_price_inetger_flag = Integer(master_price) rescue false 
+        cost_price_float_flag =  Float(master_price) rescue false
+        retail_price_integer_flag = Integer(cost_price) rescue false 
+        retail_price_float_flag = Float(cost_price) rescue false
+
+        if  cost_price_inetger_flag == false &&  cost_price_float_flag  == false
+          Hash error = Hash.new
+          error[name.to_sym] = "rows #{number_of_rows} : Price was Invalid."
+          errors.push(error)
+        end
+
+
+        if retail_price_integer_flag == false && retail_price_float_flag == false
+          Hash error = Hash.new
+          error[name.to_sym] = "rows #{number_of_rows} : Retail was Invalid."
+          errors.push(error)
+        end
+
         if master_price.blank?
           Hash error = Hash.new
           error[name.to_sym] = "rows #{number_of_rows} : Price was blank."
           errors.push(error)
-          return
         end
         # tax_category_id = Spree::TaxCategory.find_by_name("clothing").try(:id)
         # p tax_category_id
@@ -229,11 +246,10 @@ module Spree
             Hash error = Hash.new
             error[name.to_sym] = "rows #{number_of_rows} : does not have valid tax category"
             errors.push(error)
-            return
           end
           p "6666666666"
           p tax_category_id
-          product = Spree::Product.new({name: name, price: master_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id, tax_category_id: tax_category_id, cost_price: cost_price})
+          product = Spree::Product.new({name: name, price: master_price.to_f, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id, tax_category_id: tax_category_id, cost_price: cost_price.to_f})
           p "8888888888666666"
           p product
           if product.save
@@ -392,9 +408,9 @@ module Spree
           end
           product.update_attributes(option_type_ids: option_type_ids)
           if variant_price_arr.present? && variant_price_arr[i].present?
-            variant = product.variants.build(option_value_ids: option_value_ids,price: variant_price_arr[i])
+            variant = product.variants.build(option_value_ids: option_value_ids,price: variant_price_arr[i].to_f)
           else
-            variant = product.variants.build(option_value_ids: option_value_ids,price: master_price)
+            variant = product.variants.build(option_value_ids: option_value_ids,price: master_price.to_f)
           end
           variant.save
           if variant_stock_arr.present? && variant_stock_arr[i].present?

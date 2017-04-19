@@ -68,10 +68,39 @@ class Merchant::OrdersController < Merchant::ApplicationController
   end
 
   def cancel
-  	validate_actions
-    @order.cancel!
-    flash[:success] = Spree.t(:order_canceled)
-    redirect_to :back
+  	# validate_actions
+   #  @order.cancel!
+   #  flash[:success] = Spree.t(:order_canceled)
+   #  redirect_to :back
+    if @order.completed_at.to_date + 14.days < Date.today
+      redirect_to :back , notice: "Order can only be cancel within 14 days of completion"
+    else
+      @amount = @order.amount.to_f * 100
+      @paypal_refund_object = @order.payments.valid.last.payment_method.credit(@amount,@order.payments.valid.last.response_code,{})
+      if @paypal_refund_object.success?
+        @paypal_transaction_object = @paypal_refund_object.transaction
+        p "*****************************************"
+        p @paypal_transaction_object 
+        Spree::CustomerReturnItem.where(store_id: @store.id,order_id: @order.id,status: "approved").update_all(transaction_id: @paypal_transaction_object.id,status: "refunded")
+        @refund = Spree::Refund.new(payment_id:@order.payments.valid.last.response_code, amount: @paypal_transaction_object.amount * 100, transaction_id: @paypal_transaction_object.id,order_id: @order.id, card_type:@paypal_transaction_object.credit_card_details.card_type, last_card_digits:@paypal_transaction_object.credit_card_details.last_4, expiration:@paypal_transaction_object.credit_card_details.expiration_date, status:@paypal_transaction_object.status)
+        if @refund.save
+          redirect_to merchant_order_customer_return_items_path(@order),  notice: 'Item(s) Return Successfully'
+          return
+        else
+          redirect_to :back,  notice: 'Something Went Wrong while refunding amount'
+          p "*************************************"
+          p @refund.errors.full_messages.join(', ')
+          return
+        end
+      else
+        p "((((((((((((((((((((((((((((((((((((((((((((((((((((("
+        p @paypal_refund_object.errors
+        p @paypal_refund_object.errors.first
+        Spree::CustomerReturnItem.where(store_id: @store.id,order_id: @order.id,status: "approved").update_all(status: "failed")
+        redirect_to :back,  notice: @paypal_refund_object.errors.first.message.to_s
+        return
+      end
+    end
   end
 
   def customer

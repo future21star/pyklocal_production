@@ -115,54 +115,54 @@ module Spree
 
 
 		def update
-          find_order(true)
-          authorize! :update, @order, order_token
-          Hash line_items_attributes_hash = Hash.new
-          params_counter = 0
-          p "************************************************************************************"
-          p order_params
-          params[:order][:line_items_attributes].each do |line_item|
-          	p "___________________________________________________________________________________"
-          	line_items_attributes_hash[params_counter.to_s] = line_item
-          	params_counter = params_counter +1
-          	p line_item
-          end
-          p line_items_attributes_hash
-          Hash order_params_hash = Hash.new
-          order_params_hash["line_items_attributes"] = line_items_attributes_hash
-          p order_params_hash
-          order_params_hash = order_params_hash
-          if @order.contents.update_cart(order_params)
-            user_id = params[:order][:user_id]
-            p user_id
-            if current_api_user.has_spree_role?('admin') && user_id
-              @order.associate_user!(Spree.user_class.find(user_id))
-            end
-            #respond_with(@order, default_template: :show)
-            unless @order.line_item_ids.blank?
-	            render json:{
-	            	status: "1",
-	            	message: "Updated Successfully",
-	            	cart_count: @order.user.cart_count.to_s,
-	            	order_number: @order.number.to_s,
-								order_token: @order.guest_token.to_s,
-								order_state: @order.state.to_s,
-	            	details: to_stringify_variant_json(@order, @user, [])
-	            }
-	          else
-	          	render json:{
-	          		status: "0",
-	          		message: "Cart is empty"
-	          	}
-	          end
-          else
-            #invalid_resource!(@order)
-            render json:{
-            	status: "0",
-            	message: @order.errors.full_messages.join(', ')
-            }
-          end
+      find_order(true)
+      authorize! :update, @order, order_token
+      Hash line_items_attributes_hash = Hash.new
+      params_counter = 0
+      p "************************************************************************************"
+      p order_params
+      params[:order][:line_items_attributes].each do |line_item|
+      	p "___________________________________________________________________________________"
+      	line_items_attributes_hash[params_counter.to_s] = line_item
+      	params_counter = params_counter +1
+      	p line_item
+      end
+      p line_items_attributes_hash
+      Hash order_params_hash = Hash.new
+      order_params_hash["line_items_attributes"] = line_items_attributes_hash
+      p order_params_hash
+      order_params_hash = order_params_hash
+      if @order.contents.update_cart(order_params)
+        user_id = params[:order][:user_id]
+        p user_id
+        if current_api_user.has_spree_role?('admin') && user_id
+          @order.associate_user!(Spree.user_class.find(user_id))
         end
+        #respond_with(@order, default_template: :show)
+        unless @order.line_item_ids.blank?
+          render json:{
+          	status: "1",
+          	message: "Updated Successfully",
+          	cart_count: @order.user.cart_count.to_s,
+          	order_number: @order.number.to_s,
+						order_token: @order.guest_token.to_s,
+						order_state: @order.state.to_s,
+          	details: to_stringify_variant_json(@order, @user, [])
+          }
+        else
+        	render json:{
+        		status: "0",
+        		message: "Cart is empty"
+        	}
+        end
+      else
+        #invalid_resource!(@order)
+        render json:{
+        	status: "0",
+        	message: @order.errors.full_messages.join(', ')
+        }
+      end
+    end
 
 		def show
 			# @user = Spree::ApiToken.where(token: params[:token]).try(:first).try(:user)
