@@ -58,7 +58,7 @@ module Spree
     end
 
     def store_orders
-      @store_order = @seller.stores.first.store_orders if @seller.stores.present?
+      @store_order = @seller.stores.with_deleted.first.store_orders if @seller.stores.with_deleted.present?
     end
 
 		protected

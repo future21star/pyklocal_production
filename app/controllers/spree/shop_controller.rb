@@ -4,6 +4,12 @@ class Spree::ShopController < Spree::StoreController
     before_filter :perform_search, only: [:index, :show]
 
   def index 
+    @price_selected = params[:q][:price]
+    @brand_selected = params[:q][:brand]
+    @store_selected = params[:q][:store]
+    @category_selected = params[:q][:categories]
+    p @price_selected
+    # @store_selected = params[:]
     @price_array = params[:q][:price].to_s if params[:q] && params[:q][:price] && params[:q][:price].kind_of?(Array)
     @products = @search.results
     @taxons = Spree::Taxon.where.not(name: "categories") 
@@ -21,7 +27,7 @@ class Spree::ShopController < Spree::StoreController
 
     def load_all_facets
       @all_facets = Sunspot.search(Spree::Product) do 
-        fulltext params[:q][:search] if params[:q] && params[:q][:search]
+        fulltext "*#{params[:q][:search]}*"  if params[:q] && params[:q][:search]
         # if params[:q] && params[:q][:categories]
         #   any_of do 
         #     params[:q][:categories].each do |category|

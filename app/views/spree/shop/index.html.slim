@@ -84,6 +84,18 @@ section.product_sec
               = render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]}
             input id="lat" type="hidden" name="q[lat]"
             input id="lng" type="hidden" name="q[lng]"
+            -if @brand_selected.present?
+              - @brand_selected.each do |brand|
+                = hidden_field_tag "q[brand][]", brand
+            -if @price_selected.present?
+              - @price_selected.each do |price|
+                = hidden_field_tag "q[price][]", price
+            -if @store_selected.present?
+              - @store_selected.each do |store|
+                = hidden_field_tag "q[store][]", store
+            -if @category_selected.present?
+              - @category_selected.each do |category|
+                = hidden_field_tag "q[categories][]", category
             - location = params[:q] && params[:q][:radius] ? params[:q][:radius] : " "
             select#radiusFilter.form-control name="q[radius]"
               option selected=(location == "") value="" Sort By Location
@@ -95,6 +107,18 @@ section.product_sec
           = form_tag " ", method: :get, id: "sortFilter" do
             - if params[:q]
               = render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]}
+            -if @brand_selected.present?
+              - @brand_selected.each do |brand|
+                = hidden_field_tag "q[brand][]", brand
+            -if @price_selected.present?
+              - @price_selected.each do |price|
+                = hidden_field_tag "q[price][]", price
+            -if @store_selected.present?
+              - @store_selected.each do |store|
+                = hidden_field_tag "q[store][]", store
+            -if @category_selected.present?
+              - @category_selected.each do |category|
+                = hidden_field_tag "q[categories][]", category
             = select_tag "q[sort_by]", options_for_select(["Sort By", "Highest Price", "Lowest Price"], selected: selected), class: "form-control", id: "input-sort"
           .number-select
             - selected = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : nil
@@ -103,6 +127,18 @@ section.product_sec
               - if params[:q]
                 = render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]}
               = select_tag "q[per_page]", options_for_select([12, 24, 48, 96], selected: selected), class: "filter-select", id: "noOfItem"
+            -if @brand_selected.present?
+              - @brand_selected.each do |brand|
+                = hidden_field_tag "q[brand][]", brand
+            -if @price_selected.present?
+              - @price_selected.each do |price|
+                = hidden_field_tag "q[price][]", price
+            -if @store_selected.present?
+              - @store_selected.each do |store|
+                = hidden_field_tag "q[store][]", store
+            -if @category_selected.present?
+              - @category_selected.each do |category|
+                = hidden_field_tag "q[categories][]", category
         h3.category-title
           | All Products
           small
@@ -116,3 +152,12 @@ section.product_sec
         ul.pagination
           - if @products.respond_to?(:num_pages)
             = paginate @products
+
+-content_for :js do
+  javascript:
+
+    $(document).ready(function(){
+      while($('#q_price').length != 0){
+        $('#q_price').remove();
+      }
+    });

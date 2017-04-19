@@ -72,6 +72,8 @@ module Spree
 			  @incomplete_order = @user.orders.where("state != ? AND state != ? AND state != ?", "complete", "canceled", "returned").last
 			  if @incomplete_order.blank?
 			 		@order = Spree::Core::Importer::Order.import(order_user, import_params)
+			 		@order.update_attributes(bill_address_id: nil)
+			 		@order.update_attributes(ship_address_id: nil)
 			 		render json: {
 	      				status: "1",
 	      				cart_count: order_user.cart_count.to_s,

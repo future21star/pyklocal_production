@@ -18,7 +18,7 @@ html lang="#{I18n.locale}"
         = render :partial => 'spree/shared/custome_feature'
 
     = render :partial => 'spree/shared/footer'
-    - unless request.original_url.include?('login')
+    - unless request.original_url.include?('login') || request.original_url.include?('checkout/registration')
       = render 'spree/shared/login_modal'
     = javascript_include_tag 'application'
     = javascript_include_tag 'jquery.raty'

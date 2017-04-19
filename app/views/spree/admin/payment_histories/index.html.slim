@@ -4,7 +4,7 @@
   = @seller.full_name
 table.table.table-bordered
   tbody
-    - total_sale = Spree::LineItem.where("delivery_state = ? OR delivery_type = ?","delivered","pickup").joins(:product).where(spree_products:{store_id: @seller.stores.first.id}).sum(:pre_tax_amount).to_f
+    - total_sale = Spree::LineItem.where("delivery_state = ? OR delivery_type = ?","delivered","pickup").joins(:product).where(spree_products:{store_id: @seller.stores.with_deleted.first.id}).sum(:pre_tax_amount).to_f
     - total_paid = @seller.payment_histories.collect(&:amount).sum.to_f
     tr
       td Total Amount Paid

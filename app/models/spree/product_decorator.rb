@@ -1,6 +1,6 @@
 module Spree
 	Product.class_eval do 
-    # validates :name, length: {maximum: 100}
+    validates :name, length: {maximum: 100}
     validates :cost_price, presence: { message: "Retail price can not be blank" }, on: :update
     validates :price, presence: { message: "price can not be blank" }, on: :update
     validate :cost_price_must_be_greater_than_price
@@ -208,82 +208,95 @@ module Spree
     end
 
     def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants,  variant_prices, categories, stock, tax_category, cost_price,upc_code,errors, number_of_rows)
-      if cost_price.blank? || cost_price < master_price
-        cost_price = master_price
-      end
+      begin
+        p "----------jjjjkkkllll"
+        if cost_price.blank? || cost_price < master_price
+          cost_price = master_price
+        end
 
-      if master_price.blank?
-        Hash error = Hash.new
-        error[name.to_sym] = "rows #{number_of_rows} : Price was blank."
-        errors.push(error)
-        return
-      end
-      # tax_category_id = Spree::TaxCategory.find_by_name("clothing").try(:id)
-      # p tax_category_id
-      p "================="
-      unless Spree::Product.where(name: name, store_id: store_id).present?
-        tax_category_id = Spree::TaxCategory.find_by_name(tax_category).try(:id)
-        unless tax_category_id.present?
+        if master_price.blank?
           Hash error = Hash.new
-          error[name.to_sym] = "rows #{number_of_rows} : does not have tax category"
+          error[name.to_sym] = "rows #{number_of_rows} : Price was blank."
           errors.push(error)
           return
         end
-        p tax_category_id
-        product = Spree::Product.new({name: name, price: master_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id, tax_category_id: tax_category_id, cost_price: cost_price})
-        p "8888888888666666"
-        p product
-        if product.save
-          if product.price.to_f == 0
+        # tax_category_id = Spree::TaxCategory.find_by_name("clothing").try(:id)
+        # p tax_category_id
+        p "================="
+        unless Spree::Product.where(name: name, store_id: store_id).present?
+          tax_category_id = Spree::TaxCategory.find_by_name(tax_category).try(:id)
+          unless tax_category_id.present?
             Hash error = Hash.new
-            error[name.to_sym] = "rows #{number_of_rows} : Product created with sell price zero"
+            error[name.to_sym] = "rows #{number_of_rows} : does not have valid tax category"
             errors.push(error)
+            return
           end
-          if product.cost_price.to_f == 0
-            Hash error = Hash.new
-            error[name.to_sym] = "rows #{number_of_rows} : Product created with retail price zero"
-            errors.push(error)
-          end
-          p "99999999999"
-          Sunspot.index(product)
-          Sunspot.commit
-          unless categories.blank?
-            product.build_category(product, categories,errors, number_of_rows)
-          end
-          unless image_url.blank?
-            product.build_image(product, image_url,errors, number_of_rows)
-          end
-          unless properties.blank?
-            product.build_property(product, properties,errors, number_of_rows)
-          end
-          unless variants.blank?
-            product.build_variant(product, variants, variant_prices, stock, master_price,errors, number_of_rows)
-          end
-          if stock.present? && variants.blank?
-            product.master_variant_stock_build(product, stock,errors)
-          end
-          if upc_code.present?
-            if (Spree::Product.last.properties.collect(&:name) & ["upc"]).blank?
-              property = Spree::Property.where(name: "upc", presentation: "Upc").first_or_create
-              product_property = product.product_properties.build(value: upc_code, property_id: property.id)
-              
-              product_property.save
+          p "6666666666"
+          p tax_category_id
+          product = Spree::Product.new({name: name, price: master_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id, tax_category_id: tax_category_id, cost_price: cost_price})
+          p "8888888888666666"
+          p product
+          if product.save
+            if product.price.to_f == 0
+              Hash error = Hash.new
+              error[name.to_sym] = "rows #{number_of_rows} : Product created with sell price zero"
+              errors.push(error)
             end
+            if product.cost_price.to_f == 0
+              Hash error = Hash.new
+              error[name.to_sym] = "rows #{number_of_rows} : Product created with retail price zero"
+              errors.push(error)
+            end
+            p "99999999999"
+            Sunspot.index(product)
+            Sunspot.commit
+            unless categories.blank?
+              product.build_category(product, categories,errors, number_of_rows)
+            end
+            unless image_url.blank?
+              product.build_image(product, image_url,errors, number_of_rows)
+            end
+            unless properties.blank?
+              product.build_property(product, properties,errors, number_of_rows)
+            end
+            unless variants.blank?
+              product.build_variant(product, variants, variant_prices, stock, master_price,errors, number_of_rows)
+            end
+            if variants.blank? && variant_prices.present? 
+              Hash error = Hash.new
+              error[name.to_sym] = "rows #{number_of_rows} : variants was not provided"
+              errors.push(error)
+            end
+            if stock.present? && variants.blank?
+              product.master_variant_stock_build(product, stock,errors)
+            end
+            if upc_code.present?
+              if (Spree::Product.last.properties.collect(&:name) & ["upc"]).blank?
+                property = Spree::Property.where(name: "upc", presentation: "Upc").first_or_create
+                product_property = product.product_properties.build(value: upc_code, property_id: property.id)
+                
+                product_property.save
+              end
+            end
+          else
+            p "333333"
+            Hash error = Hash.new
+            error[name.to_sym] = name.to_s + " : " + product.errors.full_messages.join(', ')
+            errors.push(error)
+            p "666666666"
           end
         else
-          p "333333"
           Hash error = Hash.new
-          error[name.to_sym] = name.to_s + " : " + product.errors.full_messages.join(', ')
+          error[name.to_sym] = "rows #{number_of_rows} : Already Present in store"
           errors.push(error)
-          p "666666666"
         end
-      else
+      rescue Exception => e
         Hash error = Hash.new
-        error[name.to_sym] = "row " + name.to_s + " Already present in store"
-        errors.push(error)
+        error[name.to_sym] = "rows #{number_of_rows} : #{e.message}"
+        p "5555555555555555"
+      ensure
+        return errors
       end
-      p "5555555555555555"
-      return errors
     end
 
     def build_category(product, categories,errors, number_of_rows)
@@ -293,6 +306,11 @@ module Spree
           taxon = Spree::Taxon.where(name: category.strip).first
           if taxon.present?
             taxon_ids << taxon.id
+          else
+            Hash error = Hash.new
+            error[name.to_sym] = "rows #{number_of_rows} : #{category} is not a valid category"
+            errors.push(error)
+            return
           end
         end
         product.update_attributes(taxon_ids: taxon_ids)
@@ -310,8 +328,10 @@ module Spree
           image.save
         end
       rescue Exception => e
+        p "(((((((((("
         Hash error = Hash.new
         error[name.to_sym] = "rows #{number_of_rows} : #{e.message}"
+        p "**********"
         errors.push(error)
       end
     end
@@ -333,10 +353,32 @@ module Spree
 
     def build_variant(product, variants, variant_prices, stock, master_price,errors, number_of_rows)
       begin
+        if !variant_prices.present? 
+          Hash error = Hash.new
+          error[name.to_sym] = "rows #{number_of_rows} : variant(s) price(s) was not provided"
+          errors.push(error)
+          return
+        end
+        if !variant_prices.present? 
+          Hash error = Hash.new
+          error[name.to_sym] = "rows #{number_of_rows} : variant(s) stock was not provided"
+          errors.push(error)
+          return
+        end
         variant_price_arr = variant_prices.split(',')
         variant_stock_arr = stock.split(',')
-        p variant_price_arr
-        p variant_stock_arr
+        if variants.split(';').count > variant_price_arr.count
+          Hash error = Hash.new
+          error[name.to_sym] = "rows #{number_of_rows} : variant price was not provided for all the variants"
+          errors.push(error)
+          return
+        end
+        if variants.split(';').count > variant_stock_arr.count
+          Hash error = Hash.new
+          error[name.to_sym] = "rows #{number_of_rows} : variant stock was not provided or all the variants"
+          errors.push(error)
+          return
+        end
         i = 0
         variants.split(';').each do |variant|
           option_type_ids = []
@@ -379,6 +421,7 @@ module Spree
       rescue Exception => e
         Hash error = Hash.new
         error[name.to_sym] = "rows #{number_of_rows} : #{e.message}"
+        errors.push(error)
       end
     end
 

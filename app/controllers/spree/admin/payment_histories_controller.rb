@@ -16,11 +16,15 @@ class Spree::Admin::PaymentHistoriesController < Spree::Admin::ResourceControlle
 	end
 
 	def create
-		@payment_history = @seller.payment_histories.new(payment_history_params)
-		if @payment_history.save
-			redirect_to spree.admin_seller_payment_histories_path, notice: "Successfully saved"
+		if @seller.amount_due.present?
+			@payment_history = @seller.payment_histories.new(payment_history_params)
+			if @payment_history.save
+				redirect_to spree.admin_seller_payment_histories_path, notice: "Successfully saved"
+			else
+				render :new
+			end
 		else
-			render :new
+			redirect_to :back , notice: "No Item is sold by this vendor"
 		end
 	end
 

@@ -71,6 +71,7 @@
                   tbody
                     tr
                       th colspan="2"  Item
+                      th Store
                       th Delivery Type
                       th Qty
                       th Price
@@ -89,6 +90,7 @@
                               -if item.delivery_type == 'pick_up' || item.delivery_type == 'pickup'
                                 .delivery_option
                                   | * Pick Up Info: #{item.seller_name || "No store"}, #{item.pickup_address || "No address"}
+                          td =  item.product.store.present? ? item.product.store.name : "NA"
                           td= item.delivery_type.humanize
                           td data-hook="order_item_qty"
                             strong = item.quantity
@@ -108,6 +110,7 @@
                               -if item.delivery_type == 'pick_up' || item.delivery_type == 'pickup'
                                 .delivery_option
                                   | * Pick Up Info: #{item.seller_name || "No store"}, #{item.pickup_address || "No address"}
+                          td = item.product.store.present? ? item.product.store.name : "NA"
                           td= item.delivery_type.humanize
                           td data-hook="order_item_qty"
                             strong = item.quantity
