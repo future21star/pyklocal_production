@@ -77,4 +77,10 @@ class UserMailer < ActionMailer::Base
     @user = order.user
     mail(to: @user.email , subject: "PykLocal Order Delivered Confirmation")
   end
+
+  def notify_seller_cancel_order(order,email)
+    @seller = Spree::User.with_deleted.find_by_email(email)
+    @order = order
+    mail(to: @email , subject: "PykLocal Order Cancel ")
+  end
 end

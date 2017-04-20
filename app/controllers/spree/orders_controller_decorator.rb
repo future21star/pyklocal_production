@@ -191,12 +191,19 @@ Spree::OrdersController.class_eval do
   end
 
     def cancel
-      authorize! :update, @order, params[:token]
-      if @order.is_any_item_shipped? == false  && (@order.completed_at.to_date + 14.days) >= Date.today && @order.state != 'canceled'
-        @order.canceled_by(try_spree_current_user)
-        redirect_to :back, notice: "Order canceled successfully."
+       p "9999999999999999999"
+      if @order.is_any_item_shipped? == true
+        redirect_to :back, notice: "Order can not be cancelled beacuse item(s) are already shipped"
+      elsif (@order.completed_at.to_date + 14.days) < Date.today 
+        redirect_to :back, notice: "Order can only be cancel within 14 days"
       else
-        redirect_to :back, notice: "Order could not be canceled."
+        if @order.order_seller.any?
+          @order.order_seller.each do |email|
+            UserMailer.notify_seller_cancel_order(@order,email).deliver
+          end
+        end
+        @order.update_attributes(state: "canceled")
+        redirect_to :back, notice: "Order cancellation process has been initiated!"
       #respond_with(@order, default_template: :show)
       end
     end

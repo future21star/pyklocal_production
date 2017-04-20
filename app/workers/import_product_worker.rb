@@ -9,6 +9,7 @@ class ImportProductWorker
     store_id = seller.stores.first.try(:id)
     errors = []
     number_of_rows = 0;
+    total_product = 0
     exception_flag = true;
     begin
       p "1111111111"
@@ -20,7 +21,7 @@ class ImportProductWorker
           number_of_rows = number_of_rows + 1 ;
          unless row[0].blank? 
             sku = row[0][0..2].upcase+SecureRandom.hex(5).upcase
-            Spree::Product.analize_and_create(row[0], row[2], sku, Time.zone.now.strftime("%Y/%m/%d"), row[1], shipping_category_id, row[6], store_id, row[7], row[8], row[9], row[4], row[10], row[5], row[3],row[11],errors, number_of_rows)
+            Spree::Product.analize_and_create(row[0], row[2], sku, Time.zone.now.strftime("%Y/%m/%d"), row[1], shipping_category_id, row[6], store_id, row[7], row[8], row[9], row[4], row[10], row[5], row[3],row[11],errors, number_of_rows,total_product)
           else
             Hash error = Hash.new
             error["CSV Error".to_sym] = "row " + number_of_rows.to_s + " does not have product name"
@@ -29,19 +30,18 @@ class ImportProductWorker
         end
       end
     rescue Exception => e
-      p "3333333333333"
-       exception_flag = false
+      exception_flag = false
       Hash error = Hash.new
       error["CSV Error".to_sym] =  "rows #{number_of_rows} : #{e.message}"
       errors.push(error)
     ensure
-      p "222222222222222222222222"
       if number_of_rows == 0 &&  exception_flag == true
         Hash error = Hash.new
         error["CSV Error".to_sym] = "CSV File is blank"
         errors.push(error)
       end
       p errors
+      p total_product
       CsvUploadMailer.uploading_complete(seller,errors).deliver
     end
   end

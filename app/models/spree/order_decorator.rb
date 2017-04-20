@@ -56,6 +56,10 @@ module Spree
       end
     end
 
+    def order_seller
+      line_items.collect{|line_item| Merchant::Store.find(line_item.product.store_id).spree_users.first.email if line_item.delivery_type = "home_delivery" && line_item.product.store.present?}
+    end
+
     def full_name
       [bill_address.first_name, bill_address.last_name].compact.join(" ")
     end

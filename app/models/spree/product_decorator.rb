@@ -207,12 +207,11 @@ module Spree
       {product_property_name: dynamic_filters.flatten.collect(&:value), taxon_ids: search.facet(:taxon_ids).rows.collect(&:value)}
     end
 
-    def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants,  variant_prices, categories, stock, tax_category, cost_price,upc_code,errors, number_of_rows)
+    def self.analize_and_create(name, master_price, sku, available_on, description, shipping_category_id, image_url, store_id, properties, variants,  variant_prices, categories, stock, tax_category, cost_price,upc_code,errors, number_of_rows,total_product)
       begin
         p "----------jjjjkkkllll"
-        if cost_price.blank? || cost_price < master_price
-          cost_price = master_price
-        end
+        sell_price = master_price
+        retail_price = cost_price
 
         cost_price_inetger_flag = Integer(master_price) rescue false 
         cost_price_float_flag =  Float(master_price) rescue false
@@ -221,20 +220,37 @@ module Spree
 
         if  cost_price_inetger_flag == false &&  cost_price_float_flag  == false
           Hash error = Hash.new
-          error[name.to_sym] = "rows #{number_of_rows} : Price was Invalid."
+          error[name.to_sym] = "rows #{number_of_rows} : Sell Price was Invalid."
           errors.push(error)
         end
 
 
         if retail_price_integer_flag == false && retail_price_float_flag == false
           Hash error = Hash.new
-          error[name.to_sym] = "rows #{number_of_rows} : Retail was Invalid."
+          error[name.to_sym] = "rows #{number_of_rows} : Retail Price was Invalid."
           errors.push(error)
+        end
+
+        if cost_price_inetger_flag != false &&  cost_price_float_flag  != false && retail_price_integer_flag != false && retail_price_float_flag !=false
+          if master_price.to_f < 0
+            Hash error = Hash.new
+            error[name.to_sym] = "rows #{number_of_rows} : Sell Price can not be negative"
+            errors.push(error)
+            sell_price = 0;
+          end
+
+          if cost_price.blank? || cost_price.to_f < master_price.to_f
+            cost_price = master_price
+            Hash error = Hash.new
+            error[name.to_sym] = "rows #{number_of_rows} : Product created with retail price same as sell price"
+            errors.push(error)
+            retail_price = sell_price;
+          end
         end
 
         if master_price.blank?
           Hash error = Hash.new
-          error[name.to_sym] = "rows #{number_of_rows} : Price was blank."
+          error[name.to_sym] = "rows #{number_of_rows} : Sell Price was blank."
           errors.push(error)
         end
         # tax_category_id = Spree::TaxCategory.find_by_name("clothing").try(:id)
@@ -249,10 +265,11 @@ module Spree
           end
           p "6666666666"
           p tax_category_id
-          product = Spree::Product.new({name: name, price: master_price.to_f, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id, tax_category_id: tax_category_id, cost_price: cost_price.to_f})
+          product = Spree::Product.new({name: name, price: sell_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id, tax_category_id: tax_category_id, cost_price: retail_price})
           p "8888888888666666"
           p product
           if product.save
+            total_product = total_product + 1
             if product.price.to_f == 0
               Hash error = Hash.new
               error[name.to_sym] = "rows #{number_of_rows} : Product created with sell price zero"
@@ -311,7 +328,9 @@ module Spree
         error[name.to_sym] = "rows #{number_of_rows} : #{e.message}"
         p "5555555555555555"
       ensure
-        return errors
+        p "00000"
+        p total_product
+        return errors,total_product
       end
     end
 
@@ -408,12 +427,60 @@ module Spree
           end
           product.update_attributes(option_type_ids: option_type_ids)
           if variant_price_arr.present? && variant_price_arr[i].present?
+
+            cost_price_inetger_flag = Integer(variant_price_arr[i]) rescue false 
+            cost_price_float_flag =  Float(variant_price_arr[i]) rescue false
+            retail_price_integer_flag = Integer(variant_price_arr[i]) rescue false 
+            retail_price_float_flag = Float(variant_price_arr[i]) rescue false
+
+
+            if  cost_price_inetger_flag == false &&  cost_price_float_flag  == false
+              Hash error = Hash.new
+              error[name.to_sym] = "rows #{number_of_rows} : variant sell Price was Invalid for #{i} variant."
+              errors.push(error)
+
+            end
+
+
+            if retail_price_integer_flag == false && retail_price_float_flag == false
+              Hash error = Hash.new
+              error[name.to_sym] = "rows #{number_of_rows} :variant Retail Price was Invalid for #{i + 1} variant."
+              errors.push(error)
+            end
+
+            if  cost_price_inetger_flag == false || cost_price_float_flag  == false || retail_price_integer_flag == false || retail_price_float_flag == false
+              return
+            end
+
+            if variant_price_arr[i].to_f < 0
+              Hash error = Hash.new
+              error[name.to_sym] = "rows #{number_of_rows} :variant Retail Price can not be less than zero for #{i + 1} variant."
+              errors.push(error)
+              return
+            end
             variant = product.variants.build(option_value_ids: option_value_ids,price: variant_price_arr[i].to_f)
           else
             variant = product.variants.build(option_value_ids: option_value_ids,price: master_price.to_f)
           end
           variant.save
           if variant_stock_arr.present? && variant_stock_arr[i].present?
+            stock_inetger_flag = Integer(variant_stock_arr[i]) rescue false 
+            stock_float_flag =  Float(variant_stock_arr[i]) rescue false
+
+
+            if  stock_inetger_flag == false && stock_float_flag  == false
+              Hash error = Hash.new
+              error[name.to_sym] = "rows #{number_of_rows} : Stock was Invalid for #{i + 1} variant."
+              errors.push(error)
+              return
+            end
+
+            if variant_stock_arr[i].to_f < 0
+              Hash error = Hash.new
+              error[name.to_sym] = "rows #{number_of_rows} : Stock can not be less than zero for #{i + 1} variant."
+              errors.push(error)
+              return
+            end
             stock_location = Spree::StockLocation.find(1)
             stock_movement = stock_location.stock_movements.build(quantity: variant_stock_arr[i].to_i)
             stock_movement.stock_item = stock_location.set_up_stock_item(variant)

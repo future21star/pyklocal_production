@@ -37,10 +37,7 @@ class Merchant::CustomerReturnItemsController < Merchant::ApplicationController
 	def eligible_item
 		@store = current_spree_user.stores.first
     @is_owner = is_owner?(@store)
-		if @order.state =='canceled'
-			redirect_to spree.orders_path , notice: "Cancel order can not be return"
-			return
-		elsif (@order.completed_at.to_date + 14.days) < Date.today
+		if (@order.completed_at.to_date + 14.days) < Date.today
 			redirect_to spree.orders_path , notice: "Order can only be return within the 14 days of order delivered"
 			return
 		elsif @order.get_store_delivered_line_items(@store.id).count !=  @order.get_home_delivery_line_item_ids(@store.id).count
@@ -55,13 +52,10 @@ class Merchant::CustomerReturnItemsController < Merchant::ApplicationController
 	def return_multiple_item
 		@store = current_spree_user.stores.first
     @is_owner = is_owner?(@store)
-		if @order.state == 'canceled'
-			redirect_to spree.orders_path, notice: "Canceled order can not be return"
-			return
-		elsif @order.state != "complete"
-			redirect_to spree.orders_path, notice: "Order is not complete yet"
-			return
-		elsif @order.completed_at.to_date + 14.days < Date.today
+		# if @order.state != "complete"
+		# 	redirect_to spree.orders_path, notice: "Order is not complete yet"
+		# 	return
+		if @order.completed_at.to_date + 14.days < Date.today
 			redirect_to spree.orders_path, notice: "Order can only be cancel within 14 days of completion"
 			return
 		else

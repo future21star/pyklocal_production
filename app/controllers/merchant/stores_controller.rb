@@ -82,6 +82,10 @@ class Merchant::StoresController < Merchant::ApplicationController
       redirect_to spree.root_path, notice: "You are not logged in"
     end
     respond_to do |format|
+      current_store_taxon = @store.spree_taxons.select{|x| x.parent_id.nil? }.collect{|y| y.id.to_s}
+      if (current_store_taxon - params[:merchant_store][:spree_taxon_ids]).count > 0
+        remove_subtaxon(current_store_taxon - params[:merchant_store][:spree_taxon_ids],@store)
+      end
       if @store.update_attributes(store_params)
         format.html { redirect_to @store, notice: 'Store was successfully updated.'  }
         # @store.email_tokens.last.update_attributes(is_valid: false)
@@ -112,6 +116,7 @@ class Merchant::StoresController < Merchant::ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_store
+      p params[:id]
       @store = Merchant::Store.where(slug: params[:id]).first
       redirect_to spree.root_url, notice: "Store not available" unless @store.present?
     end
@@ -119,6 +124,23 @@ class Merchant::StoresController < Merchant::ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
       params.require(:merchant_store).permit(:name, :estimated_delivery_time, :active, :certificate, :payment_mode, :description, :manager_first_name, :manager_last_name, :phone_number, :store_type, :street_number, :city, :state, :zipcode, :country, :site_url, :terms_and_condition, :payment_information, :logo, spree_taxon_ids: [], store_users_attributes: [:spree_user_id, :store_id, :id])
+    end
+
+    def remove_subtaxon(taxons,store)
+      p "--------------"
+      taxons.each do |taxon|
+        @taxon_children = Spree::Taxon.find(taxon.to_i).children
+        if @taxon_children.present?
+          # Merchant::StoreTaxon.where(store_id: store.id, taxon_id: @taxon_children.map(&:id)).destroy_all
+          @taxon_children.each do |taxon_child|
+            p "removed"
+            @taxon =  Merchant::StoreTaxon.where(store_id: store.id, taxon_id: taxon_child.id)
+            if @taxon.present?
+              @taxon.destroy
+            end
+          end
+        end
+      end
     end
 
     def perform_search

@@ -37,6 +37,9 @@ section.account_page
                       td
                         = link_to spree.order_path(order), title: "View", class: "view" do
                           | view
+                        - if order.state != "canceled" && order.is_any_item_shipped? == false && (order.completed_at.to_date + 14.days) > Date.today
+                          = link_to order_cancel_path(order), class: "view", title: "Cancel Order", method: :put do 
+                            | Cancel
                 - else
                   tr
                     th.text-center colspan="7"

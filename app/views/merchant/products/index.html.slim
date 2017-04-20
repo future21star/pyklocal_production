@@ -47,11 +47,20 @@
         .tab-content 
           #published.tab-pane.fade.in.active
             .form-section
+
               -if @tab == "unpublished"
                 b 
                   u Category, Tax category, Sale Price, Retail Price and Stock are mandatory fields for product to  be    Published on Site.
                 br 
                 br
+
+                b 
+                  | Total Number of unpublished product:
+                  = @collection.count
+              -else
+                b 
+                  |Total Number of Published product: 
+                  = @collection.count
               table.table.table-striped
                 thead
                   tr
