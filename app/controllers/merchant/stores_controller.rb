@@ -82,10 +82,6 @@ class Merchant::StoresController < Merchant::ApplicationController
       redirect_to spree.root_path, notice: "You are not logged in"
     end
     respond_to do |format|
-      current_store_taxon = @store.spree_taxons.select{|x| x.parent_id.nil? }.collect{|y| y.id.to_s}
-      if (current_store_taxon - params[:merchant_store][:spree_taxon_ids]).count > 0
-        remove_subtaxon(current_store_taxon - params[:merchant_store][:spree_taxon_ids],@store)
-      end
       if @store.update_attributes(store_params)
         format.html { redirect_to @store, notice: 'Store was successfully updated.'  }
         # @store.email_tokens.last.update_attributes(is_valid: false)

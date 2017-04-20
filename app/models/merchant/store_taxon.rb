@@ -5,7 +5,7 @@ module Merchant
 
 		belongs_to :store, class_name: 'Merchant::Store'
 		belongs_to :spree_taxon, foreign_key: :taxon_id, class_name: 'Spree::Taxon'
-		after_create :add_subtaxon
+		# after_create :add_subtaxon
 
 		def add_subtaxon
 			p "hjhjhjhjhjhjhjhjhj"
