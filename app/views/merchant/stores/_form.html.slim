@@ -199,7 +199,7 @@ p
     .form-group.col-xs-12
       ul.categories
         - store_taxon_ids = @store.store_taxons.collect(&:taxon_id)
-        - @taxons = Spree::Taxon.all
+        - @taxons = Spree::Taxon.where(parent_id: nil)
         - @taxons.each do |taxon|
          .col-md-2.col-xs-6
            label.checkbox-inline title="#{taxon.name}" 

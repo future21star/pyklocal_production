@@ -82,6 +82,16 @@ class Merchant::StoresController < Merchant::ApplicationController
       redirect_to spree.root_path, notice: "You are not logged in"
     end
     respond_to do |format|
+      if params[:merchant_store][:spree_taxon_ids].present?
+        params[:merchant_store][:spree_taxon_ids].each do |parent_taxon|
+          children_taxons = Spree::Taxon.where(parent_id: parent_taxon).collect{|taxon| taxon.id.to_s}
+          if children_taxons.present?
+            children_taxons.each do |taxon|
+              params[:merchant_store][:spree_taxon_ids].push(taxon)
+            end
+          end
+        end
+      end
       if @store.update_attributes(store_params)
         format.html { redirect_to @store, notice: 'Store was successfully updated.'  }
         # @store.email_tokens.last.update_attributes(is_valid: false)
