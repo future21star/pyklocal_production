@@ -1,55 +1,33 @@
 module Spree
 	Api::V1::CheckoutsController.class_eval do
 		
-	    def next
-	    	begin
-	    		p "7777777779999999999999999999999999999999999999999999999999"
-	    		p params[:order_state]
-		    	if @order.state == params[:order_state]
-				      authorize! :update, @order, order_token
-				    if  @order.state != "confirm"
-				  		if params[:order][:bill_address_attributes].present?
-				  			@order.bill_address.update_attributes(params[:order][:bill_address_attributes])
-				  		end
-				  		if params[:order][:ship_address_attributes].present?
-				  			@order.ship_address.update_attributes(params[:order][:ship_address_attributes])
-				  		end
-				  	end
-				      @order.next!
-				      render json: {
-				      	status: "1",
-				      	message: "Detail Fetch succesfully",
-				      	shipment_minimum_price: FREE_DELIVERY_ORDER_PRICE.to_s,
-				      	order_detail: to_stringify_checkout_json(@order, [])
-				      }
-				  else
-				  	p @order.state
-				  	if  @order.state != "confirm"
-				  		p "222222222"
-				  		if params[:order][:bill_address_attributes].present?
-				  			p "1111111"
-				  			@order.bill_address.update_attributes(params[:order][:bill_address_attributes])
-				  		end
-				  		if params[:order][:ship_address_attributes].present?
-				  			p "333333"
-				  			@order.ship_address.update_attributes(params[:order][:ship_address_attributes])
-				  		end
-				  	end
-				  	render json: {
-				      status: "1",
-				      message: "Detail Fetch succesfully without going to next state",
-				      shipment_minimum_price: FREE_DELIVERY_ORDER_PRICE.to_s,
-				      order_detail: to_stringify_checkout_json(@order, [])
-				    }
-				  end
+	   def next
+    	if @order.state == params[:order_state]
+	      authorize! :update, @order, order_token
+	      @order.next!
+	      render json: {
+	      	status: "1",
+	      	message: "Detail Fetch succesfully",
+	      	shipment_minimum_price: FREE_DELIVERY_ORDER_PRICE.to_s,
+	      	order_detail: to_stringify_checkout_json(@order, [])
+	      }
+		  else
+		  	render json: {
+		      status: "1",
+		      message: "Detail Fetch succesfully without going to next state",
+		      shipment_minimum_price: FREE_DELIVERY_ORDER_PRICE.to_s,
+		      order_detail: to_stringify_checkout_json(@order, [])
+		    }
+		  end
 		    rescue Exception => e
 		      render json: {
 		      	status: "0",
 		      	message: "could not transist",
 		      	error: e.message.to_s
 		      }
-		    end
 	    end
+
+
 
 	      def update
 	      	begin
