@@ -56,11 +56,11 @@
 
                 b 
                   | Total Number of unpublished product:
-                  = @collection.count
+                  = @total_product_collection.count
               -else
                 b 
                   |Total Number of Published product: 
-                  = @collection.count
+                  =  @total_product_collection.count
               table.table.table-striped
                 thead
                   tr

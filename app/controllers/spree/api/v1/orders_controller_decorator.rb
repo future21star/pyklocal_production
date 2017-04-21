@@ -51,7 +51,23 @@ module Spree
 		end
 
 		def create
-			# begin
+			begin
+				
+				unless Spree::Variant.exists?((params[:order][:line_items]).first.values.first)
+					render json:{
+						status: "0",
+						message: "Product is no longer available"
+					}
+					return
+				end
+				variant  = Spree::Variant.find((params[:order][:line_items]).first.values.first)
+				if (variant.product.visible == false)  || (variant.product.buyable == false)
+					render json:{
+						status: "0",
+						message: "Product is no longer available"
+					}
+					return
+				end
 			  authorize! :create, Order
 			  order_user = if @current_user_roles.include?('admin') && order_params[:user_id]
 			    Spree.user_class.find(order_params[:user_id])
@@ -105,12 +121,12 @@ module Spree
 	          end
           end
 			 	end
-			# rescue Exception => e
-			# 	render json: {
-			# 		status: 0,
-			# 		message: e.message
-			# 	}		  	
-		 #  end
+			rescue Exception => e
+				render json: {
+					status: 0,
+					message: e.message
+				}		  	
+		  end
 		end    
 
 
@@ -189,30 +205,29 @@ module Spree
 		end
 
 		def cancel
-		 	authorize! :update, @order, params[:token]
-		 	if @order.state == "complete" && (@order.completed_at.to_date + 14.days) >= Date.today
-	    	if	@order.canceled_by(current_api_user)
-	    		render json: {
-	    			status: "1",
-	    			message: "order cancelled successfully"
-	    		}
-	    	else
-	    		render json: {
-	    			status: "0",
-	    			message: "order could not be cancelled! Something went wrong"
-	    		}
-	    	end
-	    elsif @order.completed_at.to_date + 14.days < Date.today
-	    	render json:{
-	    		status: "0",
-	    		message: "Order can only be cancel within 14 days of completion"
-	    	}
-	    else
-	    	render json: {
-	    		status: "0",
-	    		message: "order is not complete"
-	    	}
-	    end
+			if @order.is_any_item_shipped? == true
+				render json:{
+					status: "0",
+					message: "Order can not be cancelled beacuse item(s) are already shipped"
+				}
+      elsif (@order.completed_at.to_date + 14.days) < Date.today 
+      	render json:{
+					status: "0",
+					message: "Order can only be cancel within 14 days"
+				}
+      else
+        if @order.order_seller.any?
+          @order.order_seller.each do |email|
+            UserMailer.notify_seller_cancel_order(@order,email).deliver
+          end
+        end
+        @order.update_attributes(state: "canceled")
+        render json:{
+					status: "0",
+					message: "Order cancellation process has been initiated!"
+				}
+      #respond_with(@order, default_template: :show)
+      end
   	end
 
 	def apply_coupon_code

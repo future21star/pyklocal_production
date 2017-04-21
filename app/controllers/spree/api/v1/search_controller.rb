@@ -179,7 +179,7 @@ module Spree
         p params[:q][:store_id] !=  nil
         #p params[:q].present? && params[:q][:id].blank?
         # fulltext params[:q][:search] if params[:q] && params[:q][:search] != "\"\""
-        fulltext params[:q][:search] if params[:q] && params[:q][:search] != "" && params[:q][:search] !=  nil
+        fulltext "*#{params[:q][:search]}*" if params[:q] && params[:q][:search] != "" && params[:q][:search] !=  nil
         paginate(:page => params[:page], :per_page => per_page)
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
         with(:buyable, :true)

@@ -289,6 +289,7 @@ module Spree
 				order_hash["order_number".to_sym] = order.number.to_s
 				order_hash["order_date".to_sym] = order.completed_at.to_s
 				order_hash["state".to_sym] = order.state.to_s
+				order_hash["pickupable_order"] = order.self_pickup.to_s
 				if order.state != "canceled" && order.is_any_item_shipped? == false && (order.completed_at.to_date + 14.days) >= Date.today
 					order_hash["shipped".to_sym] = "0"
 				elsif order.state != "canceled" && order.is_any_item_shipped? == true && (order.completed_at.to_date + 14.days) >= Date.today

@@ -212,6 +212,19 @@ module Spree
         p "----------jjjjkkkllll"
         sell_price = master_price
         retail_price = cost_price
+        if (cost_price.blank?) || (master_price.blank?)
+          if cost_price.blank?
+            Hash error = Hash.new
+            error[name.to_sym] = "rows #{number_of_rows} : Retail price was blank."
+            errors.push(error)
+          end
+          if master_price.blank?
+            Hash error = Hash.new
+            error[name.to_sym] = "rows #{number_of_rows} : Sell price was blank."
+            errors.push(error)
+          end
+          return errors
+        end
 
         cost_price_inetger_flag = Integer(master_price) rescue false 
         cost_price_float_flag =  Float(master_price) rescue false
@@ -222,6 +235,14 @@ module Spree
           Hash error = Hash.new
           error[name.to_sym] = "rows #{number_of_rows} : Sell Price was Invalid."
           errors.push(error)
+          sell_price = 0.to_s
+        else
+          if master_price.to_f < 0
+            Hash error = Hash.new
+            error[name.to_sym] = "rows #{number_of_rows} : Sell Price can not be negative"
+            errors.push(error)
+            sell_price = 0.to_s;
+          end
         end
 
 
@@ -229,30 +250,36 @@ module Spree
           Hash error = Hash.new
           error[name.to_sym] = "rows #{number_of_rows} : Retail Price was Invalid."
           errors.push(error)
-        end
-
-        if cost_price_inetger_flag != false &&  cost_price_float_flag  != false && retail_price_integer_flag != false && retail_price_float_flag !=false
-          if master_price.to_f < 0
+          retail_price = 0.to_s
+        else
+           if cost_price.to_f < 0
             Hash error = Hash.new
-            error[name.to_sym] = "rows #{number_of_rows} : Sell Price can not be negative"
+            error[name.to_sym] = "rows #{number_of_rows} : Retail Price can not be negative"
             errors.push(error)
-            sell_price = 0;
-          end
-
-          if cost_price.blank? || cost_price.to_f < master_price.to_f
-            cost_price = master_price
-            Hash error = Hash.new
-            error[name.to_sym] = "rows #{number_of_rows} : Product created with retail price same as sell price"
-            errors.push(error)
-            retail_price = sell_price;
+            sell_price = 0.to_s;
           end
         end
 
-        if master_price.blank?
+        if retail_price_integer_flag != false && retail_price_float_flag != false &&  cost_price_inetger_flag != false &&  cost_price_float_flag  != false
+          if retail_price.to_f < sell_price.to_f
+            retail_price = sell_price
+            Hash error = Hash.new
+            error[name.to_sym] = "rows #{number_of_rows} : Retail Price was less than Sell Price"
+            errors.push(error)
+            Hash error = Hash.new
+            error[name.to_sym] = "rows #{number_of_rows} : Product created with Retail Price same as Sell Price"
+            errors.push(error)
+          end
+        end
+
+        if retail_price.to_f < sell_price.to_f
+          retail_price = sell_price
           Hash error = Hash.new
-          error[name.to_sym] = "rows #{number_of_rows} : Sell Price was blank."
+          error[name.to_sym] = "rows #{number_of_rows} : Product created with Retail Price same as Sell Price"
           errors.push(error)
         end
+
+
         # tax_category_id = Spree::TaxCategory.find_by_name("clothing").try(:id)
         # p tax_category_id
         p "================="
@@ -263,8 +290,6 @@ module Spree
             error[name.to_sym] = "rows #{number_of_rows} : does not have valid tax category"
             errors.push(error)
           end
-          p "6666666666"
-          p tax_category_id
           product = Spree::Product.new({name: name, price: sell_price, sku: sku, available_on: available_on, description: description, shipping_category_id: shipping_category_id, store_id: store_id, tax_category_id: tax_category_id, cost_price: retail_price})
           p "8888888888666666"
           p product
@@ -280,6 +305,8 @@ module Spree
               error[name.to_sym] = "rows #{number_of_rows} : Product created with retail price zero"
               errors.push(error)
             end
+
+
             p "99999999999"
             Sunspot.index(product)
             Sunspot.commit

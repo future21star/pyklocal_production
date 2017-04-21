@@ -19,12 +19,12 @@ module Spree
 		      order_detail: to_stringify_checkout_json(@order, [])
 		    }
 		  end
-		    rescue Exception => e
-		      render json: {
-		      	status: "0",
-		      	message: "could not transist",
-		      	error: e.message.to_s
-		      }
+	    rescue Exception => e
+	      render json: {
+	      	status: "0",
+	      	message: "could not transist",
+	      	error: e.message.to_s
+	      }
 	    end
 
 
