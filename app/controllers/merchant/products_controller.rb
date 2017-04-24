@@ -29,7 +29,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
     end
     
     @collection =  @search.results
-    @total_product_collection =  @total.results
+    @total_product_collection =  @total.total
     @is_owner = is_owner?(current_spree_user.stores.first)
   end
 
