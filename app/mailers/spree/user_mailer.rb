@@ -33,7 +33,7 @@ module Spree
     def notify_items_out_for_delivery(line_items)
       @user = line_items.first.order.user
       @line_items = line_items
-      mail(to: @user.email, subject: "Out For Delivery")
+      mail(to: @user.email, from: "sales@pyklocal.com",subject: "Out For Delivery")
     end
 
     def notify_return_order_item(return_item)
@@ -44,9 +44,10 @@ module Spree
     end
 
     def notify_order_items_delivered(order)
+      p "7888888888777"
       @order = order
       @user = order.user
-      mail(to: @user.email , subject: "PykLocal Order Delivered Confirmation")
+      mail(to: @user.email ,from: "sales@pyklocal.com", subject: "PykLocal Order Delivered Confirmation")
     end
   end
 end

@@ -334,8 +334,16 @@ module Spree
               if (Spree::Product.last.properties.collect(&:name) & ["upc"]).blank?
                 property = Spree::Property.where(name: "upc", presentation: "Upc").first_or_create
                 product_property = product.product_properties.build(value: upc_code, property_id: property.id)
-                
-                product_property.save
+                p "11111112222223333"
+                p product_property
+                unless product_property.save
+                  p "99999911111222233333"
+                  Hash error = Hash.new
+                  error[name.to_sym] = "rows #{number_of_rows} : UPC code #{product_property.errors.full_messages.first}"
+                  errors.push(error)
+                else
+                    p "property not saved "
+                end
               end
             end
           else
@@ -404,7 +412,17 @@ module Spree
           property_hash = item.split(":")
           property = Spree::Property.where(name: property_hash[0].strip, presentation: property_hash[0].strip.titleize).first_or_create
           product_property = product.product_properties.build(value: property_hash[1].strip.titleize, property_id: property.id)
-          product_property.save
+           unless product_property.save
+            p " property not saved "
+            p product_property
+            p ""
+            Hash error = Hash.new
+            error[name.to_sym] = "rows #{number_of_rows} : UPC code #{product_property.errors.full_messages.join(' ,')}"
+            errors.push(error)
+          else
+            p product_property
+            p "property saved "
+          end
         end
       rescue Exception => e
         Hash error = Hash.new

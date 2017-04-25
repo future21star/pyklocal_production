@@ -18,7 +18,7 @@
             .form-group.required.clearfix
               label.col-sm-2.control-label for="input-email"  E-Mail Address
               .col-sm-10
-                = f.email_field :email, class: "form-control",maxlength: "50",id: "forget-password-email", placeholder: "Enter Email"
+                = f.email_field :email, class: "form-control",maxlength: "50",id: "forgot-password-email", placeholder: "Enter Email"
                 span#invalid-email
           .buttons.clearfix
             .pull-left
@@ -42,7 +42,7 @@
     $(document).ready(function(){
       $('#new_spree_user').on('submit', function(e){
           e.preventDefault();
-          if (!validateEmail()) {
+          if (!validateForgotEmail()) {
             $('#invalid-email').html("<p class='inline-error'> Email is Invalid </p>");
             $('.inline-error').css("display", "block");
           }
@@ -53,25 +53,25 @@
       });
     });
 
-    $('#forget-password-email').on('focusout',function(){
-      console.log(validateEmail());
-      if ( $('#forget-password-email').val() == null || $('#forget-password-email').val() == ''){
+    $('#forgot-password-email').on('focusout',function(){
+      if ( $('#forgot-password-email').val() == null || $('#forgot-password-email').val() == ''){
         $('#invalid-email').html("<p class='inline-error'> Email can not be blank </p>");
          $('.inline-error').css("display", "block");
          return;
       }
-      if (validateEmail() == true){
+      if (validateForgotEmail() == true){
          $('.inline-error').css("display", "none");
       }
       else{
+        console.log("jsbskjdhkjsdh");
          $('#invalid-email').html("<p class='inline-error'> Email is Invalid </p>");
          $('.inline-error').css("display", "block");
       }
 
     });
 
-    function validateEmail(){
+    function validateForgotEmail(){
       var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  ;
-          console.log($('#forget-password-email').val());
-          return re.test($('#forget-password-email').val());
+          console.log($('#forgot-password-email').val());
+          return re.test($('#forgot-password-email').val());
     }

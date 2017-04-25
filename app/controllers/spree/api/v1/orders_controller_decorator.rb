@@ -53,14 +53,14 @@ module Spree
 		def create
 			begin
 				
-				unless Spree::Variant.exists?((params[:order][:line_items]).first.values.first)
+				unless Spree::Variant.exists?((params[:order][:line_items]).first.values.last)
 					render json:{
 						status: "0",
 						message: "Product is no longer available"
 					}
 					return
 				end
-				variant  = Spree::Variant.find((params[:order][:line_items]).first.values.first)
+				variant  = Spree::Variant.find((params[:order][:line_items]).first.values.last)
 				if (variant.product.visible == false)  || (variant.product.buyable == false)
 					render json:{
 						status: "0",

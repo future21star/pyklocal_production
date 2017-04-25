@@ -1,12 +1,13 @@
 class UserMailer < ActionMailer::Base
 
-  default from: 'sales@pyklocal.com'
+  # default from: 'sales@pyklocal.com'
+  default from: 'admin@pyklocal.com'
  
  	def edit_store(user, store, token)
  		@store = store
  		@token = token
  		@user = user
- 		mail(to: user.email,from: 'sales@pyklocal.com', subject: 'Edit store instruction')
+ 		mail(to: user.email,from: 'admin@pyklocal.com', subject: 'Edit store instruction')
  	end
 
  	def notify_store_save(store)
@@ -69,13 +70,14 @@ class UserMailer < ActionMailer::Base
   def notify_items_out_for_delivery(line_items)
     @user = line_items.first.order.user
     @line_items = line_items
-    mail(to: @user.email, subject: "Out For Delivery")
+    mail(to: @user.email, from: "sales@pyklocal.com",subject: "Out For Delivery")
   end
 
   def notify_order_items_delivered(order)
+    p "7777777777777"
     @order = order
     @user = order.user
-    mail(to: @user.email , subject: "PykLocal Order Delivered Confirmation")
+    mail(to: @user.email ,from: "sales@pyklocal.com",subject: "PykLocal Order Delivered Confirmation")
   end
 
   def notify_seller_cancel_order(order,email)

@@ -170,13 +170,6 @@ module Spree
 		def perform_search
 			per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12
       @search = Sunspot.search(Spree::Product) do 
-        p "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-        p  params[:q][:id].present?
-        p  params[:q][:id].blank?
-        p params[:q][:id].blank?
-        p params[:q][:search]
-        p params[:q][:id] == ""
-        p params[:q][:store_id] !=  nil
         #p params[:q].present? && params[:q][:id].blank?
         # fulltext params[:q][:search] if params[:q] && params[:q][:search] != "\"\""
         fulltext "*#{params[:q][:search]}*" if params[:q] && params[:q][:search] != "" && params[:q][:search] !=  nil
