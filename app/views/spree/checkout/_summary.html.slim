@@ -29,9 +29,10 @@ ul.amount
         | Shipping :
         small= 'Free Delivery' if order.shipments.to_a.sum(&:cost).to_f <= 0
       span= Spree::Money.new(order.shipments.to_a.sum(&:cost), currency: order.currency).to_html
-  li
-    label Sales Tax
-    span= Spree::Money.new(order.all_adjustments.nonzero.tax.eligible.sum(:amount), currency: order.currency).to_html
+  -if order.all_adjustments.nonzero.tax.eligible.present?      
+    li
+      label Sales Tax
+      span= Spree::Money.new(order.all_adjustments.nonzero.tax.eligible.sum(:amount), currency: order.currency).to_html
 
   - if order.adjustments.nonzero.eligible.exists?
     tbody#summary-order-charges data-hook=""

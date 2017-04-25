@@ -39,17 +39,20 @@
                           <div class="col-sm-7 col-xs-12">
                             <ul>
                               <li>Estimated Total</li>
+                              <li></li>
                               <li>
                                 <span>Subtotal <small>(<%= @order.line_items.sum(:quantity) %> item)</small></span>
                                 <span><%= order_form.object.display_item_total %></span>
                               </li>
                               <li>
-                                <span>Tax</span>
-                                <span>
-                                  <% @order.all_adjustments.tax.eligible.group_by(&:label).each do |label, adjustments| %>
-                                    <%= render "spree/orders/adjustment_row", :label => label, :adjustments => adjustments, :type => Spree.t(:tax) %>
-                                  <% end %>
-                                </span>
+                                <% if @order.all_adjustments.tax.eligible.present? %>
+                                  <span>Tax</span>
+                                    <span>
+                                      <% @order.all_adjustments.tax.eligible.group_by(&:label).each do |label, adjustments| %>
+                                        <%= render "spree/orders/adjustment_row", :label => label, :adjustments => adjustments, :type => Spree.t(:tax) %>
+                                      <% end %>
+                                    </span>
+                                <% end %>
                               </li>
                               <li><span>Total</span> <span><%= order_form.object.display_total %></span></li>
                             </ul>
