@@ -29,7 +29,7 @@ table.table.table-bordered.admin-report data-hook="sales_total"
           td= truncate(line_item.product.name,:length => 100)
           td= number_to_currency(line_item.variant.price)
           td= line_item.quantity
-          td= line_item.tax_category.name
+          td= line_item.tax_category.present? ? line_item.tax_category.name : "NA"
           -if @brand.present?
             td= truncate(@brand.first.value, :length => 30)
           -else

@@ -121,7 +121,7 @@ class Merchant::OrdersController < Merchant::ApplicationController
     p current_spree_user.stores.first
     @store = current_spree_user.stores.first
     @is_owner = is_owner?(@store)
-    @return_orders = @store.customer_return_items.where(status: "refunded").collect(&:order_id).uniq
+    @return_orders = @store.customer_return_items.where(status: "refunded").order("created_at desc").collect(&:order_id).uniq
   end
 
   def approve
