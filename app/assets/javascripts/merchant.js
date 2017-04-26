@@ -244,10 +244,14 @@ $(document).ready(function() {
                   if (results[1]) {
                     var string =[];
                     var array = results[1].formatted_address.split(",");
+                     console.log(array);
+                     console.log(array.length)
+                     console.log(array[array.length-4]);
                     $.ajax({
                       url: "/api/v1/merchant_stores/"+$this.data("store_id")+"/update_location",
                       method: "put",
-                      data: { "merchant_store[latitude]": myCompany.lastMarker.position.lat(), "merchant_store[longitude]": myCompany.lastMarker.position.lng(),"merchant_store[street_number]": array[array.length-4], "merchant_store[city]": array[array.length-3],"merchant_store[state]": array[array.length-2], "merchant_store[country]": array[array.length-1]},
+                      // data: { "merchant_store[latitude]": myCompany.lastMarker.position.lat(), "merchant_store[longitude]": myCompany.lastMarker.position.lng(),"merchant_store[street_number]": array[array.length-4], "merchant_store[city]": array[array.length-3],"merchant_store[state]": array[array.length-2], "merchant_store[country]": array[array.length-1]},
+                      data: { "merchant_store[latitude]": myCompany.lastMarker.position.lat(), "merchant_store[longitude]": myCompany.lastMarker.position.lng()},
                       success: function(data, status) {
                         if(data.success) {
                           $("#map-preview").data("latitude", myCompany.lastMarker.position.lat());
