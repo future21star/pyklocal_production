@@ -6,7 +6,7 @@ module Spree
     super
    end
 
-   def create
+  def create
     @user = Spree::User.where(email: params[:spree_user][:email]).first
     self.resource = warden.authenticate!(auth_options)
     set_flash_message(:notice, :signed_in) if is_navigational_format?
@@ -24,7 +24,7 @@ module Spree
       end
      
     end
-   end
+  end
 
    def destroy
     super
