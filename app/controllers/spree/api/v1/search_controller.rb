@@ -22,7 +22,7 @@ module Spree
     				status: "1", 
     				message: "Search Result",
             cart_count: @user.cart_count.to_s,
-            number_of_pages: (@search.total / per_page.to_f).ceil().to_s,
+            number_of_pages: @search_result.total_pages.to_s,
             total_product: @search.total.to_s,
             attributes: to_stringify_attribute_json(@all_facets, []),
     				details:  to_stringify_product_json(@products , @user ,[])

@@ -78,7 +78,8 @@ Spree::User.class_eval do
 
   def cart_count
     cart_count_sum = 0
-    @order = orders.where("state != ? AND state != ? AND state != ?","complete","canceled","returned").last
+    # @order = orders.where("state != ? AND state != ? AND state != ?","complete","canceled","returned").last
+    @order = self.last_incomplete_spree_order
     unless @order.blank?
       @order.line_items.each do |line_item|
         cart_count_sum = cart_count_sum + line_item.quantity

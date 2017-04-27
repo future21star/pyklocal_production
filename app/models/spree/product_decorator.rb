@@ -91,17 +91,21 @@ module Spree
 
 
     def in_wishlist(user)
-      variant_id_arr = variants.collect(&:id)
-      variant_id_arr.push(master.id)
-      unless user.wishlists.blank?
-        variant_id_arr.each do |variant|
-          @wish = user.wishlists.where(variant_id: variant)
-          unless @wish.blank?
-            return "1"
-          end
-        end
+      if (variants_including_master.collect(&:id) & user.wishlists.collect(&:variant_id)).present?
+        return "1"
+      else
+        return "0"
       end
-      return "0"
+      # variant_id_arr = variants_including_master.collect(&:id)
+      # unless user.wishlists.blank?
+      #   variant_id_arr.each do |variant|
+      #     @wish = user.wishlists.where(variant_id: variant)
+      #     unless @wish.blank?
+      #       return "1"
+      #     end
+      #   end
+      # end
+      # return "0"
     end
 
     def discount
