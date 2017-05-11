@@ -1,0 +1,27 @@
+table.table.table-bordered.admin-report data-hook="sales_total"
+  thead
+    tr
+      th= Spree.t(:Duration)
+      th= Spree.t(:store_name)
+      th= Spree.t(:total_sale_amount)
+      th= Spree.t(:total_tax)
+      th= Spree.t(:commission)
+      th= "Return Amount"
+      th= "Return Tax"
+      th= "Amount Due"
+  tbody
+    - @store_sale_array.each do |merchant|
+      tr id = merchant[:id]
+        - duration = ""
+        - if @view_mode === "daily" 
+          - duration = merchant[:start_date].to_s 
+        - else 
+          - duration = merchant[:start_date].to_s + "~" + merchant[:end_date].to_s
+        td = duration
+        td = merchant[:name]
+        td = merchant[:sales_amount]
+        td = merchant[:tax]
+        td = merchant[:commission]
+        td = merchant[:amount_return]
+        td = merchant[:tax_return]
+        td = merchant[:amount_due]

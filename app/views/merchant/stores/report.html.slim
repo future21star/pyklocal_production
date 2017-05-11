@@ -1,0 +1,71 @@
+#container
+  .container
+    ul.breadcrumb
+        li
+          a href="/" 
+            i.fa.fa-home
+            | Home
+        li 
+          a href=merchant_path
+            | Merchant
+
+        li 
+          a href=merchant_store_path(@store)
+            | Store
+        li
+          span 
+            = @store.name
+    .row
+      .col-sm-3
+        = render :partial => "merchant/shared/seller"
+              / = link_to "Contact Seller", new_message_path(to_user_id: @store.store_spree_users.first.spree_user_id), class: "store-link"
+      .col-sm-9
+      	.row
+      		= form_tag store_report_merchant_store_path(@store), id: "store-report-form", method: :post, data: {remote: true}
+      			.row.form-group
+      				.col-sm-6
+	      				=label_tag nil, Spree.t(:from)
+	      				=text_field_tag :start_date, @start_date, class: "form-control"
+      				.col-sm-6
+	      				=label_tag nil, Spree.t(:to)
+	      				=text_field_tag :end_date, @end_date, class: "form-control"
+	      			.col-sm-2.col-sm-offset-10
+	      				=select_tag "view_mode", "<option value='daily'>Daily</option><option value='weekly' selected>Weekly</option><option value='monthly'>Monthly</option>".html_safe, class: "form-control view-mode-select"
+				.row.store-report-wrapper
+					table.table.table-bordered.admin-report data-hook="sales_total"
+					  thead
+					    tr
+					      th= Spree.t(:Duration)
+					      th= Spree.t(:store_name)
+					      th= Spree.t(:total_sale_amount)
+					      th= Spree.t(:total_tax)
+					      th= Spree.t(:commission)
+					      th= "Return Amount"
+					      th= "Return Tax"
+					      th= "Amount Due"
+					  tbody
+					    - @store_sale_array.each do |merchant|
+					      tr id = merchant[:id]
+					      	- duration = merchant[:start_date].to_s + "~" + merchant[:end_date].to_s
+					        td = duration
+					        td = merchant[:name]
+					        td = merchant[:sales_amount]
+					        td = merchant[:tax]
+					        td = merchant[:commission]
+					        td = merchant[:amount_return]
+					        td = merchant[:tax_return]
+					        td = merchant[:amount_due]
+-content_for :js 
+	javascript:
+		$('#start_date').datepicker();
+		$('#end_date').datepicker();
+		$('#store-report-form').on('ajax:success', function(e, data, status, xhr) {
+			console.log("aaaaaaaaaaaaaaa", data);
+			$(".store-report-wrapper").html(data);
+		});
+		$('#store-report-form input').on('change', function(e){
+			$('#store-report-form').submit();
+		})
+		$('#store-report-form select').on('change', function(e){
+			$('#store-report-form').submit();
+		})

@@ -81,7 +81,6 @@ module Spree
 			end
 
 			def store_sale_product
-
 				@date1 = params[:orders_completed_start].to_date
 				@date2 = params[:orders_completed_end].to_date
 				@store_id = params[:store_id]

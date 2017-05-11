@@ -1,7 +1,7 @@
 class Merchant::StoresController < Merchant::ApplicationController
 
 	before_filter :authenticate_user!, except: [:show, :new, :create, :index,:edit,:update]
-  before_action :set_store, only: [:show, :edit, :update, :destroy]
+  before_action :set_store, only: [:show, :edit, :update, :destroy, :report, :store_report]
   # before_action :validate_token, only: [:edit, :update] 
   before_action :perform_search, only: [:show]
 
@@ -119,6 +119,25 @@ class Merchant::StoresController < Merchant::ApplicationController
     end
   end
 
+
+  def report
+    @is_owner = is_owner?(@store)
+    merchant = Merchant::Store.find(@store.id)
+    @start_date = (Date.today - 1.week).strftime('%m/%d/%Y')
+    @end_date = (Date.today).strftime('%m/%d/%Y')
+    @store_sale_array = get_store_sale_array_for_report(Date.today - 1.week, Date.today, "weekly", merchant)
+  end
+
+  def store_report
+    @is_owner = is_owner?(@store)
+    merchant = Merchant::Store.find(@store.id)
+    start_date = Date.strptime(params[:start_date], "%m/%d/%Y")
+    end_date = Date.strptime(params[:end_date], "%m/%d/%Y")
+    @view_mode = params[:view_mode]
+    @store_sale_array = get_store_sale_array_for_report(start_date, end_date, params[:view_mode], merchant)
+    render :layout => false
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_store
@@ -130,6 +149,40 @@ class Merchant::StoresController < Merchant::ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
       params.require(:merchant_store).permit(:name, :estimated_delivery_time, :active, :certificate, :payment_mode, :description, :manager_first_name, :manager_last_name, :phone_number, :store_type, :street_number, :city, :state, :zipcode, :country, :site_url, :terms_and_condition, :payment_information, :logo, spree_taxon_ids: [], store_users_attributes: [:spree_user_id, :store_id, :id])
+    end
+
+    def get_store_sale_array_for_report(start_date, end_date, view_mode, merchant)
+      store_sale_array = []
+      date = start_date
+      date1 = date2 = date
+      while date <= end_date
+        if view_mode === "daily"
+          date1 = date
+          date2 = date
+          date = date + 1.day
+        elsif view_mode === "weekly"
+          date1 = date
+          date2 = date + 1.week
+          date = date + 1.week
+        else
+          date1 = date
+          date2 = date + 1.month
+          date = date + 1.month
+        end
+        Hash merchant_hash = Hash.new
+        merchant_hash["start_date".to_sym] = date1
+        merchant_hash["end_date".to_sym] = date2
+        merchant_hash["id".to_sym] = merchant.id
+        merchant_hash["name".to_sym] = merchant.name
+        merchant_hash["sales_amount".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",date1,date2).joins(:product).where(spree_products:{store_id: merchant.id}).collect{|obj| obj.price * obj.quantity}.sum.to_f.round(2)
+        merchant_hash["tax".to_sym] = Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",date1,date2).joins(:product).where(spree_products:{store_id: merchant.id}).select("spree_line_items.quantity,spree_line_items.price,spree_line_items.tax_category_id").collect{|x| Spree::TaxCategory.find(x.tax_category_id).tax_rates.first.amount * x.price * x.quantity}.sum.to_f.round(2)
+        merchant_hash["amount_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",date1,date2, merchant.id,"refunded").sum(:item_return_amount).to_f.round(2)
+        merchant_hash["tax_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",date1,date2, merchant.id,"refunded").sum(:tax_amount).to_f.round(2)           
+        merchant_hash["commission".to_sym] = (( merchant_hash[:sales_amount] *  Spree::Commission.last.percentage ) /100).round(2)
+        merchant_hash["amount_due".to_sym] = (merchant_hash[:sales_amount] - merchant_hash[:commission] - merchant_hash[:amount_return]).round(2)
+        store_sale_array.push(merchant_hash)   
+      end
+      return store_sale_array
     end
 
     def remove_subtaxon(taxons,store)

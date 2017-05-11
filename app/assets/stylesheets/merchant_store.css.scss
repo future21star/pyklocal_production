@@ -1,0 +1,86 @@
+
+#ui-datepicker-div {
+  background-color: white;
+  background-image: none;
+  color: #555555;
+  border-color: #e0e0e0;
+  width: auto;
+  padding: 20px;
+}
+#ui-datepicker-div.ui-corner-all {
+  border-radius: 2px;
+}
+#ui-datepicker-div .ui-datepicker-header {
+  border-radius: 0;
+  border: none;
+  background-image: none;
+  background-color: transparent;
+}
+#ui-datepicker-div .ui-widget-header .ui-icon {
+  background-color: transparent;
+  background-image: none;
+  text-indent: 0;
+  vertical-align: bottom !important;
+  width: 12px;
+  color: #478DC1;
+}
+#ui-datepicker-div .ui-state-hover {
+  border: none;
+  background-image: none;
+  background-color: transparent;
+  transition: color 0.2s ease-in-out;
+  cursor: pointer;
+}
+#ui-datepicker-div .ui-state-hover span.ui-icon {
+  color: #7DB942;
+}
+#ui-datepicker-div .ui-datepicker-next-hover {
+  right: 2;
+}
+#ui-datepicker-div .ui-datepicker-prev-hover {
+  left: 2;
+}
+#ui-datepicker-div .ui-datepicker-title {
+  font-weight: 500;
+  color: #555555;
+}
+#ui-datepicker-div table.ui-datepicker-calendar th span {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #478DC1;
+  font-weight: 500;
+}
+#ui-datepicker-div table.ui-datepicker-calendar td {
+  width: 31px;
+  height: 29px;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+#ui-datepicker-div table.ui-datepicker-calendar td .ui-state-default,
+#ui-datepicker-div table.ui-datepicker-calendar td .ui-widget-content .ui-state-default,
+#ui-datepicker-div table.ui-datepicker-calendar td .ui-widget-header .ui-state-default {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  text-align: center;
+  font-weight: 300;
+}
+#ui-datepicker-div table.ui-datepicker-calendar td:hover {
+  background-color: #eeeeee;
+}
+#ui-datepicker-div table.ui-datepicker-calendar td:active {
+  background-color: #7DB942;
+}
+#ui-datepicker-div table.ui-datepicker-calendar td:active a {
+  color: white;
+}
+.glyphicon-chevron-left:before, .icon.icon-chevron-left:before, #ui-datepicker-div .ui-widget-header .ui-icon.ui-icon-circle-triangle-w:before {
+  content: "\e079";
+}
+
+.glyphicon-chevron-right:before, .icon.icon-chevron-right:before, #ui-datepicker-div .ui-widget-header .ui-icon.ui-icon-circle-triangle-e:before {
+  content: "\e080";
+}
+.view-mode-select {
+  margin-top: 10px;
+  float: right;
+}

@@ -10,6 +10,10 @@ Pyklocal::Application.routes.draw do
     get "stores/:store_id/orders", to: "orders#index", as: :store_orders
 
     resources :stores do
+      member do
+        get 'report'
+        post 'store_report'
+      end
       collection do
         resources :amazon_products do
           collection do
