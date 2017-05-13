@@ -13,6 +13,7 @@ Pyklocal::Application.routes.draw do
       member do
         get 'report'
         post 'store_report'
+        post 'sale_product'
       end
       collection do
         resources :amazon_products do

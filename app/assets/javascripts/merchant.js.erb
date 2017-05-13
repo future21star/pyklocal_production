@@ -2,7 +2,6 @@
 //= require noty/jquery.noty
 //= require noty/layouts/topCenter
 //= require noty/themes/default
-
 $.ajaxSetup({
   headers: {
     'X-Spree-Token': $('meta[name="csrf-token"]').attr('content')
@@ -301,6 +300,52 @@ $(document).ready(function() {
   }
   
   var myCompany = new Store();
+
+  $('#start_date').datepicker();
+  $('#end_date').datepicker();
+  $('#store-report-form').on('ajax:success', function(e, data, status, xhr) {
+    $(".store-report-wrapper").html(data);
+    $(".store-product-info").on('click', function(e) {
+      $.ajax({
+        type: "POST",
+        url: "/merchant/stores/the-xyz-store/sale_product",
+        data: {store_id: $(this).attr("id"), start_date: $(this).attr("data-start-date"), end_date: $(this).attr("data-end-date")},
+        success: function(data){
+          $('#store-product-modal .modal-content').html(data); 
+          $('#store-product-modal').modal();
+        },
+        error: function(data) {
+
+        }
+      });      
+    });
+  });
+  $('#start_date').on('change', function(e){
+    $('#hidden-start-date').val($(this).val());
+    $('#store-report-form').submit();
+  })
+  $('#end_date').on('change', function(e){
+    $('#hidden-end-date').val($(this).val());
+    $('#store-report-form').submit();
+  })
+  $('#store-report-form select').on('change', function(e){
+    $('#hidden-view-mode').val($(this).val())
+    $('#store-report-form').submit();
+  })
+  $('.store-product-info').on('click', function(e) {
+    $.ajax({
+      type: "POST",
+      url: "/merchant/stores/the-xyz-store/sale_product",
+      data: {store_id: $(this).attr("id"), start_date: $(this).attr("data-start-date"), end_date: $(this).attr("data-end-date")},
+      success: function(data){
+        $('#store-product-modal .modal-content').html(data); 
+        $('#store-product-modal').modal();
+      },
+      error: function(data) {
+
+      }
+    })
+  })
 });
 
 

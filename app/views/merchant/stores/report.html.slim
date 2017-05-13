@@ -15,12 +15,22 @@
         li
           span 
             = @store.name
+        li
+        	span
+        		| report
     .row
       .col-sm-3
         = render :partial => "merchant/shared/seller"
               / = link_to "Contact Seller", new_message_path(to_user_id: @store.store_spree_users.first.spree_user_id), class: "store-link"
       .col-sm-9
       	.row
+      		= form_tag store_report_merchant_store_path(@store, :format => :xls), id: "download-report-form"
+    				=hidden_field_tag :start_date, @start_date, id: "hidden-start-date"
+    				=hidden_field_tag :end_date, @end_date, id: "hidden-end-date"
+    				=hidden_field_tag :view_mode, "weekly", id: "hidden-view-mode"
+    				=submit_tag "Download as xml", class: "btn btn-primary btn-download"
+
+    		.row
       		= form_tag store_report_merchant_store_path(@store), id: "store-report-form", method: :post, data: {remote: true}
       			.row.form-group
       				.col-sm-6
@@ -36,7 +46,6 @@
 					  thead
 					    tr
 					      th= Spree.t(:Duration)
-					      th= Spree.t(:store_name)
 					      th= Spree.t(:total_sale_amount)
 					      th= Spree.t(:total_tax)
 					      th= Spree.t(:commission)
@@ -47,25 +56,26 @@
 					    - @store_sale_array.each do |merchant|
 					      tr id = merchant[:id]
 					      	- duration = merchant[:start_date].to_s + "~" + merchant[:end_date].to_s
-					        td = duration
-					        td = merchant[:name]
+					        td 
+					          a.store-product-info id = merchant[:id] data-start-date = merchant[:start_date] data-end-date = merchant[:end_date]	
+					        		= duration
 					        td = merchant[:sales_amount]
 					        td = merchant[:tax]
 					        td = merchant[:commission]
 					        td = merchant[:amount_return]
 					        td = merchant[:tax_return]
 					        td = merchant[:amount_due]
--content_for :js 
-	javascript:
-		$('#start_date').datepicker();
-		$('#end_date').datepicker();
-		$('#store-report-form').on('ajax:success', function(e, data, status, xhr) {
-			console.log("aaaaaaaaaaaaaaa", data);
-			$(".store-report-wrapper").html(data);
-		});
-		$('#store-report-form input').on('change', function(e){
-			$('#store-report-form').submit();
-		})
-		$('#store-report-form select').on('change', function(e){
-			$('#store-report-form').submit();
-		})
+#store-product-modal.modal.fade[role="dialog"]
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        button.close[type="button" data-dismiss="modal"]
+          | ×
+        h4.modal-title
+          h3.store-name
+      .modal-body
+        table.table-responsive.table-bordered.store-product-report
+          
+      .modal-footer
+        button.btn.btn-default[type="button" data-dismiss="modal"]
+          | Close					        

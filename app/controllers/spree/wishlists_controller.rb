@@ -4,9 +4,9 @@ class Spree::WishlistsController < Spree::StoreController
 
   def index
     @wishlists = current_spree_user.try(:wishlists)
-    if @wishlists.present?
-      @wishlists = @wishlists.select{|wishlist| wishlist.variant.product.visible == true && wishlist.variant.product.buyable == true}
-    end
+    # if @wishlists.present?
+    #   @wishlists = @wishlists.select{|wishlist| wishlist.variant.product.visible == true && wishlist.variant.product.buyable == true}
+    # end
   end
 
   def create

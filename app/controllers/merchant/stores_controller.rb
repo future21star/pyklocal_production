@@ -135,6 +135,56 @@ class Merchant::StoresController < Merchant::ApplicationController
     end_date = Date.strptime(params[:end_date], "%m/%d/%Y")
     @view_mode = params[:view_mode]
     @store_sale_array = get_store_sale_array_for_report(start_date, end_date, params[:view_mode], merchant)
+    if params[:download_excel] && eval(params[:download_excel])
+      request.format = "xls"
+      respond_to do |format|
+        format.xls #{ send_file(file_name) }
+      end
+    else
+      render :layout => false
+    end
+  end
+
+  def sale_product
+    @date1 = params[:start_date].to_date
+    @date2 = params[:end_date].to_date
+    @store_id = params[:store_id]
+    @store = Merchant::Store.find(params[:store_id])
+
+    @sale_product =  Spree::LineItem.where("(delivery_state = ? OR delivery_type = ?) AND (DATE(spree_line_items.updated_at) >= ? AND DATE(spree_line_items.updated_at) <= ?)","delivered","pickup",@date1,@date2).joins(:product).where(spree_products:{store_id: @store_id})
+      # .select("spree_line_items.variant_id, spree_line_items.quantity").group("spree_line_items.variant_id").sum("spree_line_items.quantity")
+    @product_sale_arr = []
+    @return_item_arr = []
+    p "****************"
+    p @sale_product
+    @sale_product.each do |line_item|
+      # variant = Spree::Variant.find(variant_id)
+      Hash product_sale_hash = Hash.new
+      product_sale_hash["name".to_sym] = line_item.variant.product.name
+      product_sale_hash["price".to_sym] = line_item.price.to_f.round(2)
+      product_sale_hash["tax_rate".to_sym] = line_item.tax_category_id.present? ? line_item.tax_category.tax_rates.first.amount.to_f : variant.product.tax_category.tax_rates.first.amount.to_f 
+      # product_sale_hash["option_name".to_sym] = variant.option_name
+      product_sale_hash["qty".to_sym] = line_item.quantity
+
+      @product_sale_arr.push(product_sale_hash)
+    end
+    
+    @return_items =  Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",@date1,@date2, @store_id,"refunded").group("customer_return_items.line_item_id").sum("customer_return_items.return_quantity")
+
+    unless @return_items.blank?
+      @return_items.keys.each do |return_item|
+        p return_item
+        Hash return_item_hash = Hash.new
+        variant = Spree::LineItem.find(return_item).variant
+        return_item_hash["name".to_sym] = variant.product.name
+        return_item_hash["price".to_sym] = variant.price.to_f.round(2)
+        return_item_hash["tax_rate".to_sym] = variant.tax_category_id.present? ? variant.tax_category.tax_rates.first.amount.to_f : variant.product.tax_category.tax_rates.first.amount.to_f 
+        # return_item_hash["option_name".to_sym] = variant.option_name
+        return_item_hash["qty".to_sym] = @return_items[return_item]
+
+         @return_item_arr.push(return_item_hash)
+      end
+    end
     render :layout => false
   end
 

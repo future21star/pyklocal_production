@@ -1,0 +1,28 @@
+h3 = @store.name
+- if @product_sale_arr.any? or @return_item_arr.any?
+	hr
+	table.table.table-bordered.admin-report data-hook="sales_product"
+	  thead
+	    tr
+	      th= Spree.t(:Name)
+	      th= Spree.t("Price(USD)")
+	      th= Spree.t(:Quantity)
+	      th= Spree.t("Tax(Rate %)")
+	      th= Spree.t(:Status)
+	  tbody
+	    - @product_sale_arr.each do |product|
+	      tr id = product[:id]
+	        td = product[:name]
+	        td = product[:price]
+	        td = product[:qty]
+	        td = product[:tax_rate]
+	        td Purchased
+	    - @return_item_arr.each do |product|
+	      tr id = product[:id]
+	        td = product[:name]
+	        td = product[:price]
+	        td = product[:qty]
+	        td = product[:tax_rate]
+	        td Return
+- else
+	span No Products Found

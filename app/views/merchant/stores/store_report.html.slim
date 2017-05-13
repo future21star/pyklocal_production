@@ -2,7 +2,6 @@ table.table.table-bordered.admin-report data-hook="sales_total"
   thead
     tr
       th= Spree.t(:Duration)
-      th= Spree.t(:store_name)
       th= Spree.t(:total_sale_amount)
       th= Spree.t(:total_tax)
       th= Spree.t(:commission)
@@ -17,11 +16,13 @@ table.table.table-bordered.admin-report data-hook="sales_total"
           - duration = merchant[:start_date].to_s 
         - else 
           - duration = merchant[:start_date].to_s + "~" + merchant[:end_date].to_s
-        td = duration
-        td = merchant[:name]
+        td 
+          a.store-product-info id = merchant[:id] data-start-date = merchant[:start_date] data-end-date = merchant[:end_date]
+            = duration
         td = merchant[:sales_amount]
         td = merchant[:tax]
         td = merchant[:commission]
         td = merchant[:amount_return]
         td = merchant[:tax_return]
-        td = merchant[:amount_due]
+        td = merchant[:amount_due]      
+

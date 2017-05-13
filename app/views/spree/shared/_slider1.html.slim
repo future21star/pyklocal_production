@@ -1,26 +1,17 @@
-.container-fluid
-  .row
-    .col-xs-12.text-center.free-shipping
-      h5.wow.fadeInDown data-wow-delay="0.3s"
-        | Get
-        strong FREE SHIPPING
-        | when you order
-        strong $50
-        | or more!
 #carousel-example-generic.carousel.slide data-ride="carousel"
   .carousel-inner role="listbox"
     - unless @carousel_images.blank?
       - @carousel_images.each_with_index do |carousel_image, index|
         .item class=('active' if index <= 0)
           .carousel-caption
-            .col-sm-6.col-xs-12.text-center.caption-ir
-              h1.wow.fadeInDown data-wow-delay="0.3s"
-                | SAVE
-                strong up TO 25%
-              p.wow.fadeInLeft data-wow-delay="0.3s"  Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-              a.wow.fadeInUp data-wow-delay="0.3s" href="/shop"  shop now!
-            .col-sm-6.col-xs-12.text-center.hidden-xs.wow.fadeInRight data-wow-delay="0.3s"
-              img alt="pyk" height="289" src="#{carousel_image.image.url}" width="507" /
+            / .col-sm-6.col-xs-12.text-center.caption-ir
+            /   h1.wow.fadeInDown data-wow-delay="0.3s"
+            /     | SAVE
+            /     strong up TO 25%
+            /   p.wow.fadeInLeft data-wow-delay="0.3s"  Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+            /   a.wow.fadeInUp data-wow-delay="0.3s" href="/shop"  shop now!
+            .col-sm-12.col-xs-12.text-center.hidden-xs.wow.fadeInRight.banner-img-wrapper data-wow-delay="0.3s"
+              img alt="pyk" src="#{carousel_image.image.url}" /
     - else
       .item.active
         .carousel-caption
