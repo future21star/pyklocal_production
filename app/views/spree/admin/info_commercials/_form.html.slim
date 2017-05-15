@@ -1,0 +1,21 @@
+- content_for :page_title do
+  - if @info_commercial.new_record?
+    = Spree.t(:new_info_commercial)
+  - else
+    = Spree.t(:edit_info_commercial)
+- content_for :page_actions do
+  = button_link_to Spree.t(:back_to_info_commercials), admin_info_commercials_url, :class => "btn-success", :icon => 'arrow-left', :id => 'admin_new_order'
+.row
+  .col-md-6.col-xs-12
+    = form_for [:admin, @info_commercial], html: {class: 'horizontal-form'} do |f|
+      .form-group
+        = f.label "video", "Video", class: 'control-label'
+        = f.file_field :video, class: 'form-control'
+      .form-group
+        label
+          = f.check_box :active
+          |  Active
+      .form-group
+        = f.submit nil, class: 'btn btn-primary'
+        = link_to Spree.t(:cancel), admin_info_commercials_url, class: 'btn btn-default margin-left'
+

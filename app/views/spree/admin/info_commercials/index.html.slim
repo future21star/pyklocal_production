@@ -1,0 +1,21 @@
+= button_link_to Spree.t(:new_info_commercial), new_admin_info_commercial_url, :class => "btn-success", :icon => 'add', :id => 'admin_new_order'
+
+table.table.table-stripped
+  thead
+    tr
+      td Video
+      td Active
+      td Actions
+  tbody
+    - unless @info_commercials.blank?
+      - @info_commercials.each do |info_commercial|
+        tr
+          td= video_tag info_commercial.video.url, class: 'img-responsive'
+          td= info_commercial.active
+          td
+            = button_link_to "", edit_admin_info_commercial_url(info_commercial), class: "btn-default", icon: 'edit'
+            = button_link_to "", admin_info_commercial_path(info_commercial), class: "btn-danger margin-left", icon: 'remove', method: :delete
+    - else
+      tr
+        td colspan="3"
+          span No record found-

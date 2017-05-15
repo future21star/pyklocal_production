@@ -320,6 +320,8 @@ GEM
       cocaine (~> 0.5.5)
       mime-types
       mimemagic (= 0.3.0)
+    paperclip-ffmpeg (1.0.1)
+      paperclip (>= 2.5.2)
     paranoia (2.1.5)
       activerecord (~> 4.0)
     pdf-core (0.7.0)
@@ -624,6 +626,7 @@ DEPENDENCIES
   letter_opener
   mysql2 (>= 0.3.13, < 0.5)
   noty-rails
+  paperclip-ffmpeg (~> 1.0.1)
   progress_bar
   puma
   quiet_assets
@@ -659,4 +662,4 @@ DEPENDENCIES
   zip-zip
 
 BUNDLED WITH
-   1.13.6
+   1.14.3

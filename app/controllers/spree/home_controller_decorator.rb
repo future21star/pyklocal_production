@@ -33,6 +33,7 @@ Spree::HomeController.class_eval do
 		@bag_categories = Spree::Taxon.root.children.first.try(:products)
 		@clothing_categories = Spree::Taxon.root.children.last.try(:products)
     @carousel_images = Spree::CarouselImage.where(is_static: false).active
+    @info_commercials = Spree::InfoCommercial.all
     @top_static_images = Spree::StaticImage.where(is_static: true, position: "top").active.limit(2)
     @middle_static_images = Spree::StaticImage.where(is_static: true, position: "middle").active.limit(3)
     @bottom_static_image = Spree::StaticImage.where(is_static: true, position: "bottom").active.last

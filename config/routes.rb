@@ -214,6 +214,7 @@ Pyklocal::Application.routes.draw do
       resources :commissions
       resources :feedbacks
       resources :carousel_images
+      resources :info_commercials
       resources :static_images
       resources :cancel_orders
 

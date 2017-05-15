@@ -59,7 +59,35 @@ production: &production
       :default_url: '/images/pyc-logo.png'
       :convert_options:
         :all: '-strip -auto-orient -colorspace sRGB'
-        
+  :info_commercials:
+    :videos:
+      :storage: !ruby/symbol s3
+      :s3_protocol: <%= Rails.env == 'production' ? :https : :http %>
+      :s3_credentials:
+        <<: *default_settings
+      :styles:
+        :mp4video:
+          :geometry: '520x390'
+          :format: 'mp4'
+          :convert_option: 
+            :output:
+              :vcode: 'libx264'
+              :vpre: 'ipod640'
+              :b: '250k'
+              :bt: '50k'
+              :acode: 'libfaac'
+              :ab: '56k'
+              :ac: 2
+        :preview:
+          :geometry: '300x300>'
+          :format: 'jpg'
+          :time: 5
+      :processors: ['ffmpeg']
+      :size: 
+        :in: 0..25.megabytes
+      :s3_permissions: 'public_read'
+      :url: '/info_commercials/:id/:basename.:extension'
+      :path: '/info_commercials/:id/:basename.:extension'
 development:
   <<: *production
 

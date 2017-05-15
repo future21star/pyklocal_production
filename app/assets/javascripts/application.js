@@ -18,6 +18,7 @@
 //= require new_design/lightslider
 //= require new_design/jquery.flexslider
 //= require new_design/custom
+//= require home
 
 //= stub merchant.js
 //= stub chatbox.min.js

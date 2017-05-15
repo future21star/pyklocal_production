@@ -50,10 +50,9 @@ section.product_part
   .container-fluid
     .row
       .col-sm-6.col-xs-12.text-center.wow.fadeInLeft data-wow-delay="0.3s"
-        a href="#"
-          = image_tag(asset_path('new_design/add-big-1.jpg'), height: 303, width: 585 )
+        a href="javascript:;"
+          = video_tag @info_commercials[0].video.url, size:"585x303"
       .col-sm-6.col-xs-12.text-center.wow.fadeInRight data-wow-delay="0.3s"
-        a href="#"
-          = image_tag(asset_path('new_design/add-big-2.jpg'), height: 303, width: 585 )
-
+        a href="javascript:;"
+          = video_tag @info_commercials[1].video.url, size:"585x303"
 

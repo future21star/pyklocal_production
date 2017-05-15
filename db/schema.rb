@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170417131016) do
+ActiveRecord::Schema.define(version: 20170513085306) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -145,6 +145,16 @@ ActiveRecord::Schema.define(version: 20170417131016) do
   add_index "impressions", ["impressionable_type", "impressionable_id", "session_hash"], name: "poly_session_index", using: :btree
   add_index "impressions", ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index", length: {"impressionable_type"=>nil, "message"=>255, "impressionable_id"=>nil}, using: :btree
   add_index "impressions", ["user_id"], name: "index_impressions_on_user_id", using: :btree
+
+  create_table "info_commercials", force: :cascade do |t|
+    t.string   "video_file_name",    limit: 255
+    t.string   "video_content_type", limit: 255
+    t.integer  "video_file_size",    limit: 4
+    t.datetime "video_updated_at"
+    t.boolean  "active"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
 
   create_table "payment_histories", force: :cascade do |t|
     t.integer  "user_id",            limit: 4
@@ -391,6 +401,16 @@ ActiveRecord::Schema.define(version: 20170417131016) do
 
   add_index "spree_gateways", ["active"], name: "index_spree_gateways_on_active", using: :btree
   add_index "spree_gateways", ["test_mode"], name: "index_spree_gateways_on_test_mode", using: :btree
+
+  create_table "spree_info_commercials", force: :cascade do |t|
+    t.boolean  "active"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "video_file_name",    limit: 255
+    t.string   "video_content_type", limit: 255
+    t.integer  "video_file_size",    limit: 4
+    t.datetime "video_updated_at"
+  end
 
   create_table "spree_inventory_units", force: :cascade do |t|
     t.string   "state",        limit: 255
