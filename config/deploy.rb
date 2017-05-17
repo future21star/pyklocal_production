@@ -12,7 +12,7 @@ set :whenever_environment, defer { 'production' }
 # Application configuration
 set :application, 'pyklocal'
 set :repository,  'git@github.com:/pyklocal/pyklocal.git'
-set :branch, 'master'
+set :branch, 'vendor_dashboard#2'
 set :scm, :git
 
 # Server-side system wide settings
