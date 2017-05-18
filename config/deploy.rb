@@ -12,7 +12,7 @@ set :whenever_environment, defer { 'production' }
 # Application configuration
 set :application, 'pyklocal'
 set :repository,  'git@github.com:/pyklocal/pyklocal.git'
-set :branch, 'master'
+set :branch, 'vendor_dashboard#2'
 set :scm, :git
 
 # Server-side system wide settings
@@ -36,8 +36,8 @@ namespace :deploy do
     sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
     sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
     run "mkdir -p #{shared_path}/config"
-    put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
-    puts "Now edit the config files in #{shared_path}."
+    # put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
+    # puts "Now edit the config files in #{shared_path}."
   end
 
   after "deploy:setup", "deploy:setup_config"
@@ -75,8 +75,13 @@ namespace :deploy do
   after  "deploy:started", "figaro:setup"
   after "deploy:symlink:release", "figaro:symlink"
   desc "Restart the application"
-  task :restart, :roles => :app, :except => { :no_release => true } do
-    run "cd #{current_path} && RAILS_ENV=#{stage} bundle exec pumactl -S #{current_path}/tmp/pids/puma-production.state restart"
+  task :puma_restart, :roles => :app, :except => { :no_release => true } do
+    run "cd #{current_path} && RAILS_ENV=#{stage} bundle exec pumactl -S #{shared_path}/sockets/puma.state restart"
+  end
+
+  desc "Start the application"
+  task :puma_start, :roles => :app, :except => { :no_release => true } do
+    run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec puma -t 8:32 -b 'unix://#{shared_path}/sockets/puma.sock' -S #{shared_path}/sockets/puma.state --control 'unix://#{shared_path}/sockets/pumactl.sock' >> #{shared_path}/log/puma-#{rails_env}.log 2>&1 &", :pty => false
   end
 
   desc <<-DESC
