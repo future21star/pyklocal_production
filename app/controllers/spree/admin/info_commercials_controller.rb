@@ -15,7 +15,6 @@ class Spree::Admin::InfoCommercialsController < Spree::Admin::ResourceController
   end
 
   def create
-  	debugger
     @info_commercial = Spree::InfoCommercial.new(info_commercial_params)
     if @info_commercial.save
       redirect_to admin_info_commercials_path, notice: "Video is saved successfully"
