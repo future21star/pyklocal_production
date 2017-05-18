@@ -1,6 +1,6 @@
 # Settings for staging server
-# server '54.202.62.141', :app, :web, :db, :primary => true
-server '54.202.62.141', user: 'w3villa', roles: %w{web app db}
+server '54.202.62.141', :app, :web, :db, :primary => true
+# server '54.202.62.141', :user => 'w3villa', :roles => %w{web app db}
 set :rails_env, 'production'
 
 set :use_sudo, false
