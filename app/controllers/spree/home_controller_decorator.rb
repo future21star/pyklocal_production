@@ -11,7 +11,7 @@ Spree::HomeController.class_eval do
     end 
 		# @searcher = build_searcher(params.merge(include_images: true))
   #   @products = @searcher.retrieve_products.includes(:possible_promotions)
-    @search = Sunspot.search(Spree::Product)
+    # @search = Sunspot.search(Spree::Product)
     @products = @search.results
     @view_search = Sunspot.search(Spree::Product) do 
       order_by(:view_counter, :desc)
