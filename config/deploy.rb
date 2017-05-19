@@ -84,6 +84,12 @@ namespace :deploy do
     run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec puma -t 8:32 -b 'unix://#{shared_path}/sockets/puma.sock' -S #{shared_path}/sockets/puma.state --control 'unix://#{shared_path}/sockets/pumactl.sock' >> #{shared_path}/log/puma-#{rails_env}.log 2>&1 &", :pty => false
   end
 
+  desc "Start the sunspot"
+  task :sunspot_start, :roles => :app, :except => { :no_release => true } do
+    run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake sunspot:solr:start"
+  end
+
+
   desc <<-DESC
     Clean up any assets that haven't been deployed for more than :expire_assets_after seconds.
     Default time to keep old assets is one week. Set the :expire_assets_after variable
