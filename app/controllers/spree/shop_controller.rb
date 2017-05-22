@@ -1,6 +1,6 @@
 class Spree::ShopController < Spree::StoreController
 
-    before_filter :load_all_facets, only: [:index, :show]
+    # before_filter :load_all_facets, only: [:index, :show]
     before_filter :perform_search, only: [:index, :show]
 
   def index 
@@ -28,6 +28,9 @@ class Spree::ShopController < Spree::StoreController
     def load_all_facets
       @all_facets = Sunspot.search(Spree::Product) do 
         fulltext "*#{params[:q][:search]}*"  if params[:q] && params[:q][:search]
+        if params[:q] && params[:q][:category]
+          with(:taxon_name, params[:q][:category])
+        end
         # if params[:q] && params[:q][:categories]
         #   any_of do 
         #     params[:q][:categories].each do |category|
@@ -78,6 +81,9 @@ class Spree::ShopController < Spree::StoreController
       @search = Sunspot.search(Spree::Product) do 
         fulltext "*#{params[:q][:search]}*" if params[:q] && params[:q][:search]
         paginate(:page => params[:page], :per_page => per_page)
+        if params[:q] && params[:q][:category]
+          with(:taxon_name, params[:q][:category])
+        end
         with(:buyable, :true)
         with(:visible, :true)
         with(:taxon_ids, Spree::Taxon.where(permalink: params[:id]).collect(&:id)) if params[:id].present?

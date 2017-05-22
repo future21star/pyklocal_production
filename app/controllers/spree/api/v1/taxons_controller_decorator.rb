@@ -12,17 +12,25 @@ module Spree
           if params[:ids]
             @taxons = current_spree_user.stores.first.spree_taxons.where(id: params[:ids].split(', '))
           else
-            @taxons = current_spree_user.stores.first.spree_taxons.order(:taxonomy_id, :lft).ransack(params[:q]).result 
+            @taxons = current_spree_user.stores.first.spree_taxons.order(:taxonomy_id, :lft).ransack(params[:q]).result
+            ids = []
+            @taxons.each do |category|
+              ids.push(category.id)
+            end
+            query = Spree::Taxon.where(parent_id:ids, id: ids)            
+            @taxons = Spree::Taxon.where(query.where_values.map(&:to_sql).join(" OR ")).order(:taxonomy_id, :lft).ransack(params[:q]).result
+
           end
         else
           if params[:ids]
             @taxons = Spree::Taxon.accessible_by(current_ability, :read).where(id: params[:ids].split(','))
           else
-            @taxons = Spree::Taxon.accessible_by(current_ability, :read).order(:taxonomy_id, :lft).ransack(params[:q]).result
+            @taxons = Spree::Taxon.order(:taxonomy_id, :lft).ransack(params[:q]).result
           end
         end
       end 
       @taxons = @taxons.page(params[:page]).per(params[:per_page])   
+      # @taxons = all_category
       respond_with(@taxons)
     end
 

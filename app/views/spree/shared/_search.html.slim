@@ -1,15 +1,27 @@
 - @taxons = @taxon && @taxon.parent ? @taxon.parent.children : Spree::Taxon.roots
 - type = current_spree_user.try(:registration_type) == "vendor"? true : false
-= form_tag '/shop', :method => 'get' do
+= form_tag '/shop', :method => 'get', :id => 'global-search-form' do
   .input-group.search-box
     .input-group-btn.search-panel
-      button.btn.btn-default.dropdown-toggle data-toggle="dropdown" type="button"
-        span#search_concept All
-        / i.fa.fa-angle-down aria-hidden="true"
-      / ul.dropdown-menu role="menu"
-        - @taxons.each do |taxon|
-          li
-            = link_to taxon.name, taxon.name
+      =select_tag "q[category]", get_all_categories_option, class: "form-control"
+      / select.form-control#radiusFilter name="q[categoris]"
+      /   option value="" 10000
+      /   option value="2" 2 KM
+      /   option value="5" 5 KM
+      /   option value="10" 10 KM
+      /   option value="50" More than 10 KM    
+      / .dropdown
+        / .btn.btn-primary.dropdown-toggle type="button" data-toggle="dropdown"
+        /   = "Dropdown Example"
+        /   span.caret
+      / =select_tag "q[categories]", get_all_categories_option 
+      / button.btn.btn-default.dropdown-toggle data-toggle="dropdown" type="button"
+      /   span#search_concept All
+      /   / i.fa.fa-angle-down aria-hidden="true"
+      / / ul.dropdown-menu role="menu"
+      /   - @taxons.each do |taxon|
+      /     li
+      /       = link_to taxon.name, taxon.name
     input#search_param name="search_param" type="hidden" value="all" /
     - if params[:q] && params[:q][:lat]
       = hidden_field_tag "q[lat]", params[:q][:lat]
@@ -21,3 +33,5 @@
     span.input-group-btn
       button.btn.btn-default.button-search type="submit"
         i.fa.fa-search aria-hidden="true"
+
+

@@ -41,6 +41,7 @@ var pyklocal = {
 		this.filterByRadius();
 		this.filterProducts();
     this.sortProduct();
+    this.globalSearch();
     this.changeNoOfProductShow();
     this.applyCoupon();
     this.configurePhoneField();
@@ -114,6 +115,13 @@ var pyklocal = {
     });
   },
 
+  globalSearch: function() {
+    $('#q_category').change(function() {
+      console.log('aaaaaaaaaaaaaaaaaaaaaa');
+      $('#global-search-form').submit();
+    })
+  },
+  
   changeNoOfProductShow: function() {
     $('#noOfItem').change(function() {
       $('#itemShow').submit();

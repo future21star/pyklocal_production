@@ -40,6 +40,7 @@
                 th Delivery Type
                 th Driver Name
                 th Actions
+                th Date
             tbody
               - unless @orders.blank?
                 - @orders.each do |order|
@@ -74,9 +75,10 @@
                               - elsif order.items_state(line_item_ids) == "out_for_delivery"
                                 = link_to "Out For Delivery", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: "out"), class: "btn btn-success", method: :put
                               - else
-                                = link_to "Delivered", "#", class: "btn btn-success", disabled: true
+                                = link_to "Delivered at #{l(order.updated_at, format: '%d/%m/%Y')}", "#", class: "btn btn-success order-status", disabled: true
                             -elsif order.state == "canceled"
                               = link_to "Canceled", "#", class: "btn btn-danger"
+                          td
                         - else
                           tr
                             td= line_item.product.try(:name)
@@ -85,6 +87,7 @@
                             td= line_item.price.to_f
                             td= line_item.delivery_type.try(:humanize)
                             td= line_item.driver.try(:full_name) || "-"
+
               - else
                 tr
                   td colspan="7"

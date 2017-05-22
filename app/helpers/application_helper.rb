@@ -21,6 +21,14 @@ module ApplicationHelper
     return nil;
   end
 
+  def get_all_categories_option
+    options = ""
+    Spree::Taxon.all.each do |category|
+      options+="<option value='#{category.name}'>#{category.name}</option>"
+    end
+    return options.html_safe    
+  end
+
   def link_to_add_fields_function(name, f, association)
     new_object = f.object.class.reflect_on_association(association).klass.new
     fields = f.fields_for(association, new_object, :child_index => "new_#{association}") do |builder|

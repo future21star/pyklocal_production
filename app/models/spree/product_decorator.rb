@@ -154,11 +154,25 @@ module Spree
     end
 
     def self.max_price
-      self.all.collect(&:price).max.to_i
+      collection = self.all.collect(&:price)
+      max_price = 0
+      self.all.collect(&:price).each do |price|
+        if price != nil and max_price.to_i < price.to_i
+          max_price = price
+        end
+      end
+      return max_price.to_i
     end
 
     def self.min_price
-      self.all.collect(&:price).min.to_i
+      collection = self.all.collect(&:price)
+      min_price = 100000
+      self.all.collect(&:price).each do |price|
+        if price != nil and min_price.to_i > price.to_i
+          min_price = price
+        end
+      end
+      return min_price.to_i
     end
 
     def sell_count

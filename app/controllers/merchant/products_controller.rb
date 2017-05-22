@@ -41,7 +41,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   end
 
   def edit
-    @shipping_categories = Spree::ShippingCategory.all
+    @shipping_categories = []
     @tax_categories = Spree::TaxCategory.all
     @is_owner = is_owner?(current_spree_user.stores.first)
   end
@@ -60,13 +60,15 @@ class Merchant::ProductsController < Merchant::ApplicationController
   end
 
   def bulk_upload
+    debugger
     row_array = Array.new
     unless params[:file].blank?
       if params[:file].original_filename.split('.').second.strip != 'csv'
         redirect_to :back, notice: "Uploaded file must have .csv extension"
       else
         my_file = params[:file]
-        ImportProductWorker.perform_in(5.seconds, my_file.path, current_spree_user.email)
+        # ImportProductWorker.perform_in(5.seconds, my_file.path, current_spree_user.email)
+        ImportProductWorker.new.perform(my_file.path, current_spree_user.email)
         redirect_to merchant_products_path, notice: "Your product importing from the csv you uploaded, we will notify you it's progress through email"
         return
       end

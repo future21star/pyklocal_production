@@ -3,6 +3,7 @@ class ImportProductWorker
   sidekiq_options retry: false
 
   def perform(csv_path, seller_email)
+    debugger
     seller = Spree::User.find_by_email(seller_email)
     CsvUploadMailer.start_uploading(seller).deliver
     shipping_category_id = Spree::ShippingCategory.find_by_name("Default").try(:id)
