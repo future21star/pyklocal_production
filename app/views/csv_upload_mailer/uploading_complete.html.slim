@@ -21,8 +21,12 @@
                 tr
                   td.text-center 
                     = err
-        span total counts: #{@errors.length}
     br
+      | Total Products Count: #{ @total_count } ( Published: #{ @total_count - @errors.length },   Unpublished: #{ @errors.length })
+    br
+      | 
+    br
+      | 
     br
       | You can see your products on your dashboard.
     br

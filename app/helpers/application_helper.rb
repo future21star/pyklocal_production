@@ -1,5 +1,7 @@
 module ApplicationHelper
 
+  @@current_search_category = "all"
+
 	def show_taxanomies?
 		(controller.class.to_s == "Spree::HomeController") && (action_name == "index")
 	end
@@ -21,10 +23,24 @@ module ApplicationHelper
     return nil;
   end
 
+  def setCurrentCategory(category)
+    @@current_search_category = category
+  end
+
+  def getCurrentCategory(category)
+    return @@current_search_category
+  end
+
   def get_all_categories_option
-    options = ""
+    options = "<option value='all'>All</option>"
     Spree::Taxon.all.each do |category|
-      options+="<option value='#{category.name}'>#{category.name}</option>"
+      if !category.parent_id
+        if @@current_search_category == category.name 
+          options+="<option value='#{category.name}' selected>#{category.name}</option>"
+        else
+          options+="<option value='#{category.name}'>#{category.name}</option>"
+        end
+      end
     end
     return options.html_safe    
   end

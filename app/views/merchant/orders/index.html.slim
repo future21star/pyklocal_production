@@ -31,38 +31,39 @@
           table.table.table-striped
             thead
               tr
-                th= sort_link @search, :number, "Order Number"
-                th= sort_link @search, :completed_at, "Ordered on"
-                th Item Name
-                th Variants
-                th Quantity
-                th= sort_link @search, :total, "Amount"
-                th Delivery Type
-                th Driver Name
-                th Actions
+                th.order-th = sort_link @search, :number, "Order Number"
+                th.order-th = sort_link @search, :completed_at, "Ordered on"
+                th.order-th Item Name
+                th.order-th Variants
+                th.order-th Quantity
+                th.order-th = sort_link @search, :total, "Amount"
+                th.order-th Delivery Type
+                th.order-th Driver Name
+                th.order-th Actions
+                th.order-th Date & Time
             tbody
               - unless @orders.blank?
                 - @orders.each do |order|
                   - if order.completed?
                     - line_item_ids = order.get_home_delivery_line_item_ids(@store.id)
                     tr
-                      td.align-middle rowspan="#{order.get_store_line_items(@store.id).count}"
+                      td.align-middle.order-th rowspan="#{order.get_store_line_items(@store.id).count}"
                         / = link_to order.try(:number), edit_merchant_order_path(order)
                         - if order.get_store_delivered_line_items(@store.id).count == line_item_ids.count
                          = link_to order.try(:number), merchant_order_customer_return_items_path(order), title: "Return Order"
                         - else
                           = order.try(:number)
-                      td rowspan="#{order.get_store_line_items(@store.id).count}"
+                      td.order-th rowspan="#{order.get_store_line_items(@store.id).count}"
                         = order.completed_at.strftime("%d-%m-%Y")
                       - order.get_store_line_items(@store.id).each_with_index do |line_item, index|
                         - if index == 0
-                          td= line_item.product.try(:name)
-                          td= line_item.variant.options_text
-                          td= line_item.quantity
-                          td= line_item.price.to_f
-                          td= line_item.delivery_type.try(:humanize)
-                          td= line_item.driver.try(:full_name) || "-"
-                          td.align-middle rowspan="#{order.get_store_line_items(@store.id).count}"
+                          td.order-th= line_item.product.try(:name)
+                          td.order-th= line_item.variant.options_text
+                          td.order-th= line_item.quantity
+                          td.order-th= line_item.price.to_f
+                          td.order-th= line_item.delivery_type.try(:humanize)
+                          td.order-th= line_item.driver.try(:full_name) || "-"
+                          td.align-middle.order-th rowspan="#{order.get_store_line_items(@store.id).count}"
                             - if line_item_ids.present? && order.state != "canceled"
                               - if order.items_state(line_item_ids) == "packaging"
                                 = link_to "In process", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: "ready_to_pick"), class: "btn btn-success", method: :put
@@ -74,22 +75,24 @@
                               - elsif order.items_state(line_item_ids) == "out_for_delivery"
                                 = link_to "Out For Delivery", spree.order_ready_to_pick_path(order, item_ids: line_item_ids, option: "out"), class: "btn btn-success", method: :put
                               - else
-                                = link_to "Delivered at #{l(order.updated_at, format: '%d/%m/%Y')}", "#", class: "btn btn-success order-status", disabled: true
+                                = link_to "Delivered", "#", class: "btn btn-success order-status", disabled: true
                             -elsif order.state == "canceled"
                               = link_to "Canceled", "#", class: "btn btn-danger"
-                          td
+                          td.order-th
+                            - if order.items_state(line_item_ids) == "delivered"
+                              = l(order.updated_at, format: '%d/%m/%Y %H-%M')
                         - else
                           tr
-                            td= line_item.product.try(:name)
-                            td= line_item.variant.options_text
-                            td= line_item.quantity
-                            td= line_item.price.to_f
-                            td= line_item.delivery_type.try(:humanize)
-                            td= line_item.driver.try(:full_name) || "-"
+                            td.order-th= line_item.product.try(:name)
+                            td.order-th= line_item.variant.options_text
+                            td.order-th= line_item.quantity
+                            td.order-th= line_item.price.to_f
+                            td.order-th= line_item.delivery_type.try(:humanize)
+                            td.order-th= line_item.driver.try(:full_name) || "-"
 
               - else
                 tr
-                  td colspan="7"
+                  td.order-th colspan="7"
                     span No orders found.
         - if @orders.respond_to?(:num_pages)
           = paginate @orders

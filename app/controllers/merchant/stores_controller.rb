@@ -169,15 +169,16 @@ class Merchant::StoresController < Merchant::ApplicationController
       @product_sale_arr.push(product_sale_hash)
     end
     
-    @return_items =  Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",@date1,@date2, @store_id,"refunded").group("customer_return_items.line_item_id").sum("customer_return_items.return_quantity")
+    @return_items =  Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",@date1,@date2, @store_id,"refunded").group("customer_return_items.line_item_id", "customer_return_items.item_return_amount").sum("customer_return_items.return_quantity")
 
     unless @return_items.blank?
-      @return_items.keys.each do |return_item|
+      @return_items.keys.each do |key|
+        return_item = key[0]
         p return_item
         Hash return_item_hash = Hash.new
         variant = Spree::LineItem.find(return_item).variant
         return_item_hash["name".to_sym] = variant.product.name
-        return_item_hash["price".to_sym] = variant.price.to_f.round(2)
+        return_item_hash["price".to_sym] = key[1]
         return_item_hash["tax_rate".to_sym] = variant.tax_category_id.present? ? variant.tax_category.tax_rates.first.amount.to_f : variant.product.tax_category.tax_rates.first.amount.to_f 
         # return_item_hash["option_name".to_sym] = variant.option_name
         return_item_hash["qty".to_sym] = @return_items[return_item]
@@ -230,9 +231,10 @@ class Merchant::StoresController < Merchant::ApplicationController
         merchant_hash["tax_return".to_sym] = Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",date1,date2, merchant.id,"refunded").sum(:tax_amount).to_f.round(2)           
         merchant_hash["commission".to_sym] = (( merchant_hash[:sales_amount] *  Spree::Commission.last.percentage ) /100).round(2)
         merchant_hash["amount_due".to_sym] = (merchant_hash[:sales_amount] - merchant_hash[:commission] - merchant_hash[:amount_return]).round(2)
-        if merchant_hash["sales_amount".to_sym] != 0.0 and merchant_hash["tax".to_sym] != 0.0 and merchant_hash["amount_return".to_sym] and merchant_hash["tax_return".to_sym] != 0.0 and merchant_hash["commission".to_sym] != 0.0 and merchant_hash["amount_due".to_sym] != 0.0
-          store_sale_array.push(merchant_hash)   
+        if merchant_hash["sales_amount".to_sym] == 0.0 and merchant_hash["tax".to_sym] == 0.0 and merchant_hash["amount_return".to_sym] == 0.0 and merchant_hash["tax_return".to_sym] == 0.0 and merchant_hash["commission".to_sym] == 0.0 and merchant_hash["amount_due".to_sym] == 0.0
+          next
         end
+        store_sale_array.push(merchant_hash)   
       end
       return store_sale_array
     end

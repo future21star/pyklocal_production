@@ -1,6 +1,6 @@
 class Spree::ShopController < Spree::StoreController
-
-    # before_filter :load_all_facets, only: [:index, :show]
+  include ApplicationHelper
+    before_filter :load_all_facets, only: [:index, :show]
     before_filter :perform_search, only: [:index, :show]
 
   def index 
@@ -15,12 +15,14 @@ class Spree::ShopController < Spree::StoreController
     @taxons = Spree::Taxon.where.not(name: "categories") 
     @taxonomies = Spree::Taxonomy.includes(root: :children) 
     @store = Merchant::Store.all
+    setCurrentCategory(params[:q][:category])
   end
 
   def show 
     @taxon_name = params[:id]
     @price_array = params[:q][:price].to_s if params[:q] && params[:q][:price]
     @products = @search.results
+    setCurrentCategory(params[:q][:category])    
   end
 
   private 
@@ -81,7 +83,7 @@ class Spree::ShopController < Spree::StoreController
       @search = Sunspot.search(Spree::Product) do 
         fulltext "*#{params[:q][:search]}*" if params[:q] && params[:q][:search]
         paginate(:page => params[:page], :per_page => per_page)
-        if params[:q] && params[:q][:category]
+        if params[:q] && params[:q][:category] && params[:q][:category] != "all"
           with(:taxon_name, params[:q][:category])
         end
         with(:buyable, :true)

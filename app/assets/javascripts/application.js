@@ -116,10 +116,9 @@ var pyklocal = {
   },
 
   globalSearch: function() {
-    $('#q_category').change(function() {
-      console.log('aaaaaaaaaaaaaaaaaaaaaa');
-      $('#global-search-form').submit();
-    })
+    // $('#q_category').change(function() {
+    //   $('#global-search-form').submit();
+    // })
   },
   
   changeNoOfProductShow: function() {

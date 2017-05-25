@@ -50,9 +50,9 @@ production: &production
       :styles:
         :mini: '50x50>'
         :large: '350x350>'
-        :banner: '750x400#'
+        :banner: '850x400#'
         :thumb: '360x360#'
-        :landscape: '1140x75#'
+        :landscape: '1140x750#'
       :url: '/carousel_images/:id/:style/:basename.:extension'
       :path: '/carousel_images/:id/:style/:basename.:extension'
       :default_style: :banner

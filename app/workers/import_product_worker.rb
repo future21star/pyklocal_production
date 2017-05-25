@@ -8,17 +8,19 @@ class ImportProductWorker
     shipping_category_id = Spree::ShippingCategory.find_by_name("Default").try(:id)
     store_id = seller.stores.first.try(:id)
     errors = []
-    number_of_rows = 0;
+    number_of_rows = 0
     total_product = 0
-    exception_flag = true;
+    exception_flag = true
+    total_product_count = 0 
     begin
       p "1111111111"
       CSV.foreach(csv_path) do |row|
+        total_product_count += 1
         p "---------------------------------------------------"
         p row.include?("Product Name")
         p row.include?("Description")
         unless row.include?("Product Name") && row.include?("Description")
-          number_of_rows = number_of_rows + 1 ;
+          number_of_rows = number_of_rows + 1
          unless row[0].blank? 
             sku = row[0][0..2].upcase+SecureRandom.hex(5).upcase
             Spree::Product.analize_and_create(row[0], row[2], sku, Time.zone.now.strftime("%Y/%m/%d"), row[1], shipping_category_id, row[6], store_id, row[7], row[8], row[9], row[4], row[10], row[5], row[3],row[11],errors, number_of_rows,total_product)
@@ -42,7 +44,7 @@ class ImportProductWorker
       end
       p errors
       p total_product
-      CsvUploadMailer.uploading_complete(seller,errors).deliver
+      CsvUploadMailer.uploading_complete(seller, number_of_rows, errors).deliver
     end
   end
 end
