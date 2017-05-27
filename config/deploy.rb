@@ -11,8 +11,8 @@ set :whenever_environment, defer { 'production' }
 
 # Application configuration
 set :application, 'pyklocal'
-set :repository,  'git@github.com:/pyklocal/pyklocal.git'
-set :branch, 'vendor_dashboard#2'
+set :repository,  'git@github.com:future21star/pyklocal_production.git'
+set :branch, 'production'
 set :scm, :git
 
 # Server-side system wide settings
