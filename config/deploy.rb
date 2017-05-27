@@ -87,7 +87,7 @@ namespace :deploy do
 
   desc "Start the sunspot"
   task :sunspot_start, :roles => :app, :except => { :no_release => true } do
-    run "mkdir #{current_path}/solr/default/data"
+    # run "mkdir #{current_path}/solr/default/data"
     run "cp -r #{shared_path}/solr/default/data/* #{current_path}/solr/default/data/"
     run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake sunspot:solr:start"
   end

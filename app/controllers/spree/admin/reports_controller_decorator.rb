@@ -130,7 +130,6 @@ module Spree
 			end
 
 			def products_sale_report
-				debugger
 				if params[:orders_completed_start].present?
 					@date1 = params[:orders_completed_start].to_date
 					@date2 = params[:orders_completed_end].to_date
