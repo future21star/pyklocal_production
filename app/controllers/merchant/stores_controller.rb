@@ -181,7 +181,7 @@ class Merchant::StoresController < Merchant::ApplicationController
         return_item_hash["price".to_sym] = key[1]
         return_item_hash["tax_rate".to_sym] = variant.tax_category_id.present? ? variant.tax_category.tax_rates.first.amount.to_f : variant.product.tax_category.tax_rates.first.amount.to_f 
         # return_item_hash["option_name".to_sym] = variant.option_name
-        return_item_hash["qty".to_sym] = @return_items[return_item]
+        return_item_hash["qty".to_sym] = @return_items[key]
 
          @return_item_arr.push(return_item_hash)
       end
@@ -210,15 +210,18 @@ class Merchant::StoresController < Merchant::ApplicationController
         if view_mode === "daily"
           date1 = date
           date2 = date
-          date = date + 1.day
+          date = date + 1.day + 1.day
         elsif view_mode === "weekly"
           date1 = date
-          date2 = date + 1.week
-          date = date + 1.week
+          date2 = date + 1.week 
+          date = date + 1.week + 1.day
         else
           date1 = date
           date2 = date + 1.month
-          date = date + 1.month
+          date = date + 1.month + 1.day
+        end
+        if date2 > end_date
+          date2 = end_date
         end
         Hash merchant_hash = Hash.new
         merchant_hash["start_date".to_sym] = date1

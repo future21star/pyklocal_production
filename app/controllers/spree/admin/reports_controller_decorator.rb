@@ -104,20 +104,22 @@ module Spree
 					@product_sale_arr.push(product_sale_hash)
 				 end
 				
-				@return_items =  Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",@date1,@date2, @store_id,"refunded").group("customer_return_items.line_item_id").sum("customer_return_items.return_quantity")
+				@return_items =  Spree::CustomerReturnItem.where("DATE(updated_at) >= ? AND DATE(updated_at) <= ? AND store_id = ? AND status = ?",@date1,@date2, @store_id,"refunded").group("customer_return_items.line_item_id", "customer_return_items.item_return_amount").sum("customer_return_items.return_quantity")
 
 				unless @return_items.blank?
-					@return_items.keys.each do |return_item|
+					@return_items.keys.each do |key|
+						return_item = key[0]
 						p return_item
 						Hash return_item_hash = Hash.new
-						variant = Spree::LineItem.find(return_item).variant
-						return_item_hash["name".to_sym] = variant.product.name
-						return_item_hash["price".to_sym] = variant.price.to_f.round(2)
-						return_item_hash["tax_rate".to_sym] = variant.tax_category_id.present? ? variant.tax_category.tax_rates.first.amount.to_f : variant.product.tax_category.tax_rates.first.amount.to_f 
-						# return_item_hash["option_name".to_sym] = variant.option_name
-						return_item_hash["qty".to_sym] = @return_items[return_item]
-
-						 @return_item_arr.push(return_item_hash)
+						if !Spree::LineItem.where('id':return_item).empty?
+							variant = Spree::LineItem.find(return_item).variant
+							return_item_hash["name".to_sym] = variant.product.name
+							return_item_hash["price".to_sym] = key[1]
+							return_item_hash["tax_rate".to_sym] = variant.tax_category_id.present? ? variant.tax_category.tax_rates.first.amount.to_f : variant.product.tax_category.tax_rates.first.amount.to_f 
+							# return_item_hash["option_name".to_sym] = variant.option_name
+							return_item_hash["qty".to_sym] = @return_items[key]
+							@return_item_arr.push(return_item_hash)							
+						end
 					end
 				end
 				render json: {
@@ -128,6 +130,7 @@ module Spree
 			end
 
 			def products_sale_report
+				debugger
 				if params[:orders_completed_start].present?
 					@date1 = params[:orders_completed_start].to_date
 					@date2 = params[:orders_completed_end].to_date

@@ -3938,9 +3938,15 @@ table.order.paymenthis tr td {
     width: 80px;
     white-space: inherit;
 }
+.search-panel {
+    background-color: #f1f1f1;
+}
 #q_category {
     width: 200px;
-    border: none;   
+    border: none; 
+    box-shadow: none;
+    background-color: #f1f1f1;
+    color: black;  
 }
 .order-th {
     padding: 3px !important;

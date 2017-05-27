@@ -50,11 +50,11 @@ section.product_part
   .container-fluid
     .row
       .col-sm-6.col-xs-12.text-center.wow.fadeInLeft data-wow-delay="0.3s"
-        a href="javascript:;"
-          - if @info_commercials[0]
-            = video_tag @info_commercials[0].video.url, class: "info-commercials", controls: true
+        - if @info_commercials[0]
+          h3.info-commercial-desc How PykLocal works for Customers
+          = video_tag @info_commercials[0].video.url, class: "info-commercials", controls: true
       .col-sm-6.col-xs-12.text-center.wow.fadeInRight data-wow-delay="0.3s"
-        a href="javascript:;"
-          - if @info_commercials[1]
-            = video_tag @info_commercials[1].video.url, class: "info-commercials", controls: true
+        - if @info_commercials[1]
+          h3.info-commercial-desc How Pyklocal works for Vendors
+          = video_tag @info_commercials[1].video.url, class: "info-commercials", controls: true
 
