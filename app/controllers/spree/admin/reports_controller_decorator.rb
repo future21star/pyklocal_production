@@ -111,7 +111,7 @@ module Spree
 						return_item = key[0]
 						p return_item
 						Hash return_item_hash = Hash.new
-						if !Spree::LineItem.where('id':return_item).empty?
+						if !Spree::LineItem.where('id' => return_item).empty?
 							variant = Spree::LineItem.find(return_item).variant
 							return_item_hash["name".to_sym] = variant.product.name
 							return_item_hash["price".to_sym] = key[1]
