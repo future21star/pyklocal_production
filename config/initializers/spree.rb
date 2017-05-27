@@ -20,7 +20,7 @@ FREE_DELIVERY_ORDER_PRICE = 35
 PRODUCT_SHARE_LINK = 'http://localhost:3000/products/'
 
 
-Spree::Store.current.name = "Pyklocal"
+# Spree::Store.current.name = "Pyklocal"
 
 Spree::PrintInvoice::Config.set(logo_path: "pyc_logo.png")
 Spree::PrintInvoice::Config.set(next_number: 1|1234)

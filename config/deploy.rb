@@ -14,6 +14,7 @@ set :application, 'pyklocal'
 set :repository,  'git@github.com:future21star/pyklocal_production.git'
 set :branch, 'production'
 set :scm, :git
+set :linked_files, %w{config/database.yml config/application.yml}
 
 # Server-side system wide settings
 default_run_options[:pty] = true
