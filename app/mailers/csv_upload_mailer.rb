@@ -10,7 +10,6 @@ class CsvUploadMailer < ActionMailer::Base
     @seller = seller
     @errors = errors
     @total_count = total_product_count
-    debugger
     mail(from: "sales@pyklocal.com",to: @seller.email, subject: "Your Product Importing Has Completed")
   end
 
