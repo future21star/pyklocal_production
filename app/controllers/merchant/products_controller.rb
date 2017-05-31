@@ -80,7 +80,6 @@ class Merchant::ProductsController < Merchant::ApplicationController
   end
 
   def update
-    debugger
     redirect_path = params[:redirect_path].present? ? params[:redirect_path] : edit_merchant_product_path(@product)
     if params[:product][:taxon_ids].present?
       params[:product][:taxon_ids] = params[:product][:taxon_ids].split(",")
