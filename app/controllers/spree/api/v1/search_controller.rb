@@ -118,110 +118,107 @@ module Spree
 
     def load_all_facets
       if params[:page] == "1" && params[:filter_apply] == "0"
-        @all_facets = []
-        # @all_facets = Sunspot.search(Spree::Product) do 
-        #   fulltext params[:q][:search] if params[:q] && params[:q][:search]
-        #   if params[:q] && params[:q][:categories]
-        #     any_of do 
-        #       params[:q][:categories].each do |category|
-        #         with(:taxon_name, category)
-        #       end
-        #     end
-        #   end
-        #   if params[:q] && params[:q][:brand]
-        #     any_of do 
-        #       params[:q][:brand].each do |brand|
-        #         with(:brand_name, brand)
-        #       end
-        #     end
-        #   end
-        #   if params[:q] && params[:q][:store]
-        #     any_of do 
-        #       params[:q][:store].each do |store|
-        #         with(:store_name, store)
-        #       end
-        #     end
-        #   end
-        #   if params[:q] && params[:q][:price]
-        #     any_of do 
-        #       params[:q][:price].each do |price|
-        #         with(:price, Range.new(*price.split("..").map(&:to_i)))
-        #       end
-        #     end
-        #   end
-        #   with(:buyable, :true)
-        #   with(:visible, :true)
-        #   with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
-        #   with(:taxon_ids, Spree::Taxon.where(permalink: params[:id]).collect(&:id)) if params[:id].present?
-        #   facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
-        #   facet(:brand_name)
-        #   facet(:store_name)
-        #   facet(:taxon_name)
-        #   if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Highest Price")
-        #     order_by(:price, :desc)
-        #   end
-        #   if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Lowest Price")
-        #     order_by(:price, :asc) if params[:q] && params[:q][:sort_by]
-        #   end
-        # end
-
+        @all_facets = Sunspot.search(Spree::Product) do 
+          fulltext params[:q][:search] if params[:q] && params[:q][:search]
+          if params[:q] && params[:q][:categories]
+            any_of do 
+              params[:q][:categories].each do |category|
+                with(:taxon_name, category)
+              end
+            end
+          end
+          if params[:q] && params[:q][:brand]
+            any_of do 
+              params[:q][:brand].each do |brand|
+                with(:brand_name, brand)
+              end
+            end
+          end
+          if params[:q] && params[:q][:store]
+            any_of do 
+              params[:q][:store].each do |store|
+                with(:store_name, store)
+              end
+            end
+          end
+          if params[:q] && params[:q][:price]
+            any_of do 
+              params[:q][:price].each do |price|
+                with(:price, Range.new(*price.split("..").map(&:to_i)))
+              end
+            end
+          end
+          with(:buyable, :true)
+          with(:visible, :true)
+          with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
+          with(:taxon_ids, Spree::Taxon.where(permalink: params[:id]).collect(&:id)) if params[:id].present?
+          facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
+          facet(:brand_name)
+          facet(:store_name)
+          facet(:taxon_name)
+          if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Highest Price")
+            order_by(:price, :desc)
+          end
+          if (params[:q] && params[:q][:sort_by]) && (params[:q][:sort_by] == "Lowest Price")
+            order_by(:price, :asc) if params[:q] && params[:q][:sort_by]
+          end
+        end
       end
     end
 
 
 		def perform_search
 			per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12
-      @search = []
-      # @search = Sunspot.search(Spree::Product) do 
-      #   #p params[:q].present? && params[:q][:id].blank?
-      #   # fulltext params[:q][:search] if params[:q] && params[:q][:search] != "\"\""
-      #   fulltext "*#{params[:q][:search]}*" if params[:q] && params[:q][:search] != "" && params[:q][:search] !=  nil
-      #   paginate(:page => params[:page], :per_page => per_page)
-      #   with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
-      #   with(:buyable, :true)
-      #   with(:visible, :true)
-      #   with(:store_id, params[:q][:store_id]) if params[:q] && params[:q][:store_id] != "" && params[:q][:store_id] != nil
-      #   with(:taxon_ids, params[:q][:id]) if params[:q] && params[:q][:id] != "" && params[:q][:id] != nil
-      #   facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
-      #   facet(:brand_name)
-      #   facet(:store_name)
-      #   if params[:q] && params[:q][:brand]
-      #     any_of do 
-      #       params[:q][:brand].each do |brand|
-      #         with(:brand_name, brand)
-      #       end
-      #     end
-      #   end
-      #   if params[:q] && params[:q][:store]
-      #     any_of do 
-      #       params[:q][:store].each do |store|
-      #         with(:store_name, store)
-      #       end
-      #     end
-      #   end
-      #   if params[:q] && params[:q][:price]
-      #     any_of do 
-      #       params[:q][:price].each do |price|
-      #         with(:price, Range.new(*price.split("..").map(&:to_i)))
-      #       end
-      #     end
-      #   end
-      #   if (params[:q] && params[:q][:sort_type]) && (params[:q][:sort_type] == "1")
-      #     order_by(:price, :desc)
-      #   end
-      #   if (params[:q] && params[:q][:sort_type]) && (params[:q][:sort_type] == "2")
-      #     order_by(:price, :asc) if params[:q] && params[:q][:sort_type]
-      #   end
-      #   if (params[:q] && params[:q][:parent_category_id]) && (params[:q][:parent_category_id] == "1")
-      #     order_by(:sell_count, :desc)
-      #   end
-      #   if (params[:q] && params[:q][:parent_category_id]) && (params[:q][:parent_category_id] == "2")
-      #     order_by(:created_at, :desc) 
-      #   end
-      #   if (params[:q] && params[:q][:parent_category_id]) && (params[:q][:parent_category_id] == "3")
-      #     order_by(:view_counter, :desc) 
-      #   end
-      # end
+      @search = Sunspot.search(Spree::Product) do 
+        #p params[:q].present? && params[:q][:id].blank?
+        # fulltext params[:q][:search] if params[:q] && params[:q][:search] != "\"\""
+        fulltext "*#{params[:q][:search]}*" if params[:q] && params[:q][:search] != "" && params[:q][:search] !=  nil
+        paginate(:page => params[:page], :per_page => per_page)
+        with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
+        with(:buyable, :true)
+        with(:visible, :true)
+        with(:store_id, params[:q][:store_id]) if params[:q] && params[:q][:store_id] != "" && params[:q][:store_id] != nil
+        with(:taxon_ids, params[:q][:id]) if params[:q] && params[:q][:id] != "" && params[:q][:id] != nil
+        facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
+        facet(:brand_name)
+        facet(:store_name)
+        if params[:q] && params[:q][:brand]
+          any_of do 
+            params[:q][:brand].each do |brand|
+              with(:brand_name, brand)
+            end
+          end
+        end
+        if params[:q] && params[:q][:store]
+          any_of do 
+            params[:q][:store].each do |store|
+              with(:store_name, store)
+            end
+          end
+        end
+        if params[:q] && params[:q][:price]
+          any_of do 
+            params[:q][:price].each do |price|
+              with(:price, Range.new(*price.split("..").map(&:to_i)))
+            end
+          end
+        end
+        if (params[:q] && params[:q][:sort_type]) && (params[:q][:sort_type] == "1")
+          order_by(:price, :desc)
+        end
+        if (params[:q] && params[:q][:sort_type]) && (params[:q][:sort_type] == "2")
+          order_by(:price, :asc) if params[:q] && params[:q][:sort_type]
+        end
+        if (params[:q] && params[:q][:parent_category_id]) && (params[:q][:parent_category_id] == "1")
+          order_by(:sell_count, :desc)
+        end
+        if (params[:q] && params[:q][:parent_category_id]) && (params[:q][:parent_category_id] == "2")
+          order_by(:created_at, :desc) 
+        end
+        if (params[:q] && params[:q][:parent_category_id]) && (params[:q][:parent_category_id] == "3")
+          order_by(:view_counter, :desc) 
+        end
+      end
     end
 		
 

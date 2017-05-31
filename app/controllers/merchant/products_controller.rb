@@ -80,6 +80,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
   end
 
   def update
+    debugger
     redirect_path = params[:redirect_path].present? ? params[:redirect_path] : edit_merchant_product_path(@product)
     if params[:product][:taxon_ids].present?
       params[:product][:taxon_ids] = params[:product][:taxon_ids].split(",")
@@ -95,6 +96,7 @@ class Merchant::ProductsController < Merchant::ApplicationController
        end
      end
     end
+
     if @product.update_attributes(product_params)
       # Sunspot.index(@product)
       # Sunspot.commit

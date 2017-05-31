@@ -8,6 +8,7 @@ module Spree
 		skip_before_filter :authenticate_user
 
 		def update_location
+			debugger
 			if @store.update_attributes(store_params)
 				render json: {
 					success: true
