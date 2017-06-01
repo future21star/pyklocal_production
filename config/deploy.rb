@@ -93,6 +93,10 @@ namespace :deploy do
     run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake sunspot:solr:start"
   end
 
+  desc "Run the sidekiq"
+  task :sidekiq_run, :roles => :app, :except => { :no_release => true } do
+    run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec sidekiq -d"
+  end
 
   desc <<-DESC
     Clean up any assets that haven't been deployed for more than :expire_assets_after seconds.
