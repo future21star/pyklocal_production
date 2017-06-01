@@ -98,6 +98,15 @@ namespace :deploy do
     run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec sidekiq -d"
   end
 
+  desc "Restart the puma server with sunspot and sidekiq"
+  task :server_restart, :roles => :app, :except => { :no_release => true } do
+    run "mkdir #{current_path}/solr/default/data"
+    run "cp -r #{shared_path}/solr/default/data/* #{current_path}/solr/default/data/"
+    run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake sunspot:solr:start"
+    # run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec sidekiq -d"
+    run "cd #{current_path} && RAILS_ENV=#{stage} bundle exec pumactl -S #{shared_path}/sockets/puma.state restart"
+  end
+
   desc <<-DESC
     Clean up any assets that haven't been deployed for more than :expire_assets_after seconds.
     Default time to keep old assets is one week. Set the :expire_assets_after variable
