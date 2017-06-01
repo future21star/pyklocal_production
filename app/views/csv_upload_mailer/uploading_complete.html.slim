@@ -22,7 +22,7 @@
                   td.text-center 
                     = err
     br
-      | Total Products Count: #{ @total_count } ( Published: #{ @total_count - @errors.length },   Unpublished: #{ @errors.length })
+      | Total Products Count: #{ @total_count } ( Published: #{ @total_count - @errors.length + 1 },   Unpublished: #{ @errors.length - 1 })
     br
       | 
     br
