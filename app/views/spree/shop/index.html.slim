@@ -37,12 +37,48 @@ section.product_sec
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
-
+            #filters.collapse.navbar-collapse
+              .filter-box
+                h5 Price
+                ul
+                  - @all_facets.facet(:price).rows.each do |price_row|
+                    - filter_found = true
+                    - selected = (@price_array.include?(price_row.value.to_s)) rescue false
+                    li.filter-field
+                      = check_box_tag "q[price][]", price_row.value, selected, class: "filters"
+                      = number_to_currency("#{price_row.value}").gsub(/\.0\.\./," to $").gsub(/\.0/,"")+" (#{price_row.try(:count).to_i})".html_safe
+              .filter-box
+                h5 Brand
+                ul
+                  - @all_facets.facet(:brand_name).rows.each do |brand_row|
+                    - filter_found = true
+                    - selected = (params[:q][:brand].include?(brand_row.value.to_s)) rescue false
+                    li.filter-field
+                      = check_box_tag "q[brand][]", brand_row.value, selected, class: "filters"
+                      = "#{truncate(brand_row.value,:length=> 30)} (#{brand_row.try(:count).to_i})"
+              .filter-box
+                h5 Store
+                ul
+                  - @all_facets.facet(:store_name).rows.each do |store_row|
+                    - filter_found = true
+                    - selected = (params[:q][:store].include?(store_row.value.to_s)) rescue false
+                    li.filter-field
+                      = check_box_tag "q[store][]", store_row.value, selected, class: "filters"
+                      = "#{truncate(store_row.value,:length=>30)} (#{store_row.try(:count).to_i})"
+              .filter-box
+                h5 Category
+                ul
+                  - @all_facets.facet(:taxon_name).rows.each do |taxon_row|
+                    - filter_found = true
+                    - selected = (params[:q][:categories].include?(taxon_row.value.to_s)) rescue false
+                    li.filter-field
+                      = check_box_tag "q[categories][]", taxon_row.value, selected, class: "filters"
+                      = "#{truncate(taxon_row.value,:length=> 20)} (#{taxon_row.try(:count).to_i})"
       .col-md-9.col-sm-8.col-xs-12
         .sort-bar
           a data-no-turbolink="true" href="#"
             i.fa.fa-bars aria-hidden="true"
-            span.all-products   All Products
+            span.all-products   All Products
           = form_tag " ", method: :get, id: "rFilter" do
             - if params[:q]
               = render partial: "spree/shared/filter_form", locals: {filters: [:price, :search, :sort_by, :per_page]}
@@ -119,7 +155,6 @@ section.product_sec
 
 -content_for :js do
   javascript:
-
     $(document).ready(function(){
       while($('#q_price').length != 0){
         $('#q_price').remove();

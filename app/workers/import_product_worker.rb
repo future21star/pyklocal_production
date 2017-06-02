@@ -42,9 +42,18 @@ class ImportProductWorker
         error["CSV Error".to_sym] = "CSV File is blank"
         errors.push(error)
       end
+
       p errors
       p total_product
-      CsvUploadMailer.uploading_complete(seller, number_of_rows, errors).deliver
+      keys = []
+      error_count = 0
+      errors.each do |item|
+        if not keys.include?(item.keys[0])
+          error_count += 1
+          keys << item.keys[0]
+        end
+      end
+      CsvUploadMailer.uploading_complete(seller, total_product_count - 1, errors, error_count).deliver
     end
   end
 end
