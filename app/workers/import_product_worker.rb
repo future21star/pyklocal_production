@@ -46,7 +46,6 @@ class ImportProductWorker
 
       p errors
       p total_product
-      debugger
       CsvUploadMailer.uploading_complete(seller, total_product_count - 1, errors, error_count).deliver
     end
   end
