@@ -379,11 +379,16 @@ module Spree
       rescue Exception => e
         Hash error = Hash.new
         error[name.to_sym] = "rows #{number_of_rows} : #{e.message}"
+        errors.push(error)
         p "5555555555555555"
       ensure
         p "00000"
         p total_product
-        return errors,total_product
+        if (not product.present?) or product.visible == false
+          return 1
+        else
+          return 0
+        end
       end
     end
 

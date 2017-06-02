@@ -12,6 +12,7 @@ class ImportProductWorker
     total_product = 0
     exception_flag = true
     total_product_count = 0 
+    error_count = 0
     begin
       p "1111111111"
       CSV.foreach(csv_path) do |row|
@@ -23,7 +24,7 @@ class ImportProductWorker
           number_of_rows = number_of_rows + 1
          unless row[0].blank? 
             sku = row[0][0..2].upcase+SecureRandom.hex(5).upcase
-            Spree::Product.analize_and_create(row[0], row[2], sku, Time.zone.now.strftime("%Y/%m/%d"), row[1], shipping_category_id, row[6], store_id, row[7], row[8], row[9], row[4], row[10], row[5], row[3],row[11],errors, number_of_rows,total_product)
+            error_count += Spree::Product.analize_and_create(row[0], row[2], sku, Time.zone.now.strftime("%Y/%m/%d"), row[1], shipping_category_id, row[6], store_id, row[7], row[8], row[9], row[4], row[10], row[5], row[3],row[11],errors, number_of_rows,total_product)
           else
             Hash error = Hash.new
             error["CSV Error".to_sym] = "row " + number_of_rows.to_s + " does not have product name"
@@ -45,14 +46,7 @@ class ImportProductWorker
 
       p errors
       p total_product
-      keys = []
-      error_count = 0
-      errors.each do |item|
-        if not keys.include?(item.keys[0])
-          error_count += 1
-          keys << item.keys[0]
-        end
-      end
+      debugger
       CsvUploadMailer.uploading_complete(seller, total_product_count - 1, errors, error_count).deliver
     end
   end
