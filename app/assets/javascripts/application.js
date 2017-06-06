@@ -580,11 +580,6 @@ $(document).ready(function(){
               this.submit();
           }
       });
+      var cw = $('.carousel-inner > .item').width();
+      $('.carousel-inner > .item').css('height', cw * 0.29 + 'px');
     });
-
-
-
-
-
-
-
