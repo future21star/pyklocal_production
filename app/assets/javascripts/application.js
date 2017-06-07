@@ -581,5 +581,5 @@ $(document).ready(function(){
           }
       });
       var cw = $('.carousel-inner > .item').width();
-      $('.carousel-inner > .item').css('height', cw * 0.29 + 'px');
+      $('.carousel-inner > .item').css('height', cw * 0.23 + 'px');
     });
