@@ -27,7 +27,6 @@ module Spree
         line_item.quantity += quantity.to_i
         line_item.currency = currency unless currency.nil?
       else
-        debugger
         opts = { currency: order.currency }.merge ActionController::Parameters.new(options).
                                             permit(PermittedAttributes.line_item_attributes)
         

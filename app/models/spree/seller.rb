@@ -14,7 +14,6 @@ module Spree
 
 	  def destroy_store
 	   # if stores.present?
-	   debugger
 	    p "----------------------------------"
       query = Sunspot.search(Spree::Product) do 
         with(:store_name, stores.first.name)
@@ -22,7 +21,6 @@ module Spree
       products = query.results
       products.each do |product|
       	if !product.destroy || !product.variants_including_master.destroy_all
-      		debugger
       		product.update_column(:deleted_at, Time.now)
 					product.variants_including_master.update_all(deleted_at: Time.now)      		
       	end

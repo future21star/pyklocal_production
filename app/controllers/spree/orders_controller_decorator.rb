@@ -37,7 +37,6 @@ Spree::OrdersController.class_eval do
 
     
 	def populate
-    debugger
     if !params.key?("variant_id") || (Spree::Variant.find(params[:variant_id]).product.visible == false) || (Spree::Variant.find(params[:variant_id]).product.buyable == false)
       redirect_to spree.root_path ,notice: "Product is no longer available"
       return
