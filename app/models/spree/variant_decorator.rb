@@ -2,6 +2,7 @@ module Spree
   Variant.class_eval do 
   #validates_presence_of :cost_price
  validates :height,:weight,:depth,:width, :numericality => {:greater_than_or_equal_to => 0, :less_than_or_equal_to => 999999.99, :allow_nil => true, :allow_blank => true}
+  after_commit :update_sunspot 
 
     def option_name
       option_type_value = []
@@ -37,5 +38,8 @@ module Spree
       return img_arr
     end
 
+    def update_sunspot
+      Sunspot.index (self.product)
+    end
   end
 end

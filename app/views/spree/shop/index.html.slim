@@ -145,8 +145,6 @@ section.product_sec
                 = hidden_field_tag "q[categories][]", category
         h3.category-title
           | All Products
-          small
-            | (#{Spree::Product.count})
         ul.static_products
           - if @products.blank?
             | No product(s) available

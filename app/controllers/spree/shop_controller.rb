@@ -63,8 +63,9 @@ class Spree::ShopController < Spree::StoreController
             end
           end
         end
-        with(:buyable, :true)
-        with(:visible, :true)
+        with(:buyable, true)
+        with(:visible, true)
+        with(:total_on_hand).greater_than(0)
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
         with(:taxon_ids, Spree::Taxon.where(permalink: params[:id]).collect(&:id)) if params[:id].present?
         facet(:price, :range => 0..100000, :range_interval => 100)
@@ -88,8 +89,9 @@ class Spree::ShopController < Spree::StoreController
         if params[:q] && params[:q][:category] && params[:q][:category] != "all"
           with(:taxon_name, params[:q][:category])
         end
-        with(:buyable, :true)
-        with(:visible, :true)
+        with(:buyable, true)
+        with(:visible, true)
+        with(:total_on_hand).greater_than(0)
         with(:taxon_ids, Spree::Taxon.where(permalink: params[:id]).collect(&:id)) if params[:id].present?
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
         facet(:price, :range => 0..100000, :range_interval => 100)

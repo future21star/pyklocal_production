@@ -14,7 +14,10 @@ class Merchant::ProductsController < Merchant::ApplicationController
     @search = Sunspot.search(Spree::Product) do
       fulltext "*#{params[:q][:s]}*" if params[:q] && params[:q][:s]
       with(:buyable, true)
-      with(:visible, true)  if params[:active_tab] == "published" || !params.key?("active_tab")
+      if params[:active_tab] == "published" || !params.key?("active_tab") 
+        with(:visible, true)  
+        with(:total_on_hand).greater_than(0)
+      end
       with(:visible, false) if params[:active_tab] == "unpublished"
       with(:store_id, current_spree_user.stores.first.try(:id))
       paginate(:page => params[:page], :per_page => 10)
@@ -66,8 +69,8 @@ class Merchant::ProductsController < Merchant::ApplicationController
         redirect_to :back, notice: "Uploaded file must have .csv extension"
       else
         my_file = params[:file]
-        ImportProductWorker.perform_in(5.seconds, my_file.path, current_spree_user.email)
-        # ImportProductWorker.new.perform(my_file.path, current_spree_user.email)
+        # ImportProductWorker.perform_in(5.seconds, my_file.path, current_spree_user.email)
+        ImportProductWorker.new.perform(my_file.path, current_spree_user.email)
         redirect_to merchant_products_path, notice: "Your product importing from the csv you uploaded, we will notify you it's progress through email"
         return
       end

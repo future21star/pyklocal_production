@@ -9,24 +9,24 @@ module Spree
           @user = @api_token.user
           @search = Sunspot.search(Spree::Product) do
             with(:location).in_radius(session[:lat], session[:lng], 30.to_i, bbox: true) if session[:lat].present? && session[:lng].present?
-            with(:buyable, :true)
-            with(:visible, :true)
+            with(:buyable, true)
+            with(:visible, true)
             paginate(:page => 1, :per_page => 5)
             order_by(:sell_count, :desc)
           end 
           @products = @search.results
           @view_search = Sunspot.search(Spree::Product) do 
             order_by(:view_counter, :desc)
-            with(:buyable, :true)
-            with(:visible, :true)
+            with(:buyable, true)
+            with(:visible, true)
             paginate page: 1, per_page: 5
           end
           @most_viewed_products = @view_search.results
           #@top_images = Spree::CarouselImage.where("active = ? AND position != ? AND position != ?", true, "bottom", "middle" )
           # @new_arrival = Spree::Product.all.where(buyable: true).limit(5).order('created_at DESC')
           @search_new_arrival = Sunspot.search(Spree::Product) do
-            with(:buyable, :true)
-            with(:visible, :true)
+            with(:buyable, true)
+            with(:visible, true)
             order_by(:created_at, :desc)
             paginate page: 1, per_page: 30
           end
@@ -103,7 +103,7 @@ module Spree
             if params[:id] == "1"
               @search = Sunspot.search(Spree::Product) do
                 with(:location).in_radius(session[:lat], session[:lng], 30.to_i, bbox: true) if session[:lat].present? && session[:lng].present?
-                with(:buyable, :true)
+                with(:buyable, true)
                 paginate(:page => page, :per_page => per_page)
                 order_by(:sell_count, :desc)
               end 
@@ -127,7 +127,7 @@ module Spree
             elsif params[:id] == "3"
               @view_search = Sunspot.search(Spree::Product) do 
                 order_by(:view_counter, :desc)
-                with(:buyable, :true)
+                with(:buyable, true)
                 paginate(:page => page, :per_page => per_page)
               end
               @most_viewed_products = @view_search.results

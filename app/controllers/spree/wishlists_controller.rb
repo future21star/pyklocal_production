@@ -25,7 +25,7 @@ class Spree::WishlistsController < Spree::StoreController
   end
 
   def destroy
-    Spree::Wishlist.where(id: params[:id]).first.try(:destroy)
+    Spree::Wishlist.d(id: params[:id]).first.try(:destroy)
     redirect_to wishlists_url, notice: "Item removed from wishlist"
   end
 

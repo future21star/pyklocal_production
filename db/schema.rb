@@ -402,16 +402,6 @@ ActiveRecord::Schema.define(version: 20170513085306) do
   add_index "spree_gateways", ["active"], name: "index_spree_gateways_on_active", using: :btree
   add_index "spree_gateways", ["test_mode"], name: "index_spree_gateways_on_test_mode", using: :btree
 
-  create_table "spree_info_commercials", force: :cascade do |t|
-    t.boolean  "active"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.string   "video_file_name",    limit: 255
-    t.string   "video_content_type", limit: 255
-    t.integer  "video_file_size",    limit: 4
-    t.datetime "video_updated_at"
-  end
-
   create_table "spree_inventory_units", force: :cascade do |t|
     t.string   "state",        limit: 255
     t.integer  "variant_id",   limit: 4

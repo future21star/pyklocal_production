@@ -13,6 +13,7 @@ module Spree
     attr_accessor :image_url
 
     after_create :save_image
+    after_commit :update_sunspot
 
     is_impressionable
 
@@ -32,6 +33,7 @@ module Spree
       text :asin
       boolean :visible
       
+      integer :total_on_hand
       float :price
       float :cost_price
       integer :sell_count
@@ -74,7 +76,7 @@ module Spree
     end
 
     def visible
-      if self.cost_price.present? && self.tax_category.present? && self.taxons.present? && self.price.present? && self.total_on_hand > 0 && self.try(:available_on).present? && self.try(:available_on) <= Time.now.to_date 
+      if self.total_on_hand > 0 && self.cost_price.present? && self.tax_category.present? && self.taxons.present? && self.price.present? && self.total_on_hand > 0 && self.try(:available_on).present? && self.try(:available_on) <= Time.now.to_date 
         if self.try(:discontinue_on).present? 
           if self.try(:discontinue_on) > Time.now.to_date
             return true
@@ -597,6 +599,10 @@ module Spree
       end
     end
 
+    def update_sunspot
+      Sunspot.index (self)
+    end
+    
     private
       def save_image
         if image_url.present?

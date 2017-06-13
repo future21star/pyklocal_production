@@ -223,7 +223,7 @@ Pyklocal::Application.routes.draw do
         get :stores
         resources :payment_histories
         get :store_orders
-        delete :delete_store
+        # delete :deletes
         put :activate_store
       end
       resources :reports, only: [:index] do

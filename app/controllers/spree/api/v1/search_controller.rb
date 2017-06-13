@@ -148,8 +148,8 @@ module Spree
               end
             end
           end
-          with(:buyable, :true)
-          with(:visible, :true)
+          with(:buyable, true)
+          with(:visible, true)
           with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
           with(:taxon_ids, Spree::Taxon.where(permalink: params[:id]).collect(&:id)) if params[:id].present?
           facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
@@ -175,8 +175,8 @@ module Spree
         fulltext "*#{params[:q][:search]}*" if params[:q] && params[:q][:search] != "" && params[:q][:search] !=  nil
         paginate(:page => params[:page], :per_page => per_page)
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q] && params[:q][:lat].present? && params[:q][:lng].present?
-        with(:buyable, :true)
-        with(:visible, :true)
+        with(:buyable, true)
+        with(:visible, true)
         with(:store_id, params[:q][:store_id]) if params[:q] && params[:q][:store_id] != "" && params[:q][:store_id] != nil
         with(:taxon_ids, params[:q][:id]) if params[:q] && params[:q][:id] != "" && params[:q][:id] != nil
         facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
