@@ -33,7 +33,6 @@ Spree::UsersController.class_eval do
   end
 
   def change_password
-    debugger
     @user = spree_current_user
   end
 

@@ -69,8 +69,8 @@ class Merchant::ProductsController < Merchant::ApplicationController
         redirect_to :back, notice: "Uploaded file must have .csv extension"
       else
         my_file = params[:file]
-        ImportProductWorker.perform_in(5.seconds, my_file.path, current_spree_user.email)
-        # ImportProductWorker.new.perform(my_file.path, current_spree_user.email)
+        # ImportProductWorker.perform_in(5.seconds, my_file.path, current_spree_user.email)
+        ImportProductWorker.new.perform(my_file.path, current_spree_user.email)
         redirect_to merchant_products_path, notice: "Your product importing from the csv you uploaded, we will notify you it's progress through email"
         return
       end

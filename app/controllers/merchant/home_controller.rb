@@ -4,4 +4,7 @@ class Merchant::HomeController < Merchant::ApplicationController
 		@stores = current_spree_user.try(:stores)
 	end
 	
+	def change_password
+
+	end
 end
