@@ -1,13 +1,13 @@
 .container
-  - if !@product.empty_option_values?
-    - content_for :page_actions do
-      .container.text-right
-        = link_to merchant_stores_products_variants_new_path(product_id: @product.slug), class: "btn btn-primary margin-20", "data-no-turbolink" => true do 
-          i.fa.fa-plus
-          |  Add new variant
-        = link_to  edit_merchant_product_path(@product), class: "btn btn-primary margin-left", "data-no-turbolink" => true do 
-              span.fa.fa-arrow-left
-              | &nbsp; BACK TO PRODUCT EDIT
+  / - if !@product.empty_option_values?
+  - content_for :page_actions do
+    .container.text-right
+      = link_to merchant_stores_products_variants_new_path(product_id: @product.slug), class: "btn btn-primary margin-20", "data-no-turbolink" => true do 
+        i.fa.fa-plus
+        |  Add new variant
+      = link_to  edit_merchant_product_path(@product), class: "btn btn-primary margin-left", "data-no-turbolink" => true do 
+            span.fa.fa-arrow-left
+            | &nbsp; BACK TO PRODUCT EDIT
   .row
     .form-section
       .col-md-9

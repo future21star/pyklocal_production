@@ -1,9 +1,10 @@
 module Spree
 	class Admin::SellersController < Admin::ResourceController
 
-    before_filter :find_seller, only: [:edit, :update, :delete, :stores, :store_orders, :delete_store,:activate_store]
+    before_filter :find_seller, only: [:edit, :update, :delete, :stores, :store_orders, :delete_store,:activate_store, :deactivate, :activate]
 
 		def index
+
 			respond_with(@collection) do |format|
         format.html
         format.json { render :json => json_data }
@@ -39,6 +40,38 @@ module Spree
       else
         redirect_to admin_seller_stores_path(@seller), notice: "Something went wrong"
       end
+    end
+
+    # def destroy
+    #   debugger
+    #   @store = @seller.stores.first
+    #   if @store.hide
+    #     redirect_to admin_seller_stores_path(@seller), notice: "Store Deactivated successfully"
+    #   else
+    #     redirect_to admin_seller_stores_path(@seller), notice: "Something went wrong"
+    #   end
+    # end
+
+    def deactivate
+      @seller.update_attributes(hidden: true)
+      @store = @seller.stores.first
+      # @store.update_attributes(deleted_at: Time.now)
+      @store.spree_products.each do |product|
+        product.update_attributes(buyable: false)
+        Sunspot.index(product)
+      end
+      redirect_to admin_sellers_path, notice: "Store Deactivated successfully"      
+    end
+
+    def activate
+      @seller.update_attributes(hidden: false)
+      @store = @seller.stores.first
+      # @store.update_attributes(deleted_at: nil)
+      @store.spree_products.each do |product|
+        product.update_attributes(buyable: true)
+        Sunspot.index(product)
+      end
+      redirect_to admin_sellers_path, notice: "Store Activated successfully"      
     end
 
     def activate_store

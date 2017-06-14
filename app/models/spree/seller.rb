@@ -29,7 +29,7 @@ module Spree
     	#end
  		end
 
-   def notify_store_destroy
+    def notify_store_destroy
       #if self.has_store
         UserMailer.notify_user_store_destroy(self).deliver_now
       #end

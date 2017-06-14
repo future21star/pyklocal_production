@@ -40,5 +40,9 @@ table#listing_users.table data-hook=""
           / td.user_email= Spree::LineItem.joins(:product).where(spree_products:{store_id: merchant.stores.first.id}).collect{|obj| obj.price * obj.quantity}.sum.to_f.round(2)
           td.actions.actions-2.text-right data-hook="admin_users_index_row_actions" 
             = link_to_edit merchant, :no_text => true
+            - if !merchant.hidden 
+              = link_to 'Deactivate', admin_seller_deactivate_path(merchant), method: :put
+            - else
+              = link_to 'activate', admin_seller_activate_path(merchant), method: :put    
             = link_to_delete merchant, :no_text => true
 = paginate @collection

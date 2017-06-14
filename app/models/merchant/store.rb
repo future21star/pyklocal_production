@@ -137,6 +137,10 @@ module Merchant
       [latitude, longitude].compact.join(", ")
     end
 
+    def hide
+      self.deactive_store_products
+    end
+
     private
 
       # def set_taxons
