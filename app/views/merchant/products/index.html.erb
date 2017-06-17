@@ -1,0 +1,142 @@
+<div id="container">
+	<div class="container">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/">
+					<i class="fa fa-home"></i>
+					Home
+				</a>
+			</li>
+			<li>
+				<%= link_to "Merchant", merchant_path %>
+			</li>
+			<li>
+				<%= link_to "Store", merchant_stores_path %>
+			</li>
+			<li>
+				<span>Products</span>
+			</li>
+		</ul>
+		<div class="row">
+			<div class="left-section col-sm-3">
+				<%= render :partial => "merchant/shared/seller" %> 
+			</div>
+
+     	<div class="right-section col-md-9">
+     	  <div class="search-sec">
+     			<%= form_tag '', :method => 'get', id: "seller-search-box" do %>
+            <input id="seller-search-input" class="form-control" autocomplete="off" name="q[search]" placeholder="Search here" value='<%= params[:q][:search] rescue "" %>'>
+            <button class="buton-search" type="submit">
+            	<i class="fa fa-search"></i>
+            </button>
+          <% end %>
+     	  </div>
+     		<%= render partial: "merchant/shared/product_header", locals: {text: "Products Listing", product_name: @product.try(:name), store_id: @collection.first.try(:store).try(:friendly_id)} %>     	  
+     		<div class="table-section">
+     			<div class="table-headink clearfix">
+						<h2>Product Listing  </h2>
+					</div>
+	   			<div class="order-content">
+	   				<ul class="nav nav-tabs" style="margin:0px;">
+	   					<li style="width: 50%" class="<%= (@tab.nil? || @tab == "" || @tab == 'published') ? 'active' : '' %>">
+	   						<%= link_to "Published Products",merchant_products_path(active_tab: "published") %>
+	   					</li>
+	   					<li style="width: 50%" class="<%= (@tab.present? && @tab == 'unpublished') ? 'active' : '' %>">
+	   						<%= link_to "Unpublisehd Products", merchant_products_path(active_tab: "unpublished")%>
+	   					</li>
+	   				</ul>
+	   				<div class="tab-content">
+	   					<div id="published" class="tab-pane fade in active">
+              	<% if @tab == "unpublished" %>
+              		<b>
+              			Total Number of unpublished product:
+              			<%= @total_product_collection%>
+              		</b>
+              		<br>
+              		<b>
+              			<u>
+              				Category, Tax category, Sale Price, Retail Price and Stock are mandatory fields for product to  be    Published on Site.
+              			</u>
+              		</b>
+              	<% else %>
+              		<b>
+              			Total Number of published product:
+              			<%= @total_product_collection%>
+              		</b>
+              	<% end %> 						
+	   					</div>
+	   				</div>
+	          <div class="order-row">
+	            <div class="table-responsive">
+	              <table class="table">
+	                <thead>
+	                  <tr class="no_border">
+	                    <th class="trans-head1">
+	                    	SKU
+	                    </th>
+	                    <th class="trans-head2">
+	                    	Name
+	                    </th>
+	                    <th class="trans-head3">
+	                    	View
+	                    </th>
+	                    <th class="trans-head4">
+	                    	Stock
+	                    </th>
+											<th class="trans-head5">
+												Price
+											</th>
+											<th class="trans-head6">
+												Available From
+											</th>
+											<th class="trans-head7">
+												Action
+											</th>
+	                  </tr>
+	                </thead>
+	                <tbody>
+	                	<% unless @collection.blank?%>
+	                		<% @collection.each do |product|%>
+			                	<tr>
+			                		<td class="trans-head1">
+			                			<%= product.sku %>
+			                		</td>
+			                		<td class="trans-head2">
+			                			<%= truncate(product.name, :length =>50) %>
+			                		</td>
+			                		<td class="trans-head3">
+			                			<%= product.view_counter %>
+			                		</td>
+			                		<td class="trans-head4">
+			                			<%= product.total_on_hand %>
+			                		</td>
+			                		<td class="trans-head5">
+			                			<%= product.price %>
+			                		</td>
+			                		<td class="trans-head6">
+			                			<%= product.available_on.try(:to_date)  %>
+			                		</td>
+			                		<td class="trans-head7">
+			                			<%= link_to "<span class='fa'>&#xf044;</span>".html_safe, edit_merchant_product_path(product.slug), class: "btn btn-info btn-sm", "data-no-turbolink" => true %>
+			                			<%= link_to "<span class='fa'>&#xf014;</span>".html_safe, merchant_product_path(product.slug), class: "btn btn-danger btn-sm", method: "delete", data: { confirm: 'Are you sure?' } %>
+			                		</td>	                		
+			                	</tr>
+	                		<% end %>
+	                	<% else %>
+	                		No Products Found
+	                	<% end %>
+	                </tbody>
+	              </table>
+	            </div>
+	          </div>
+            <div class="block-pagination">
+	            <% if @collection.respond_to?(:num_pages) %>
+	            	<%= paginate @collection %>
+	            <% end %>
+	          </div>
+	        </div>
+     		</div>
+    	</div>
+		</div>
+	</div>
+</div>

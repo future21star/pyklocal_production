@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170614000715) do
+ActiveRecord::Schema.define(version: 20170617023229) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.string   "token",          limit: 255
@@ -1410,10 +1410,16 @@ ActiveRecord::Schema.define(version: 20170614000715) do
   end
 
   create_table "wishlists", force: :cascade do |t|
-    t.integer  "user_id",    limit: 4
-    t.integer  "variant_id", limit: 4
+    t.integer  "user_id",          limit: 4
+    t.integer  "variant_id",       limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "product_id",       limit: 4
+    t.integer  "spree_product_id", limit: 4
   end
 
+  add_index "wishlists", ["product_id"], name: "index_wishlists_on_product_id", using: :btree
+  add_index "wishlists", ["spree_product_id"], name: "index_wishlists_on_spree_product_id", using: :btree
+
+  add_foreign_key "wishlists", "spree_products"
 end

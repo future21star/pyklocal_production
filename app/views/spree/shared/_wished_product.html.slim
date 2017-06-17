@@ -1,9 +1,8 @@
--unless wish.variant.blank?
-  - product = wish.variant.product
+-unless wish.product.blank?
+  - product = wish.product
   .item style=("overflow:hidden;")
     = form_for :order, :url => populate_orders_path do |f|
       = hidden_field_tag :delivery_type, "home_delivery", id: "delivery"
-      = hidden_field_tag "variant_id", wish.variant_id
       = hidden_field_tag :wishlist, true
       = hidden_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
 
@@ -35,6 +34,26 @@
             = product.discount
             | % off
 
+        .variant-select
+          - if product.variants_and_option_values(current_currency).any?
+            .cart
+              ul.list-group
+                - product.variants_and_option_values(current_currency).each_with_index do |variant, index|
+                  -if variant.total_on_hand > 0
+                      .btn.btn.default
+                        = radio_button_tag "variant_id", variant.id, index == 0, 'data-price' => variant.price_in(current_currency).money
+                        | &nbsp;&nbsp;
+                        = label_tag "variant_id_#{ variant.id }" do
+                          p.variant-description
+                            = variant_options variant
+                            / |&nbsp;(
+                            / =variant.total_on_hand
+                            / |)
+
+                          - if variant_price variant
+                            span.price.diff= variant_price variant
+          -else
+            = hidden_field_tag "variant_id", product.master.id
         .addtocart
           - button_text = product.total_on_hand > 0 ? "Add To Cart" : "Out Of Stock"
           button.add-to-cart type="submit" disabled=(button_text == "Out Of Stock")

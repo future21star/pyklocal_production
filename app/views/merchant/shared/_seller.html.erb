@@ -1,0 +1,221 @@
+ <% if current_spree_user && @is_owner %>
+ 	<% @store = current_spree_user.stores.first %>
+ <% end %>
+<div class="logo-display clearfix">
+<a href="#">
+   <%= image_tag "logo-ds.png", alt: "logo", width: "135" %>
+   <!-- <img src="assets/logo-ds.png" alt="logo" width="135"> -->
+</a>	
+</div>
+
+<div class="left-nav clearfix">
+	<% if @is_owner %>
+		<% title_text = current_spree_user.has_spree_role?("merchant") ? "" : "Approval pending" %>
+		<ul>
+			<li>
+				<%= link_to edit_merchant_store_path(@store), class: "bg1", "data-no-turbolink" => true, title: title_text do %>
+					Edit Store Information
+				<% end %>
+			</li>
+			<% if current_spree_user.has_spree_role?("merchant") && current_spree_user.stores.first.latitude.present? && current_spree_user.stores.first.longitude.present? %>
+				<li>
+					<%= link_to new_merchant_product_path, class: "bg2", "data-no-turbolink" => true, title: title_text do %>
+						Add Products
+					<% end %>
+				</li>
+				<li>
+					<%= link_to merchant_products_path, class: "bg3", "data-no-turbolink" => true, title: title_text do %>
+						View and edit all Products
+					<% end %>
+				</li>
+				<li>
+					<%= link_to merchant_store_orders_path(@store.slug), class: "bg4", "data-no-turbolink" => true, title: title_text do %>
+						View Orders And Returns
+					<% end %>
+				</li>
+				<li>
+					<%= link_to returns_merchant_orders_path, class: "bg5", "data-no-turbolink" => true, title: title_text do %>
+						Returned Order
+					<% end %>
+				</li>
+				<li>
+					<%= link_to merchant_store_amazon_product_path, class: "bg6", "data-no-turbolink" => true, title: title_text do %>
+						Fetch Product From Amazon
+					<% end %>
+				</li>	
+				<li>
+					<%= link_to report_merchant_store_path(@store), class: "bg6", "data-no-turbolink" => true, title: title_text do %>
+						Vendor Report
+					<% end %>
+				</li>							
+				<li>
+					<%= link_to invoices_merchant_store_path(@store), class: "bg6", "data-no-turbolink" => true, title: title_text do %>
+						Invoices
+					<% end %>
+				</li>							
+			<% end %>
+		</ul>
+	<% end %>
+<div class="clear"></div>	
+</div>
+
+<div class="store-information clearfix">
+	<h2>Store Information</h2>
+	<ul>
+	<li>
+	<h3>Store Name</h3>	
+	<p><%= @store.try(:name).titleize %></p>
+	</li>	
+	<li>
+		<h3>Store Rating</h3>
+		<% num_user = @store.ratings.count > 0 ? @store.ratings.count : 1 %>
+		<% rate_count = (@store.ratings.try(:sum, :rating) / num_user).round(2) %>
+		<span id="rate">
+		</span>
+		<a style="color: blue; text-decoration: underline;" href="#" id="rateUs">Rate Us</a>
+	</li>	
+	<li>
+	<h3>Contact</h3>
+	<p><%= @store.try(:phone_number) %></p>
+	</li>
+	<li>
+	<h3>Website</h3>
+	<p><%= @store.try(:site_url) %></p>	
+	</li>
+	<li>
+	<h3>Address</h3>
+	<p><%= @store.try(:address).titleize %></p>		
+	</li>	
+	</ul>
+	<div class="clear"></div>	
+</div>
+<div class="map-section">
+	<div class="map-in clearfix">
+			<div class="pull-right map-wrapper">
+	      <div id="map-preview" data-is_located="<%=@store.is_located?%>" 	data-longitude="<%=@store.longitude%>" data-latitude="<%=@store.latitude%>">
+      	</div>
+      </div>
+	</div>
+	<p>
+		<% if spree_user_signed_in? && current_spree_user.stores.include?(@store) %>
+			<% if @store.is_located? %>
+		    <%= link_to 'Update Location', "#", id: "add-location" %>	
+		  <% else %>
+		    <%= link_to 'Add Location', "#", id: "add-location" %>	
+		 	<% end %>
+	  <% end %>
+  </p>
+	
+</div>
+
+<div class="modal fade" id="rating" role="dialog" style="margin-top: 45px;">
+	<div class="modal-dialog">
+		<div clsss="modal-content">
+			<div class="modal-header">
+				<button class="close" data-dismiss="modal" type="button"> × </button>
+				<h4 class="modal-title">Rate Us</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<%= label_tag :rating, "Rating", class: "control-label"%>
+					<div class="form-group">
+						<% for i in 0..5 do %>
+							<i id="star"></i>
+						<% end %>
+					</div>
+					<%= hidden_field_tag "point", 0, id: "point" %>
+				</div>
+				<div class="form-group">
+					<%= label_tag :comment, "Comment", class: "control-label" %>
+					<%= text_area_tag "comment", current_spree_user.try(:comments).try(:where, commentable_id: @store.id).try(:first).try(:comment), class: "form-control", rows: 7, id: "review"%>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="save-rating" class="btn btn-primary" data-store_id="<%=@store.slug%>" data-user_id="<%=current_spree_user.try(:id)%>">Save </button>
+				<button id="cancel-rating" class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="modal fade" id="map-dialog" role="dialog" style="margin-top: 45px;">
+	<div class="modal-dialog">
+		<div clsss="modal-content">
+			<div class="modal-header">
+				<button class="close" data-dismiss="modal" type="button"> × </button>
+				<h4 class="modal-title">Please update your address</h4>
+			</div>
+			<div class="modal-body">
+				<div id="map-canvas">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="save-location" class="btn btn-primary" data-store_id="<%=@store.slug%>">Save </button>
+				<button id="cancel-location" class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwa_aSOU4vA1Z_E6Vlt5-AG-nncymVpqg&libraries=places" type="text/javascript"></script>
+<script>
+  $(function() {
+    if(window.location.hash == "#map") {
+      $("#add-location").trigger("click");
+    }
+  });
+  $('#rateUs').click(function() {
+    $('#rating').modal('show');
+    return false;
+  });
+  $(document).ready(function(){
+    $('#star').raty({
+      halfShow: true,
+      half: true,
+      score : parseFloat("<%=current_spree_user.try(:ratings).try(:where, rateable_id: @store.id).try(:first).try(:rating).to_f%>")
+    });
+
+    $('#save-rating').click(function() {
+      var userId = $(this).data('user_id');
+      if(!!userId){
+        rateParams = { rating: $('#star').children("input[name=score]").val(), user_id: userId, comment: $('#review').val() };
+        $.post("/api/v1/merchant_stores/"+$(this).data('store_id')+"/rate", rateParams, function(data){
+          if(data.success){
+            $('.modal').modal('hide');
+            storeRating(data.rating);
+            if ($('#noty_topCenter_layout_container li').length > 0){
+                $('#noty_topCenter_layout_container ').remove();
+            }
+            noty({text: data.message, type: "info"});
+          } else {
+            $('.modal').modal('hide');
+            if ($('#noty_topCenter_layout_container li').length > 0){
+              $('#noty_topCenter_layout_container ').remove();
+            }
+            noty({text: data.message, type: "error"});
+          }
+        });
+      } else {
+        window.location = "/login";
+        if($('#noty_topCenter_layout_container li').length > 0){
+                $('#noty_topCenter_layout_container ').remove();
+        }
+        noty({text: "You need to login/signup to rate a store", type: "error"});
+      }
+    });
+
+    storeRating("<%=rate_count%>");
+
+    function storeRating(n) {
+      $('#rate').raty({
+        halfShow: true,
+        half: true,
+        score: n,
+        readOnly: true
+      });
+    }
+
+  });  
+
+</script>

@@ -10,7 +10,7 @@ li.item
           = hidden_field_tag "variant_id", variant.id
           -break
     -else
-       = hidden_field_tag "variant_id", product.master.id
+      = hidden_field_tag "variant_id", product.master.id
     = hidden_field_tag :quantity, 1, :class => 'form-control', :min => 1, :id =>'input-quantity'
     span.pr-image
       - image_path = product.images.present? ? product.images.first.try(:attachment).try(:url) : "no-img.gif"

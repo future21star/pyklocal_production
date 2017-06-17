@@ -1,9 +1,10 @@
 class Merchant::StoresController < Merchant::ApplicationController
 
 	before_filter :authenticate_user!, except: [:show, :new, :create, :index,:edit,:update]
-  before_action :set_store, only: [:show, :edit, :update, :destroy, :report, :store_report]
+  before_action :set_store, only: [:show, :edit, :update, :destroy, :report, :store_report, :invoices]
   # before_action :validate_token, only: [:edit, :update] 
   before_action :perform_search, only: [:show]
+  respond_to :html, :xml, :json, :pdf
 
 	def index
 		@stores = current_spree_user.try(:stores)
@@ -189,6 +190,25 @@ class Merchant::StoresController < Merchant::ApplicationController
     render :layout => false
   end
 
+  def invoices
+    @is_owner = is_owner?(@store)
+    order_ids = @store.orders.map(&:id)
+    params[:q] ||= {}
+    params[:q][:template_eq] = "invoice"
+    @search = Spree::BookkeepingDocument.where(printable_id: order_ids).ransack(params[:q])
+    @bookkeeping_documents = @search.result
+    @bookkeeping_documents = @bookkeeping_documents.page(params[:page] || 1).per(10)    
+  end
+
+  def invoice_pdf
+    debugger
+    @bookkeeping_document = Spree::BookkeepingDocument.find(params[:id])
+    respond_with(@bookkeeping_document) do |format|
+      format.pdf do
+        send_data @bookkeeping_document.pdf, type: 'application/pdf', disposition: 'inline'
+      end
+    end    
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_store

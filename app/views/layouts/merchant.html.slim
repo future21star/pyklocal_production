@@ -12,7 +12,8 @@ html lang="#{I18n.locale}"
     = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => false
     link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" 
     link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" 
-    = stylesheet_link_tag "merchant_section", media: "all", "data-turbolinks-track" => false
+    script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+    / = stylesheet_link_tag "merchant_section", media: "all", "data-turbolinks-track" => false
     = yield :css
     = yield :head
   body class=("with-footer #{body_class}") data-hook="body" id=("#{@body_id || 'default'}") 

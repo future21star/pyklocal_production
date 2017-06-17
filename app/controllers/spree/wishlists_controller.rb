@@ -10,8 +10,8 @@ class Spree::WishlistsController < Spree::StoreController
   end
 
   def create
-    if Spree::Variant.find(params[:wishlist][:variant_id]).total_on_hand > 0
-      unless current_spree_user.wishlists.collect(&:variant_id).include?(params[:wishlist][:variant_id].to_i)
+    if Spree::Product.find(params[:wishlist][:product_id]).total_on_hand > 0
+      unless current_spree_user.wishlists.collect(&:product_id).include?(params[:wishlist][:product_id].to_i)
         @wishlist = Spree::Wishlist.new wishlist_params
         @wishlist.user = current_spree_user
         @wishlist.save
@@ -25,14 +25,14 @@ class Spree::WishlistsController < Spree::StoreController
   end
 
   def destroy
-    Spree::Wishlist.d(id: params[:id]).first.try(:destroy)
+    Spree::Wishlist.where(id: params[:id]).first.try(:destroy)
     redirect_to wishlists_url, notice: "Item removed from wishlist"
   end
 
   private
 
     def wishlist_params
-      params.require(:wishlist).permit(:variant_id, :user_id)
+      params.require(:wishlist).permit(:product_id, :user_id)
     end
 
 end

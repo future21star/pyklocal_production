@@ -5,6 +5,7 @@ module Spree
 
     belongs_to :user
     belongs_to :variant
+    belongs_to :product
     
   end
 end

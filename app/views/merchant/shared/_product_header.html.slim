@@ -1,7 +1,5 @@
 .product-header
 	  .row
-		  .col-md-12
-		    h2= "#{text} #{product_name}"
 		  .col-md-12.option-buttons
 		      = link_to "NEW PRODUCT", new_merchant_product_path, class: "btn btn-primary", "data-no-turbolink" => true
 		      - if ((params[:controller] == "merchant/products") && (params[:action] == "index")) && !store_id.blank?

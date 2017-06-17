@@ -1320,12 +1320,9 @@ ul.static_products .item .pr-title {
 }
 
 .pagination {
-    float: right;
     padding-left: 0;
     margin: 10px 0 0;
     border-radius: 4px;
-    width: 100%;
-    text-align: right
 }
 
 .pagination>li {
@@ -1356,8 +1353,8 @@ ul.static_products .item .pr-title {
     z-index: 3;
     color: #fff;
     cursor: default;
-    background-color: #db2e2e;
-    border-color: #db2e2e
+    background: #526698;
+    color: #ffffff;
 }
 
 div#filters {

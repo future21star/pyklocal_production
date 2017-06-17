@@ -50,7 +50,7 @@
                       td.align-middle.order-th rowspan="#{order.get_store_line_items(@store.id).count}"
                         / = link_to order.try(:number), edit_merchant_order_path(order)
                         - if order.get_store_delivered_line_items(@store.id).count == line_item_ids.count
-                         = link_to order.try(:number), merchant_order_customer_return_items_path(order), title: "Return Order"
+                          = link_to order.try(:number), merchant_order_customer_return_items_path(order), title: "Return Order"
                         - else
                           = order.try(:number)
                       td.order-th rowspan="#{order.get_store_line_items(@store.id).count}"

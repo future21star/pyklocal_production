@@ -1,0 +1,79 @@
+<div id="container">
+  <div class="container">
+    <ul class="breadcrumb">
+      <li>
+        <a href="/">
+          <i class="fa fa-home"></i>
+          Home
+        </a>
+      </li>
+      <li>
+        <%= link_to "Merchant", merchant_path %>
+      </li>
+      <li>
+        <%= link_to "Store", merchant_stores_path %>
+      </li>
+      <li>
+        <span>Invoices</span>
+      </li>
+    </ul>
+    <div class="row">
+      <div class="left-section col-sm-3">
+        <%= render :partial => "merchant/shared/seller" %> 
+      </div>
+
+      <div class="right-section col-md-9">
+        <div class="table-section">
+          <div class="table-headink clearfix">
+            <h2>Invoices  </h2>
+          </div>
+          <div class="order-content">
+            <div class="order-row">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr class="no_border" data-hook="printables_index_headers">
+                      <th class="trans-head1"><%= sort_link @search, :created_at, Spree.t(:date) %></th>
+                      <th class="trans-head2"><%= sort_link @search, :template, Spree.t(:document_type) %></th>
+                      <th class="trans-head3"><%= sort_link @search, :number, Spree.t(:number) %></th>
+                      <th class="trans-head4"><%= sort_link @search, :firstname, Spree.t(:firstname) %></th>
+                      <th class="trans-head5"><%= sort_link @search, :lastname, Spree.t(:lastname) %></th>
+                      <th class="trans-head6"><%= sort_link @search, :email, Spree.t(:email) %></th>
+                      <th class="trans-head7"><%= sort_link @search, :total, Spree.t(:total) %></th>
+                      <th class="trans-head8" data-hook="admin_orders_index_header_actions" class="actions"></th>
+                    </tr>
+                  </thead>                    
+                  <tbody>
+                    <% unless @bookkeeping_documents.blank?%>
+                      <% @bookkeeping_documents.each do |bookkeeping_document| %>
+                        <tr data-hook="admin_printables_index_rows" class="<%= cycle('odd', 'even') %>">
+                          <td class="trans-head1"><%= l bookkeeping_document.created_at.to_date %></td>
+                          <td class="trans-head2"><%= I18n.t(bookkeeping_document.document_type, scope: [:spree, :print_invoice]) %></td>
+                          <td class="trans-head3"><%= bookkeeping_document.number %></td>
+                          <td class="trans-head4"><%= bookkeeping_document.firstname %></td>
+                          <td class="trans-head5"><%= bookkeeping_document.lastname %></td>
+                          <td class="trans-head6"><%= bookkeeping_document.email %></td>
+                          <td class="trans-head7"><%= ActionController::Base.helpers.number_to_currency(bookkeeping_document.total.to_f) %></td>
+                          <td class='trans-head8 actions actions-1' data-hook="admin_orders_index_row_actions">
+                            <%= link_to '<i class="fa fa-file"></i>'.html_safe, invoice_pdf_merchant_store_path(bookkeeping_document, format: :pdf) %>        
+                          </td>
+                        </tr>
+                      <% end %>                      
+                    <% else %>
+                      No Invoices Found
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="block-pagination">
+              <% if @bookkeeping_documents.respond_to?(:num_pages) %>
+                <%= paginate @bookkeeping_documents %>
+              <% end %>              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
