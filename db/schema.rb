@@ -1414,11 +1414,9 @@ ActiveRecord::Schema.define(version: 20170617023229) do
     t.integer  "variant_id",       limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "product_id",       limit: 4
     t.integer  "spree_product_id", limit: 4
   end
 
-  add_index "wishlists", ["product_id"], name: "index_wishlists_on_product_id", using: :btree
   add_index "wishlists", ["spree_product_id"], name: "index_wishlists_on_spree_product_id", using: :btree
 
   add_foreign_key "wishlists", "spree_products"

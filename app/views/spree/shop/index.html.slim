@@ -41,8 +41,9 @@ section.product_sec
               .filter-box
                 h5 Price
                 ul
-                  - if @all_facets.facet(:price)
-                    - @all_facets.facet(:price).rows.each do |price_row|
+                  - all_facets = @all_facets
+                  - if all_facets.facet(:price)
+                    - all_facets.facet(:price).rows.each do |price_row|
                       - filter_found = true
                       - selected = (@price_array.include?(price_row.value.to_s)) rescue false
                       li.filter-field
@@ -51,8 +52,8 @@ section.product_sec
               .filter-box
                 h5 Brand
                 ul
-                  - if @all_facets.facet(:brand_name)
-                    - @all_facets.facet(:brand_name).rows.each do |brand_row|
+                  - if all_facets.facet(:brand_name)
+                    - all_facets.facet(:brand_name).rows.each do |brand_row|
                       - filter_found = true
                       - selected = (params[:q][:brand].include?(brand_row.value.to_s)) rescue false
                       li.filter-field
@@ -61,8 +62,8 @@ section.product_sec
               .filter-box
                 h5 Store
                 ul
-                  - if @all_facets.facet(:store_name)
-                    - @all_facets.facet(:store_name).rows.each do |store_row|
+                  - if all_facets.facet(:store_name)
+                    - all_facets.facet(:store_name).rows.each do |store_row|
                       - filter_found = true
                       - selected = (params[:q][:store].include?(store_row.value.to_s)) rescue false
                       li.filter-field
@@ -71,13 +72,21 @@ section.product_sec
               .filter-box
                 h5 Category
                 ul
-                  - if @all_facets.facet(:taxon_name)
-                    - @all_facets.facet(:taxon_name).rows.each do |taxon_row|
-                      - filter_found = true
-                      - selected = (params[:q][:categories].include?(taxon_row.value.to_s)) rescue false
-                      li.filter-field
-                        = check_box_tag "q[categories][]", taxon_row.value, selected, class: "filters"
-                        = "#{truncate(taxon_row.value,:length=> 20)} (#{taxon_row.try(:count).to_i})"
+                  - @categories.each do |key, value|
+                    - filter_found = true
+                    - selected = (params[:q][:categories].include?(key.to_s)) rescue false
+                    li.filter-field
+                      = check_box_tag "q[categories][]", key, selected, class: "filters"
+                      = "#{truncate(key,:length=> 20)} (#{value.to_i})"
+              .filter-box
+                h5 Sub Category
+                ul
+                  - @sub_categories.each do |key, value|
+                    - filter_found = true
+                    - selected = (params[:q][:categories].include?(key.to_s)) rescue false
+                    li.filter-field
+                      = check_box_tag "q[categories][]", key, selected, class: "filters"
+                      = "#{truncate(key,:length=> 20)} (#{value.to_i})"
       .col-md-9.col-sm-8.col-xs-12
         .sort-bar
           a data-no-turbolink="true" href="#"
@@ -154,6 +163,15 @@ section.product_sec
         ul.pagination
           - if @products.respond_to?(:num_pages)
             = paginate @products
+        - if @products.blank?
+          h3.category-title
+            | Related Products
+          ul.static_products
+            - @related_products.each do |product|
+              = render :partial => 'spree/shared/product', locals: {product: product}
+          ul.pagination
+            - if @related_products.respond_to?(:num_pages)
+              = paginate @related_products
 
 -content_for :js do
   javascript:

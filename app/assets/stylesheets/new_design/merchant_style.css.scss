@@ -484,6 +484,14 @@ table {
 .filter {
     float: right;
     text-align: right;
+    text-align: left;
+    width: 125px;
+    width: 100%
+}
+
+.merchant-order-filter {
+    float: right;
+    text-align: right;
     width: 125px;
 }
 

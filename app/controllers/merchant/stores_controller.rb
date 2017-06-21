@@ -201,7 +201,6 @@ class Merchant::StoresController < Merchant::ApplicationController
   end
 
   def invoice_pdf
-    debugger
     @bookkeeping_document = Spree::BookkeepingDocument.find(params[:id])
     respond_with(@bookkeeping_document) do |format|
       format.pdf do

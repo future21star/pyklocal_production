@@ -26,9 +26,9 @@ Spree::HomeController.class_eval do
     # @new_arrival = Spree::Product.all.where(buyable: true).limit(30).order('created_at DESC')
     @search_new_arrival = Sunspot.search(Spree::Product) do
       # with(:buyable, true)
-      with(:visible, true)
+      # with(:visible, true)
       with(:buyable, true)
-      with(:total_on_hand).greater_than(0)
+      # with(:total_on_hand).greater_than(0)
       order_by(:created_at, :desc)
       paginate page: 1, per_page: 30
     end
