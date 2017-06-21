@@ -1,7 +1,7 @@
 class UserMailer < ActionMailer::Base
 
-  # default from: 'sales@pyklocal.com'
-  default from: 'admin@pyklocal.com'
+  default from: 'sales@pyklocal.com'
+  # default from: 'admin@pyklocal.com'
  
  	def edit_store(user, store, token)
  		@store = store
