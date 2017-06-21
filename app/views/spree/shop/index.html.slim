@@ -72,21 +72,23 @@ section.product_sec
               .filter-box
                 h5 Category
                 ul
-                  - @categories.each do |key, value|
-                    - filter_found = true
-                    - selected = (params[:q][:categories].include?(key.to_s)) rescue false
-                    li.filter-field
-                      = check_box_tag "q[categories][]", key, selected, class: "filters"
-                      = "#{truncate(key,:length=> 20)} (#{value.to_i})"
+                  - if @categories
+                    - @categories.each do |key, value|
+                      - filter_found = true
+                      - selected = (params[:q][:categories].include?(key.to_s)) rescue false
+                      li.filter-field
+                        = check_box_tag "q[categories][]", key, selected, class: "filters"
+                        = "#{truncate(key,:length=> 20)} (#{value.to_i})"
               .filter-box
                 h5 Sub Category
                 ul
-                  - @sub_categories.each do |key, value|
-                    - filter_found = true
-                    - selected = (params[:q][:categories].include?(key.to_s)) rescue false
-                    li.filter-field
-                      = check_box_tag "q[categories][]", key, selected, class: "filters"
-                      = "#{truncate(key,:length=> 20)} (#{value.to_i})"
+                  - if @sub_categories
+                    - @sub_categories.each do |key, value|
+                      - filter_found = true
+                      - selected = (params[:q][:categories].include?(key.to_s)) rescue false
+                      li.filter-field
+                        = check_box_tag "q[categories][]", key, selected, class: "filters"
+                        = "#{truncate(key,:length=> 20)} (#{value.to_i})"
       .col-md-9.col-sm-8.col-xs-12
         .sort-bar
           a data-no-turbolink="true" href="#"
