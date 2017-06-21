@@ -46,25 +46,27 @@
 	   					</li>
 	   				</ul>
 	   				<div class="tab-content">
-	   					<div id="published" class="tab-pane fade in active">
-              	<% if @tab == "unpublished" %>
-              		<b>
-              			Total Number of unpublished product:
-              			<%= @total_product_collection%>
-              		</b>
-              		<br>
-              		<b>
-              			<u>
-              				Category, Tax category, Sale Price, Retail Price and Stock are mandatory fields for product to  be    Published on Site.
-              			</u>
-              		</b>
-              	<% else %>
+            	<% if @tab == "unpublished" %>
+            		<div id="unpublished" class="tab-pane fade in active">
+	            		<b>
+	            			Total Number of unpublished product:
+	            			<%= @total_product_collection%>
+	            		</b>
+	            		<br>
+	            		<b>
+	            			<u>
+	            				Category, Tax category, Sale Price, Retail Price and Stock are mandatory fields for product to  be    Published on Site.
+	            			</u>
+	            		</b>
+	            	</div>
+            	<% else %>
+		   					<div id="published" class="tab-pane fade in active">
               		<b>
               			Total Number of published product:
               			<%= @total_product_collection%>
               		</b>
-              	<% end %> 						
-	   					</div>
+              	</div>
+            	<% end %> 						
 	   				</div>
 	          <div class="order-row">
 	            <div class="table-responsive">
