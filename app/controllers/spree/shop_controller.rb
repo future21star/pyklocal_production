@@ -15,6 +15,9 @@ class Spree::ShopController < Spree::StoreController
     unless @products.any? 
       per_page = params[:q]!=nil && params[:q][:per_page] ? params[:q][:per_page] : 12
       @related_search = Sunspot.search(Spree::Product) do 
+        if params[:q]!=nil && params[:q][:category] && params[:q][:category] != "all"
+          with(:taxon_name, params[:q][:category])
+        end        
         paginate(:page => params[:page], :per_page => per_page)
         with(:buyable, true)
         with(:visible, true)
@@ -23,24 +26,13 @@ class Spree::ShopController < Spree::StoreController
         facet(:brand_name)
         facet(:store_name)
         facet(:taxon_name)
-        if params[:q]!=nil && params[:q][:categories]
-          any_of do 
-            params[:q][:categories].each do |category|
-              with(:taxon_name, category)
-            end
-          end
-        end
       end
       @related_products = @related_search.results
 
       @all_facets = Sunspot.search(Spree::Product) do 
-        if params[:q]!=nil && params[:q][:categories]
-          any_of do 
-            params[:q][:categories].each do |category|
-              with(:taxon_name, category)
-            end
-          end
-        end
+        if params[:q]!=nil && params[:q][:category] && params[:q][:category] != "all"
+          with(:taxon_name, params[:q][:category])
+        end 
         with(:buyable, true)
         with(:visible, true)
         with(:total_on_hand).greater_than(0)
@@ -50,14 +42,14 @@ class Spree::ShopController < Spree::StoreController
         facet(:taxon_name)
         order_by(:price, :desc)
       end
-      @sub_categories = {}
-      @categories = {}
-      @all_facets.facet(:taxon_name).rows.each do |taxon|
-        unless Spree::Taxon.where(name: taxon.value)[0].parent.nil?
-          @sub_categories[taxon.value] = taxon.try(:count)
-        else
-          @categories[taxon.value] = taxon.try(:count)
-        end
+    end
+    @sub_categories = {}
+    @categories = {}
+    @all_facets.facet(:taxon_name).rows.each do |taxon|
+      unless Spree::Taxon.where(name: taxon.value)[0].parent.nil?
+        @sub_categories[taxon.value] = taxon.try(:count)
+      else
+        @categories[taxon.value] = taxon.try(:count)
       end
     end
     @taxons = Spree::Taxon.where.not(name: "categories") 
@@ -82,7 +74,7 @@ class Spree::ShopController < Spree::StoreController
       # max_price = Spree::Product.max_price
       @all_facets = Sunspot.search(Spree::Product) do 
         fulltext "*#{params[:q][:search]}*"  if params[:q]!=nil && params[:q][:search]
-        if params[:q]!=nil && params[:q][:category]
+        if params[:q]!=nil && params[:q][:category] && params[:q][:category] != "all"
           with(:taxon_name, params[:q][:category])
         end
         if params[:q]!=nil && params[:q][:categories]
