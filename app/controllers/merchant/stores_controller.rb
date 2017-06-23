@@ -137,7 +137,7 @@ class Merchant::StoresController < Merchant::ApplicationController
     @view_mode = params[:view_mode]
     @store_sale_array = get_store_sale_array_for_report(start_date, end_date, params[:view_mode], merchant)
     respond_to do |format|
-      format.html
+      format.html { render :layout => false}
       format.xlsx #{ send_file(file_name) }
     end
 
