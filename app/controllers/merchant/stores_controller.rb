@@ -4,7 +4,7 @@ class Merchant::StoresController < Merchant::ApplicationController
   before_action :set_store, only: [:show, :edit, :update, :destroy, :report, :store_report, :invoices]
   # before_action :validate_token, only: [:edit, :update] 
   before_action :perform_search, only: [:show]
-  respond_to :html, :xml, :json, :pdf
+  respond_to :html, :xml, :json, :pdf, :xlsx
 
 	def index
 		@stores = current_spree_user.try(:stores)
@@ -136,14 +136,20 @@ class Merchant::StoresController < Merchant::ApplicationController
     end_date = Date.strptime(params[:end_date], "%m/%d/%Y")
     @view_mode = params[:view_mode]
     @store_sale_array = get_store_sale_array_for_report(start_date, end_date, params[:view_mode], merchant)
-    if params[:download_excel] && eval(params[:download_excel])
-      request.format = "xls"
-      respond_to do |format|
-        format.xls #{ send_file(file_name) }
-      end
-    else
-      render :layout => false
+    respond_to do |format|
+      format.html
+      format.xlsx #{ send_file(file_name) }
     end
+
+    # if params[:download_excel] && eval(params[:download_excel])
+    #   debugger
+    #   request.format = "xlsx"
+    #   respond_to do |format|
+    #     format.xlsx #{ send_file(file_name) }
+    #   end
+    # else
+    #   render :layout => false
+    # end
   end
 
   def sale_product
@@ -201,6 +207,19 @@ class Merchant::StoresController < Merchant::ApplicationController
   end
 
   def invoice_pdf
+    debugger
+    invoice = Spree::BookkeepingDocument.find(params[:id])
+    @order = Spree::Order.find(invoice.printable_id)
+    filename = "Invoice_#{@order.number}_#{Time.now.strftime('%Y%m%d')}.pdf"
+
+    admin_controller = Spree::Admin::OrdersController.new
+    invoice = admin_controller.render_to_string(:layout => false , :template => "spree/printables/order/invoice.pdf.prawn", :type => :prawn, :locals => {:@doc => @order})
+
+    attachments[filename] = {
+      mime_type: 'application/pdf',
+      content: invoice
+    }
+
     @bookkeeping_document = Spree::BookkeepingDocument.find(params[:id])
     respond_with(@bookkeeping_document) do |format|
       format.pdf do

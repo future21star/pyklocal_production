@@ -24,7 +24,7 @@
               / = link_to "Contact Seller", new_message_path(to_user_id: @store.store_spree_users.first.spree_user_id), class: "store-link"
       .col-sm-9
       	.row
-      		= form_tag store_report_merchant_store_path(@store, :format => :xls), id: "download-report-form"
+      		= form_tag store_report_merchant_store_path(@store, :format => :xlsx), id: "download-report-form"
     				=hidden_field_tag :start_date, @start_date, id: "hidden-start-date"
     				=hidden_field_tag :end_date, @end_date, id: "hidden-end-date"
     				=hidden_field_tag :view_mode, "weekly", id: "hidden-view-mode"

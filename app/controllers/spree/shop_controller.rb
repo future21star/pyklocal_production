@@ -19,9 +19,9 @@ class Spree::ShopController < Spree::StoreController
           with(:taxon_name, params[:q][:category])
         end        
         paginate(:page => params[:page], :per_page => per_page)
-        with(:buyable, true)
-        with(:visible, true)
-        with(:total_on_hand).greater_than(0)
+        # with(:buyable, true)
+        # with(:visible, true)
+        # with(:total_on_hand).greater_than(0)
         facet(:price, :range => 0..100000, :range_interval => 100)
         facet(:brand_name)
         facet(:store_name)
@@ -29,13 +29,14 @@ class Spree::ShopController < Spree::StoreController
       end
       @related_products = @related_search.results
 
+      debugger
       @all_facets = Sunspot.search(Spree::Product) do 
         if params[:q]!=nil && params[:q][:category] && params[:q][:category] != "all"
           with(:taxon_name, params[:q][:category])
         end 
-        with(:buyable, true)
-        with(:visible, true)
-        with(:total_on_hand).greater_than(0)
+        # with(:buyable, true)
+        # with(:visible, true)
+        # with(:total_on_hand).greater_than(0)
         facet(:price, :range => 0..100000, :range_interval => 100)
         facet(:brand_name)
         facet(:store_name)

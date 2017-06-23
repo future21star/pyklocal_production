@@ -66,6 +66,10 @@ gem 'impressionist'
 gem "letter_opener"
 gem "paperclip-ffmpeg", "~> 1.0.1"
 
+#xlsx file format
+gem 'axlsx', '~> 2.0', '>= 2.0.1'
+gem 'axlsx_rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'rspec-rails', '~> 3.0'
