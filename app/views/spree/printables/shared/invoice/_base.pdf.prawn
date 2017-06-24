@@ -14,7 +14,7 @@ prawn_document(force_download: true) do |pdf|
   pdf.stroke do
     pdf.horizontal_rule
   end
-  # CONTENT
+  # # CONTENT
 
   pdf.grid([2,0], [6,4]).bounding_box do
 

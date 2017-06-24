@@ -207,19 +207,23 @@ class Merchant::StoresController < Merchant::ApplicationController
   end
 
   def invoice_pdf
-    debugger
-    invoice = Spree::BookkeepingDocument.find(params[:id])
-    @order = Spree::Order.find(invoice.printable_id)
-    filename = "Invoice_#{@order.number}_#{Time.now.strftime('%Y%m%d')}.pdf"
+    # invoice = Spree::BookkeepingDocument.find(params[:id])
+    # @order = Spree::Order.find(invoice.printable_id)
+    # filename = "Invoice_#{@order.number}_#{Time.now.strftime('%Y%m%d')}.pdf"
 
-    admin_controller = Spree::Admin::OrdersController.new
-    invoice = admin_controller.render_to_string(:layout => false , :template => "spree/printables/order/invoice.pdf.prawn", :type => :prawn, :locals => {:@doc => @order})
+    # admin_controller = Spree::Admin::OrdersController.new
+    # invoice = admin_controller.render_to_string(:layout => false , :template => "spree/printables/order/invoice.pdf.prawn", :type => :prawn, :locals => {:@doc => @order})
 
-    attachments[filename] = {
-      mime_type: 'application/pdf',
-      content: invoice
-    }
+    # # attachments[filename] = {
+    # #   mime_type: 'application/pdf',
+    # #   content: invoice
+    # # }
 
+    # respond_to do |format|
+    #   format.pdf do
+    #     render pdf: invoice
+    #   end
+    # end
     @bookkeeping_document = Spree::BookkeepingDocument.find(params[:id])
     respond_with(@bookkeeping_document) do |format|
       format.pdf do

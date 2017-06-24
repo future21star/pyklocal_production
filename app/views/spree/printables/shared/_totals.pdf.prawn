@@ -1,3 +1,5 @@
+invoice = Spree::Order.find(invoice.printable_id)
+
 # TOTALS
 totals = []
 

@@ -1,3 +1,4 @@
+invoice = Spree::Order.find(invoice.printable_id)
 header = [
   pdf.make_cell(content: Spree.t(:sku)),
   pdf.make_cell(content: Spree.t(:item_description)),

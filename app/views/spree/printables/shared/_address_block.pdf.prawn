@@ -1,9 +1,17 @@
+printable = Spree::Order.find(printable.printable_id)
 if printable.get_order_home_delivery_line_items_ids.count == 0
-	ship_address = printable.bill_address
+  unless Spree::Address.where(id: printable.bill_address_id).empty?
+  	ship_address = Spree::Address.find(printable.bill_address_id)
+  end
 else
-	ship_address = printable.ship_address
+  unless Spree::Address.where(id: printable.ship_address_id).empty?
+	 ship_address = Spree::Address.find(printable.ship_address_id) 
+  end
 end
 
+if ship_address.blank?
+  ship_address = Spree::Address.last
+end
 data = [ ["Invoice Number #", "#{printable.number}"],
  ["Invoice Date:", "#{printable.completed_at}"],
  ["Order Total:", "#{printable.display_total.to_s}"]

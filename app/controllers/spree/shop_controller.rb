@@ -29,7 +29,6 @@ class Spree::ShopController < Spree::StoreController
       end
       @related_products = @related_search.results
 
-      debugger
       @all_facets = Sunspot.search(Spree::Product) do 
         if params[:q]!=nil && params[:q][:category] && params[:q][:category] != "all"
           with(:taxon_name, params[:q][:category])

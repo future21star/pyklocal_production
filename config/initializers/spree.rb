@@ -26,7 +26,7 @@ Spree::PrintInvoice::Config.set(logo_path: "pyc_logo.png")
 Spree::PrintInvoice::Config.set(next_number: 1|1234)
 # Spree::PrintInvoice::Config.set(buttons: 'invoice')
 Spree::PrintInvoice::Config.set(page_layout: :landscape, page_size: 'A4')
-Spree::PrintInvoice::Config.set(store_pdf: true)
+Spree::PrintInvoice::Config.set(store_pdf: false)
 Spree::PrintInvoice::Config.set(storage_path: 'pdfs/orders')
 
 Spree.user_class = "Spree::LegacyUser"
