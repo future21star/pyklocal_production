@@ -1,4 +1,6 @@
-printable = Spree::Order.find(printable.printable_id)
+if printable.has_attribute?('printable_id')
+  printable = Spree::Order.find(printable.printable_id)
+end
 if printable.get_order_home_delivery_line_items_ids.count == 0
   unless Spree::Address.where(id: printable.bill_address_id).empty?
   	ship_address = Spree::Address.find(printable.bill_address_id)

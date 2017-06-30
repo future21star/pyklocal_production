@@ -1,5 +1,7 @@
 im = Rails.application.assets.find_asset(Spree::PrintInvoice::Config[:logo_path])
-bill_address = Spree::Order.find(printable.printable_id).store
+if printable.has_attribute?('printable_id')
+	bill_address = Spree::Order.find(printable.printable_id).store
+end
 
 if im && File.exist?(im.pathname)
   pdf.image im.filename, position: :right, height: 60, scale: Spree::PrintInvoice::Config[:logo_scale]
