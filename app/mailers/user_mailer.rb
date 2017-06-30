@@ -24,6 +24,15 @@ class UserMailer < ActionMailer::Base
     end
   end
 
+  def notify_small_amount_of_product(variant) 
+    @variant = variant
+    @product = variant.product
+    @seller = @product.store.try(:spree_users).try(:first)
+    if @seller
+      mail(to: @seller.email, subject: "Product stock is less than 5")
+    end
+  end
+
   def password_changed_notification(user)
     @user = user
     mail(to: @user.email, subject: "Notice of Password Change from Pyklocal")

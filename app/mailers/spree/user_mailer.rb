@@ -1,5 +1,7 @@
 module Spree
   class UserMailer < BaseMailer
+    default from: 'sales@pyklocal.com'
+
     def notify_driver_approval(user)
       @user = user
       mail(to: user.email, from: from_address, subject: "#{@user.full_name} is now approved as a driver")
