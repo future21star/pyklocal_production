@@ -14,7 +14,7 @@ set :application, 'pyklocal'
 set :repository,  'git@github.com:future21star/pyklocal_production.git'
 set :branch, 'production'
 set :scm, :git
-set :linked_files, %w{config/database.yml config/application.yml}
+set :linked_files, %w{config/database.yml config/application.yml config/api_config.yml}
 set :copy_cache, false
 
 # Server-side system wide settings
@@ -46,6 +46,7 @@ namespace :deploy do
 
   task :symlink_config, roles: :app do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+    run "ln -nfs #{shared_path}/config/api_config.yml #{release_path}/config/api_config.yml"
     run "ln -nfs #{shared_path}/public/spree #{release_path}/public/spree"
   end
 
@@ -91,7 +92,7 @@ namespace :deploy do
     run "mkdir #{current_path}/solr/default/data"
     run "cp -r #{shared_path}/solr/default/data/* #{current_path}/solr/default/data/"
     run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake sunspot:solr:start"
-  end
+  end 
 
   desc "Run the sidekiq"
   task :sidekiq_run, :roles => :app, :except => { :no_release => true } do
