@@ -16,6 +16,5 @@ module ASIN
       response = call(params.merge(:Operation => :ItemLookup, :ItemId => asins.join(',')))
       arrayfy(response['ItemLookupResponse']['Items']['Item']).map {|item| handle_type(item, :item)}
     end
-
 	end
 end

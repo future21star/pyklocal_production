@@ -8,5 +8,5 @@ development:
 
 # production environment
 production:
-  host: '34.203.36.151'
+  host: 'localhost'
   port: '6379'

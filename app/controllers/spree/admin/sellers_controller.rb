@@ -57,7 +57,7 @@ module Spree
       @store = @seller.stores.first
       # @store.update_attributes(deleted_at: Time.now)
       @store.spree_products.each do |product|
-        product.update_attributes(buyable: false)
+        product.update_attributes(hidden: true)
         Sunspot.index(product)
       end
       redirect_to admin_sellers_path, notice: "Store Deactivated successfully"      
@@ -68,7 +68,7 @@ module Spree
       @store = @seller.stores.first
       # @store.update_attributes(deleted_at: nil)
       @store.spree_products.each do |product|
-        product.update_attributes(buyable: true)
+        product.update_attributes(hidden: false)
         Sunspot.index(product)
       end
       redirect_to admin_sellers_path, notice: "Store Activated successfully"      

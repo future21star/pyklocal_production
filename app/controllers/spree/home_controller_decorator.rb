@@ -7,6 +7,7 @@ Spree::HomeController.class_eval do
       with(:location).in_radius(session[:lat], session[:lng], 30.to_i, bbox: true) if session[:lat].present? && session[:lng].present?
       with(:visible, true)
       with(:buyable, true)
+      with(:hidden, false)
       with(:total_on_hand).greater_than(0)
       order_by(:sell_count, :desc)
     end 
@@ -18,6 +19,7 @@ Spree::HomeController.class_eval do
       order_by(:view_counter, :desc)
       with(:visible, true)
       with(:buyable, true)
+      with(:hidden, false)
       with(:total_on_hand).greater_than(0)
       paginate page: 1, per_page: 20
     end
@@ -27,7 +29,7 @@ Spree::HomeController.class_eval do
     @search_new_arrival = Sunspot.search(Spree::Product) do
       with(:buyable, true)
       with(:visible, true)
-      with(:buyable, true)
+      with(:hidden, false)
       with(:total_on_hand).greater_than(0)
       order_by(:created_at, :desc)
       paginate page: 1, per_page: 30

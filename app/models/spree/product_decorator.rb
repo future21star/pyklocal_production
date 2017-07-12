@@ -39,7 +39,8 @@ module Spree
       integer :sell_count
       integer :view_counter
       boolean :buyable
-
+      boolean :hidden
+      
       time :created_at
 
       dynamic_string :product_property_ids, :multiple => true do
