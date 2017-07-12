@@ -16,6 +16,7 @@
 /log/*
 /tmp
 /config/database.yml
+/config/api_config.yml
 /solr/development/data/*
 /solr/default/data/*
 /solr/pids/*

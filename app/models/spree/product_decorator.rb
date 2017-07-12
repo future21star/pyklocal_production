@@ -40,7 +40,7 @@ module Spree
       integer :view_counter
       boolean :buyable
       boolean :hidden
-      
+
       time :created_at
 
       dynamic_string :product_property_ids, :multiple => true do
@@ -200,12 +200,20 @@ module Spree
           any_of do
             with(:taxon_ids, taxon_ids)
           end
+          with(:buyable, true)
+          with(:hidden, false)
+          with(:visible, true)
+          with(:total_on_hand).greater_than(0)
         end.results - [self]
       elsif taxon_ids.blank? && product_property_names.present?
         similar_products = Sunspot.search(Spree::Product) do
           any_of do
             with(:product_property_name, product_property_names)
           end
+          with(:buyable, true)
+          with(:hidden, false)
+          with(:visible, true)
+          with(:total_on_hand).greater_than(0)
         end.results - [self]
       end
     end

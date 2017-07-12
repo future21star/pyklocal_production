@@ -21,6 +21,7 @@ class Spree::ShopController < Spree::StoreController
         paginate(:page => params[:page], :per_page => per_page)
         with(:buyable, true)
         with(:visible, true)
+        with(:hidden, false)
         with(:total_on_hand).greater_than(0)
         facet(:price, :range => 0..100000, :range_interval => 100)
         facet(:brand_name)
@@ -33,9 +34,10 @@ class Spree::ShopController < Spree::StoreController
         if params[:q]!=nil && params[:q][:category] && params[:q][:category] != "all"
           with(:taxon_name, params[:q][:category])
         end 
-        # with(:buyable, true)
-        # with(:visible, true)
-        # with(:total_on_hand).greater_than(0)
+        with(:buyable, true)
+        with(:visible, true)
+        with(:total_on_hand).greater_than(0)
+        with(:hidden, false)
         facet(:price, :range => 0..100000, :range_interval => 100)
         facet(:brand_name)
         facet(:store_name)
@@ -106,6 +108,7 @@ class Spree::ShopController < Spree::StoreController
           end
         end
         with(:buyable, true)
+        with(:hidden, false)
         with(:visible, true)
         with(:total_on_hand).greater_than(0)
         with(:location).in_radius(params[:q][:lat], params[:q][:lng], params[:q][:radius].to_i, bbox: true) if params[:q]!=nil && params[:q][:lat].present? && params[:q][:lng].present?
@@ -132,6 +135,7 @@ class Spree::ShopController < Spree::StoreController
           with(:taxon_name, params[:q][:category])
         end
         with(:buyable, true)
+        with(:hidden, false)
         with(:visible, true)
         with(:total_on_hand).greater_than(0)
         with(:taxon_ids, Spree::Taxon.where(permalink: params[:id]).collect(&:id)) if params[:id].present?
