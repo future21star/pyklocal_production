@@ -5,6 +5,7 @@ module Spree
     
 		def index
       @api_token = ApiToken.where(token: params[:q][:token]).last 
+      @all_facets = []
       if @api_token
         per_page = params[:q] && params[:q][:per_page] ? params[:q][:per_page] : 12
         page = params[:page] ? params[:page] : 1
@@ -17,7 +18,7 @@ module Spree
           }
     		else
           #@products = @search_result.page(page).per(per_page)
-          @products = @search.results
+          @products = @search_result
     			render json: {
     				status: "1", 
     				message: "Search Result",
@@ -154,7 +155,6 @@ module Spree
           with(:hidden, false)
           facet(:price, :range => 0..100000, :range_interval => 100)
           with(:taxon_ids, Spree::Taxon.where(permalink: params[:id]).collect(&:id)) if params[:id].present?
-          facet(:price, :range => Spree::Product.min_price..Spree::Product.max_price, :range_interval => 100)
           facet(:brand_name)
           facet(:store_name)
           facet(:taxon_name)
@@ -181,9 +181,9 @@ module Spree
         with(:visible, true)
         with(:hidden, false)
         with(:total_on_hand).greater_than(0)
-        facet(:price, :range => 0..100000, :range_interval => 100)
         with(:store_id, params[:q][:store_id]) if params[:q] && params[:q][:store_id] != "" && params[:q][:store_id] != nil
         with(:taxon_ids, params[:q][:id]) if params[:q] && params[:q][:id] != "" && params[:q][:id] != nil
+        facet(:price, :range => 0..100000, :range_interval => 100)
         facet(:brand_name)
         facet(:store_name)
         if params[:q] && params[:q][:brand]
