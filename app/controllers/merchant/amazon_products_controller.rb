@@ -2,7 +2,6 @@ require 'uri'
 class Merchant::AmazonProductsController < Merchant::ApplicationController
 
 	def fetch
-		debugger
 		begin
 			@is_owner = true
 			if  ["keyword", nil].include?(params[:by])
