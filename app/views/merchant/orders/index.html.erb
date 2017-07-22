@@ -78,14 +78,14 @@
 	                			<% if order.completed? %>
 	                				<% line_item_ids = order.get_home_delivery_line_item_ids(@store.id) %>
 				                  <tr>
-				                    <td class="trans-head1" rowspan="#{order.get_store_line_items(@store.id).count}">
+				                    <td class="trans-head1" rowspan="<%=order.get_store_line_items(@store.id).count%>">
 				                    	<% if order.get_store_delivered_line_items(@store.id).count == line_item_ids.count %>
 				                    		<%= link_to order.try(:number), merchant_order_customer_return_items_path(order), title: "Return Order" %>
 				                    	<% else %>
 				                    		<%= order.try(:number) %>
 				                    	<% end %>
 				                    </td>
-				                    <td class="trans-head2" rowspan="#{order.get_store_line_items(@store.id).count}">
+				                    <td class="trans-head2" rowspan="<%=order.get_store_line_items(@store.id).count%>">
 				                    	<%= order.completed_at.strftime("%d-%m-%Y") %>
 				                    </td>
 				                    <% order.get_store_line_items(@store.id).each_with_index do |line_item, index| %>
@@ -131,7 +131,7 @@
 																	<% end %>
 																</td>				
 															<% else %>
-																<!-- <tr>
+																<tr>
 																	<td class="trans-head3">
 																		<%= line_item.product.try(:name) %>
 																	</td>
@@ -150,7 +150,7 @@
 																	<td class="trans-head8">
 																		<%= line_item.driver.try(:full_name) || "-" %>
 																	</td>
-																</tr> -->
+																</tr>
 															<% end %>
 														<% end %>
 													</tr>
