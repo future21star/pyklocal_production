@@ -12,15 +12,17 @@ header = [
 data = [header]
 
 invoice.line_items.each do |item|
-  row = [
-    item.sku,
-    item.name,
-    item.variant.options_text,
-    item.display_price.to_s,
-    item.quantity,
-    item.display_amount.to_html
-  ]
-  data += [row]
+  if item.product.store_id == store.id
+    row = [
+      item.sku,
+      item.name,
+      item.variant.options_text,
+      item.display_price.to_s,
+      item.quantity,
+      item.display_amount.to_html
+    ]
+    data += [row]
+  end
 end
 
 column_widths = [0.13, 0.37, 0.185, 0.12, 0.075, 0.12].map { |w| w * pdf.bounds.width }

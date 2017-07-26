@@ -53,9 +53,16 @@
                           <td class="trans-head4"><%= bookkeeping_document.firstname %></td>
                           <td class="trans-head5"><%= bookkeeping_document.lastname %></td>
                           <td class="trans-head6"><%= bookkeeping_document.email %></td>
-                          <td class="trans-head7"><%= ActionController::Base.helpers.number_to_currency(bookkeeping_document.total.to_f) %></td>
+                          <% line_items = Spree::Order.find(bookkeeping_document.printable_id).line_items %>
+                          <% total_price = 0.0 %>
+                          <% line_items.each do |line_item| %>
+                            <% if line_item.product.store_id == @store.id %>
+                              <% total_price += line_item.price.to_f %>
+                            <% end %>
+                          <% end %>
+                          <td class="trans-head7"><%= ActionController::Base.helpers.number_to_currency(total_price) %></td>
                           <td class='trans-head8 actions actions-1' data-hook="admin_orders_index_row_actions">
-                            <%= link_to '<i class="fa fa-file"></i>'.html_safe, invoice_pdf_merchant_store_path(bookkeeping_document, format: :pdf) %>        
+                            <%= link_to '<i class="fa fa-file"></i>'.html_safe, invoice_pdf_merchant_store_path(id: @store.slug, bookkeeping_document_id: bookkeeping_document.id, format: :pdf) %>        
                           </td>
                         </tr>
                       <% end %>                      

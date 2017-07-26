@@ -24,8 +24,7 @@ prawn_document(force_download: true) do |pdf|
     end
 
     pdf.move_down 10
-
-    render 'spree/printables/shared/invoice/items', pdf: pdf, invoice: doc
+    render 'spree/printables/shared/invoice/items', pdf: pdf, invoice: doc, store: store
 
     pdf.move_down 20
 

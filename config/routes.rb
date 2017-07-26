@@ -12,7 +12,7 @@ Pyklocal::Application.routes.draw do
     resources :stores do
       member do
         get 'report'
-        get 'invoice_pdf'
+        get 'invoice/:bookkeeping_document_id/pdf', action: 'invoice_pdf', as: 'invoice_pdf'
         post 'store_report'
         post 'sale_product'
         get 'invoices'

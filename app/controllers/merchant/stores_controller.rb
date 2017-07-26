@@ -1,7 +1,7 @@
 class Merchant::StoresController < Merchant::ApplicationController
 
 	before_filter :authenticate_user!, except: [:show, :new, :create, :index,:edit,:update]
-  before_action :set_store, only: [:show, :edit, :update, :destroy, :report, :store_report, :invoices]
+  before_action :set_store, only: [:show, :edit, :update, :destroy, :report, :store_report, :invoices, :invoice_pdf]
   # before_action :validate_token, only: [:edit, :update] 
   before_action :perform_search, only: [:show]
   respond_to :html, :xml, :json, :pdf, :xlsx
@@ -224,10 +224,10 @@ class Merchant::StoresController < Merchant::ApplicationController
     #     render pdf: invoice
     #   end
     # end
-    @bookkeeping_document = Spree::BookkeepingDocument.find(params[:id])
+    @bookkeeping_document = Spree::BookkeepingDocument.find(params[:bookkeeping_document_id])
     respond_with(@bookkeeping_document) do |format|
       format.pdf do
-        send_data @bookkeeping_document.pdf, type: 'application/pdf', disposition: 'inline'
+        send_data @bookkeeping_document.pdf(@store), type: 'application/pdf', disposition: 'inline', store: @store
       end
     end    
   end
